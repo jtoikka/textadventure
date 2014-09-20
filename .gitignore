@@ -1,0 +1,24 @@
+*.class
+
+# Directories #
+bin/
+.metadata
+.gradle
+local.properties
+tmp/
+*.tmp
+*.bak
+*.swp
+*~.nib
+
+# OS generated files #
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+.cache
+.settings/org.eclipse.core.resources.prefs
+.settings/org.eclipse.jdt.core.prefs
+ehthumbs.db
+Thumbs.db
