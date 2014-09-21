@@ -22,7 +22,12 @@ abstract class Screen(private val parent: Adventure, private val rend: Renderer)
 	def draw()
 	
 	/**
-	 * Initializing method. Should be used when screen is changed to active
+	 * Initializing method. Should be used when screen is created
 	 */
 	def init()
+	
+	/**
+	 * Resume method. Should be used when screen is changed to active
+	 */
+	def resume()
 }
