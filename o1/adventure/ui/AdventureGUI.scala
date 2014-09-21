@@ -115,13 +115,20 @@ object AdventureGUI extends SimpleSwingApplication {
         keyMap(Key.N) = false
         
     }
-    var time = 0.0
+    var time = System.currentTimeMillis()
+    var timeExtra = 0.0
     
-    var timer = new Timer(33, new java.awt.event.ActionListener {
+    val updatePeriod = 33
+    
+    var timer = new Timer(updatePeriod, new java.awt.event.ActionListener {
       def actionPerformed(e: java.awt.event.ActionEvent) = {
-        var delta = 33.0 / 100.0
-        time += delta
-        update(delta)
+        var newTime = System.currentTimeMillis()
+        var delta = newTime - time + timeExtra
+        var numUpdates = (delta / updatePeriod).toInt
+        timeExtra = delta - numUpdates * updatePeriod
+        time = newTime
+        for (i <- 0 until numUpdates)
+          update(updatePeriod / 100.0f)
       }
     })
     

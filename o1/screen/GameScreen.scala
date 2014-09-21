@@ -31,30 +31,31 @@ class GameScreen(parent: Adventure, rend: Renderer)
 	*/
                                         
 	def update(delta: Double, keyMap: Map[scala.swing.event.Key.Value, Boolean]): Unit = {
+    var deltaFloat = delta.toFloat
     var camSpatial = scene.camera.getComponent(SpatialComponent.id).get
     var camRight = camSpatial.up.cross(camSpatial.forward)
 	  if (keyMap(Key.M)) {
 	    parent.changeScreen(parent.menuScreen)
 	  }
 	  if (keyMap(Key.W)) {
-	    camSpatial.position += camSpatial.forward * 0.05f
+	    camSpatial.position += camSpatial.forward * 0.3f * deltaFloat
 	  }
 	  if (keyMap(Key.S)) {
-	    camSpatial.position -= camSpatial.forward * 0.05f
+	    camSpatial.position -= camSpatial.forward * 0.3f * deltaFloat
 	  }
 	  if (keyMap(Key.A)) {
-	    camSpatial.position += camRight * 0.05f
+	    camSpatial.position += camRight * 0.3f * deltaFloat
 	  }
 	  if (keyMap(Key.D)) {
-	    camSpatial.position -= camRight * 0.05f
+	    camSpatial.position -= camRight * 0.3f * deltaFloat
 	  }
 	  if (keyMap(Key.Left)) {
 	    camSpatial.forward = 
-	      (Utility.rotateY(0.1f) * Vec4(camSpatial.forward, 0.0f)).xyz
+	      (Utility.rotateY(0.4f * deltaFloat) * Vec4(camSpatial.forward, 0.0f)).xyz
 	  }
 	  if (keyMap(Key.Right)) {
 	    camSpatial.forward = 
-	      (Utility.rotateY(-0.1f) * Vec4(camSpatial.forward, 0.0f)).xyz
+	      (Utility.rotateY(-0.4f * deltaFloat) * Vec4(camSpatial.forward, 0.0f)).xyz
 	  }
 	  
 	}
@@ -87,7 +88,7 @@ class GameScreen(parent: Adventure, rend: Renderer)
 	    for (y <- 0 to 3) {
 	  	  var monkey = Factory.createMonkey()
 	      var monkeySpatial = monkey.getComponent(SpatialComponent.id)
-	      monkeySpatial.get.position = Vec3((x - 1) * 3, 0.0f, (y - 1) * 3)
+	      monkeySpatial.get.position = Vec3((x - 2) * 3, 0.0f, (y - 2) * 3)
 	      scene.addEntity(monkey)
 	    }
 	  }
