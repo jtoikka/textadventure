@@ -93,4 +93,8 @@ class GameScreen(parent: Adventure, rend: Renderer)
 	    }
 	  }
 	}
+	
+	def resume(){
+	  
+	}
 }

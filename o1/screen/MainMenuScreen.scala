@@ -52,4 +52,8 @@ class MainMenuScreen(parent: Adventure, rend: Renderer)
 	  scene.addEntity(monkey)
 	}
 	init
+	
+	def resume(){
+	  
+	}
 }

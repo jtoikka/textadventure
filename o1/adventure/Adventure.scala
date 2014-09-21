@@ -31,7 +31,9 @@ class Adventure() {
   // Screen stuff
   
   val menuScreen: Screen = new MainMenuScreen(this, screenWidth, screenHeight)
+    menuScreen.init()
   val gameScreen: Screen = new GameScreen(this, screenWidth, screenHeight)
+    gameScreen.init()
   var currentScreen: Screen = menuScreen
   
   var totalTime = 0.0 // Keep track of how much time has passed
@@ -51,7 +53,7 @@ class Adventure() {
  	*/
   def changeScreen(scr: Screen): Unit = {
     this.currentScreen = scr
-    currentScreen.init()
+    currentScreen.resume()
     println("Screen Changed")
   }
   
