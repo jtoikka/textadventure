@@ -51,7 +51,6 @@ class MainMenuScreen(parent: Adventure, rend: Renderer)
 	  monkeySpatial.get.position = Vec3(0.0f, 0.0f, -3.0f)
 	  scene.addEntity(monkey)
 	}
-	init
 	
 	def resume(){
 	  
