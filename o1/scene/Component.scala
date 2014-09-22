@@ -32,3 +32,10 @@ object RenderComponent {
 
 class RenderComponent(val mesh: String) extends Component {
 }
+
+object RenderComponent2D {
+  val id = (new RenderComponent2D("")).getClass()
+}
+
+class RenderComponent2D(val shape: String) extends Component {
+}

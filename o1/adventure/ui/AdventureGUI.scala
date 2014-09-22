@@ -56,7 +56,7 @@ object AdventureGUI extends SimpleSwingApplication {
       background = Color.BLACK
       foreground = Color.WHITE
       
-      font = new Font("Monospaced", 0, 10)
+      font = new Font("Monospaced", 0, 8)
       
       listenTo(keys)
       

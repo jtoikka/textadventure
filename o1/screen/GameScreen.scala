@@ -18,10 +18,10 @@ import o1.scene._
 class GameScreen(parent: Adventure, rend: Renderer) 
       extends Screen(parent, rend) {
   
-  def this(parent: Adventure, x: Int, y: Int) = this(parent, new Renderer(x,y))
+  def this(parent: Adventure, x: Int, y: Int) = this(parent, new Renderer3D(x,y))
   
   var scene = new Scene()
-  
+  init()
 //  var meshes = Array[Object](new Object(Mesh("data/sphere.obj"), 
 //                                        new Vec4(-1.1f,0.0f,-3.0f,0.0f)),
 //                             new Object(Mesh("data/monkey.obj"), 
@@ -36,6 +36,9 @@ class GameScreen(parent: Adventure, rend: Renderer)
     var camRight = camSpatial.up.cross(camSpatial.forward)
 	  if (keyMap(Key.M)) {
 	    parent.changeScreen(parent.menuScreen)
+	  }
+    if (keyMap(Key.N)) {
+	    parent.changeScreen(parent.testScreen2D)
 	  }
 	  if (keyMap(Key.W)) {
 	    camSpatial.position += camSpatial.forward * 0.3f * deltaFloat
