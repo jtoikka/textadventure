@@ -16,12 +16,12 @@ import o1.scene._
 class MainMenuScreen(parent: Adventure, rend: Renderer) 
       extends Screen(parent, rend) {
   
-  def this(parent: Adventure, x: Int, y: Int) = this(parent, new Renderer(x,y))
+  def this(parent: Adventure, x: Int, y: Int) = this(parent, new Renderer3D(x,y))
   
   parent.title = "A 3D Adventure - Menu"
   
   var scene = new Scene()
-  
+  init()
 //  var meshes = Array[Object](new Object(Mesh("data/monkey.obj"), 
 //                                        new Vec4(0.0f,0.0f,-3.0f,0.0f)))
   

@@ -3,7 +3,7 @@ package o1.adventure
 import scala.collection.mutable.Map
 import scala.math
 import o1.math._
-import o1.adventure.render.Renderer
+import o1.adventure.render.Renderer3D
 import o1.screen._
 
 /**
@@ -25,16 +25,15 @@ class Adventure() {
   val screenWidth = 200
   val screenHeight = 70
   
-  val _renderer = new Renderer(screenWidth, screenHeight) // We draw the world here!
+  val _renderer = new Renderer3D(screenWidth, screenHeight) // We draw the world here!
   var display = _renderer.display // A String displaying the world
   
   // Screen stuff
   
   val menuScreen: Screen = new MainMenuScreen(this, screenWidth, screenHeight)
-    menuScreen.init()
   val gameScreen: Screen = new GameScreen(this, screenWidth, screenHeight)
-    gameScreen.init()
-  var currentScreen: Screen = menuScreen
+  val testScreen2D: Screen = new TestScreen2D(this,screenWidth, screenHeight) 
+  var currentScreen: Screen = testScreen2D
   
   var totalTime = 0.0 // Keep track of how much time has passed
   
