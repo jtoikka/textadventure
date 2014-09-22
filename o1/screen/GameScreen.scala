@@ -30,38 +30,41 @@ class GameScreen(parent: Adventure, rend: Renderer)
 	* Update method. Used to update game's state
 	*/
                                         
-	def update(delta: Double, keyMap: Map[scala.swing.event.Key.Value, Boolean]): Unit = {
+	def update(delta: Double): Unit = {
+	  
+	}
+  
+  def input(keyMap: Map[scala.swing.event.Key.Value, Int], delta: Double) = {
     var deltaFloat = delta.toFloat
     var camSpatial = scene.camera.getComponent(SpatialComponent.id).get
     var camRight = camSpatial.up.cross(camSpatial.forward)
-	  if (keyMap(Key.M)) {
+	  if (keyMap(Key.M) == 2) {
 	    parent.changeScreen(parent.menuScreen)
 	  }
-    if (keyMap(Key.N)) {
+    if (keyMap(Key.N) == 2) {
 	    parent.changeScreen(parent.testScreen2D)
 	  }
-	  if (keyMap(Key.W)) {
+	  if (keyMap(Key.W) == 1 || keyMap(Key.W) == 2) {
 	    camSpatial.position += camSpatial.forward * 0.3f * deltaFloat
 	  }
-	  if (keyMap(Key.S)) {
+	  if (keyMap(Key.S) == 1 || keyMap(Key.S) == 2) {
 	    camSpatial.position -= camSpatial.forward * 0.3f * deltaFloat
 	  }
-	  if (keyMap(Key.A)) {
+	  if (keyMap(Key.A) == 1 || keyMap(Key.A) == 2) {
 	    camSpatial.position += camRight * 0.3f * deltaFloat
 	  }
-	  if (keyMap(Key.D)) {
+	  if (keyMap(Key.D) == 1 || keyMap(Key.D) == 2) {
 	    camSpatial.position -= camRight * 0.3f * deltaFloat
 	  }
-	  if (keyMap(Key.Left)) {
+	  if (keyMap(Key.Left) == 1 || keyMap(Key.Left) == 2) {
 	    camSpatial.forward = 
 	      (Utility.rotateY(0.4f * deltaFloat) * Vec4(camSpatial.forward, 0.0f)).xyz
 	  }
-	  if (keyMap(Key.Right)) {
+	  if (keyMap(Key.Right) == 1 || keyMap(Key.Right) == 2) {
 	    camSpatial.forward = 
 	      (Utility.rotateY(-0.4f * deltaFloat) * Vec4(camSpatial.forward, 0.0f)).xyz
 	  }
-	  
-	}
+  }
 	
 	/**
 	 * Draw method. Is used to draw screen to display etc
