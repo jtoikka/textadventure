@@ -14,7 +14,20 @@ abstract class Screen(private val parent: Adventure, private val rend: Renderer)
 	/**
 	 * Update method. Used to update screen state
 	 */
-	def update(delta: Double, keyMap: Map[scala.swing.event.Key.Value, Boolean])
+	def update(delta: Double)
+	
+	/**
+	 * Handles input. Each key corresponds to a value of:
+	 * 0: Up
+	 * 1: Down
+	 * 2: Pressed
+	 * 3: Released
+	 * 
+	 * Note that pressed and released are single-frame states, they describe if
+	 * a key was pushed down or released between frames. Delta is the time since
+	 * the last frame update.
+	 */
+	def input(keyMap: Map[scala.swing.event.Key.Value, Int], delta: Double)
 	
 	/**
 	 * Draw method. Is used to draw screen to display etc

@@ -31,7 +31,7 @@ class TestScreen2D(parent: Adventure, rend: Renderer)
     }
   }
   
-	def update(delta: Double, keyMap: Map[scala.swing.event.Key.Value, Boolean]): Unit = {
+	def update(delta: Double): Unit = {
     // code is only for testing
     
 	  for(i <- 0 to 1){
@@ -53,10 +53,13 @@ class TestScreen2D(parent: Adventure, rend: Renderer)
         speeds(i)(1) = -2
         
 	  }
-	  if(keyMap(Key.M)){
+	}
+	
+	def input(keyMap: Map[scala.swing.event.Key.Value, Int], delta: Double) = {
+    if(keyMap(Key.M) == 2){
 	    parent.changeScreen(parent.gameScreen)
 	  }
-	}
+  }
 	
 	/**
 	 * Draw method. Is used to draw screen to display etc

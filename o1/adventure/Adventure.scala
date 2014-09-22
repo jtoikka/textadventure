@@ -37,14 +37,42 @@ class Adventure() {
   
   var totalTime = 0.0 // Keep track of how much time has passed
   
+  var previousInput = Map[scala.swing.event.Key.Value, Boolean]()
+  
   /**
  	* Updates current screen and renders it.
  	*/
   def update(delta: Double, keyMap: Map[scala.swing.event.Key.Value, Boolean]) = {
-    currentScreen.update(delta, keyMap)
+    currentScreen.update(delta)
     totalTime += delta
     val period = math.Pi * 2.0f / 8.0f
     currentScreen.draw()
+    handleInput(keyMap, delta)
+  }
+  
+  def handleInput(
+    keyMap: Map[scala.swing.event.Key.Value, Boolean], delta: Double) = {
+    
+    val keyMapDelta = Map[scala.swing.event.Key.Value, Int]()
+    if (previousInput.size > 0) {
+      for (keyValue <- keyMap) {
+        val key = keyValue._1
+        val value = keyValue._2
+        val previousValue = previousInput(key)
+        var state = 0
+        if (previousValue == value) {
+          if (value) state = 1 // else 0
+        } else {
+          if (value) 
+            state = 2
+          else 
+            state = 3
+        }
+        keyMapDelta(key) = state
+      }
+      currentScreen.input(keyMapDelta, delta)
+    }
+    previousInput = keyMap.clone()
   }
   
   /**

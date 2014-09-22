@@ -28,11 +28,15 @@ class MainMenuScreen(parent: Adventure, rend: Renderer)
 	/**
 	 * Update method. Used to update screen state.
 	 */
-	def update(delta: Double, keyMap: Map[scala.swing.event.Key.Value, Boolean]): Unit = {
-	  if(keyMap(Key.N)){
+	def update(delta: Double): Unit = {
+	  
+	}
+  
+  def input(keyMap: Map[scala.swing.event.Key.Value, Int], delta: Double) = {
+    if(keyMap(Key.N) == 2){
 	    parent.changeScreen(parent.gameScreen)
 	  }
-	}
+  }
 	
 	/**
 	 * Draw method. Is used to draw screen to display
