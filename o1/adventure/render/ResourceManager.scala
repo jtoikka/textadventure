@@ -12,7 +12,7 @@ object ResourceManager {
   meshes("cube") = Mesh("data/cube.obj")
   meshes("plate") = Mesh("data/4x4_plate_floor.obj")
   meshes("floor") = Mesh("data/floor.obj")
-  meshes("floor").luminosity = 0.2f
+  meshes("floor").luminosity = 0.6f
   meshes("testMap") = Mesh("data/spaceStation.obj")
   meshes("testMap").luminosity = 0.8f
 }
