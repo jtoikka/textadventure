@@ -108,6 +108,9 @@ class Vec4(var x: Float, var y: Float, var z: Float, var w: Float) {
   def *(other: Vec4): Vec4 =
     new Vec4(this.x * other.x, this.y * other.y, this.z * other.z, this.w * other.w)
   
+  def *(value: Float): Vec4 =
+    new Vec4(this.x * value, this.y * value, this.z * value, this.w * value)
+  
   def /(other: Vec4) =
     new Vec4(this.x / other.x, this.y / other.y, this.z / other.z, this.w / other.w)
   
