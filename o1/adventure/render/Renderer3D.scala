@@ -17,6 +17,7 @@ class Renderer3D(w: Int, h: Int) extends Renderer(w,h){
   var _normalBuffer: Array[Vec3] = new Array[Vec3](framebufferWidth * h)
   var _depthBuffer: Array[Float] = new Array[Float](framebufferWidth * h)
   var _diffuseBuffer: Array[Float] = new Array[Float](framebufferWidth * h)
+  var _viewRayBuffer: Array[Vec3] = new Array[Vec3](framebufferWidth * h)
 /* ---------------------------------------------------------------------------*/
   
   val zNear = 0.2f  // Near clipping plane
@@ -91,6 +92,11 @@ class Renderer3D(w: Int, h: Int) extends Renderer(w,h){
     for (i <- 0 until _frontBuffer.size) {
       _frontBuffer(i) = '\n'
     }
+    for (y <- 0 until h) {
+      for (x <- 0 until (w - 1) * 2) {
+        _viewRayBuffer(calcDoubleIndex(x, y)) = calcViewRay(x, y)
+      }
+    }
   }
   
   initialize()
@@ -115,6 +121,7 @@ class Renderer3D(w: Int, h: Int) extends Renderer(w,h){
         val index = calcDoubleIndex(x, y)
         this._depthBuffer(index) = 1.0f
         this._diffuseBuffer(index) = 1.0f
+        this._normalBuffer(index) = Vec3(0.0f, 0.0f, 0.0f)
       }
     }
   }
@@ -163,19 +170,44 @@ class Renderer3D(w: Int, h: Int) extends Renderer(w,h){
       val bayesRow = y % 8
       for (x <- 0 until (w - 1) * 2) {
         val bayesCollumn = x % 8
+        
         val index1 = calcDoubleIndex(x, y)
         val index2 = calcDoubleIndex(x + 1, y)
-        var depth = (_depthBuffer(index1) + _depthBuffer(index2)) / 2.0f
-        depth = 1.0f - linearDepth(depth)
+       
         var diffuse = (_diffuseBuffer(index1) + _diffuseBuffer(index2)) / 2.0f
+        var normal = (_normalBuffer(index1))
+        var viewRay = _viewRayBuffer(index1)
+        var depth = (_depthBuffer(index1) + _depthBuffer(index2)) / 2.0f
+        var specular = clamp(normal.dot(viewRay), 0.0f, 1.0f)
+        if (normal.y < 0.9) {
+          depth = 1.0f - linearDepth(depth)
+          specular *= depth * depth
+        } else {
+          // Floor lighting hack, fix it later...
+          // TODO: Make the rest of this function a little more readable as well
+          specular = (1.0f - viewRay.y) * viewRay.z * viewRay.z * -viewRay.z * depth
+        }
+        val ambient = 0.0f * diffuse
+        val diffuseLight = depth * 0.2f
+        val lighting = specular + ambient + diffuseLight
         val bayer = bayerMatrix(8 * bayesRow + bayesCollumn)
-        var v = (depth + (bayer * ditherStrength)) * _ramp.size
+        var v = (lighting + (bayer * ditherStrength)) * _ramp.size
         v = clamp(v, 0.0f, _ramp.size.toFloat - 1.0f) * diffuse
         
         setPixel(calcFrontIndex(x, y), _ramp(_ramp.size - v.toInt - 1))
       }
     }
 /*----------------------------------------------------------------------------*/
+  }
+  
+  def calcViewRay(x: Int, y: Int) = {
+    var hx = x * 2.0f / framebufferWidth - 1.0f
+    var hy = (1.0f - y.toFloat / h) * 2.0f - 1.0f
+    var viewRay = Vec3(
+      hx / cameraToClipMatrix(0).x,
+      -hy / cameraToClipMatrix(1).y,
+      -1.0f);
+    viewRay.normalize
   }
   
   def calculateFrustum(cameraSpatial: SpatialComponent) {
@@ -210,13 +242,18 @@ class Renderer3D(w: Int, h: Int) extends Renderer(w,h){
     val screenB = screenCoordinates(triangle.b)
     val screenC = screenCoordinates(triangle.c)
     
-    val vecA = screenB - screenA
-    val vecB = screenC - screenB
+    val vecA = triangle.b - triangle.a
+    val vecB = triangle.c - triangle.a
+    
+    val screenVecA = screenB - screenA
+    val screenVecB = screenC - screenA
+    
+    val screenNormal = screenVecA.xyz.cross(screenVecB.xyz)
 
 /* Culling -------------------------------------------------------------------*/
     val normal = vecB.xyz.cross(vecA.xyz)      
-    if (normal.z > 0.0) {
-      fillTriangle(screenA, screenB, screenC, luminosity)
+    if (screenNormal.z < 0.0) {
+      fillTriangle(screenA, screenB, screenC, luminosity, normal.normalize)
     }
   }
   
@@ -227,7 +264,7 @@ class Renderer3D(w: Int, h: Int) extends Renderer(w,h){
  */
   
   // TODO: render normals
-  def fillTriangle(a: Vec4, b: Vec4, c: Vec4, luminosity: Float) = {
+  def fillTriangle(a: Vec4, b: Vec4, c: Vec4, luminosity: Float, normal: Vec3) = {
     var minX = max(0, min(a.x, min(b.x, c.x)))
     var minY = max(0, min(a.y, min(b.y, c.y)))
     var maxX = min(framebufferWidth - 1, max(a.x, max(b.x, c.x)))
@@ -251,6 +288,7 @@ class Renderer3D(w: Int, h: Int) extends Renderer(w,h){
             val i = (depth * _ramp.size).toInt
             _depthBuffer(index) = depth
             _diffuseBuffer(index) = luminosity
+            _normalBuffer(index) = normal
           }
         }
       }
