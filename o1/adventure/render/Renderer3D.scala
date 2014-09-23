@@ -196,9 +196,11 @@ class Renderer3D(w: Int, h: Int) extends Renderer(w,h){
   def renderMesh(mesh: Mesh, MVP: Mat4) = {
     mesh.transform(MVP)
     for(i <- 0 to mesh.indexBuffer.length / 3) {
-      var triangle = mesh.getTriangle(i)
-      if (!triangle.isEmpty) {
-        renderTriangle(triangle.get)
+      var triangles = mesh.getTriangles(i)
+      if (!triangles.isEmpty) {
+        for (triangle <- triangles) {
+          renderTriangle(triangle)
+        }
       }
     }
   }
@@ -216,27 +218,8 @@ class Renderer3D(w: Int, h: Int) extends Renderer(w,h){
     val vecB = screenC - screenB
 
 /* Culling -------------------------------------------------------------------*/
-    val normal = vecB.cross(vecA)
-    var isOutLeft = screenA.x < 0.0f && screenB.x < 0.0f && screenC.x < 0.0f
-    var isOutRight = 
-      screenA.x > framebufferWidth &&
-      screenB.x > framebufferWidth && 
-      screenC.x > framebufferWidth
-    
-    var isOutNear = screenA.z <= 0.0f && screenB.z <= 0.0f && screenC.z <= 0.0f
-    var isOutFar = (screenA.z > 1.0f) && (screenB.z > 1.0f) && (screenC.z > 1.0f)
-    
-    var isOutTop = screenA.y < 0.0f && screenB.y < 0.0f && screenC.y < 0.0f
-    
-    var isOutBottom = screenA.y > h && screenB.y > h && screenC.y > h
-    
-    var isOut = 
-      isOutLeft || isOutRight || 
-      isOutNear || isOutFar || 
-      isOutTop || isOutBottom
-/*----------------------------------------------------------------------------*/ 
-      
-    if (normal.z > 0.0 && !isOut) {
+    val normal = vecB.cross(vecA)      
+    if (normal.z > 0.0) {
       fillTriangle(screenA, screenB, screenC)
     }
   }

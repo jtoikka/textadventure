@@ -46,7 +46,7 @@ object Factory {
     
     monkey.addComponent(spatialComp)
     
-    var renderComp = new RenderComponent("monkey")
+    var renderComp = new RenderComponent("cube")
     
     monkey.addComponent(renderComp)
     monkey
