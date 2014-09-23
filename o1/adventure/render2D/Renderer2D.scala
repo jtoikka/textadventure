@@ -92,7 +92,7 @@ class Renderer2D(w: Int, h: Int) extends Renderer(w,h){
       if(rendComp.isDefined){
         var spatialComp = entity.getComponent(SpatialComponent.id)
         
-        renderShape(ResourceManager2D.shapes(rendComp.get.shape),spatialComp.get.position)
+        renderShape(ResourceManager.shapes(rendComp.get.shape),spatialComp.get.position)
       }
     }
   }

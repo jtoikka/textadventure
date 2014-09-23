@@ -5,7 +5,7 @@ import scala.math
 import o1.math._
 import o1.adventure.render.Renderer3D
 import o1.screen._
-
+import o1.adventure.ui._
 /**
  * The class `Adventure` represents text adventure games. An adventure consists of a player and 
  * a number of areas that make up the game world. It provides methods for playing the game one
@@ -21,7 +21,7 @@ class Adventure() {
   /** The title of the adventure game. */
   
   var title = "A Forest Adventure"
-  
+ 
   val screenWidth = 200
   val screenHeight = 70
   

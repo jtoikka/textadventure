@@ -90,17 +90,27 @@ class GameScreen(parent: Adventure, rend: Renderer)
 //	  cubeSpatialComp.get.position = Vec3(-1.1f, 0.0f, -3.0f)
 //	  scene.addEntity(cube)
 
+//	  for (x <- 0 to 3) {
+//	    for (y <- 0 to 3) {
+//	  	  var monkey = Factory.createMonkey()
+//	      var monkeySpatial = monkey.getComponent(SpatialComponent.id)
+//	      monkeySpatial.get.position = Vec3((x - 2) * 3, 0.0f, (y - 2) * 3)
+//	      scene.addEntity(monkey)
+//	    }
+//	  }
 	  for (x <- 0 to 3) {
-	    for (y <- 0 to 3) {
-	  	  var monkey = Factory.createMonkey()
+	  	  var monkey = Factory.createPlate()
 	      var monkeySpatial = monkey.getComponent(SpatialComponent.id)
-	      monkeySpatial.get.position = Vec3((x - 2) * 3, 0.0f, (y - 2) * 3)
+	      monkeySpatial.get.position = Vec3(4f*x,0f,0f)
 	      scene.addEntity(monkey)
-	    }
 	  }
 	}
 	
 	def resume(){
+	  
+	}
+	
+	def pause(){
 	  
 	}
 }

@@ -4,10 +4,12 @@ import scala.swing.event.Key
 import scala.collection.mutable.Map
 import o1.adventure._
 import o1.adventure.render.Renderer
+import o1.adventure.render.ResourceManager
 import scala.math._
 import o1.math._
 import o1.scene._
 import o1.adventure.render2D._
+import scala.swing.Font
 
 class TestScreen2D(parent: Adventure, rend: Renderer) 
       extends Screen(parent, rend) {
@@ -38,20 +40,19 @@ class TestScreen2D(parent: Adventure, rend: Renderer)
 	    
       var spatialComp = scene.entities(i).getComponent(SpatialComponent.id)
       var rendComp = scene.entities(i).getComponent(RenderComponent2D.id)
-      var rect = ResourceManager2D.shapes(rendComp.get.shape).asInstanceOf[Rectangle2D]
-      
-      spatialComp.get.position.x += speeds(i)(0)
-      spatialComp.get.position.y += speeds(i)(1)
-      
-      if(spatialComp.get.position.x <= 0)
+      var rect = ResourceManager.shapes(rendComp.get.shape).asInstanceOf[Rectangle2D]
+
+      if(spatialComp.get.position.x <= 2)
         speeds(i)(0) = 2
-      if(spatialComp.get.position.x + rect.w >= rend.w)
+      if(spatialComp.get.position.x + rect.w >= rend.w-3)
         speeds(i)(0) = -2
-      if(spatialComp.get.position.y <= 0)
+      if(spatialComp.get.position.y <= 2)
         speeds(i)(1) = 2
-      if(spatialComp.get.position.y + rect.h >= rend.h)
+      if(spatialComp.get.position.y + rect.h >= rend.h-3)
         speeds(i)(1) = -2
         
+      spatialComp.get.position.x += speeds(i)(0)
+      spatialComp.get.position.y += speeds(i)(1)
 	  }
 	}
 	
@@ -75,24 +76,28 @@ class TestScreen2D(parent: Adventure, rend: Renderer)
 	 * Initializing method. Should be used when screen is made
 	 */
 	def init(): Unit = {
-	  var testRect2 = Factory2D.createTestRect2()
-	  var testRect2Spatial = testRect2.getComponent(SpatialComponent.id)
-	  testRect2Spatial.get.position = Vec3(100.0f, 43.0f, 0.0f)
-	  scene.addEntity(testRect2)
 	  
-	  var testRect = Factory2D.createTestRect()
+	  var testRect = Factory2D.createRectangle(20, 10, false)
 	  var testRectSpatial = testRect.getComponent(SpatialComponent.id)
 	  testRectSpatial.get.position = Vec3(10.0f, 25.0f, 0.0f)
 	  scene.addEntity(testRect)
 	  
-	  var testTri = Factory2D.createTestTri()
-	  var testTriSpatial = testRect.getComponent(SpatialComponent.id)
-	  testTriSpatial.get.position = Vec3(20.0f, 50.0f, 0.0f)
-	  scene.addEntity(testTri)
+	  var testRect2 = Factory2D.createRectangle(30, 15, false)
+	  var testRect2Spatial = testRect2.getComponent(SpatialComponent.id)
+	  testRect2Spatial.get.position = Vec3(50.0f, 48.0f, 0.0f)
+	  scene.addEntity(testRect2)
+	  
+	  var border = Factory2D.createRectangle(rend.w-3,rend.h-3,false)
+	  var bSpatial = border.getComponent(SpatialComponent.id)
+	  bSpatial.get.position = Vec3(1f, 1f, 0f)
+	  scene.addEntity(border)
 	}
 	
 	def resume(): Unit = {
 	  println("TestScreen2D resumed")
+	}
+	
+	def pause(){
 	}
 	
 }
