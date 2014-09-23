@@ -43,7 +43,8 @@ class Mesh(
  * triangle is entirely outside of the viewing frustum, the value `None` is 
  * returned.
  */
-  def getTriangle(index: Int): Option[Triangle] = {
+  def getTriangles(index: Int): ArrayBuffer[Triangle] = {
+    var array = ArrayBuffer[Triangle]()
     if ((index + 1) * 3 <= indexBuffer.size) {
       val i1 = indexBuffer(index * 3)
       val i2 = indexBuffer(index * 3 + 1)
@@ -59,13 +60,45 @@ class Mesh(
           (v1.y >=  v1.w && v2.y >=  v2.w && v3.y >=  v3.w) ||
           (v1.z <= -v1.w && v2.z <= -v2.w && v3.z <= -v3.w) ||
           (v1.z >=  v1.w && v2.z >=  v2.w && v3.z >=  v3.w)) {
-        None
       } else {
-        Some(new Triangle(v1, v2, v3))
+        var points = ArrayBuffer[Vec4]()
+        if (v1.z >= 0.0f)
+          points += v1
+        
+        if (v1.z * v2.z < 0.0f) {
+          var vecA = v1 - v2
+          var point = v2 + vecA * (v2.z.abs / vecA.z.abs).toFloat
+          points += point
+        }
+          
+        if (v2.z >= 0.0f)
+          points += v2
+          
+        if (v2.z * v3.z < 0.0f) {
+          var vecA = v2 - v3
+          var point = v3 + vecA * (v3.z.abs / vecA.z.abs).toFloat
+          points += point
+        }
+        
+        if (v3.z >= 0.0f)
+          points += v3
+                
+        if (v3.z * v1.z < 0.0f) {
+          var vecA = v3 - v1
+          var point = v1 + vecA * (v1.z.abs / vecA.z.abs).toFloat
+          points += point
+        }
+        
+          
+        if (points.size == 3) {
+          array += new Triangle(points(0), points(1), points(2))
+        } else if (points.size == 4) {
+          array += new Triangle(points(0), points(1), points(2))
+          array += new Triangle(points(0), points(2), points(3))
+        }
       }
-    } else {
-      None
     }
+    array
   }
   
   def numTriangles = indexBuffer.length / 3
