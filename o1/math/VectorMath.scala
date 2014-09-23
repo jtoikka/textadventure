@@ -51,6 +51,9 @@ class Vec3(var x: Float, var y: Float, var z: Float) {
   def -(other: Vec3) = 
     new Vec3(this.x - other.x, this.y - other.y, this.z - other.z)
   
+  def neg() = 
+    new Vec3(-this.x, -this.y, -this.z)
+  
   def *(other: Vec3) =
     new Vec3(this.x * other.x, this.y * other.y, this.z * other.z)
   
@@ -104,6 +107,9 @@ class Vec4(var x: Float, var y: Float, var z: Float, var w: Float) {
   
   def -(other: Vec4) = 
     new Vec4(this.x - other.x, this.y - other.y, this.z - other.z, this.w - other.w)
+  
+  def neg() = 
+    new Vec4(-this.x, -this.y, -this.z, -this.w)
   
   def *(other: Vec4): Vec4 =
     new Vec4(this.x * other.x, this.y * other.y, this.z * other.z, this.w * other.w)

@@ -16,15 +16,17 @@ class Renderer3D(w: Int, h: Int) extends Renderer(w,h){
   var _frontBuffer: Array[Char] = new Array[Char]((w + newLineCharWidth) * h) 
   var _normalBuffer: Array[Vec3] = new Array[Vec3](framebufferWidth * h)
   var _depthBuffer: Array[Float] = new Array[Float](framebufferWidth * h)
+  var _diffuseBuffer: Array[Float] = new Array[Float](framebufferWidth * h)
 /* ---------------------------------------------------------------------------*/
   
-  val zNear = 0.3f  // Near clipping plane
-  val zFar = 200.0f // Far clipping plane
+  val zNear = 0.2f  // Near clipping plane
+  val zFar = 10.0f // Far clipping plane
   
 //  val _ramp = "MWNQBHKR#EDFXOAPGUSVZYCLTJ$I*:\u2001"
 //  val _ramp = "\u2588\u2593\u2592\u2591\u2001"
-  val _ramp = "MNBHEXGZYJI:.\u2001"
-  
+//  val _ramp = "MHEXGZYJI*\\;:-'.\u2001"
+//  val _ramp = " .`-_':,;^=+/\"|)\\<>)iv%xclrs{*}I?!][1taeo7zjLu" + "nT#JCwfy325Fp6mqSghVd4EgXPGZbYkOA&8U$@KHDBWNMR0Q";
+  val _ramp = "MEX$YTJI*!:,.\u2001"
   //World location
 //  var worldLoc = new Vec4(0.0f,0.0f,-3.0f,0.0f)
   
@@ -57,7 +59,7 @@ class Renderer3D(w: Int, h: Int) extends Renderer(w,h){
   var cubeRotation = Mat4.identity()
   
   var cameraToClipMatrix = 
-    Camera.perspectiveProjection(w * pixelRatio, h, 45.0f, zNear, zFar)
+    Camera.perspectiveProjection(w * pixelRatio, h, 75.0f, zNear, zFar)
 
 /**
  * Sets a pixel at index [position] to [character]. Use the function calcIndex
@@ -96,22 +98,23 @@ class Renderer3D(w: Int, h: Int) extends Renderer(w,h){
 /**
  * Converts clip-space coordinates to screen-space coordinates. 
  */
-  def screenCoordinates(coords: Vec4): Vec3 = {
-    val perspectiveCorrect = coords.xyz / coords.w
+  def screenCoordinates(coord: Vec4): Vec4 = {
+    val perspectiveCorrect = coord.xyz / coord.w
     val x = (perspectiveCorrect.x + 1.0f) * 0.5f
     val y = (perspectiveCorrect.y + 1.0f) * 0.5f
     val z = (perspectiveCorrect.z)
-    Vec3(x * framebufferWidth, (1.0f - y) * h, z)
+    Vec4(x * framebufferWidth, (1.0f - y) * h, z, 1.0f / coord.w)
   }
 
 /**
- * Clears the depth buffer.
+ * Clears the depth and diffuse buffer.
  */
   def clear() = {
     for (y <- 0 until h) {
       for (x <- 0 until framebufferWidth) {
         val index = calcDoubleIndex(x, y)
         this._depthBuffer(index) = 1.0f
+        this._diffuseBuffer(index) = 1.0f
       }
     }
   }
@@ -138,11 +141,18 @@ class Renderer3D(w: Int, h: Int) extends Renderer(w,h){
         cameraSpatial.position, 
         cameraSpatial.forward, 
         cameraSpatial.up)
+        
+    
     for (entity <- scene.entities) {
       var spatialComp = entity.getComponent(SpatialComponent.id)
       var renderComp = entity.getComponent(RenderComponent.id)
       if (spatialComp.isDefined && renderComp.isDefined) {
-        var mv = worldToCam * Utility.translate(Vec4(spatialComp.get.position, 0.0f))
+        var translation = Utility.translate(Vec4(spatialComp.get.position, 1.0f))
+        var rotation = Camera.getLookMatrix(
+          Vec3(0.0f, 0.0f, 0.0f), 
+          spatialComp.get.forward, 
+          spatialComp.get.up)
+        var mv = worldToCam * translation * rotation
         var matrix = cameraToClipMatrix * mv
         renderMesh(ResourceManager.meshes(renderComp.get.mesh), matrix)
       }
@@ -155,12 +165,14 @@ class Renderer3D(w: Int, h: Int) extends Renderer(w,h){
         val bayesCollumn = x % 8
         val index1 = calcDoubleIndex(x, y)
         val index2 = calcDoubleIndex(x + 1, y)
-        val depth = (_depthBuffer(index1) + _depthBuffer(index2)) / 2.0f
+        var depth = (_depthBuffer(index1) + _depthBuffer(index2)) / 2.0f
+        depth = 1.0f - linearDepth(depth)
+        var diffuse = (_diffuseBuffer(index1) + _diffuseBuffer(index2)) / 2.0f
         val bayer = bayerMatrix(8 * bayesRow + bayesCollumn)
         var v = (depth + (bayer * ditherStrength)) * _ramp.size
-        v = clamp(v, 0.0f, _ramp.size.toFloat - 1.0f)
+        v = clamp(v, 0.0f, _ramp.size.toFloat - 1.0f) * diffuse
         
-        setPixel(calcFrontIndex(x, y), _ramp(v.toInt))
+        setPixel(calcFrontIndex(x, y), _ramp(_ramp.size - v.toInt - 1))
       }
     }
 /*----------------------------------------------------------------------------*/
@@ -172,22 +184,6 @@ class Renderer3D(w: Int, h: Int) extends Renderer(w,h){
     var hFar = 0.5f / cameraToClipMatrix(1)(1) * zFar
     var wFar = 0.5f 
   }
-  
-//  /**
-// 	* Used to update world state.
-// 	* @param keyMap Keyboard state.
-// 	*/
-//  def update(keyMap: Map[scala.swing.event.Key.Value, Boolean]): Unit = {
-//    if(keyMap(Key.W)) worldLoc.z += movSpeed;
-//    if(keyMap(Key.S)) worldLoc.z -= movSpeed;
-//    if(keyMap(Key.A)) worldRot += rotSpeed;
-//    if(keyMap(Key.D)) worldRot -= rotSpeed;
-//    if(keyMap(Key.Up)) worldLoc.y -= movSpeed;
-//    if(keyMap(Key.Down)) worldLoc.y += movSpeed;
-//    if(keyMap(Key.Left)) worldLoc.x += movSpeed;
-//    if(keyMap(Key.Right)) worldLoc.x -= movSpeed;
-//  }
-  
 
 /**
  * Renders a [mesh] to screen. Applies Model-View-Projection matrix [MVP] to 
@@ -199,7 +195,7 @@ class Renderer3D(w: Int, h: Int) extends Renderer(w,h){
       var triangles = mesh.getTriangles(i)
       if (!triangles.isEmpty) {
         for (triangle <- triangles) {
-          renderTriangle(triangle)
+          renderTriangle(triangle, mesh.luminosity)
         }
       }
     }
@@ -209,7 +205,7 @@ class Renderer3D(w: Int, h: Int) extends Renderer(w,h){
  * Renders a mesh's triangle to screen. See mesh.getTriangle function for
  * details on how to get a triangle.
  */
-  def renderTriangle(triangle: Triangle) = {
+  def renderTriangle(triangle: Triangle, luminosity: Float) = {
     val screenA = screenCoordinates(triangle.a)
     val screenB = screenCoordinates(triangle.b)
     val screenC = screenCoordinates(triangle.c)
@@ -218,45 +214,9 @@ class Renderer3D(w: Int, h: Int) extends Renderer(w,h){
     val vecB = screenC - screenB
 
 /* Culling -------------------------------------------------------------------*/
-    val normal = vecB.cross(vecA)      
+    val normal = vecB.xyz.cross(vecA.xyz)      
     if (normal.z > 0.0) {
-      fillTriangle(screenA, screenB, screenC)
-    }
-  }
-
-/**
- * Renders edges, currently does not quite work as intended.
- */
-  def renderEdge(a: Vec2, b: Vec2) = {
-    val roundedA = Vec2(a.x.floor, a.y.floor)
-    val roundedB = Vec2(b.x.floor, b.y.floor)
-    val diffY = (roundedB.y - roundedA.y)
-    val diffX = (roundedB.x - roundedA.x)
-    val signY = diffY.signum
-    if (diffX == 0.0) {
-      val x = roundedA.x.toInt
-      for (y <- roundedA.y.toInt to roundedB.y.toInt by signY) {
-        setPixel(calcDoubleIndex(x, y), '#')
-      }
-    } else {
-      val m = diffY / diffX
-      val signX = diffX.signum
-      val sign = signY * signX
-      var y = roundedA.y.toInt
-      var error = 0.0
-      for (x <- roundedA.x.toInt to roundedB.x.toInt by signX) {
-        setPixel(calcDoubleIndex(x, y), '#')
-        error += m
-        if (error.abs > 0.5) {
-          y += signY
-          error = error - sign
-        }
-        while (error.abs > 0.5 && (y - roundedB.y) * signY > 0) {
-          setPixel(calcDoubleIndex(x, y), '#')
-          y += signY
-          error = error - sign
-        }
-      }
+      fillTriangle(screenA, screenB, screenC, luminosity)
     }
   }
   
@@ -267,12 +227,12 @@ class Renderer3D(w: Int, h: Int) extends Renderer(w,h){
  */
   
   // TODO: render normals
-  def fillTriangle(a: Vec3, b: Vec3, c: Vec3) = {
+  def fillTriangle(a: Vec4, b: Vec4, c: Vec4, luminosity: Float) = {
     var minX = max(0, min(a.x, min(b.x, c.x)))
     var minY = max(0, min(a.y, min(b.y, c.y)))
     var maxX = min(framebufferWidth - 1, max(a.x, max(b.x, c.x)))
     var maxY = min(this.h - 1, max(a.y, max(b.y, c.y)))
-    
+        
     for (x <- minX.floor.toInt to maxX.ceil.toInt) {
       for (y <- minY.floor.toInt to maxY.ceil.toInt) {
         var bary = barycentricCoordinates(a.xy, b.xy, c.xy, Vec2(x, y));
@@ -283,11 +243,14 @@ class Renderer3D(w: Int, h: Int) extends Renderer(w,h){
           (bary.z >= 0.0f) && 
           (bary.x + bary.y + bary.z <= 1.01f)) {
           
-          val depth = bary.x * a.z + bary.y * b.z + bary.z * c.z
+          var depth = (bary.x * a.z + bary.y * b.z + bary.z * c.z) 
+          var w = (bary.x * a.w + bary.x * b.w + bary.x * c.w)
+          depth = depth
           val index = calcDoubleIndex(x, y)
-          if (depth <= _depthBuffer(index) && depth > 0.0) {
+          if (depth < _depthBuffer(index) && depth > 0.0) {
             val i = (depth * _ramp.size).toInt
             _depthBuffer(index) = depth
+            _diffuseBuffer(index) = luminosity
           }
         }
       }
@@ -314,6 +277,10 @@ class Renderer3D(w: Int, h: Int) extends Renderer(w,h){
     val w = (dot11 * dot32 - dot12 * dot31) / denominator;
     val u = 1.0f - v - w;
     Vec3(u, v, w)
+  }
+  
+  def linearDepth(depth: Float) = {
+    (2 * zNear / (zFar + zNear - depth * (zFar - zNear)));
   }
   
 /**

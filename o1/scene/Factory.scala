@@ -46,12 +46,13 @@ object Factory {
     
     monkey.addComponent(spatialComp)
     
-    var renderComp = new RenderComponent("cube")
+    var renderComp = new RenderComponent("monkey")
     
     monkey.addComponent(renderComp)
     monkey
   }
-    def createPlate() = {
+  
+  def createPlate() = {
     var monkey = new Entity()
     var spatialComp = new SpatialComponent()
     
@@ -61,5 +62,29 @@ object Factory {
     
     monkey.addComponent(renderComp)
     monkey
+  }
+  
+  def createLevel() = {
+    var monkey = new Entity()
+    var spatialComp = new SpatialComponent()
+    
+    monkey.addComponent(spatialComp)
+    
+    var renderComp = new RenderComponent("testMap")
+    
+    monkey.addComponent(renderComp)
+    monkey
+  }
+  
+  def createFloor() = {
+    var floor = new Entity()
+    var spatialComp = new SpatialComponent()
+    
+    floor.addComponent(spatialComp)
+    
+    var renderComp = new RenderComponent("floor")
+    
+    floor.addComponent(renderComp)
+    floor
   }
 }

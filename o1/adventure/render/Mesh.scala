@@ -34,6 +34,7 @@ class Mesh(
   val vertexBuffer: ArrayBuffer[Float], 
   val indexBuffer: ArrayBuffer[Int]) {
     
+  var luminosity = 1.0f
   var transformedBuffer = 
     Array.fill[Vec4](vertexBuffer.size / 3)(Vec4(0.0f, 0.0f, 0.0f, 0.0f))
   
@@ -62,7 +63,7 @@ class Mesh(
           (v1.z >=  v1.w && v2.z >=  v2.w && v3.z >=  v3.w)) {
       } else {
         var points = ArrayBuffer[Vec4]()
-        if (v1.z >= 0.0f)
+        if (v1.z > 0.0f)
           points += v1
         
         if (v1.z * v2.z < 0.0f) {
@@ -71,7 +72,7 @@ class Mesh(
           points += point
         }
           
-        if (v2.z >= 0.0f)
+        if (v2.z > 0.0f)
           points += v2
           
         if (v2.z * v3.z < 0.0f) {
@@ -80,7 +81,7 @@ class Mesh(
           points += point
         }
         
-        if (v3.z >= 0.0f)
+        if (v3.z > 0.0f)
           points += v3
                 
         if (v3.z * v1.z < 0.0f) {
@@ -90,10 +91,10 @@ class Mesh(
         }
         
           
-        if (points.size == 3) {
+        if (points.size >= 3) {
           array += new Triangle(points(0), points(1), points(2))
-        } else if (points.size == 4) {
-          array += new Triangle(points(0), points(1), points(2))
+        }
+        if (points.size >= 4) {
           array += new Triangle(points(0), points(2), points(3))
         }
       }
@@ -120,5 +121,9 @@ class Mesh(
 }
 
 class Triangle(val a: Vec4, val b: Vec4, val c: Vec4) {
-  
+  override def toString() = {
+    "a x: " + a.x + " y: " + a.y + " z: " + a.z + " w: " + a.w + "\n" +
+    "b x: " + b.x + " y: " + b.y + " z: " + b.z + " w: " + b.w + "\n" +
+    "c x: " + c.x + " y: " + c.y + " z: " + c.z + " w: " + c.w
+  }
 }
