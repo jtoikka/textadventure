@@ -20,23 +20,31 @@ class SpatialComponent extends Component {
   var up = Vec3(0.0f, 1.0f, 0.0f) // The up direction for the entity
 }
 object SpatialComponent {
-  val id = (new SpatialComponent()).getClass()
+  val id = classOf[SpatialComponent]
 }
 
 /**
  * Contains an identifier to a mesh to use for rendering the entity.
  */
 object RenderComponent {
-  val id = (new RenderComponent("")).getClass()
+  val id = classOf[RenderComponent]
 }
 
 class RenderComponent(val mesh: String) extends Component {
 }
 
 object RenderComponent2D {
-  val id = (new RenderComponent2D("")).getClass()
+  val id = classOf[RenderComponent2D]
 }
 
 class RenderComponent2D(val shape: String) extends Component {
+  
+}
+
+object FollowCameraComponent {
+  val id = classOf[FollowCameraComponent]
+}
+
+class FollowCameraComponent extends Component {
   
 }

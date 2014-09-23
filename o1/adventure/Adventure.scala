@@ -22,8 +22,8 @@ class Adventure() {
   
   var title = "A Forest Adventure"
  
-  val screenWidth = 200
-  val screenHeight = 70
+  val screenWidth = 130
+  val screenHeight = 40
   
   val _renderer = new Renderer3D(screenWidth, screenHeight) // We draw the world here!
   var display = _renderer.display // A String displaying the world
