@@ -1,0 +1,12 @@
+# Blender v2.70 (sub 0) OBJ File: 'spaceStation.blend'
+# www.blender.org
+mtllib 4x4_plate_floor.mtl
+o Cube
+v -2.000000 0.000000 2.000000
+v 2.000000 0.000000 2.000000
+v -2.000000 0.000000 -2.000000
+v 2.000000 0.000000 -2.000000
+usemtl None
+s off
+f 2 4 3
+f 1 2 3

@@ -43,4 +43,9 @@ abstract class Screen(private val parent: Adventure, private val rend: Renderer)
 	 * Resume method. Should be used when screen is changed to active
 	 */
 	def resume()
+	
+	/**
+	 * Pause method. Called when screen is not longer active
+	 */
+	def pause()
 }

@@ -38,4 +38,5 @@ object RenderComponent2D {
 }
 
 class RenderComponent2D(val shape: String) extends Component {
+  
 }

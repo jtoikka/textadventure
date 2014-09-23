@@ -51,4 +51,15 @@ object Factory {
     monkey.addComponent(renderComp)
     monkey
   }
+    def createPlate() = {
+    var monkey = new Entity()
+    var spatialComp = new SpatialComponent()
+    
+    monkey.addComponent(spatialComp)
+    
+    var renderComp = new RenderComponent("plate")
+    
+    monkey.addComponent(renderComp)
+    monkey
+  }
 }
