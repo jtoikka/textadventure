@@ -14,5 +14,5 @@ object ResourceManager {
   meshes("floor") = Mesh("data/floor.obj")
   meshes("floor").luminosity = 0.6f
   meshes("testMap") = Mesh("data/spaceStation.obj")
-  meshes("testMap").luminosity = 0.8f
+  meshes("testMap").luminosity = 0.99f
 }
