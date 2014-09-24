@@ -178,18 +178,19 @@ class Renderer3D(w: Int, h: Int) extends Renderer(w,h){
         var normal = (_normalBuffer(index1))
         var viewRay = _viewRayBuffer(index1)
         var depth = (_depthBuffer(index1) + _depthBuffer(index2)) / 2.0f
-        var specular = clamp(normal.dot(viewRay), 0.0f, 1.0f)
+        var specular = clamp(normal.dot(viewRay), 0.0f, 1.0f) * viewRay.z * viewRay.z
         if (normal.y < 0.9) {
-          depth = 1.0f - linearDepth(depth)
-          specular *= depth * depth
+//          depth = 1.0f - linearDepth(depth)
+          specular *= 2.0f / (depth + 5.0f * depth * depth)
         } else {
           // Floor lighting hack, fix it later...
           // TODO: Make the rest of this function a little more readable as well
-          specular = (1.0f - viewRay.y) * viewRay.z * viewRay.z * -viewRay.z * depth
+          specular = (1.0f - viewRay.y) * viewRay.z * viewRay.z * -viewRay.z * depth * 0.2f
         }
         val ambient = 0.0f * diffuse
         val diffuseLight = depth * 0.2f
-        val lighting = specular + ambient + diffuseLight
+        var lighting = specular + ambient + diffuseLight
+        if (depth >= 1.0) lighting = 0.0f
         val bayer = bayerMatrix(8 * bayesRow + bayesCollumn)
         var v = (lighting + (bayer * ditherStrength)) * _ramp.size
         v = clamp(v, 0.0f, _ramp.size.toFloat - 1.0f) * diffuse
