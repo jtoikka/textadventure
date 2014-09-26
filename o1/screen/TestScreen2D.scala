@@ -10,7 +10,7 @@ import o1.math._
 import o1.scene._
 import o1.adventure.render2D._
 import scala.swing.Font
-
+import o1.mapGenerator.MapGenerator
 class TestScreen2D(parent: Adventure, rend: Renderer) 
       extends Screen(parent, rend) {
   def this(parent: Adventure, x: Int, y: Int) = this(parent, new Renderer2D(x,y))
@@ -18,7 +18,13 @@ class TestScreen2D(parent: Adventure, rend: Renderer)
   /**
   * Init works as constructor method
   */
-  
+  var mapGene = new MapGenerator(64,64,4,123123)
+  for(y <- 0 until 63){
+    for(x <- 0 until 63){
+      print(mapGene.map(y * (64 + 1) + x))
+    }
+    print('\n')
+  }
   var scene = new Scene() 
   init()
   
@@ -36,24 +42,24 @@ class TestScreen2D(parent: Adventure, rend: Renderer)
 	def update(delta: Double): Unit = {
     // code is only for testing
     
-	  for(i <- 0 to 1){
-	    
-      var spatialComp = scene.entities(i).getComponent(SpatialComponent.id)
-      var rendComp = scene.entities(i).getComponent(RenderComponent2D.id)
-      var rect = ResourceManager.shapes(rendComp.get.shape).asInstanceOf[Rectangle2D]
-
-      if(spatialComp.get.position.x <= 2)
-        speeds(i)(0) = 2
-      if(spatialComp.get.position.x + rect.w >= rend.w-3)
-        speeds(i)(0) = -2
-      if(spatialComp.get.position.y <= 2)
-        speeds(i)(1) = 2
-      if(spatialComp.get.position.y + rect.h >= rend.h-3)
-        speeds(i)(1) = -2
-        
-      spatialComp.get.position.x += speeds(i)(0)
-      spatialComp.get.position.y += speeds(i)(1)
-	  }
+//	  for(i <- 0 to 1){
+//	    
+//      var spatialComp = scene.entities(i).getComponent(SpatialComponent.id)
+//      var rendComp = scene.entities(i).getComponent(RenderComponent2D.id)
+//      var rect = ResourceManager.shapes(rendComp.get.shape).asInstanceOf[Rectangle2D]
+//
+//      if(spatialComp.get.position.x <= 2)
+//        speeds(i)(0) = 2
+//      if(spatialComp.get.position.x + rect.w >= rend.w-3)
+//        speeds(i)(0) = -2
+//      if(spatialComp.get.position.y <= 2)
+//        speeds(i)(1) = 2
+//      if(spatialComp.get.position.y + rect.h >= rend.h-3)
+//        speeds(i)(1) = -2
+//        
+//      spatialComp.get.position.x += speeds(i)(0)
+//      spatialComp.get.position.y += speeds(i)(1)
+//	  }
 	}
 	
 	def input(keyMap: Map[scala.swing.event.Key.Value, Int], delta: Double) = {
