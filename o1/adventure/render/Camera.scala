@@ -28,7 +28,7 @@ object Camera {
     cameraToClipMatrix
   }
   
-  def getLookMatrix(position: Vec3, forward: Vec3, up: Vec3) = {
+  def getLookMatrix(position: Vec3, forward: Vec3, up: Vec3): Mat4 = {
     var xAxis = forward.cross(up)
     var matrix = Mat4.identity()
     

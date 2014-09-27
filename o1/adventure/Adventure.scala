@@ -6,6 +6,10 @@ import o1.math._
 import o1.adventure.render.Renderer3D
 import o1.screen._
 import o1.adventure.ui._
+import o1.mapGenerator.MapGenerator
+import o1.mapGenerator.CornerMap
+import o1.adventure.render.ResourceManager
+
 /**
  * The class `Adventure` represents text adventure games. An adventure consists of a player and 
  * a number of areas that make up the game world. It provides methods for playing the game one
@@ -17,9 +21,7 @@ import o1.adventure.ui._
  * games, you will need to modify or replace the source code of this class. 
  */
 class Adventure() {
-
   /** The title of the adventure game. */
-  
   var title = "A Forest Adventure"
  
   val screenWidth = 130
@@ -28,8 +30,17 @@ class Adventure() {
   val _renderer = new Renderer3D(screenWidth, screenHeight) // We draw the world here!
   var display = _renderer.display // A String displaying the world
   
-  // Screen stuff
+  var map = new MapGenerator(64, 64, 4, 123123).map
+  for (y <- 62 to 0 by -1) {
+    for (x <- 0 until 65) {
+      print(map(y * (64 + 1) + x))
+    }
+    print('\n')
+  }
+  var edgeMap = CornerMap.generateMap(map, 65)
+  ResourceManager.meshes("map") = CornerMap.createWallMesh(edgeMap, 2.0f)
   
+  // Screen stuff
   val menuScreen: Screen = new MainMenuScreen(this, screenWidth, screenHeight)
   val gameScreen: Screen = new GameScreen(this, screenWidth, screenHeight)
   val testScreen2D: Screen = new TestScreen2D(this,screenWidth, screenHeight) 
@@ -51,7 +62,8 @@ class Adventure() {
   }
   
   def handleInput(
-    keyMap: Map[scala.swing.event.Key.Value, Boolean], delta: Double) = {
+    keyMap: Map[scala.swing.event.Key.Value, Boolean], 
+    delta: Double) = {
     
     val keyMapDelta = Map[scala.swing.event.Key.Value, Int]()
     if (previousInput.size > 0) {

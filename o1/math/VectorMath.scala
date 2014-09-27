@@ -25,6 +25,9 @@ class Vec2(var x: Float, var y: Float) {
   
   def /(value: Float) = new Vec2(this.y / value, this.y / value)
   
+  def ==(other: Vec2): Boolean = this.x == other.x && this.y == other.y
+  def !=(other: Vec2): Boolean = this.x != other.x || this.y != other.y
+  
   def dot(other: Vec2): Float = this.x * other.x + this.y * other.y
   
   def length() = pow(this.dot(this), 0.5).toFloat
@@ -32,6 +35,38 @@ class Vec2(var x: Float, var y: Float) {
   def normalize(): Vec2 = this / length
   
   def cross(other: Vec2): Float = this.x * other.y - this.y * other.x
+  
+  def apply(index: Int): Float = {
+    index match {
+      case 0 => {
+        this.x
+      }
+      case 1 => {
+        this.y
+      }
+      case default => {
+        0.0f
+      }
+    }
+  }
+  
+  def update(index: Int, value: Float) = {
+    index match {
+      case 0 => {
+        this.x = value
+      }
+      case 1 => {
+        this.y = value
+      }
+      case default => {
+        
+      }
+    }
+  }
+  
+  override def toString() = {
+    "x: " + x + " y: " + y
+  }
 }
 
 object Vec3 {

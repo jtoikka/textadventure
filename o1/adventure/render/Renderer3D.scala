@@ -8,20 +8,20 @@ import o1.math._
 import o1.scene._
 
 
-class Renderer3D(w: Int, h: Int) extends Renderer(w,h){
+class Renderer3D(w: Int, h: Int) extends Renderer(w,h) {
   val framebufferWidth = w * 2
   
 /* Buffers -------------------------------------------------------------------*/
   val newLineCharWidth = 1
-  var _frontBuffer: Array[Char] = new Array[Char]((w + newLineCharWidth) * h) 
-  var _normalBuffer: Array[Vec3] = new Array[Vec3](framebufferWidth * h)
-  var _depthBuffer: Array[Float] = new Array[Float](framebufferWidth * h)
-  var _diffuseBuffer: Array[Float] = new Array[Float](framebufferWidth * h)
-  var _viewRayBuffer: Array[Vec3] = new Array[Vec3](framebufferWidth * h)
+  private var _frontBuffer   = new Array[Char]((w + newLineCharWidth) * h) 
+  private var _normalBuffer  = new Array[Vec3](framebufferWidth * h)
+  private var _depthBuffer   = new Array[Float](framebufferWidth * h)
+  private var _diffuseBuffer = new Array[Float](framebufferWidth * h)
+  private var _viewRayBuffer = new Array[Vec3](framebufferWidth * h)
 /* ---------------------------------------------------------------------------*/
   
   val zNear = 0.2f  // Near clipping plane
-  val zFar = 10.0f // Far clipping plane
+  val zFar = 30.0f // Far clipping plane
   
 //  val _ramp = "MWNQBHKR#EDFXOAPGUSVZYCLTJ$I*:\u2001"
 //  val _ramp = "\u2588\u2593\u2592\u2591\u2001"
@@ -60,7 +60,7 @@ class Renderer3D(w: Int, h: Int) extends Renderer(w,h){
   var cubeRotation = Mat4.identity()
   
   var cameraToClipMatrix = 
-    Camera.perspectiveProjection(w * pixelRatio, h, 75.0f, zNear, zFar)
+    Camera.perspectiveProjection(w * pixelRatio, h, 50.0f, zNear, zFar)
 
 /**
  * Sets a pixel at index [position] to [character]. Use the function calcIndex
@@ -129,7 +129,7 @@ class Renderer3D(w: Int, h: Int) extends Renderer(w,h){
 /**
  * Clamps a [value] to the range [minimum, maximum].
  */
-  def clamp(value: Float, minimum: Float, maximum: Float) = {
+  def clamp(value: Float, minimum: Float, maximum: Float): Float = {
     min(maximum, max(minimum, value))
   }
   
@@ -143,7 +143,6 @@ class Renderer3D(w: Int, h: Int) extends Renderer(w,h){
     var camera = scene.camera
     var cameraSpatial = camera.getComponent(SpatialComponent.id).get
     
-    var frustum = calculateFrustum(cameraSpatial)
     var worldToCam = Camera.getLookMatrix(
         cameraSpatial.position, 
         cameraSpatial.forward, 
@@ -201,7 +200,7 @@ class Renderer3D(w: Int, h: Int) extends Renderer(w,h){
 /*----------------------------------------------------------------------------*/
   }
   
-  def calcViewRay(x: Int, y: Int) = {
+  def calcViewRay(x: Int, y: Int): Vec3 = {
     var hx = x * 2.0f / framebufferWidth - 1.0f
     var hy = (1.0f - y.toFloat / h) * 2.0f - 1.0f
     var viewRay = Vec3(
@@ -209,13 +208,6 @@ class Renderer3D(w: Int, h: Int) extends Renderer(w,h){
       -hy / cameraToClipMatrix(1).y,
       -1.0f);
     viewRay.normalize
-  }
-  
-  def calculateFrustum(cameraSpatial: SpatialComponent) {
-    var origin = cameraSpatial.position
-    var far = origin + cameraSpatial.forward * zFar
-    var hFar = 0.5f / cameraToClipMatrix(1)(1) * zFar
-    var wFar = 0.5f 
   }
 
 /**
@@ -264,7 +256,6 @@ class Renderer3D(w: Int, h: Int) extends Renderer(w,h){
  * http://www.sunshine2k.de/coding/java/TriangleRasterization/TriangleRasterization.html
  */
   
-  // TODO: render normals
   def fillTriangle(a: Vec4, b: Vec4, c: Vec4, luminosity: Float, normal: Vec3) = {
     var minX = max(0, min(a.x, min(b.x, c.x)))
     var minY = max(0, min(a.y, min(b.y, c.y)))
@@ -301,7 +292,11 @@ class Renderer3D(w: Int, h: Int) extends Renderer(w,h){
  *  coordinates of a point [pointP] in a triangle (defined by vertices [pointA],
  *   [pointB], and [pointC].
  */
-  def barycentricCoordinates(pointA: Vec2, pointB: Vec2, pointC: Vec2, pointP: Vec2) = {
+  def barycentricCoordinates(
+      pointA: Vec2, 
+      pointB: Vec2, 
+      pointC: Vec2, 
+      pointP: Vec2): Vec3 = {
     val v1 = pointB - pointA
     val v2 = pointC - pointA
     val v3 = pointP - pointA
