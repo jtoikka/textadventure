@@ -31,8 +31,8 @@ object Mesh {
 }
 
 class Mesh(
-  val vertexBuffer: ArrayBuffer[Float], 
-  val indexBuffer: ArrayBuffer[Int]) {
+    val vertexBuffer: ArrayBuffer[Float], 
+    val indexBuffer: ArrayBuffer[Int]) {
     
   var luminosity = 1.0f
   var transformedBuffer = 

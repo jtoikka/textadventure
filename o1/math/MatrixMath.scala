@@ -1,5 +1,35 @@
 package o1.math
 
+object Mat2 {
+  def apply() =
+    new Mat2(0.0f, 0.0f, 0.0f, 0.0f)
+  
+  def identity() = 
+    new Mat2(1.0f, 0.0f, 0.0f, 1.0f)
+}
+
+class Mat2(
+    x0: Float, y0: Float,
+    x1: Float, y1: Float) {
+  var storage = new Array[Vec2](2)
+    storage(0) = Vec2(x0, x1)
+    storage(1) = Vec2(y0, y1)
+    
+  def apply(index: Int): Vec2 = {
+    storage(index)
+  }
+  
+  def row(index: Int): Vec2 = {
+    Vec2(storage(0)(index), storage(1)(index))
+  }
+  
+  def *(other: Vec2): Vec2 = {
+    val x = this.row(0).dot(other)
+    val y = this.row(1).dot(other)
+    Vec2(x, y)
+  }
+}
+
 object Mat4 {
   def apply() = {
     new Mat4(
@@ -19,10 +49,10 @@ object Mat4 {
 }
 
 class Mat4(
-  x0: Float, y0: Float, z0: Float, w0: Float,
-  x1: Float, y1: Float, z1: Float, w1: Float,
-  x2: Float, y2: Float, z2: Float, w2: Float,
-  x3: Float, y3: Float, z3: Float, w3: Float) {
+    x0: Float, y0: Float, z0: Float, w0: Float,
+    x1: Float, y1: Float, z1: Float, w1: Float,
+    x2: Float, y2: Float, z2: Float, w2: Float,
+    x3: Float, y3: Float, z3: Float, w3: Float) {
 
   var storage = new Array[Vec4](4)
     storage(0) = Vec4(x0, x1, x2, x3)
@@ -30,11 +60,11 @@ class Mat4(
     storage(2) = Vec4(z0, z1, z2, z3)
     storage(3) = Vec4(w0, w1, w2, w3)
 
-  def apply(index: Int) = {
+  def apply(index: Int): Vec4 = {
     storage(index)
   }
 
-  def row(index: Int) = {
+  def row(index: Int): Vec4 = {
     Vec4(
       storage(0)(index), 
       storage(1)(index), 

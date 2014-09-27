@@ -82,7 +82,7 @@ class GameScreen(parent: Adventure, rend: Renderer)
 	def init(): Unit = {
 	  parent.title = "A 3D Adventure - Game"
 	  
-	  scene.camera.getComponent(SpatialComponent.id).get.position = Vec3(0.0f, -1.2f, -0.0f)
+	  scene.camera.getComponent(SpatialComponent.id).get.position = Vec3(-32.0f, -1.2f, -32.0f)
 	  
 //	  var sphere = Factory.createSphere()
 //	  var spatialComp = sphere.getComponent(SpatialComponent.id)
