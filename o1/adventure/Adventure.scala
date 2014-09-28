@@ -30,21 +30,22 @@ class Adventure() {
   val _renderer = new Renderer3D(screenWidth, screenHeight) // We draw the world here!
   var display = _renderer.display // A String displaying the world
   
-  var map = new MapGenerator(64, 64, 4, 123123).map
-  for (y <- 62 to 0 by -1) {
-    for (x <- 0 until 65) {
-      print(map(y * (64 + 1) + x))
-    }
-    print('\n')
-  }
-  var edgeMap = CornerMap.generateMap(map, 65)
-  ResourceManager.meshes("map") = CornerMap.createWallMesh(edgeMap, 2.0f)
+//  var map = new MapGenerator(64, 64, 4, 123123).map
+//  for (y <- 62 to 0 by -1) {
+//    for (x <- 0 until 65) {
+//      print(map(y * (64 + 1) + x))
+//    }
+//    print('\n')
+//  }
+//  var edgeMap = CornerMap.generateMap(map, 65)
+//  ResourceManager.meshes("map") = CornerMap.createWallMesh(edgeMap, 2.0f)
   
   // Screen stuff
   val menuScreen: Screen = new MainMenuScreen(this, screenWidth, screenHeight)
   val gameScreen: Screen = new GameScreen(this, screenWidth, screenHeight)
   val testScreen2D: Screen = new TestScreen2D(this,screenWidth, screenHeight) 
-  var currentScreen: Screen = testScreen2D
+  var currentScreen: Option[Screen] = None
+  changeScreen(testScreen2D)
   
   var totalTime = 0.0 // Keep track of how much time has passed
   
@@ -54,10 +55,10 @@ class Adventure() {
  	* Updates current screen and renders it.
  	*/
   def update(delta: Double, keyMap: Map[scala.swing.event.Key.Value, Boolean]) = {
-    currentScreen.update(delta)
+    currentScreen.get.update(delta)
     totalTime += delta
     val period = math.Pi * 2.0f / 8.0f
-    currentScreen.draw()
+    currentScreen.get.draw()
     handleInput(keyMap, delta)
   }
   
@@ -82,7 +83,7 @@ class Adventure() {
         }
         keyMapDelta(key) = state
       }
-      currentScreen.input(keyMapDelta, delta)
+      currentScreen.get.input(keyMapDelta, delta)
     }
     previousInput = keyMap.clone()
   }
@@ -91,8 +92,11 @@ class Adventure() {
  	* Used to change current screen
  	*/
   def changeScreen(scr: Screen): Unit = {
-    this.currentScreen = scr
-    currentScreen.resume()
+    if(currentScreen != None)
+      currentScreen.get.pause()
+      
+    this.currentScreen = Some(scr)
+    currentScreen.get.resume()
     println("Screen Changed")
   }
   

@@ -7,6 +7,7 @@ import o1.adventure.render._
 import scala.math._
 import o1.math._
 import o1.scene._
+import o1.adventure.render2D._
 
 
 /**
@@ -19,6 +20,14 @@ class GameScreen(parent: Adventure, rend: Renderer)
       extends Screen(parent, rend) {
   
   def this(parent: Adventure, x: Int, y: Int) = this(parent, new Renderer3D(x,y))
+
+  /* HUD -------------------------------------*/
+  var rendHUD = new Renderer2D(rend.w,rend.h)
+  var hudTextRect: Option[TextRect2D] = None
+  var lastDrawTime: Long = 0
+  var sceneHUD = new Scene()
+  var showHUD = true;
+  /* -----------------------------------------*/
   
   var scene = new Scene()
   init()
@@ -42,6 +51,10 @@ class GameScreen(parent: Adventure, rend: Renderer)
     var deltaFloat = delta.toFloat
     var camSpatial = scene.camera.getComponent(SpatialComponent.id).get
     var camRight = camSpatial.up.cross(camSpatial.forward)
+    
+    if (keyMap(Key.Q) == 2) {
+	    showHUD = !showHUD
+	  }
 	  if (keyMap(Key.M) == 2) {
 	    parent.changeScreen(parent.menuScreen)
 	  }
@@ -68,21 +81,47 @@ class GameScreen(parent: Adventure, rend: Renderer)
 	    camSpatial.forward = 
 	      (Utility.rotateY(-0.2f * deltaFloat) * Vec4(camSpatial.forward, 0.0f)).xyz
 	  }
+	  updateHUD(camSpatial.position)
   }
 	
 	/**
 	 * Draw method. Is used to draw screen to display etc
 	 */
 	def draw(): Unit = {
+	  var drawStartTime: Long = System.currentTimeMillis()
+	  var tmpDisplay: String = ""
+	  
 	  rend.clear()
 	  rend.renderScene(scene)
-	  display = rend.display
-	}
-	
-	def init(): Unit = {
-	  parent.title = "A 3D Adventure - Game"
 	  
-	  scene.camera.getComponent(SpatialComponent.id).get.position = Vec3(-32.0f, -1.2f, -32.0f)
+	  /* HUD -------------------------------------*/
+	  tmpDisplay = rend.display
+	  
+	  if (showHUD) {
+  	  rendHUD.clear()
+  	  rendHUD.renderScene(sceneHUD)
+  	  display = rendHUD.displayOverlay(tmpDisplay)
+	  } else {
+	    display = tmpDisplay
+	  }
+	  /* HUD -------------------------------------*/
+	  
+	  lastDrawTime = System.currentTimeMillis() - drawStartTime
+	}
+
+	private def updateHUD(playerLoc: Vec3){
+	  var c = " ♥♥♥♥♥♥♥♥"
+	  if(hudTextRect.isDefined)
+  	  hudTextRect.get.text =  "HP:" +  c + "\n" + 
+  	                      "X: " + playerLoc.x + "\n" + 
+                          "Y: " + playerLoc.z + "\n" +
+                          "drawTime: " + lastDrawTime + "\n"
+	}
+
+	def init(): Unit = {
+	  
+	  scene.camera.getComponent(SpatialComponent.id).get.position = 
+	    Vec3(0.0f, -1.2f, 0.0f)
 	  
 //	  var sphere = Factory.createSphere()
 //	  var spatialComp = sphere.getComponent(SpatialComponent.id)
@@ -105,6 +144,7 @@ class GameScreen(parent: Adventure, rend: Renderer)
 //	      monkeySpatial.get.position = Vec3(4f*x,0f,0f)
 //	      scene.addEntity(monkey)
 //	  }
+      
 	  var floor = Factory.createFloor()
 	  var floorSpatial = floor.getComponent(SpatialComponent.id)
 	  val floorFollowCam = new FollowCameraComponent()
@@ -114,6 +154,21 @@ class GameScreen(parent: Adventure, rend: Renderer)
 	  
 	  var level = Factory.createLevel()
 	  scene.addEntity(level)
+	  
+	  /* HUD ----------------------------------------------------------*/
+	  hudTextRect = Some(new TextRect2D(new Rectangle2D(32, 5, true),
+	                    "Caffeine: 10\nX: 0\n" + "Y: 0\nDeltaTime: 0"))
+	                    
+	  hudTextRect.get.offX = 2
+	  hudTextRect.get.offMinusX = 1
+	  hudTextRect.get.offMinusY = 1
+	  
+	  var rectEnt = Factory2D.createTextRectangle(hudTextRect.get)
+	  var testRectSpatial = rectEnt.getComponent(SpatialComponent.id)
+	  testRectSpatial.get.position = Vec3(0.0f, rendHUD.h-6, 0.0f)
+	  
+	  sceneHUD.addEntity(rectEnt)
+	  /* --------------------------------------------------------------*/
 	}
 	
 	def resume(){

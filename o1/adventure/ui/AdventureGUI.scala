@@ -39,7 +39,8 @@ object AdventureGUI extends SimpleSwingApplication {
       (Key.A,false),(Key.D,false),
       (Key.Up,false),(Key.Down,false),
       (Key.Right,false),(Key.Left,false),
-      (Key.M, false),(Key.N, false))
+      (Key.M, false),(Key.N, false),
+      (Key.Q,false))
   
   def top = new MainFrame {
     
@@ -73,6 +74,10 @@ object AdventureGUI extends SimpleSwingApplication {
     // Events: 
     
     locationInfo.reactions += {
+      case KeyPressed(_, Key.Q, _, _) =>
+        keyMap(Key.Q) = true
+      case KeyReleased(_, Key.Q, _, _) =>
+        keyMap(Key.Q) = false
       case KeyPressed(_, Key.W, _, _) =>
         keyMap(Key.W) = true
       case KeyReleased(_, Key.W, _, _) =>
@@ -170,7 +175,7 @@ object AdventureGUI extends SimpleSwingApplication {
 //        this.turnOutput.text = info + "\n\n" + this.game.goodbyeMessage
 //      }
       this.title = game.title
-      this.locationInfo.text = game.currentScreen.display
+      this.locationInfo.text = game.currentScreen.get.display
     }
 
     

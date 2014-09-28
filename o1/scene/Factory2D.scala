@@ -25,13 +25,63 @@ object Factory2D {
     ent
   }
   
-  def createTextRectangle(h: Int,w: Int,defFill: Boolean, text: String) = {
+  def createTextRectangle(h: Int,w: Int,defFill: Boolean, 
+      text: String, offsetX: Int, offsetY: Int) = {
+    
     var ent = new Entity()
     var rect = new TextRect2D(new Rectangle2D(h,w,defFill),text)
+    rect.offX = offsetX
+    rect.offY = offsetY
     
     val uuid = randomUUID().toString()
     
     ResourceManager.shapes(uuid) = rect
+    
+    var spatialComp = new SpatialComponent() 
+    ent.addComponent(spatialComp)
+    
+    var rendComp2D = new RenderComponent2D(uuid)
+    ent.addComponent(rendComp2D)
+    ent
+  }
+  
+  def createTextRectangle(textRect: TextRect2D) = {
+    var ent = new Entity()
+    var rect = textRect
+    
+    val uuid = randomUUID().toString()
+    
+    ResourceManager.shapes(uuid) = rect
+    
+    var spatialComp = new SpatialComponent() 
+    ent.addComponent(spatialComp)
+    
+    var rendComp2D = new RenderComponent2D(uuid)
+    ent.addComponent(rendComp2D)
+    ent
+  }
+  
+    def createRectangle(rect: Rectangle2D) = {
+    var ent = new Entity()
+    
+    val uuid = randomUUID().toString()
+    
+    ResourceManager.shapes(uuid) = rect
+    
+    var spatialComp = new SpatialComponent() 
+    ent.addComponent(spatialComp)
+    
+    var rendComp2D = new RenderComponent2D(uuid)
+    ent.addComponent(rendComp2D)
+    ent
+  }
+    
+  def createTriangle(tri: Triangle2D) = {
+    var ent = new Entity()
+    
+    val uuid = randomUUID().toString()
+    
+    ResourceManager.shapes(uuid) = tri
     
     var spatialComp = new SpatialComponent() 
     ent.addComponent(spatialComp)
