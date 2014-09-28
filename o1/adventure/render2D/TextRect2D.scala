@@ -1,10 +1,13 @@
 package o1.adventure.render2D
 
 class TextRect2D(var rect: Rectangle2D, var text: String) 
-  extends Rectangle2D(rect.w,rect.h,rect.defFill){
+  extends Rectangle2D(rect.w, rect.h, rect.defFill){
   
-  var offX = 0
-  var offY = 0
+  // Default values
+  var offX = 1
+  var offY = 1
+  var offMinusX = 1
+  var offMinusY = 1
   
 /* Constructors -------------------------------------------------------------------*/
 //  def this(p1: Point2D, p2: Point2D, text: String)

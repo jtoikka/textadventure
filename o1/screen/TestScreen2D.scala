@@ -19,20 +19,22 @@ class TestScreen2D(parent: Adventure, rend: Renderer)
   def this(parent: Adventure, x: Int, y: Int) = this(parent, new Renderer2D(x,y))
     
   var scene = new Scene() 
+  
 /**
  * Initializing test screen entities.
  */
 	def init(): Unit = {
+	  var hudTextRect = new TextRect2D(new Rectangle2D(32, 10, true),
+	                    " "*6 + "3D Text Adventure!")
 	  
-	  var testRect = Factory2D.createRectangle(20, 10, false)
-	  var testRectSpatial = testRect.getComponent(SpatialComponent.id)
-	  testRectSpatial.get.position = Vec3(10.0f, 25.0f, 0.0f)
-	  scene.addEntity(testRect)
+	  hudTextRect.offX = 2
+	  hudTextRect.offMinusX = 1
+	  hudTextRect.offMinusY = 1
 	  
-	  var testRect2 = Factory2D.createRectangle(30, 15, false)
-	  var testRect2Spatial = testRect2.getComponent(SpatialComponent.id)
-	  testRect2Spatial.get.position = Vec3(50.0f, 48.0f, 0.0f)
-	  scene.addEntity(testRect2)
+	  var rectEnt = Factory2D.createTextRectangle(hudTextRect)
+	  var testRectSpatial = rectEnt.getComponent(SpatialComponent.id)
+	  testRectSpatial.get.position = Vec3(rend.w/2 - hudTextRect.w/2, rend.h/2 - hudTextRect.h/2, 0.0f)  
+	  scene.addEntity(rectEnt)
 	  
 	  var border = Factory2D.createRectangle(rend.w-3,rend.h-3,false)
 	  var bSpatial = border.getComponent(SpatialComponent.id)
@@ -45,34 +47,7 @@ class TestScreen2D(parent: Adventure, rend: Renderer)
 	* Update method. Used to update game's state
 	*/
   
-  var speeds = Array.ofDim[Int](2, 2)
-  for(x <- 0 until 2) {
-    for(y <- 0 until 2) {
-      speeds(x)(y) = 2
-    }
-  }
-  
 	def update(delta: Double): Unit = {
-    // code is only for testing
-    
-//	  for(i <- 0 to 1){
-//	    
-//      var spatialComp = scene.entities(i).getComponent(SpatialComponent.id)
-//      var rendComp = scene.entities(i).getComponent(RenderComponent2D.id)
-//      var rect = ResourceManager.shapes(rendComp.get.shape).asInstanceOf[Rectangle2D]
-//
-//      if(spatialComp.get.position.x <= 2)
-//        speeds(i)(0) = 2
-//      if(spatialComp.get.position.x + rect.w >= rend.w-3)
-//        speeds(i)(0) = -2
-//      if(spatialComp.get.position.y <= 2)
-//        speeds(i)(1) = 2
-//      if(spatialComp.get.position.y + rect.h >= rend.h-3)
-//        speeds(i)(1) = -2
-//        
-//      spatialComp.get.position.x += speeds(i)(0)
-//      spatialComp.get.position.y += speeds(i)(1)
-//	  }
 	}
 	
 	def input(keyMap: Map[scala.swing.event.Key.Value, Int], delta: Double) = {
@@ -86,7 +61,6 @@ class TestScreen2D(parent: Adventure, rend: Renderer)
 	 */
 	def draw(): Unit = {
 	  rend.clear()
-//	  println("rendering scene: " + scene.entities.toString())
 	  rend.renderScene(scene)
 	  display = rend.display
 	}
