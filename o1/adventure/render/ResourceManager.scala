@@ -2,10 +2,15 @@ package o1.adventure.render
 
 import scala.collection.mutable.Map
 import o1.adventure.render2D.Shape
+import java.awt.image.Raster
+import javax.imageio.ImageIO
+import java.io.File
+import java.awt.image.BufferedImage
 
 object ResourceManager {
   val meshes = Map[String, Mesh]()
   val shapes = Map[String, Shape]() 
+  val images = Map[String, BufferedImage]()
   
   meshes("sphere") = Mesh("data/sphere.obj")
   meshes("monkey") = Mesh("data/monkey.obj")
@@ -15,4 +20,7 @@ object ResourceManager {
   meshes("floor").luminosity = 0.6f
   meshes("map") = Mesh("data/spaceStation2.obj")
   meshes("map").luminosity = 1.0f
+  
+  images("cross") = ImageIO.read(new File ("data/logo.png"))
+  
 }

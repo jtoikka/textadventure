@@ -33,13 +33,23 @@ class TestScreen2D(parent: Adventure, rend: Renderer)
 	  
 	  var rectEnt = Factory2D.createTextRectangle(hudTextRect)
 	  var testRectSpatial = rectEnt.getComponent(SpatialComponent.id)
-	  testRectSpatial.get.position = Vec3(rend.w/2 - hudTextRect.w/2, rend.h/2 - hudTextRect.h/2, 0.0f)  
+	  testRectSpatial.get.position = Vec3(rend.w/2 - hudTextRect.w/2, 25, 0.0f)  
 	  scene.addEntity(rectEnt)
 	  
 	  var border = Factory2D.createRectangle(rend.w-3,rend.h-3,false)
 	  var bSpatial = border.getComponent(SpatialComponent.id)
 	  bSpatial.get.position = Vec3(1f, 1f, 0f)
 	  scene.addEntity(border)
+	  
+	  var name = "cross"
+	  var img = Factory2D.createImage(name)
+	  var spat = img.getComponent(SpatialComponent.id)
+	  
+	  var width = ResourceManager.images(name).getWidth()
+	  var heigth = ResourceManager.images(name).getHeight()
+	  
+	  spat.get.position = Vec3(rend.w/2 - width/2+1, 4.0f, 0.0f) 
+	  scene.addEntity(img)
 	}
   init()
   
