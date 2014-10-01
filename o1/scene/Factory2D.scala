@@ -3,6 +3,7 @@ package o1.scene
 import o1.adventure.render2D._
 import o1.adventure.render.ResourceManager
 import java.util.UUID.randomUUID
+import java.awt.image.BufferedImage
 /**
  * The Factory object is a collection of functions that can be used to create
  * entities with various characteristics. 
@@ -82,6 +83,23 @@ object Factory2D {
     val uuid = randomUUID().toString()
     
     ResourceManager.shapes(uuid) = tri
+    
+    var spatialComp = new SpatialComponent() 
+    ent.addComponent(spatialComp)
+    
+    var rendComp2D = new RenderComponent2D(uuid)
+    ent.addComponent(rendComp2D)
+    ent
+  }
+  
+  def createImage(rasterName: String) = {
+    var ent = new Entity()
+    val uuid = randomUUID().toString()
+    
+    var img = ResourceManager.images(rasterName)
+    var shape = new Image2D(img, false)
+    
+    ResourceManager.shapes(uuid) = shape
     
     var spatialComp = new SpatialComponent() 
     ent.addComponent(spatialComp)

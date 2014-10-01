@@ -163,20 +163,27 @@ class Renderer2D(w: Int, h: Int) extends Renderer(w,h){
   
   def renderImage(image: Image2D, loc: Vec3){
     val fill = image.defFill
-    val img = image.img
-    val x = loc.x.toInt
-    val y = loc.y.toInt
+    val locX = loc.x.toInt
+    val locY = loc.y.toInt
     
-    for (imgY <- 0 until img.length) {
-      for (imgX <- 0 until img(imgY).length) {
-        // if fill is false, char 0 is transparent
-        if (!(fill && img(imgX)(imgY) != 0)) { 
-          setPixel(x+imgX, y+imgY, Renderer2D.chars(img(imgY)(imgX) ))
-        }
+    for (x <- 0 until image.img.getWidth()) {
+      for (y <- 0 until image.img.getHeight()) {
+        var value = image.grayArray(image.calcImageArrayIndex(x, y))
+        var char = getCharFrom8Bit(value)
+        if(!(!fill && value != 0))
+          setPixel(locX+x, locY+y, char)
       }
     }
   }
-  
+  private def getCharFrom8Bit(i: Int): Char = {
+    val charCount = Renderer2D.chars.length()
+    val step = 256/charCount
+
+    var count = (i-1) / step
+    
+    var char: Char = Renderer2D.chars.charAt(count)
+    char
+  }
   def renderTextRectangle(tRect: TextRect2D, loc: Vec3){
     val text = tRect.text
     val p1 = new Point2D( loc.x.toInt, loc.y.toInt )
