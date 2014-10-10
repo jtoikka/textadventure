@@ -82,7 +82,7 @@ class GameScreen(parent: Adventure, rend: Renderer)
 	def init(): Unit = {
 	  parent.title = "A 3D Adventure - Game"
 	  
-	  scene.camera.getComponent(SpatialComponent.id).get.position = Vec3(-32.0f, -1.2f, -32.0f)
+	  scene.camera.getComponent(SpatialComponent.id).get.position = Vec3(0.0f, -1.2f, 0.0f)
 	  
 //	  var sphere = Factory.createSphere()
 //	  var spatialComp = sphere.getComponent(SpatialComponent.id)
@@ -105,12 +105,13 @@ class GameScreen(parent: Adventure, rend: Renderer)
 //	      monkeySpatial.get.position = Vec3(4f*x,0f,0f)
 //	      scene.addEntity(monkey)
 //	  }
+      
 	  var floor = Factory.createFloor()
 	  var floorSpatial = floor.getComponent(SpatialComponent.id)
 	  val floorFollowCam = new FollowCameraComponent()
 	  floor.addComponent(floorFollowCam)
 	  floorSpatial.get.position = Vec3(0.0f, 0.05f, 0.0f)
-	  scene.addEntity(floor)
+//	  scene.addEntity(floor)
 	  
 	  var level = Factory.createLevel()
 	  scene.addEntity(level)

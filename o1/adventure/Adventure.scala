@@ -30,14 +30,14 @@ class Adventure() {
   val _renderer = new Renderer3D(screenWidth, screenHeight) // We draw the world here!
   var display = _renderer.display // A String displaying the world
   
-  var map = new MapGenerator(64, 64, 4, 123123).map
-  for (y <- 62 to 0 by -1) {
-    for (x <- 0 until 65) {
-      print(map(y * (64 + 1) + x))
-    }
-    print('\n')
-  }
-  var edgeMap = CornerMap.generateMap(map, 65)
+  var map = new MapGenerator(256, 256, 7, 123123).map
+//  for (y <- 62 to 0 by -1) {
+//    for (x <- 0 until 65) {
+//      print(map(y * (64 + 1) + x))
+//    }
+//    print('\n')
+//  }
+  var edgeMap = CornerMap.generateMap(map, 256 + 1)
   ResourceManager.meshes("map") = CornerMap.createWallMesh(edgeMap, 2.0f)
   
   // Screen stuff
