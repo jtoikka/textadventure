@@ -70,7 +70,7 @@ object Factory {
     
     monkey.addComponent(spatialComp)
     
-    var renderComp = new RenderComponent("map")
+    var renderComp = new RenderComponent("testMap")
     
     monkey.addComponent(renderComp)
     monkey
