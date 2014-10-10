@@ -150,7 +150,7 @@ class GameScreen(parent: Adventure, rend: Renderer)
 	  val floorFollowCam = new FollowCameraComponent()
 	  floor.addComponent(floorFollowCam)
 	  floorSpatial.get.position = Vec3(0.0f, 0.05f, 0.0f)
-	  scene.addEntity(floor)
+//	  scene.addEntity(floor)
 	  
 	  var level = Factory.createLevel()
 	  scene.addEntity(level)

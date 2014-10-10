@@ -18,9 +18,8 @@ object ResourceManager {
   meshes("plate") = Mesh("data/4x4_plate_floor.obj")
   meshes("floor") = Mesh("data/floor.obj")
   meshes("floor").luminosity = 0.6f
-  meshes("map") = Mesh("data/spaceStation2.obj")
-  meshes("map").luminosity = 1.0f
+  meshes("testMap") = Mesh("data/spaceStation2.obj")
+  meshes("testMap").luminosity = 1.0f
   
   images("cross") = ImageIO.read(new File ("data/logo.png"))
-  
 }
