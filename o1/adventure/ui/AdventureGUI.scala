@@ -48,7 +48,7 @@ object AdventureGUI extends SimpleSwingApplication {
     
     // Components: 
 
-    val locationInfo = new TextArea(game.screenHeight, game.screenWidth) {
+    val renderArea = new TextArea(game.screenHeight, game.screenWidth) {
       editable = false
       wordWrap = false
       lineWrap = false
@@ -67,12 +67,12 @@ object AdventureGUI extends SimpleSwingApplication {
           println("Space is up")
       }
     }
-    this.listenTo(locationInfo.keys)
+    this.listenTo(renderArea.keys)
     val turnCounter = new Label
 
     // Events: 
     
-    locationInfo.reactions += {
+    renderArea.reactions += {
       case KeyPressed(_, Key.W, _, _) =>
         keyMap(Key.W) = true
       case KeyReleased(_, Key.W, _, _) =>
@@ -137,7 +137,7 @@ object AdventureGUI extends SimpleSwingApplication {
     // Layout: 
 
     this.contents = new GridBagPanel { 
-      layout += locationInfo           -> new Constraints(1, 0, 1, 1, 1, 1, NorthWest.id, Fill.Both.id, new Insets(5, 5, 5, 5), 0, 0)
+      layout += renderArea           -> new Constraints(1, 0, 1, 1, 1, 1, NorthWest.id, Fill.Both.id, new Insets(5, 5, 5, 5), 0, 0)
     }
     
     // Menu:
@@ -155,7 +155,7 @@ object AdventureGUI extends SimpleSwingApplication {
 //    this.updateInfo(this.game.welcomeMessage)
     this.location = new Point(50, 50)
     this.pack()
-    this.locationInfo.requestFocusInWindow()
+    this.renderArea.requestFocusInWindow()
 
     def update(time: Double) = {
       this.game.update(time, keyMap)
@@ -164,13 +164,8 @@ object AdventureGUI extends SimpleSwingApplication {
     
     
     def updateInfo(info: String) = {
-//      if (!this.game.isOver) {
-//        this.turnOutput.text = info
-//      } else {
-//        this.turnOutput.text = info + "\n\n" + this.game.goodbyeMessage
-//      }
       this.title = game.title
-      this.locationInfo.text = game.currentScreen.display
+      this.renderArea.text = game.currentScreen.display
     }
 
     
