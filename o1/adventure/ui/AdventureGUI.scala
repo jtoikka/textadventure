@@ -1,7 +1,6 @@
 package o1.adventure.ui
 
 import scala.collection.mutable.Map
-
 import scala.swing._
 import scala.swing.event._
 import scala.swing.GridBagPanel.Anchor._
@@ -11,6 +10,7 @@ import javax.swing.Timer
 import o1.adventure.Adventure
 import java.awt.Color
 import scala.swing.Font
+import o1.event.Listener
 
 
 ////////////////// NOTE TO STUDENTS //////////////////////////
@@ -31,8 +31,8 @@ import scala.swing.Font
  * 
  * @see [[AdventureTextUI]] 
  */
-object AdventureGUI extends SimpleSwingApplication {
-
+object AdventureGUI extends SimpleSwingApplication with Listener {
+  
   UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName) 
   var keyMap = Map[scala.swing.event.Key.Value, Boolean](
       (Key.W,false),(Key.S,false),
@@ -40,6 +40,7 @@ object AdventureGUI extends SimpleSwingApplication {
       (Key.Up,false),(Key.Down,false),
       (Key.Right,false),(Key.Left,false),
       (Key.M, false),(Key.N, false),
+      (Key.Enter, false),
       (Key.Q,false))
   
   def top = new MainFrame {
@@ -74,6 +75,10 @@ object AdventureGUI extends SimpleSwingApplication {
     // Events: 
     
     renderArea.reactions += {
+      case KeyPressed(_, Key.Enter, _, _) =>
+        keyMap(Key.Enter) = true
+      case KeyReleased(_, Key.Enter, _, _) =>
+        keyMap(Key.Enter) = false
       case KeyPressed(_, Key.Q, _, _) =>
         keyMap(Key.Q) = true
       case KeyReleased(_, Key.Q, _, _) =>
@@ -165,6 +170,7 @@ object AdventureGUI extends SimpleSwingApplication {
     def update(time: Double) = {
       this.game.update(time, keyMap)
       updateInfo("update")
+      handleEvents(time.toFloat)
     }
     
     
@@ -175,6 +181,13 @@ object AdventureGUI extends SimpleSwingApplication {
 
     
   }
+  
+  def handleEvent(event: o1.event.Event, delta: Float) = {
     
+  }
+  
+  def dispose(): Unit = {
+    this.shutdown()
+  }
 }  
   

@@ -2,36 +2,49 @@ package o1.event
 
 import scala.collection.mutable.Buffer
 
-object EventType {
-  val E_COLLISION = 1
-  val E_INPUT = 2
-  val E_DIALOG = 3
+object EventType extends Enumeration{
+  type EventType = Value
+  val E_COLLISION,
+      E_INPUT,
+      E_DIALOG = Value
+      
+//  val E_COLLISION = 1
+//  val E_INPUT = 2
+//  val E_DIALOG = 3
 }
-
-class Event(val args: Vector[Any], val eventType: Int) {}
+import o1.event.EventType._
+class Event(val args: Vector[Any], val eventType: EventType) {}
 
 trait Listener {
-  var eventTypes = Vector[Int]()
+  var eventTypes = Vector[EventType]()
   val events = Buffer[Event]()
+  var childListeners = Buffer[Listener]()
 
   EventManager.addListener(this)
 
-  def handleEvents(delta: Float) = {
+  def handleEvents(delta: Float): Unit = {
     for (event <- events) {
       handleEvent(event, delta)
     }
     events.clear()
+    
+    if(!childListeners.isEmpty){
+      for(i <-childListeners){
+        i.handleEvents(delta)
+      }
+    }
   }
-
+  
   def handleEvent(event: Event, delta: Float)
 
   def addEvent(event: Event) = {
     events += event
   }
 
-  def containsEventType(eventType: Int) = {
+  def containsEventType(eventType: EventType) = {
     eventTypes.contains(eventType)
   }
+  def dispose()
 }
 
 object EventManager {

@@ -131,10 +131,12 @@ class Adventure() extends Listener {
     if (currentScreen != None)
       currentScreen.get.pause()
     this.currentScreen = Some(screen)
+    
     EventManager.setActiveInputListener(currentScreen.get)
     currentScreen.get.resume()
-
-    println("Screen Changed")
+  }
+  def dispose() = {
+    
   }
 
 }

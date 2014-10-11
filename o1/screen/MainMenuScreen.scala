@@ -59,4 +59,8 @@ class MainMenuScreen(parent: Adventure, rend: Renderer)
 	def handleEvent(event: Event, delta: Float) = {
     
   }
+	
+	def dispose() = {
+	  
+  }
 }
