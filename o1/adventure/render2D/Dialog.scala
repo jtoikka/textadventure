@@ -12,14 +12,18 @@ class Dialog(
     rect: Rectangle2D, 
     val dialogText: String, 
     val options: Array[Tuple2[String, Event]])
-    
   extends TextRect2D(rect) with Listener {
+  
   eventTypes = Vector[EventType](E_INPUT, E_DIALOG)
+  
+  this.centerText = true
   var seperatorRows = 1 
-  val marker = "->"
+  val marker = "---> "
+  val endMarker = " <---"
   val indent = "\u2001"
-  val indentCount: Int = 3
+  val indentCount: Int = 0
   var activeOption: Int = 0
+  
   updateText()
   
   def updateOption(next: Boolean) = {
@@ -47,9 +51,19 @@ class Dialog(
     for(i <- 1 to seperatorRows){
       t +="\n"
     }
+//    var optionStringLenght = 0
+//    for (option <- options.indices) {
+//      if(options(option)._1.length() > optionStringLenght)
+//        optionStringLenght = options(option)._1.length()
+//    }
+    
     for (option <- options.indices) {
       if (activeOption == option)
-        t += (indent.*(indentCount - marker.length())) + marker + options(option)._1 + "\n"
+        t += (indent.*(indentCount - 
+            marker.length() - 
+            endMarker.length())) + 
+            marker + 
+            options(option)._1 + endMarker + "\n"
       else
         t += (indent * indentCount) + options(option)._1 + "\n"
     }
@@ -62,6 +76,7 @@ class Dialog(
     }
     events.clear()
   }
+  
   def handleEvent(event: Event, delta: Float) = {
     if (event.eventType == E_INPUT) {
       val eventKey = event.args(0).asInstanceOf[Tuple2[scala.swing.event.Key.Value, Int]]
@@ -85,9 +100,13 @@ class Dialog(
       ((Key.D, Input.KEYRELEASED), (delta) => {
 
       }),
+      ((Key.Enter, Input.KEYRELEASED), (delta) => {
+        EventManager.addEvent(options(activeOption)._2)
+        //dispose()
+      }),
       ((Key.M, Input.KEYRELEASED), (delta) => {
-        EventManager.addEvent(new Event(null,E_DIALOG))
-        dispose()
+//        EventManager.addEvent(new Event(null,E_DIALOG))
+//        dispose()
       }))
       
   val optionsMap = 

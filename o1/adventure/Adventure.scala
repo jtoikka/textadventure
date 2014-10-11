@@ -11,7 +11,7 @@ import o1.mapGenerator.MapGenerator
 import o1.mapGenerator.CornerMap
 import o1.adventure.render.ResourceManager
 import o1.event._
-
+import o1.event.EventType._
 /**
  * The class `Adventure` represents text adventure games. An adventure consists of a player and
  * a number of areas that make up the game world. It provides methods for playing the game one
@@ -23,7 +23,7 @@ import o1.event._
  * games, you will need to modify or replace the source code of this class.
  */
 class Adventure() extends Listener {
-  eventTypes = Vector(EventType.E_INPUT)
+  eventTypes = Vector(E_INPUT,E_CHANGE_SCREEN)
   /** The title of the adventure game. */
   var title = "A Forest Adventure"
 
@@ -122,11 +122,16 @@ class Adventure() extends Listener {
         inputMap(eventKey)(delta)
       }
     }
+    else if (event.eventType == EventType.E_CHANGE_SCREEN) {
+      val a = event.args(0).asInstanceOf[String]
+      changeScreen(a)
+    }
   }
 
   /**
    * Used to change current screen
    */
+  def changeScreen(screen: String): Unit = changeScreen(screens(screen))
   def changeScreen(screen: Screen): Unit = {
     if (currentScreen != None)
       currentScreen.get.pause()
@@ -135,6 +140,7 @@ class Adventure() extends Listener {
     EventManager.setActiveInputListener(currentScreen.get)
     currentScreen.get.resume()
   }
+  
   def dispose() = {
     
   }

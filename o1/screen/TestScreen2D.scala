@@ -20,26 +20,27 @@ import o1.event.Input
 import scala.collection.mutable.Buffer
 
 class TestScreen2D(parent: Adventure, rend: Renderer)
-  extends Screen(parent, rend) with Listener {
+    extends Screen(parent, rend) with Listener {
   eventTypes = Vector[EventType](E_INPUT, E_DIALOG)
 
   def this(parent: Adventure, x: Int, y: Int) = this(parent, new Renderer2D(x, y))
-
-//  var childListeners = Buffer[Listener]()
-
-  var scene = new Scene()
-  var dialogOptions: Array[Tuple2[String, Event]] = Array[Tuple2[String, Event]](
-      ("Play Game", new Event(null,E_DIALOG)),
-      ("Options", new Event(null,E_DIALOG)),
-      ("Credits", new Event(null,E_DIALOG)),
-      ("Exit Game", new Event(null,E_DIALOG)))
   
-//  var dialog = new Dialog(this, new Rectangle2D(32, 10, true), "3D Text Adventure\nMain Menu",
-//    Vector[String]("FirstOption", "SecondOption", "ThirdOption"))
-  var dialog = new Dialog(this, new Rectangle2D(20, 10, true), "3D Text Adventure\nMain Menu", dialogOptions)
+  var scene = new Scene()
+  
+  var dialogOptions: Array[Tuple2[String, Event]] = Array[Tuple2[String, Event]](
+    ("Play Game", new Event(Vector("gameScreen"), E_CHANGE_SCREEN)),
+    ("Options", new Event(null, E_DIALOG)),
+    ("Credits", new Event(null, E_DIALOG)),
+    ("Exit Game", new Event(null, E_SYSTEM_EXIT)))
+
+  var dialog = new Dialog(this, 
+      new Rectangle2D(26, 10, true), 
+      "-" * 30+"\nMain Menu\n" + "-" * 30, 
+      dialogOptions)
   
   def init(): Unit = {
-    dialog.offX = 2
+
+    dialog.offX = 1
     dialog.offMinusX = 1
     dialog.offMinusY = 1
 
@@ -74,9 +75,6 @@ class TestScreen2D(parent: Adventure, rend: Renderer)
 
   def update(delta: Double): Unit = {
     handleEvents(delta.toFloat)
-//    for (i <- childListeners) {
-//      i.handleEvents(delta.toFloat)
-//    }
   }
 
   /**
@@ -105,7 +103,7 @@ class TestScreen2D(parent: Adventure, rend: Renderer)
       }
     }
     if (event.eventType == E_DIALOG) {
-      parent.changeScreen(parent.screens("gameScreen"))
+      //parent.changeScreen(parent.screens("gameScreen"))
     }
   }
 
@@ -123,8 +121,8 @@ class TestScreen2D(parent: Adventure, rend: Renderer)
       ((Key.D, Input.KEYRELEASED), (delta) => {
 
       }))
-      
+
   def dispose() = {
-    
+
   }
 }

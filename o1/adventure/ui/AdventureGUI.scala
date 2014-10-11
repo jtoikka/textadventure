@@ -11,7 +11,7 @@ import o1.adventure.Adventure
 import java.awt.Color
 import scala.swing.Font
 import o1.event.Listener
-
+import o1.event.EventType._
 
 ////////////////// NOTE TO STUDENTS //////////////////////////
 // For the purposes of our course, it's not necessary    
@@ -32,6 +32,7 @@ import o1.event.Listener
  * @see [[AdventureTextUI]] 
  */
 object AdventureGUI extends SimpleSwingApplication with Listener {
+  eventTypes = Vector(E_SYSTEM_EXIT)
   
   UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName) 
   var keyMap = Map[scala.swing.event.Key.Value, Boolean](
@@ -40,7 +41,7 @@ object AdventureGUI extends SimpleSwingApplication with Listener {
       (Key.Up,false),(Key.Down,false),
       (Key.Right,false),(Key.Left,false),
       (Key.M, false),(Key.N, false),
-      (Key.Enter, false),
+      (Key.Enter, false),(Key.Escape, false),
       (Key.Q,false))
   
   def top = new MainFrame {
@@ -75,6 +76,10 @@ object AdventureGUI extends SimpleSwingApplication with Listener {
     // Events: 
     
     renderArea.reactions += {
+      case KeyPressed(_, Key.Escape, _, _) =>
+        keyMap(Key.Escape) = true
+      case KeyReleased(_, Key.Escape, _, _) =>
+        keyMap(Key.Escape) = false
       case KeyPressed(_, Key.Enter, _, _) =>
         keyMap(Key.Enter) = true
       case KeyReleased(_, Key.Enter, _, _) =>
@@ -172,22 +177,22 @@ object AdventureGUI extends SimpleSwingApplication with Listener {
       updateInfo("update")
       handleEvents(time.toFloat)
     }
-    
-    
+
     def updateInfo(info: String) = {
       this.title = game.title
       this.renderArea.text = game.currentScreen.get.display
-    }
-
-    
+    } 
   }
   
   def handleEvent(event: o1.event.Event, delta: Float) = {
-    
+    if (event.eventType == E_SYSTEM_EXIT) {
+      dispose()
+    }
   }
   
   def dispose(): Unit = {
-    this.shutdown()
+    println("Application Exit!")
+    this.quit()
   }
 }  
   

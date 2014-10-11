@@ -8,7 +8,8 @@ class TextRect2D(var rect: Rectangle2D, var text: String)
   var offY = 1
   var offMinusX = 1
   var offMinusY = 1
-
+  var centerText = false
+  
   def this(rect: Rectangle2D) = this(rect, "")
 
   /* Constructors -------------------------------------------------------------------*/
