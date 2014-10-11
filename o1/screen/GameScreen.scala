@@ -38,12 +38,14 @@ class GameScreen(parent: Adventure, rend: Renderer)
                                         
 	def update(delta: Double): Unit = {
     val camSpatial = scene.camera.getComponent(SpatialComponent.id).get
+    val entitiesAsVector = scene.entities.toVector
     for (entity <- scene.entities) {
       if ((entity.getComponent(FollowCameraComponent.id)).isDefined) {
         var spatial = entity.getComponent(SpatialComponent.id).get
         spatial.position = Vec3(-camSpatial.position.x, 0.2f, -camSpatial.position.z)
         spatial.forward = Vec3(-camSpatial.forward.x, camSpatial.forward.y, camSpatial.forward.z)
       }
+      CollisionCheck.checkCollisions(entity, entitiesAsVector)
     }
 	}
   
@@ -122,6 +124,11 @@ class GameScreen(parent: Adventure, rend: Renderer)
 	  
 	  scene.camera.getComponent(SpatialComponent.id).get.position = 
 	    Vec3(0.0f, -1.2f, 0.0f)
+	    
+	  var player = Factory.createPlayer()
+	  var playerSpatial = player.getComponent(SpatialComponent.id)
+	  playerSpatial.get.position = Vec3(0.0f, 1.2f, 0.0f)
+	  scene.addEntity(player)
 	  
 //	  var sphere = Factory.createSphere()
 //	  var spatialComp = sphere.getComponent(SpatialComponent.id)
@@ -133,10 +140,10 @@ class GameScreen(parent: Adventure, rend: Renderer)
 //	  cubeSpatialComp.get.position = Vec3(-1.1f, 0.0f, -3.0f)
 //	  scene.addEntity(cube)
 
-  	  var monkey = Factory.createMonkey()
-      var monkeySpatial = monkey.getComponent(SpatialComponent.id)
-      monkeySpatial.get.position = Vec3(0.0f, 1.0f, 0.5f)
-      scene.addEntity(monkey)
+	  var monkey = Factory.createMonkey()
+    var monkeySpatial = monkey.getComponent(SpatialComponent.id)
+    monkeySpatial.get.position = Vec3(0.0f, 1.0f, 0.5f)
+    scene.addEntity(monkey)
       
 //	  for (x <- 0 to 3) {
 //	  	  var monkey = Factory.createPlate()

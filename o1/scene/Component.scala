@@ -1,6 +1,7 @@
 package o1.scene
 
 import o1.math._
+import scala.collection.mutable.Buffer
 
 /**
  * Components make up the data of an entity.
@@ -47,4 +48,16 @@ object FollowCameraComponent {
 
 class FollowCameraComponent extends Component {
   
+}
+
+class CollisionMapComponent(val tileMap: Array[Int]) extends Component {}
+
+object CollisionComponent {
+  val id = classOf[CollisionComponent]
+}
+
+class CollisionComponent(
+    val radius: Float, 
+    val attributes: Buffer[Int]) extends Component {
+  var isActive = true
 }
