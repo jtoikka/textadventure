@@ -10,7 +10,7 @@ import scala.collection.mutable.MutableList
 class Scene {
   val entities = MutableList[Entity]()
   
-  var camera = Factory.createCamera()
+  var camera: Option[Entity] = None
   
   def addEntity(entity: Entity) {
     entities += entity

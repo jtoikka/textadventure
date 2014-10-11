@@ -1,22 +1,34 @@
-package o1.scene
+package o1.event
 
 import scala.collection.mutable.Buffer
 
 object EventType {
   val E_COLLISION = 1
+  val E_INPUT = 2
 }
 
 class Event(val args: Vector[Any], val eventType: Int) {}
 
-class Listener(val eventTypes: Vector[Int]) {
+trait Listener {
+  var eventTypes = Vector[Int]()
   val events = Buffer[Event]()
+  EventManager.addListener(this)
   
-  def contains(eventType: Int) = {
-    eventTypes.contains(eventType)
+  def handleEvents(delta: Float) = {
+    for (event <- events) {
+      handleEvent(event, delta)
+    }
+    events.clear()
   }
+  
+  def handleEvent(event: Event, delta: Float)
   
   def addEvent(event: Event) = {
     events += event
+  }
+  
+  def containsEventType(eventType: Int) = {
+    eventTypes.contains(eventType)
   }
 }
 
@@ -41,7 +53,7 @@ object EventManager {
   def delegateEvents() = {
     for (event <- events) {
       for (listener <- listeners) {
-        if (listener.contains(event.eventType)) {
+        if (listener.containsEventType(event.eventType)) {
           listener.addEvent(event)
         }
       }

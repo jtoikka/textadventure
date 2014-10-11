@@ -58,12 +58,7 @@ class TestScreen2D(parent: Adventure, rend: Renderer)
    */
 
   def update(delta: Double): Unit = {
-  }
-
-  def input(keyMap: Map[scala.swing.event.Key.Value, Int], delta: Double) = {
-    if (keyMap(Key.M) == 2) {
-      parent.changeScreen(parent.gameScreen)
-    }
+    
   }
 
   /**
