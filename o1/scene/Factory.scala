@@ -1,5 +1,6 @@
 package o1.scene
 
+import scala.collection.mutable.Buffer
 
 /**
  * The Factory object is a collection of functions that can be used to create
@@ -7,6 +8,17 @@ package o1.scene
  */
 
 object Factory {
+  
+  def createPlayer() = {
+    var player = new Entity()
+    var spatialComp = new SpatialComponent()
+    
+    player.addComponent(spatialComp)
+    
+    var collisionComponent = new CollisionComponent(1.0f, Buffer[Int]())
+    player.addComponent(collisionComponent)
+    player
+  }
   
   def createCamera() = {
     var camera = new Entity()
