@@ -14,25 +14,30 @@ import o1.mapGenerator.MapGenerator
 import o1.mapGenerator.CornerMap
 import o1.event.Listener
 import o1.event.Event
-import o1.event.EventType
+import o1.event.EventType._
 import o1.event.EventManager
 import o1.event.Input
 import scala.collection.mutable.Buffer
 
 class TestScreen2D(parent: Adventure, rend: Renderer)
   extends Screen(parent, rend) with Listener {
-  eventTypes = Vector[Int](EventType.E_INPUT, EventType.E_DIALOG)
+  eventTypes = Vector[EventType](E_INPUT, E_DIALOG)
 
   def this(parent: Adventure, x: Int, y: Int) = this(parent, new Renderer2D(x, y))
 
-  var childListeners = Buffer[Listener]()
+//  var childListeners = Buffer[Listener]()
 
   var scene = new Scene()
-  var dialog = new Dialog(this, new Rectangle2D(32, 10, true), "3D Text Adventure\nMain Menu",
-    Vector[String]("FirstOption", "SecondOption", "ThirdOption"))
-  /**
-   * Initializing test screen entities.
-   */
+  var dialogOptions: Array[Tuple2[String, Event]] = Array[Tuple2[String, Event]](
+      ("Play Game", new Event(null,E_DIALOG)),
+      ("Options", new Event(null,E_DIALOG)),
+      ("Credits", new Event(null,E_DIALOG)),
+      ("Exit Game", new Event(null,E_DIALOG)))
+  
+//  var dialog = new Dialog(this, new Rectangle2D(32, 10, true), "3D Text Adventure\nMain Menu",
+//    Vector[String]("FirstOption", "SecondOption", "ThirdOption"))
+  var dialog = new Dialog(this, new Rectangle2D(20, 10, true), "3D Text Adventure\nMain Menu", dialogOptions)
+  
   def init(): Unit = {
     dialog.offX = 2
     dialog.offMinusX = 1
@@ -69,10 +74,9 @@ class TestScreen2D(parent: Adventure, rend: Renderer)
 
   def update(delta: Double): Unit = {
     handleEvents(delta.toFloat)
-    for (i <- childListeners) {
-      i.handleEvents(delta.toFloat)
-    }
-
+//    for (i <- childListeners) {
+//      i.handleEvents(delta.toFloat)
+//    }
   }
 
   /**
@@ -94,13 +98,13 @@ class TestScreen2D(parent: Adventure, rend: Renderer)
   }
 
   def handleEvent(event: Event, delta: Float) = {
-    if (event.eventType == EventType.E_INPUT) {
+    if (event.eventType == E_INPUT) {
       val eventKey = event.args(0).asInstanceOf[Tuple2[scala.swing.event.Key.Value, Int]]
       if (inputMap.contains(eventKey)) {
         inputMap(eventKey)(delta)
       }
     }
-    if (event.eventType == EventType.E_DIALOG) {
+    if (event.eventType == E_DIALOG) {
       parent.changeScreen(parent.screens("gameScreen"))
     }
   }
@@ -119,4 +123,8 @@ class TestScreen2D(parent: Adventure, rend: Renderer)
       ((Key.D, Input.KEYRELEASED), (delta) => {
 
       }))
+      
+  def dispose() = {
+    
+  }
 }

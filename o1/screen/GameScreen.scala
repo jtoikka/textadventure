@@ -10,6 +10,7 @@ import o1.scene._
 import o1.adventure.render2D._
 import o1.event.CollisionCheck
 import o1.event._
+import o1.event.EventType._
 
 /**
  * GameScreen class.
@@ -19,7 +20,7 @@ import o1.event._
  */
 class GameScreen(parent: Adventure, rend: Renderer)
   extends Screen(parent, rend) with Listener {
-  eventTypes = Vector[Int](EventType.E_INPUT)
+  eventTypes = Vector[EventType](E_INPUT)
   def this(parent: Adventure, x: Int, y: Int) = this(parent, new Renderer3D(x, y))
 
   /* HUD -------------------------------------*/
@@ -229,5 +230,9 @@ class GameScreen(parent: Adventure, rend: Renderer)
 
   def pause() {
     paused = true
+  }
+  
+  def dispose() = {
+    
   }
 }
