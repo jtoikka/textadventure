@@ -4,9 +4,10 @@ import scala.swing.event.Key
 import scala.collection.mutable.Map
 import o1.adventure._
 import o1.adventure.render._
-import scala.math._ 
+import scala.math._
 import o1.math._
 import o1.scene._
+import o1.event.Event
 
 /**
  *  MainMenuScreen class.
@@ -55,4 +56,7 @@ class MainMenuScreen(parent: Adventure, rend: Renderer)
 	def pause(){
 	  
 	}
+	def handleEvent(event: Event, delta: Float) = {
+    
+  }
 }

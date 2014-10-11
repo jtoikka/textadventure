@@ -18,7 +18,8 @@ object Input {
       val value = keyValue._2
       
       if (value != 0) {
-        EventManager.addEvent(new Event(Vector(keyValue), EventType.E_INPUT))
+        val e = new Event(Vector(keyValue),EventType.E_INPUT)
+        EventManager.addEvent(e)
       }
     }
   }
