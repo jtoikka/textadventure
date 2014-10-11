@@ -22,8 +22,6 @@ class MainMenuScreen(parent: Adventure, rend: Renderer)
   
   var scene = new Scene()
   init()
-//  var meshes = Array[Object](new Object(Mesh("data/monkey.obj"), 
-//                                        new Vec4(0.0f,0.0f,-3.0f,0.0f)))
   
 	/**
 	 * Update method. Used to update screen state.
@@ -31,12 +29,6 @@ class MainMenuScreen(parent: Adventure, rend: Renderer)
 	def update(delta: Double): Unit = {
 	  
 	}
-  
-  def input(keyMap: Map[scala.swing.event.Key.Value, Int], delta: Double) = {
-    if(keyMap(Key.N) == 2){
-	    parent.changeScreen(parent.gameScreen)
-	  }
-  }
 	
 	/**
 	 * Draw method. Is used to draw screen to display

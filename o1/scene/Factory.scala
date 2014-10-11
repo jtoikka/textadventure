@@ -11,20 +11,27 @@ object Factory {
   
   def createPlayer() = {
     var player = new Entity()
-    var spatialComp = new SpatialComponent()
     
+    var spatialComp = new SpatialComponent()
     player.addComponent(spatialComp)
     
-    var collisionComponent = new CollisionComponent(1.0f, Buffer[Int]())
+    var collisionComponent = new CollisionComponent(0.5f, Buffer[Int]())
     player.addComponent(collisionComponent)
+    
+    var inputComponent = new InputComponent()
+    player.addComponent(inputComponent)
     player
   }
   
-  def createCamera() = {
+  def createCamera(followEntity: Entity) = {
     var camera = new Entity()
-    var spatialComp = new SpatialComponent()
     
+    var spatialComp = new SpatialComponent()
     camera.addComponent(spatialComp)
+    
+    var followComponent = new FollowComponent(followEntity)
+    camera.addComponent(followComponent)
+    
     camera
   }
   
@@ -59,6 +66,9 @@ object Factory {
     monkey.addComponent(spatialComp)
     
     var renderComp = new RenderComponent("monkey")
+    
+    var collisionComponent = new CollisionComponent(1.0f, Buffer[Int]())
+    monkey.addComponent(collisionComponent)
     
     monkey.addComponent(renderComp)
     monkey

@@ -141,60 +141,62 @@ class Renderer3D(w: Int, h: Int) extends Renderer(w,h) {
   def renderScene(scene: Scene) = {
 /* First pass, render geometry -----------------------------------------------*/
     var camera = scene.camera
-    var cameraSpatial = camera.getComponent(SpatialComponent.id).get
-    
-    var worldToCam = Camera.getLookMatrix(
-        cameraSpatial.position, 
-        cameraSpatial.forward, 
-        cameraSpatial.up)
-        
-    
-    for (entity <- scene.entities) {
-      var spatialComp = entity.getComponent(SpatialComponent.id)
-      var renderComp = entity.getComponent(RenderComponent.id)
-      if (spatialComp.isDefined && renderComp.isDefined) {
-        var translation = Utility.translate(Vec4(spatialComp.get.position, 1.0f))
-        var rotation = Camera.getLookMatrix(
-          Vec3(0.0f, 0.0f, 0.0f), 
-          spatialComp.get.forward, 
-          spatialComp.get.up)
-        var mv = worldToCam * translation * rotation
-        var matrix = cameraToClipMatrix * mv
-        renderMesh(ResourceManager.meshes(renderComp.get.mesh), matrix)
-      }
-    }
-
-/* Pixel Shader Stuff --------------------------------------------------------*/
-    for (y <- 0 until h) {
-      val bayesRow = y % 8
-      for (x <- 0 until (w - 1) * 2) {
-        val bayesCollumn = x % 8
-        
-        val index1 = calcDoubleIndex(x, y)
-        val index2 = calcDoubleIndex(x + 1, y)
-       
-        var diffuse = (_diffuseBuffer(index1) + _diffuseBuffer(index2)) / 2.0f
-        var normal = (_normalBuffer(index1))
-        var viewRay = _viewRayBuffer(index1)
-        var depth = (_depthBuffer(index1) + _depthBuffer(index2)) / 2.0f
-        var specular = clamp(normal.dot(viewRay), 0.0f, 1.0f) * viewRay.z * viewRay.z
-        if (normal.y < 0.9) {
-//          depth = 1.0f - linearDepth(depth)
-          specular *= 2.0f / (depth + 5.0f * depth * depth)
-        } else {
-          // Floor lighting hack, fix it later...
-          // TODO: Make the rest of this function a little more readable as well
-          specular = (1.0f - viewRay.y) * viewRay.z * viewRay.z * -viewRay.z * depth * 0.2f
+    if (camera.isDefined) {
+      var cameraSpatial = camera.get.getComponent(SpatialComponent.id).get
+      
+      var worldToCam = Camera.getLookMatrix(
+          cameraSpatial.position, 
+          cameraSpatial.forward, 
+          cameraSpatial.up)
+          
+      
+      for (entity <- scene.entities) {
+        var spatialComp = entity.getComponent(SpatialComponent.id)
+        var renderComp = entity.getComponent(RenderComponent.id)
+        if (spatialComp.isDefined && renderComp.isDefined) {
+          var translation = Utility.translate(Vec4(spatialComp.get.position, 1.0f))
+          var rotation = Camera.getLookMatrix(
+            Vec3(0.0f, 0.0f, 0.0f), 
+            spatialComp.get.forward, 
+            spatialComp.get.up)
+          var mv = worldToCam * translation * rotation
+          var matrix = cameraToClipMatrix * mv
+          renderMesh(ResourceManager.meshes(renderComp.get.mesh), matrix)
         }
-        val ambient = 0.0f * diffuse
-        val diffuseLight = depth * 0.2f
-        var lighting = specular + ambient + diffuseLight
-        if (depth >= 1.0) lighting = 0.0f
-        val bayer = bayerMatrix(8 * bayesRow + bayesCollumn)
-        var v = (lighting + (bayer * ditherStrength)) * _ramp.size
-        v = clamp(v, 0.0f, _ramp.size.toFloat - 1.0f) * diffuse
-        
-        setPixel(calcFrontIndex(x, y), _ramp(_ramp.size - v.toInt - 1))
+      }
+  
+  /* Pixel Shader Stuff --------------------------------------------------------*/
+      for (y <- 0 until h) {
+        val bayesRow = y % 8
+        for (x <- 0 until (w - 1) * 2) {
+          val bayesCollumn = x % 8
+          
+          val index1 = calcDoubleIndex(x, y)
+          val index2 = calcDoubleIndex(x + 1, y)
+         
+          var diffuse = (_diffuseBuffer(index1) + _diffuseBuffer(index2)) / 2.0f
+          var normal = (_normalBuffer(index1))
+          var viewRay = _viewRayBuffer(index1)
+          var depth = (_depthBuffer(index1) + _depthBuffer(index2)) / 2.0f
+          var specular = clamp(normal.dot(viewRay), 0.0f, 1.0f) * viewRay.z * viewRay.z
+          if (normal.y < 0.9) {
+  //          depth = 1.0f - linearDepth(depth)
+            specular *= 2.0f / (depth + 5.0f * depth * depth)
+          } else {
+            // Floor lighting hack, fix it later...
+            // TODO: Make the rest of this function a little more readable as well
+            specular = (1.0f - viewRay.y) * viewRay.z * viewRay.z * -viewRay.z * depth * 0.2f
+          }
+          val ambient = 0.0f * diffuse
+          val diffuseLight = depth * 0.2f
+          var lighting = specular + ambient + diffuseLight
+          if (depth >= 1.0) lighting = 0.0f
+          val bayer = bayerMatrix(8 * bayesRow + bayesCollumn)
+          var v = (lighting + (bayer * ditherStrength)) * _ramp.size
+          v = clamp(v, 0.0f, _ramp.size.toFloat - 1.0f) * diffuse
+          
+          setPixel(calcFrontIndex(x, y), _ramp(_ramp.size - v.toInt - 1))
+        }
       }
     }
 /*----------------------------------------------------------------------------*/

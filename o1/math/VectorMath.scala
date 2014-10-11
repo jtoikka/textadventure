@@ -116,6 +116,7 @@ class Vec3(var x: Float, var y: Float, var z: Float) {
   def normalize() = this / length
   
   def xy() = Vec2(this.x, this.y)
+  def xz() = Vec2(this.x, this.z)
   
   override def toString() = {
     "x: " + x + " y: " + y + " z: " + z

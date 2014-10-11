@@ -8,6 +8,8 @@ import scala.math._
 import o1.math._
 import o1.scene._
 import o1.adventure.render2D._
+import o1.event.CollisionCheck
+import o1.event._
 
 
 /**
@@ -17,8 +19,8 @@ import o1.adventure.render2D._
  * @param parent parent Adventure class
  **/
 class GameScreen(parent: Adventure, rend: Renderer) 
-      extends Screen(parent, rend) {
-  
+      extends Screen(parent, rend) with Listener {
+  eventTypes = Vector[Int](EventType.E_INPUT)
   def this(parent: Adventure, x: Int, y: Int) = this(parent, new Renderer3D(x,y))
 
   /* HUD -------------------------------------*/
@@ -30,6 +32,16 @@ class GameScreen(parent: Adventure, rend: Renderer)
   /* -----------------------------------------*/
   
   var scene = new Scene()
+  
+  var paused = true
+  
+  val FORWARD = 0
+  val RIGHT = 1
+  val ROTATERIGHT = 2
+  // Grabs movement inputs
+  var movementMap = Map[Int, Float]()
+  
+  
   init()
 
   /**
@@ -37,54 +49,95 @@ class GameScreen(parent: Adventure, rend: Renderer)
 	*/
                                         
 	def update(delta: Double): Unit = {
-    val camSpatial = scene.camera.getComponent(SpatialComponent.id).get
-    val entitiesAsVector = scene.entities.toVector
-    for (entity <- scene.entities) {
-      if ((entity.getComponent(FollowCameraComponent.id)).isDefined) {
-        var spatial = entity.getComponent(SpatialComponent.id).get
-        spatial.position = Vec3(-camSpatial.position.x, 0.2f, -camSpatial.position.z)
-        spatial.forward = Vec3(-camSpatial.forward.x, camSpatial.forward.y, camSpatial.forward.z)
+    if (!paused) {
+      handleEvents(delta.toFloat)
+      val camSpatial = scene.camera.get.getComponent(SpatialComponent.id).get
+      val entitiesAsVector = scene.entities.toVector
+      for (entity <- scene.entities) {
+        var spatialOption = entity.getComponent(SpatialComponent.id)
+        if (spatialOption.isDefined) {
+          var spatial = spatialOption.get
+          var flippedForward = Vec3()
+          flippedForward.x = -spatial.forward.x
+          flippedForward.z = spatial.forward.z
+          var right = spatial.up.cross(flippedForward)
+          if (entity.getComponent(InputComponent.id).isDefined) {
+            if (movementMap.contains(FORWARD)) {
+              spatial.position += flippedForward * movementMap(FORWARD)
+            } 
+            if (movementMap.contains(RIGHT)) {
+              spatial.position -= right * movementMap(RIGHT)
+            }
+            if (movementMap.contains(ROTATERIGHT)) {
+              spatial.forward = (
+                  Utility.rotateY(movementMap(ROTATERIGHT)) * 
+                  Vec4(spatial.forward, 0.0f)).xyz
+            }
+          }
+          if ((entity.getComponent(FollowCameraComponent.id)).isDefined) {
+            spatial.position = Vec3(-camSpatial.position.x, 0.2f, -camSpatial.position.z)
+            spatial.forward = Vec3(-camSpatial.forward.x, camSpatial.forward.y, camSpatial.forward.z)
+          }
+          CollisionCheck.checkCollisions(entity, entitiesAsVector)
+        }
       }
-      CollisionCheck.checkCollisions(entity, entitiesAsVector)
+      updateCamera()
+      movementMap.clear()
+    } else {
+      events.clear()
     }
 	}
   
-  def input(keyMap: Map[scala.swing.event.Key.Value, Int], delta: Double) = {
-    var deltaFloat = delta.toFloat
-    var camSpatial = scene.camera.getComponent(SpatialComponent.id).get
-    var camRight = camSpatial.up.cross(camSpatial.forward)
+  def updateCamera() = {
+    var camSpatial = scene.camera.get.getComponent(SpatialComponent.id).get
+    val camRight = camSpatial.up.cross(camSpatial.forward)
     
-    if (keyMap(Key.Q) == 2) {
-	    showHUD = !showHUD
-	  }
-	  if (keyMap(Key.M) == 2) {
-	    parent.changeScreen(parent.menuScreen)
-	  }
-    if (keyMap(Key.N) == 2) {
-	    parent.changeScreen(parent.testScreen2D)
-	  }
-	  if (keyMap(Key.W) == 1 || keyMap(Key.W) == 2) {
-	    camSpatial.position += camSpatial.forward * 0.15f * deltaFloat
-	  }
-	  if (keyMap(Key.S) == 1 || keyMap(Key.S) == 2) {
-	    camSpatial.position -= camSpatial.forward * 0.15f * deltaFloat
-	  }
-	  if (keyMap(Key.A) == 1 || keyMap(Key.A) == 2) {
-	    camSpatial.position += camRight * 0.15f * deltaFloat
-	  }
-	  if (keyMap(Key.D) == 1 || keyMap(Key.D) == 2) {
-	    camSpatial.position -= camRight * 0.15f * deltaFloat
-	  }
-	  if (keyMap(Key.Left) == 1 || keyMap(Key.Left) == 2) {
-	    camSpatial.forward = 
-	      (Utility.rotateY(0.2f * deltaFloat) * Vec4(camSpatial.forward, 0.0f)).xyz
-	  }
-	  if (keyMap(Key.Right) == 1 || keyMap(Key.Right) == 2) {
-	    camSpatial.forward = 
-	      (Utility.rotateY(-0.2f * deltaFloat) * Vec4(camSpatial.forward, 0.0f)).xyz
-	  }
-	  updateHUD(camSpatial.position)
+    val camFollow = scene.camera.get.getComponent(FollowComponent.id).get
+    val followSpatial = camFollow.entity.getComponent(SpatialComponent.id)
+    
+    camSpatial.position = followSpatial.get.position.neg()
+    
+    camSpatial.forward.x = followSpatial.get.forward.x
+    camSpatial.forward.y = followSpatial.get.forward.y
+    camSpatial.forward.z = -followSpatial.get.forward.z
+    
+    updateHUD(camSpatial.position)
   }
+  
+  def handleEvent(event: Event, delta: Float) {
+    if (event.eventType == EventType.E_INPUT) {
+      val eventKey = 
+        event.args(0).asInstanceOf[Tuple2[scala.swing.event.Key.Value, Int]]
+      if (inputMap.contains(eventKey)) {
+        inputMap(eventKey)(delta)
+      }
+    }
+  }
+  
+  val inputMap = 
+    Map[Tuple2[scala.swing.event.Key.Value, Int], (Float) => Unit](
+        ((Key.Q, Input.KEYRELEASED), (delta) => {
+            showHUD = !showHUD
+          }),
+        ((Key.W, Input.KEYDOWN), (delta) => {
+            movementMap(FORWARD) = 0.15f * delta
+          }),
+        ((Key.S, Input.KEYDOWN), (delta) => {
+            movementMap(FORWARD) = -0.15f * delta
+          }),
+        ((Key.A, Input.KEYDOWN), (delta) => {
+            movementMap(RIGHT) = -0.15f * delta
+          }),
+        ((Key.D, Input.KEYDOWN), (delta) => {
+            movementMap(RIGHT) = 0.15f * delta
+          }),
+        ((Key.Left, Input.KEYDOWN), (delta) => {
+            movementMap(ROTATERIGHT) = -0.2f * delta
+          }),
+        ((Key.Right, Input.KEYDOWN), (delta) => {
+            movementMap(ROTATERIGHT) = 0.2f * delta
+          }))
+  
 	
 	/**
 	 * Draw method. Is used to draw screen to display etc
@@ -122,13 +175,15 @@ class GameScreen(parent: Adventure, rend: Renderer)
 
 	def init(): Unit = {
 	  
-	  scene.camera.getComponent(SpatialComponent.id).get.position = 
-	    Vec3(0.0f, -1.2f, 0.0f)
-	    
 	  var player = Factory.createPlayer()
 	  var playerSpatial = player.getComponent(SpatialComponent.id)
 	  playerSpatial.get.position = Vec3(0.0f, 1.2f, 0.0f)
 	  scene.addEntity(player)
+	  
+	  scene.camera = Some(Factory.createCamera(player))
+	  
+//	  scene.camera.get.getComponent(SpatialComponent.id).get.position = 
+//	    Vec3(0.0f, -1.2f, 0.0f)
 	  
 //	  var sphere = Factory.createSphere()
 //	  var spatialComp = sphere.getComponent(SpatialComponent.id)
@@ -145,12 +200,6 @@ class GameScreen(parent: Adventure, rend: Renderer)
     monkeySpatial.get.position = Vec3(0.0f, 1.0f, 0.5f)
     scene.addEntity(monkey)
       
-//	  for (x <- 0 to 3) {
-//	  	  var monkey = Factory.createPlate()
-//	      var monkeySpatial = monkey.getComponent(SpatialComponent.id)
-//	      monkeySpatial.get.position = Vec3(4f*x,0f,0f)
-//	      scene.addEntity(monkey)
-//	  }
       
 	  var floor = Factory.createFloor()
 	  var floorSpatial = floor.getComponent(SpatialComponent.id)
@@ -179,10 +228,10 @@ class GameScreen(parent: Adventure, rend: Renderer)
 	}
 	
 	def resume(){
-	  
+	  paused = false
 	}
 	
 	def pause(){
-	  
+	  paused = true
 	}
 }

@@ -50,6 +50,14 @@ class FollowCameraComponent extends Component {
   
 }
 
+object FollowComponent {
+  val id = classOf[FollowComponent]
+}
+
+class FollowComponent(val entity: Entity) extends Component {
+  
+}
+
 class CollisionMapComponent(val tileMap: Array[Int]) extends Component {}
 
 object CollisionComponent {
@@ -60,4 +68,12 @@ class CollisionComponent(
     val radius: Float, 
     val attributes: Buffer[Int]) extends Component {
   var isActive = true
+}
+
+object InputComponent {
+  val id = classOf[InputComponent]
+}
+
+class InputComponent extends Component {
+  
 }
