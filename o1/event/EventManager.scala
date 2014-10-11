@@ -6,11 +6,9 @@ object EventType extends Enumeration{
   type EventType = Value
   val E_COLLISION,
       E_INPUT,
-      E_DIALOG = Value
-      
-//  val E_COLLISION = 1
-//  val E_INPUT = 2
-//  val E_DIALOG = 3
+      E_DIALOG,
+      E_CHANGE_SCREEN,
+      E_SYSTEM_EXIT = Value
 }
 import o1.event.EventType._
 class Event(val args: Vector[Any], val eventType: EventType) {}

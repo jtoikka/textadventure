@@ -184,6 +184,7 @@ class Renderer2D(w: Int, h: Int) extends Renderer(w, h) {
     char
   }
   def renderTextRectangle(tRect: TextRect2D, loc: Vec3) {
+    
     val text = tRect.text
     val p1 = new Point2D(loc.x.toInt, loc.y.toInt)
     val p2 = new Point2D(loc.x.toInt + tRect.rect.w,
@@ -196,6 +197,14 @@ class Renderer2D(w: Int, h: Int) extends Renderer(w, h) {
     val offMinusY = tRect.offMinusY
 
     var lines = text.split('\n')
+    if(tRect.centerText){
+      for(i <- lines.indices){
+        while(lines(i).length < (tRect.w-offMinusX-offX)){
+          lines(i) = " " + lines(i) + " "
+        }
+      }
+    }
+    
     var lineCounter = 0
 
     // empty area

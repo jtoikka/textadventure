@@ -118,6 +118,9 @@ class GameScreen(parent: Adventure, rend: Renderer)
       ((Key.Q, Input.KEYRELEASED), (delta) => {
         showHUD = !showHUD
       }),
+      ((Key.Escape, Input.KEYRELEASED), (delta) => {
+        EventManager.addEvent(new Event(Vector("testScreen2D"),E_CHANGE_SCREEN))
+      }),
       ((Key.W, Input.KEYDOWN), (delta) => {
         movementMap(FORWARD) = 0.15f * delta
       }),
