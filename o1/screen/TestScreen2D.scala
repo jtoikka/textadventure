@@ -21,40 +21,41 @@ import scala.collection.mutable.Buffer
 
 class TestScreen2D(parent: Adventure, rend: Renderer)
     extends Screen(parent, rend) with Listener {
-  eventTypes = Vector[EventType](E_INPUT, E_DIALOG)
+  eventTypes = Vector[EventType](E_INPUT, E_DIALOG, E_CHANGE_SCENE)
 
   def this(parent: Adventure, x: Int, y: Int) = this(parent, new Renderer2D(x, y))
-  
-  var scene = new Scene()
-  
+
+  var scenes = Map[String, SceneUI]()
+  var activeScene: Option[SceneUI] = None
+
   var dialogOptions: Array[Tuple2[String, Event]] = Array[Tuple2[String, Event]](
     ("Play Game", new Event(Vector("gameScreen"), E_CHANGE_SCREEN)),
-    ("Options", new Event(null, E_DIALOG)),
-    ("Credits", new Event(null, E_DIALOG)),
+    ("Help", new Event(Vector("helpMenu", this), E_CHANGE_SCENE)),
+    ("Options", new Event(Vector("optionsMenu", this), E_CHANGE_SCENE)),
+    ("Credits", new Event(Vector("creditsMenu", this), E_CHANGE_SCENE)),
     ("Exit Game", new Event(null, E_SYSTEM_EXIT)))
 
-  var dialog = new Dialog(this, 
-      new Rectangle2D(26, 10, true), 
-      "-" * 30+"\nMain Menu\n" + "-" * 30, 
-      dialogOptions)
-  
-  def init(): Unit = {
+  var dialog = new Dialog(this,
+    new Rectangle2D(26, 10, true),
+    "-" * 30 + "\nMain Menu\n" + "-" * 30,
+    dialogOptions)
 
+  def init(): Unit = {
+    // MainMenu
+    var mainMenuScene = new SceneUI(null)
     dialog.offX = 1
     dialog.offMinusX = 1
     dialog.offMinusY = 1
 
-    childListeners += dialog
-
     var rectEnt = Factory2D.createTextRectangle(dialog)
     var testRectSpatial = rectEnt.getComponent(SpatialComponent.id)
     testRectSpatial.get.position = Vec3(rend.w / 2 - dialog.w / 2, 25, 0.0f)
-    scene.addEntity(rectEnt)
+    mainMenuScene.addEntity(rectEnt)
 
     var border = Factory2D.createRectangle(rend.w - 3, rend.h - 3, false)
     var bSpatial = border.getComponent(SpatialComponent.id)
     bSpatial.get.position = Vec3(1f, 1f, 0f)
-    scene.addEntity(border)
+    mainMenuScene.addEntity(border)
 
     var name = "cross"
     var img = Factory2D.createImage(name)
@@ -64,8 +65,42 @@ class TestScreen2D(parent: Adventure, rend: Renderer)
     var heigth = ResourceManager.images(name).getHeight()
 
     spat.get.position = Vec3(rend.w / 2 - width / 2 + 1, 4.0f, 0.0f)
-    scene.addEntity(img)
+    mainMenuScene.addEntity(img)
 
+    mainMenuScene.childListeners += dialog
+    mainMenuScene.defaultListener = dialog
+    scenes("mainMenu") = mainMenuScene
+
+    // HelpMenu
+    val helpInputMap =
+      Map[Tuple2[scala.swing.event.Key.Value, Int], (Float) => Unit](
+        ((Key.Enter, Input.KEYRELEASED), (delta) => {
+          EventManager.addEvent(new Event(Vector("mainMenu"), E_CHANGE_SCENE))
+        }),
+        ((Key.Escape, Input.KEYRELEASED), (delta) => {
+          EventManager.addEvent(new Event(Vector("mainMenu"), E_CHANGE_SCENE))
+        }))
+
+    var helpMenuScene = new SceneUI(helpInputMap)
+    
+    helpMenuScene.addEntity(border)
+    helpMenuScene.addEntity(img)
+    
+    var helpTextRect = new TextRect2D(new Rectangle2D(50, 10, true), ("Help menu text " * 3 + "\n")*10)
+    helpTextRect.offX = 3
+    helpTextRect.offY = 2
+    helpTextRect.offMinusX = 2
+    helpTextRect.offMinusY = 2
+    
+    val helpEnt = Factory2D.createTextRectangle(helpTextRect)
+    
+    var helpSpatial = helpEnt.getComponent(SpatialComponent.id)
+    helpSpatial.get.position = Vec3(rend.w / 2 - helpTextRect.w / 2, 25, 0.0f)
+    helpMenuScene.addEntity(helpEnt)
+    
+    scenes("helpMenu") = helpMenuScene
+
+    changeScene(scenes("mainMenu"))
   }
   init()
 
@@ -75,6 +110,8 @@ class TestScreen2D(parent: Adventure, rend: Renderer)
 
   def update(delta: Double): Unit = {
     handleEvents(delta.toFloat)
+    if (activeScene.isDefined)
+      activeScene.get.handleEvents(delta.toFloat)
   }
 
   /**
@@ -82,13 +119,16 @@ class TestScreen2D(parent: Adventure, rend: Renderer)
    */
   def draw(): Unit = {
     rend.clear()
-    rend.renderScene(scene)
+    if (activeScene.isDefined)
+      rend.renderScene(activeScene.get)
     display = rend.display
   }
 
   def resume(): Unit = {
-    println("TestScreen2D resumed")
-    EventManager.setActiveInputListener(dialog)
+    if (activeScene.isDefined)
+      EventManager.setActiveInputListener(activeScene.get.defaultListener)
+    else
+      EventManager.setActiveInputListener(this)
   }
 
   def pause() {
@@ -105,6 +145,17 @@ class TestScreen2D(parent: Adventure, rend: Renderer)
     if (event.eventType == E_DIALOG) {
       //parent.changeScreen(parent.screens("gameScreen"))
     }
+    if (event.eventType == E_CHANGE_SCENE) {
+      val e0 = event.args(0)
+      if (e0.isInstanceOf[String] && scenes.contains(e0.asInstanceOf[String])) {
+        changeScene(scenes(e0.asInstanceOf[String]))
+      }
+    }
+  }
+
+  def changeScene(scene: SceneUI) = {
+    activeScene = Some(scene)
+    EventManager.setActiveInputListener(activeScene.get.defaultListener)
   }
 
   val inputMap =

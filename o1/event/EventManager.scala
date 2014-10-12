@@ -8,6 +8,7 @@ object EventType extends Enumeration{
       E_INPUT,
       E_DIALOG,
       E_CHANGE_SCREEN,
+      E_CHANGE_SCENE,
       E_SYSTEM_EXIT = Value
 }
 import o1.event.EventType._

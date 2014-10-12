@@ -17,7 +17,7 @@ class Dialog(
   eventTypes = Vector[EventType](E_INPUT, E_DIALOG)
   
   this.centerText = true
-  var seperatorRows = 1 
+  var seperatorRows = 0
   val marker = "---> "
   val endMarker = " <---"
   val indent = "\u2001"
@@ -95,7 +95,7 @@ class Dialog(
         updateOption(true)
       }),
       ((Key.A, Input.KEYRELEASED), (delta) => {
-        println("Enter")
+        
       }),
       ((Key.D, Input.KEYRELEASED), (delta) => {
 
