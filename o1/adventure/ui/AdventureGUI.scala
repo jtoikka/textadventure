@@ -12,6 +12,8 @@ import java.awt.Color
 import scala.swing.Font
 import o1.event.Listener
 import o1.event.EventType._
+import java.awt.Font
+
 
 ////////////////// NOTE TO STUDENTS //////////////////////////
 // For the purposes of our course, it's not necessary    
@@ -59,7 +61,7 @@ object AdventureGUI extends SimpleSwingApplication with Listener {
       background = Color.BLACK
       foreground = Color.WHITE
       
-      font = new Font("Monospaced", 0, 13)
+      font = new Font(Font.MONOSPACED, 0, 13)
       
       listenTo(keys)
       
@@ -152,7 +154,7 @@ object AdventureGUI extends SimpleSwingApplication with Listener {
     // Layout: 
 
     this.contents = new GridBagPanel { 
-      layout += renderArea           -> new Constraints(1, 0, 1, 1, 1, 1, NorthWest.id, Fill.Both.id, new Insets(5, 5, 5, 5), 0, 0)
+      layout += renderArea-> new Constraints(1, 0, 1, 1, 1, 1, NorthWest.id, Fill.Both.id, new Insets(5, 5, 5, 5), 0, 0)
     }
     
     // Menu:

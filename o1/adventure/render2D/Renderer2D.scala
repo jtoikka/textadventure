@@ -174,6 +174,7 @@ class Renderer2D(w: Int, h: Int) extends Renderer(w, h) {
       }
     }
   }
+
   private def getCharFrom8Bit(i: Int): Char = {
     val charCount = Renderer2D.chars.length()
     val step = 256 / charCount
@@ -183,8 +184,9 @@ class Renderer2D(w: Int, h: Int) extends Renderer(w, h) {
     var char: Char = Renderer2D.chars.charAt(count)
     char
   }
+
   def renderTextRectangle(tRect: TextRect2D, loc: Vec3) {
-    
+    // TODO: Fix offset and implement text wrapping
     val text = tRect.text
     val p1 = new Point2D(loc.x.toInt, loc.y.toInt)
     val p2 = new Point2D(loc.x.toInt + tRect.rect.w,
@@ -196,15 +198,43 @@ class Renderer2D(w: Int, h: Int) extends Renderer(w, h) {
     val offMinusX = tRect.offMinusX
     val offMinusY = tRect.offMinusY
 
-    var lines = text.split('\n')
-    if(tRect.centerText){
-      for(i <- lines.indices){
-        while(lines(i).length < (tRect.w-offMinusX-offX)){
+    var linesOrig = text.split('\n')
+    var lines = Buffer[String]()
+    val lineWidth = tRect.w - offMinusX - offX
+    //    var lines = text.split("\n",lineWidth)
+
+    // Wrap text if needed
+    if (tRect.textWrap) {
+      for (i <- linesOrig.indices) {
+        var a = linesOrig(i)
+        if (a.length > lineWidth) { // if line is longer than max line width
+          var words = a.split(' ')
+          while (!words.isEmpty) {
+            var line = ""
+            while (!words.isEmpty && // add as many words as possible to line
+                line.length() < lineWidth - words(0).length()) {
+              line += words(0) + " "
+              words = words.tail
+            }
+            lines += line
+          }
+        } else {
+          lines += linesOrig(i)
+        }
+      }
+    } else {
+      lines = linesOrig.toBuffer
+    }
+
+    // center text if needed
+    if (tRect.centerText) {
+      for (i <- lines.indices) {
+        while (lines(i).length < lineWidth) {
           lines(i) = " " + lines(i) + " "
         }
       }
     }
-    
+
     var lineCounter = 0
 
     // empty area

@@ -1,5 +1,4 @@
 package o1.event
-
 import scala.collection.mutable.Buffer
 
 object EventType extends Enumeration{
@@ -12,6 +11,7 @@ object EventType extends Enumeration{
       E_SYSTEM_EXIT = Value
 }
 import o1.event.EventType._
+
 class Event(val args: Vector[Any], val eventType: EventType) {}
 
 trait Listener {

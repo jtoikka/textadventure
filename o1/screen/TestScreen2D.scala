@@ -37,16 +37,18 @@ class TestScreen2D(parent: Adventure, rend: Renderer)
 
   var dialog = new Dialog(this,
     new Rectangle2D(26, 10, true),
-    "-" * 30 + "\nMain Menu\n" + "-" * 30,
+    "-" * 100 + "\nMain Menu\n" + "-" * 100,
     dialogOptions)
-
+    
   def init(): Unit = {
     // MainMenu
     var mainMenuScene = new SceneUI(null)
     dialog.offX = 1
     dialog.offMinusX = 1
     dialog.offMinusY = 1
-
+    dialog.textWrap = false
+    dialog.centerText = true
+    
     var rectEnt = Factory2D.createTextRectangle(dialog)
     var testRectSpatial = rectEnt.getComponent(SpatialComponent.id)
     testRectSpatial.get.position = Vec3(rend.w / 2 - dialog.w / 2, 25, 0.0f)
@@ -86,12 +88,13 @@ class TestScreen2D(parent: Adventure, rend: Renderer)
     helpMenuScene.addEntity(border)
     helpMenuScene.addEntity(img)
     
-    var helpTextRect = new TextRect2D(new Rectangle2D(50, 10, true), ("Help menu text " * 3 + "\n")*10)
+    var helpTextRect = new TextRect2D(new Rectangle2D(50, 10, true), ResourceManager.strings("helpMenu"))
     helpTextRect.offX = 3
     helpTextRect.offY = 2
     helpTextRect.offMinusX = 2
     helpTextRect.offMinusY = 2
-    
+    helpTextRect.textWrap = true
+    helpTextRect.centerText = true
     val helpEnt = Factory2D.createTextRectangle(helpTextRect)
     
     var helpSpatial = helpEnt.getComponent(SpatialComponent.id)
