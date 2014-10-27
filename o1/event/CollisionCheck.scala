@@ -3,8 +3,10 @@ package o1.event
 import o1.math.Vec2
 import o1.scene.CollisionComponent
 import o1.scene.Entity
+import o1.inventory.Inventory
 import o1.scene.SpatialComponent
 import scala.Vector
+import o1.scene.InventoryItemComponent
 
 object CollisionCheck {
 
@@ -22,11 +24,11 @@ object CollisionCheck {
             val posEntity = spatialComponent.get.position.xz
             val posOther = otherSpatialComponent.get.position.xz
             val diff = posEntity - posOther
-  
+
             val entityRadius = collisionComponent.get.radius
             val otherRadius = otherCollisionComponent.get.radius
             val totalRadius = entityRadius + otherRadius
-  
+
             // Check if collision
             if (diff.length < totalRadius) {
               val intersection = diff * ((totalRadius - diff.length) / diff.length)
@@ -45,11 +47,23 @@ object CollisionCheck {
       }
     }
   }
-  
+
   def handleCollision(entity: Entity, other: Entity, intersection: Vec2) = {
     // This function is incomplete! 
-    val spatial = entity.getComponent(SpatialComponent.id).get;
-    spatial.position.x += intersection.x
-    spatial.position.z += intersection.y
+    if (entity.getComponent(CollisionComponent.id).get.isActive &&
+        other.getComponent(CollisionComponent.id).get.isActive) {
+      val spatial = entity.getComponent(SpatialComponent.id).get;
+      spatial.position.x += intersection.x
+      spatial.position.z += intersection.y
+    }
+    
+    
+    val invComp = other.getComponent(InventoryItemComponent.id)
+    if(invComp.isDefined){
+      val picked = Inventory.addItem(invComp.get.invItem)
+      if(picked){
+        // TODO: Destroy entity. How ?
+      }
+    }
   }
 }
