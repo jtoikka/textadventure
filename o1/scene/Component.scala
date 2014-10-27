@@ -88,3 +88,11 @@ class InventoryItemComponent(
     val count: Int) extends Component {
   def this(invItem: Item) = this(invItem,1)
 }
+
+object DestroyComponent {
+  val id = classOf[DestroyComponent]
+}
+
+class DestroyComponent extends Component {
+  var destroy = false
+}

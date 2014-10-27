@@ -14,6 +14,7 @@ import o1.event.EventType._
 import o1.inventory.Inventory
 import o1.inventory.Page
 import o1.inventory.Coffee
+import scala.collection.mutable.Buffer
 
 /**
  * GameScreen class.
@@ -22,7 +23,7 @@ import o1.inventory.Coffee
  * @param parent parent Adventure class
  */
 class GameScreen(parent: Adventure, rend: Renderer)
-  extends Screen(parent, rend) with Listener {
+    extends Screen(parent, rend) with Listener {
   eventTypes = Vector[EventType](E_INPUT, E_DIALOG)
   def this(parent: Adventure, x: Int, y: Int) = this(parent, new Renderer3D(x, y))
 
@@ -55,6 +56,8 @@ class GameScreen(parent: Adventure, rend: Renderer)
       handleEvents(delta.toFloat)
       val camSpatial = scene.camera.get.getComponent(SpatialComponent.id).get
       val entitiesAsVector = scene.entities.toVector
+      val destroyedEntities = Buffer[Entity]()
+      
       for (entity <- scene.entities) {
         var spatialOption = entity.getComponent(SpatialComponent.id)
         if (spatialOption.isDefined) {
@@ -80,9 +83,21 @@ class GameScreen(parent: Adventure, rend: Renderer)
             spatial.position = Vec3(-camSpatial.position.x, 0.2f, -camSpatial.position.z)
             spatial.forward = Vec3(-camSpatial.forward.x, camSpatial.forward.y, camSpatial.forward.z)
           }
+
           CollisionCheck.checkCollisions(entity, entitiesAsVector)
         }
+        
+        if ((entity.getComponent(DestroyComponent.id)).isDefined) {
+          val i = entity.getComponent(DestroyComponent.id)
+          if (i.get.destroy)
+            destroyedEntities += entity
+        }
       }
+      
+      for(e <- destroyedEntities){
+        scene.removeEntity(e)
+      }
+      
       updateCamera()
       movementMap.clear()
     } else {
@@ -114,8 +129,8 @@ class GameScreen(parent: Adventure, rend: Renderer)
         inputMap(eventKey)(delta)
       }
     }
-    if(event.eventType == EventType.E_DIALOG && event.args(0) == this){
-      println("dialog says: \"" + event.args(1) +"\"")
+    if (event.eventType == EventType.E_DIALOG && event.args(0) == this) {
+      println("dialog says: \"" + event.args(1) + "\"")
     }
   }
 
@@ -125,17 +140,17 @@ class GameScreen(parent: Adventure, rend: Renderer)
         showHUD = !showHUD
       }),
       ((Key.Escape, Input.KEYRELEASED), (delta) => {
-        EventManager.addEvent(new Event(Vector("menuScreen"),E_CHANGE_SCREEN))
+        EventManager.addEvent(new Event(Vector("menuScreen"), E_CHANGE_SCREEN))
       }),
       ((Key.I, Input.KEYRELEASED), (delta) => {
-        EventManager.addEvent(new Event(Vector("inventoryScreen"),E_CHANGE_SCREEN))
+        EventManager.addEvent(new Event(Vector("inventoryScreen"), E_CHANGE_SCREEN))
       }),
       ((Key.N, Input.KEYRELEASED), (delta) => {
-        if(Inventory.addItem(Page())) println("Added Page to inventory")
+        if (Inventory.addItem(Page())) println("Added Page to inventory")
 
       }),
       ((Key.M, Input.KEYRELEASED), (delta) => {
-        if(Inventory.addItem(Coffee())) println("Added Coffee to inventory")
+        if (Inventory.addItem(Coffee())) println("Added Coffee to inventory")
       }),
       ((Key.W, Input.KEYDOWN), (delta) => {
         movementMap(FORWARD) = 0.15f * delta
@@ -216,12 +231,12 @@ class GameScreen(parent: Adventure, rend: Renderer)
     var monkeySpatial = monkey.getComponent(SpatialComponent.id)
     monkeySpatial.get.position = Vec3(0.0f, 1.0f, 0.5f)
     scene.addEntity(monkey)
-    
+
     var coffee = Factory.createCoffee()
     var coffeeSpatial = coffee.getComponent(SpatialComponent.id)
     coffeeSpatial.get.position = Vec3(2.0f, 1.0f, 0.5f)
     scene.addEntity(coffee)
-    
+
     var floor = Factory.createFloor()
     var floorSpatial = floor.getComponent(SpatialComponent.id)
     val floorFollowCam = new FollowCameraComponent()
@@ -246,11 +261,11 @@ class GameScreen(parent: Adventure, rend: Renderer)
 
     sceneHUD.addEntity(rectEnt)
     /* --------------------------------------------------------------*/
-    
+
     var dialogOptions: Array[Tuple2[String, Event]] = Array[Tuple2[String, Event]](
-    ("Continue", new Event(Vector(this,"cont"), E_DIALOG)),
-    ("Ok", new Event(Vector(this,"ok"), E_DIALOG)))
-    
+      ("Continue", new Event(Vector(this, "cont"), E_DIALOG)),
+      ("Ok", new Event(Vector(this, "ok"), E_DIALOG)))
+
   }
 
   def resume() {
@@ -260,8 +275,8 @@ class GameScreen(parent: Adventure, rend: Renderer)
   def pause() {
     paused = true
   }
-  
+
   def dispose() = {
-    
+
   }
 }
