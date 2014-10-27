@@ -135,7 +135,7 @@ class GameScreen(parent: Adventure, rend: Renderer)
 
       }),
       ((Key.M, Input.KEYRELEASED), (delta) => {
-        if(Inventory.addItem(Coffee())) println("Added Page to inventory")
+        if(Inventory.addItem(Coffee())) println("Added Coffee to inventory")
       }),
       ((Key.W, Input.KEYDOWN), (delta) => {
         movementMap(FORWARD) = 0.15f * delta
@@ -216,7 +216,12 @@ class GameScreen(parent: Adventure, rend: Renderer)
     var monkeySpatial = monkey.getComponent(SpatialComponent.id)
     monkeySpatial.get.position = Vec3(0.0f, 1.0f, 0.5f)
     scene.addEntity(monkey)
-
+    
+    var coffee = Factory.createCoffee()
+    var coffeeSpatial = coffee.getComponent(SpatialComponent.id)
+    coffeeSpatial.get.position = Vec3(2.0f, 1.0f, 0.5f)
+    scene.addEntity(coffee)
+    
     var floor = Factory.createFloor()
     var floorSpatial = floor.getComponent(SpatialComponent.id)
     val floorFollowCam = new FollowCameraComponent()

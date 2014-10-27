@@ -2,6 +2,7 @@ package o1.scene
 
 import o1.math._
 import scala.collection.mutable.Buffer
+import o1.inventory.Item
 
 /**
  * Components make up the data of an entity.
@@ -76,4 +77,14 @@ object InputComponent {
 
 class InputComponent extends Component {
   
+}
+
+object InventoryItemComponent {
+  val id = classOf[InventoryItemComponent]
+}
+
+class InventoryItemComponent(
+    val invItem: Item,
+    val count: Int) extends Component {
+  def this(invItem: Item) = this(invItem,1)
 }

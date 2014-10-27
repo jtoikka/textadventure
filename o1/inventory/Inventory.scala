@@ -23,6 +23,7 @@ object Inventory {
     }
   }
 
+
   def removeItem(item: Item): Boolean  = {
     if (containers.contains(item.getClass())) {
 //      println("Container exists. Removing item")
@@ -44,7 +45,7 @@ object Inventory {
       true
     } else false
   }
-
+  
   override def toString: String = {
     var contString = ""
     for (i <- containers)

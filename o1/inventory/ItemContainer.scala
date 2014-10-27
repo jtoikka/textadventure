@@ -1,20 +1,22 @@
 package o1.inventory
 
 import scala.collection.mutable.Buffer
+
 object ItemContainer {
   val MAX_ITEM_COUNT = 99
 }
+
 class ItemContainer[T] {
   private val items = Buffer[T]()
-  var hiddenContainer = false // if true doesnt show in inventory
+  var hiddenContainer = false // if true doesn't show in inventory
 
-  def addItem(item: AnyRef): Boolean = {
+  def addItem(item: AnyRef): Boolean = { // fuck it
     if (items.size < ItemContainer.MAX_ITEM_COUNT) {
       items += item.asInstanceOf[T]
       true
     } else false
   }
-
+  
   def removeItem(item: AnyRef): Boolean = {
     if (items.size > 0) {
       val i = items.indexOf(item)

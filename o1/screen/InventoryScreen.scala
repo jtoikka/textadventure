@@ -30,13 +30,15 @@ class InventoryScreen(parent: Adventure, rend: Renderer)
       ((Key.Escape, Input.KEYRELEASED), (delta) => {
         EventManager.addEvent(new Event(Vector("gameScreen"), E_CHANGE_SCREEN))
       }),
+      ((Key.I, Input.KEYRELEASED), (delta) => {
+        EventManager.addEvent(new Event(Vector("gameScreen"), E_CHANGE_SCREEN))
+      }),
       ((Key.N, Input.KEYRELEASED), (delta) => {
-        Inventory.addItem(Page())
-        println(Inventory.toString())
+        if (Inventory.addItem(Page())) println("Added Page to inventory")
+
       }),
       ((Key.M, Input.KEYRELEASED), (delta) => {
-        Inventory.addItem(Coffee())
-        println(Inventory.toString())
+        if (Inventory.addItem(Coffee())) println("Added Coffee to inventory")
       }),
       ((Key.W, Input.KEYDOWN), (delta) => {
       }),
