@@ -106,7 +106,7 @@ class Renderer2D(w: Int, h: Int) extends Renderer(w, h) {
   def renderScene(scene: Scene): Unit = {
     for (entity <- scene.entities) {
       var rendComp = entity.getComponent(RenderComponent2D.id)
-      if (rendComp.isDefined) {
+      if (rendComp.isDefined && rendComp.get.isActive) {
         var spatialComp = entity.getComponent(SpatialComponent.id)
 
         renderShape(ResourceManager.shapes(rendComp.get.shape),

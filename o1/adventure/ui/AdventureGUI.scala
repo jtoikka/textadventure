@@ -61,7 +61,7 @@ object AdventureGUI extends SimpleSwingApplication with Listener {
       background = Color.BLACK
       foreground = Color.WHITE
       
-      font = new Font(Font.MONOSPACED, 0, 13)
+      font = new Font(Font.MONOSPACED, 0, 12)
       
       listenTo(keys)
       
@@ -135,7 +135,7 @@ object AdventureGUI extends SimpleSwingApplication with Listener {
     var time = System.currentTimeMillis()
     var timeExtra = 0.0
     
-    val updatePeriod = 33
+    val updatePeriod = 16 //33
     
     var timer = new Timer(updatePeriod, new java.awt.event.ActionListener {
       def actionPerformed(e: java.awt.event.ActionEvent) = {
@@ -152,7 +152,6 @@ object AdventureGUI extends SimpleSwingApplication with Listener {
     timer.start()
     
     // Layout: 
-
     this.contents = new GridBagPanel { 
       layout += renderArea-> new Constraints(1, 0, 1, 1, 1, 1, NorthWest.id, Fill.Both.id, new Insets(5, 5, 5, 5), 0, 0)
     }

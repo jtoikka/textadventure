@@ -45,7 +45,7 @@ object CollisionCheck {
       }
     }
   }
-
+  
   def handleCollision(entity: Entity, other: Entity, intersection: Vec2) = {
     // This function is incomplete! 
     val spatial = entity.getComponent(SpatialComponent.id).get;

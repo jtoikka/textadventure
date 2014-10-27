@@ -1,18 +1,17 @@
 package o1.adventure.render2D
 
-class TextRect2D(var rect: Rectangle2D, var text: String)
-  extends Rectangle2D(rect.w, rect.h, rect.defFill) {
+class TextRect2D(var rect: Rectangle2D, var text: String, var centerText: Boolean, var textWrap: Boolean)
+    extends Rectangle2D(rect.w, rect.h, rect.defFill) {
 
   // Default values
   var offX = 1
   var offY = 1
   var offMinusX = 1
   var offMinusY = 1
-  var centerText = false
-  var textWrap = false
-  
-  def this(rect: Rectangle2D) = this(rect, "")
 
+  def this(rect: Rectangle2D) = this(rect, "", false, false)
+  def this(rect: Rectangle2D, text: String) =
+    this(rect, text, false, false)
   /* Constructors -------------------------------------------------------------------*/
   //  def this(p1: Point2D, p2: Point2D, text: String)
   //    = this(new Rectangle2D(p1,p2,true,1,1),text)
