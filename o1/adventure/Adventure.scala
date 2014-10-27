@@ -46,13 +46,12 @@ class Adventure() extends Listener {
   // Screen stuff
   val screens = Map[String, Screen](
     "menuScreen" -> new MainMenuScreen(this, screenWidth, screenHeight),
-    "gameScreen" -> new GameScreen(this, screenWidth, screenHeight),
-    "testScreen2D" -> new TestScreen2D(this, screenWidth, screenHeight))
+    "gameScreen" -> new GameScreen(this, screenWidth, screenHeight))
   //  val menuScreen: Screen = new MainMenuScreen(this, screenWidth, screenHeight)
   //  val gameScreen: Screen = new GameScreen(this, screenWidth, screenHeight)
   //  val testScreen2D: Screen = new TestScreen2D(this,screenWidth, screenHeight) 
   var currentScreen: Option[Screen] = None
-  changeScreen(screens("testScreen2D"))
+  changeScreen(screens("menuScreen"))
 
   var totalTime = 0.0 // Keep track of how much time has passed
 

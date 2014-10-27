@@ -6,13 +6,15 @@ import java.awt.image.Raster
 import javax.imageio.ImageIO
 import java.io.File
 import java.awt.image.BufferedImage
+import o1.event.Event
+import o1.event.EventType._
 
 object ResourceManager {
   val meshes = Map[String, Mesh]()
   val shapes = Map[String, Shape]()
   val images = Map[String, BufferedImage]()
   val strings = Map[String, String]()
-
+  
   meshes("sphere") = Mesh("data/sphere.obj")
   meshes("monkey") = Mesh("data/monkey.obj")
   meshes("cube") = Mesh("data/cube.obj")
@@ -29,4 +31,5 @@ object ResourceManager {
     "Morbi placerat dui nec cursus bibendum. Integer auctor, " +
     "dui gravida semper maximus, arcu massa semper libero, " +
     "vitae laoreet nulla nulla non leo.\nThis should be alone on this line."
+   
 }

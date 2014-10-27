@@ -102,11 +102,10 @@ class Dialog(
       }),
       ((Key.Enter, Input.KEYRELEASED), (delta) => {
         EventManager.addEvent(options(activeOption)._2)
-        //dispose()
+        
       }),
       ((Key.M, Input.KEYRELEASED), (delta) => {
-//        EventManager.addEvent(new Event(null,E_DIALOG))
-//        dispose()
+        
       }))
       
   val optionsMap = 
@@ -116,5 +115,9 @@ class Dialog(
   
   def dispose() = {
     EventManager.setActiveInputListener(parent)
+  }
+  
+  def setActive() = {
+    EventManager.setActiveInputListener(this)
   }
 }

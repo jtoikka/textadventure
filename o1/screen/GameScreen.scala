@@ -20,7 +20,7 @@ import o1.event.EventType._
  */
 class GameScreen(parent: Adventure, rend: Renderer)
   extends Screen(parent, rend) with Listener {
-  eventTypes = Vector[EventType](E_INPUT)
+  eventTypes = Vector[EventType](E_INPUT, E_DIALOG)
   def this(parent: Adventure, x: Int, y: Int) = this(parent, new Renderer3D(x, y))
 
   /* HUD -------------------------------------*/
@@ -111,6 +111,9 @@ class GameScreen(parent: Adventure, rend: Renderer)
         inputMap(eventKey)(delta)
       }
     }
+    if(event.eventType == EventType.E_DIALOG && event.args(0) == this){
+      println("dialog says: \"" + event.args(1) +"\"")
+    }
   }
 
   val inputMap =
@@ -119,7 +122,7 @@ class GameScreen(parent: Adventure, rend: Renderer)
         showHUD = !showHUD
       }),
       ((Key.Escape, Input.KEYRELEASED), (delta) => {
-        EventManager.addEvent(new Event(Vector("testScreen2D"),E_CHANGE_SCREEN))
+        EventManager.addEvent(new Event(Vector("menuScreen"),E_CHANGE_SCREEN))
       }),
       ((Key.W, Input.KEYDOWN), (delta) => {
         movementMap(FORWARD) = 0.15f * delta
@@ -225,6 +228,11 @@ class GameScreen(parent: Adventure, rend: Renderer)
 
     sceneHUD.addEntity(rectEnt)
     /* --------------------------------------------------------------*/
+    
+    var dialogOptions: Array[Tuple2[String, Event]] = Array[Tuple2[String, Event]](
+    ("Continue", new Event(Vector(this,"cont"), E_DIALOG)),
+    ("Ok", new Event(Vector(this,"ok"), E_DIALOG)))
+    
   }
 
   def resume() {
