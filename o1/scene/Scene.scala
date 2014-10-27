@@ -12,6 +12,8 @@ class Scene {
   
   var camera: Option[Entity] = None
   
+  var world: Option[World] = None
+  
   def addEntity(entity: Entity) {
     entities += entity
   }

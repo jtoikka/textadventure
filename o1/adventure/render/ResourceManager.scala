@@ -20,6 +20,7 @@ object ResourceManager {
   meshes("floor").luminosity = 0.6f
   meshes("testMap") = Mesh("data/spaceStation2.obj")
   meshes("testMap").luminosity = 1.0f
+  meshes("solidTile") = Mesh("data/solid_tile.obj")
   
   images("cross") = ImageIO.read(new File ("data/logo.png"))
 }

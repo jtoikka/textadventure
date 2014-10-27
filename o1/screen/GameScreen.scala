@@ -32,7 +32,7 @@ class GameScreen(parent: Adventure, rend: Renderer)
   /* -----------------------------------------*/
 
   var scene = new Scene()
-
+  
   var paused = true
 
   val FORWARD = 0
@@ -77,7 +77,7 @@ class GameScreen(parent: Adventure, rend: Renderer)
             spatial.position = Vec3(-camSpatial.position.x, 0.2f, -camSpatial.position.z)
             spatial.forward = Vec3(-camSpatial.forward.x, camSpatial.forward.y, camSpatial.forward.z)
           }
-          CollisionCheck.checkCollisions(entity, entitiesAsVector)
+          CollisionCheck.checkCollisions(entity, entitiesAsVector, scene.world)
         }
       }
       updateCamera()
@@ -87,7 +87,7 @@ class GameScreen(parent: Adventure, rend: Renderer)
     }
   }
 
-  def updateCamera() = {
+  private def updateCamera() = {
     var camSpatial = scene.camera.get.getComponent(SpatialComponent.id).get
     val camRight = camSpatial.up.cross(camSpatial.forward)
 
@@ -172,10 +172,12 @@ class GameScreen(parent: Adventure, rend: Renderer)
   }
 
   def init(): Unit = {
+    
+    scene.world = Some(new World(10, 10))
 
     var player = Factory.createPlayer()
     var playerSpatial = player.getComponent(SpatialComponent.id)
-    playerSpatial.get.position = Vec3(0.0f, 1.2f, 0.0f)
+    playerSpatial.get.position = Vec3(3.1f, 1.2f, 5.1f)
     scene.addEntity(player)
 
     scene.camera = Some(Factory.createCamera(player))
@@ -196,7 +198,7 @@ class GameScreen(parent: Adventure, rend: Renderer)
     var monkey = Factory.createMonkey()
     var monkeySpatial = monkey.getComponent(SpatialComponent.id)
     monkeySpatial.get.position = Vec3(0.0f, 1.0f, 0.5f)
-    scene.addEntity(monkey)
+//    scene.addEntity(monkey)
 
     var floor = Factory.createFloor()
     var floorSpatial = floor.getComponent(SpatialComponent.id)
@@ -206,7 +208,7 @@ class GameScreen(parent: Adventure, rend: Renderer)
     //	  scene.addEntity(floor)
 
     var level = Factory.createLevel()
-    scene.addEntity(level)
+//    scene.addEntity(level)
 
     /* HUD ----------------------------------------------------------*/
     hudTextRect = Some(new TextRect2D(new Rectangle2D(32, 5, true),

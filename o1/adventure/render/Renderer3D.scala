@@ -2,10 +2,10 @@ package o1.adventure.render
 
 import scala.collection.mutable.Map
 import scala.swing.event.Key
-
 import scala.math._
 import o1.math._
 import o1.scene._
+import o1.event.SolidTile
 
 
 class Renderer3D(w: Int, h: Int) extends Renderer(w,h) {
@@ -24,12 +24,13 @@ class Renderer3D(w: Int, h: Int) extends Renderer(w,h) {
   val zFar = 30.0f // Far clipping plane
   
 //  val _ramp = "MWNQBHKR#EDFXOAPGUSVZYCLTJ$I*:\u2001"
-//  val _ramp = "\u2588\u2593\u2592\u2591\u2001"
+//  val _ramp = "\u2588\u2591\u2001"
 //  val _ramp = "MHEXGZYJI*\\;:-'.\u2001"
 //  val _ramp = " .`-_':,;^=+/\"|)\\<>)iv%xclrs{*}I?!][1taeo7zjLu" + "nT#JCwfy325Fp6mqSghVd4EgXPGZbYkOA&8U$@KHDBWNMR0Q";
-  val _ramp = "MEX$YTJI*!:,.\u2001"
-  //World location
-//  var worldLoc = new Vec4(0.0f,0.0f,-3.0f,0.0f)
+//  val _ramp = "MEX$YTJI*!:,.\u2001"
+//  val _ramp = "METJI!:,.\u2001"
+  val _ramp = "METI!:,. "
+//  val _ramp = "MJI:\u2001"
   
 /**
  * Matrix for ordered dithering. Used to shift a pixel's luminosity either up or
@@ -149,19 +150,45 @@ class Renderer3D(w: Int, h: Int) extends Renderer(w,h) {
           cameraSpatial.forward, 
           cameraSpatial.up)
           
+      val tileWidth = 2
+          
+      if (scene.world.isDefined) {
+        val world = scene.world.get
+        for (x <- 0 until world.width) {
+          for (y <- 0 until world.depth) {
+            if (world.tileMap.getCollisionTile(x, y).isInstanceOf[SolidTile]) {
+              var translation = 
+                Utility.translate(Vec4(
+                    x * tileWidth, 0.0f, 
+                    y * tileWidth, 
+                    1.0f))
+              var mv = worldToCam * translation
+              var matrix = cameraToClipMatrix * mv
+              renderMesh(ResourceManager.meshes("solidTile"), matrix)
+            }
+          }
+        }
+      }
+          
       
       for (entity <- scene.entities) {
-        var spatialComp = entity.getComponent(SpatialComponent.id)
-        var renderComp = entity.getComponent(RenderComponent.id)
-        if (spatialComp.isDefined && renderComp.isDefined) {
-          var translation = Utility.translate(Vec4(spatialComp.get.position, 1.0f))
-          var rotation = Camera.getLookMatrix(
-            Vec3(0.0f, 0.0f, 0.0f), 
-            spatialComp.get.forward, 
-            spatialComp.get.up)
-          var mv = worldToCam * translation * rotation
-          var matrix = cameraToClipMatrix * mv
-          renderMesh(ResourceManager.meshes(renderComp.get.mesh), matrix)
+        def renderEntity(entity: Entity) = {
+          var spatialComp = entity.getComponent(SpatialComponent.id)
+          var renderComp = entity.getComponent(RenderComponent.id)
+          if (spatialComp.isDefined && renderComp.isDefined) {
+            var translation = Utility.translate(Vec4(spatialComp.get.position, 1.0f))
+            var rotation = Camera.getLookMatrix(
+              Vec3(0.0f, 0.0f, 0.0f), 
+              spatialComp.get.forward, 
+              spatialComp.get.up)
+            var mv = worldToCam * translation * rotation
+            var matrix = cameraToClipMatrix * mv
+            renderMesh(ResourceManager.meshes(renderComp.get.mesh), matrix)
+          }
+        }
+        renderEntity(entity)
+        for (child <- entity.children) {
+          renderEntity(child)
         }
       }
   

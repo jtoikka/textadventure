@@ -15,7 +15,7 @@ object Factory {
     var spatialComp = new SpatialComponent()
     player.addComponent(spatialComp)
     
-    var collisionComponent = new CollisionComponent(0.5f, Buffer[Int]())
+    var collisionComponent = new CollisionComponent(0.6f, Buffer[Int]())
     player.addComponent(collisionComponent)
     
     var inputComponent = new InputComponent()
