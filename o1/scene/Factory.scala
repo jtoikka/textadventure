@@ -86,8 +86,11 @@ object Factory {
     var collisionComponent = new CollisionComponent(1.0f, Buffer[Int]())
     collisionComponent.isActive = false
     cof.addComponent(collisionComponent)
-    val invComponent = new InventoryItemComponent(Coffee())
     
+    val invComponent = new InventoryItemComponent(Coffee())
+    val destComp = new DestroyComponent()
+    
+    cof.addComponent(destComp)
     cof.addComponent(invComponent)
     
     cof.addComponent(renderComp)
