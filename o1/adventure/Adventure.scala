@@ -33,24 +33,12 @@ class Adventure() extends Listener {
   private val renderer = new Renderer3D(screenWidth, screenHeight) // We draw the world here!
   var display = renderer.display // A String displaying the world
 
-  //  var map = new MapGenerator(64, 64, 4, 123123).map
-  //  for (y <- 62 to 0 by -1) {
-  //    for (x <- 0 until 65) {
-  //      print(map(y * (64 + 1) + x))
-  //    }
-  //    print('\n')
-  //  }
-  //  var edgeMap = CornerMap.generateMap(map, 65)
-  //  ResourceManager.meshes("map") = CornerMap.createWallMesh(edgeMap, 2.0f)
-
   // Screen stuff
   val screens = Map[String, Screen](
     "menuScreen" -> new MainMenuScreen(this, screenWidth, screenHeight),
     "gameScreen" -> new GameScreen(this, screenWidth, screenHeight),
     "testScreen2D" -> new TestScreen2D(this, screenWidth, screenHeight))
-  //  val menuScreen: Screen = new MainMenuScreen(this, screenWidth, screenHeight)
-  //  val gameScreen: Screen = new GameScreen(this, screenWidth, screenHeight)
-  //  val testScreen2D: Screen = new TestScreen2D(this,screenWidth, screenHeight) 
+    
   var currentScreen: Option[Screen] = None
   changeScreen(screens("testScreen2D"))
 
@@ -59,13 +47,16 @@ class Adventure() extends Listener {
   var previousInput = Map[scala.swing.event.Key.Value, Boolean]()
 
   /**
-   * Updates current screen and renders it.
+   * Updates all screens, and renders the currently active screen. Handles
+   * events and user input.
+   * 
+   * @param delta amount of time since last update
+   * @param keyMap A map of pressed/released keys
    */
   def update(delta: Double, keyMap: Map[scala.swing.event.Key.Value, Boolean]) = {
     for (screen <- screens.values) {
       screen.update(delta)
     }
-    //    currentScreen.get.update(delta)
     totalTime += delta
     val period = math.Pi * 2.0f / 8.0f
     currentScreen.get.draw()
@@ -74,6 +65,14 @@ class Adventure() extends Listener {
     EventManager.delegateEvents()
   }
 
+  /**
+   * Checks which keys are held down, which keys are up, and which keys have
+   * been pressed or released since the last frame update. Forwards them as
+   * constant values to the Input object.
+   * 
+   * @param keyMap The current state of keys (up or down)
+   * @param delta Time in seconds since the previous frame update
+   */
   def handleInput(
     keyMap: Map[scala.swing.event.Key.Value, Boolean],
     delta: Double) = {
@@ -96,11 +95,12 @@ class Adventure() extends Listener {
         keyMapDelta(key) = state
       }
       Input.handleInput(keyMapDelta, delta)
-      //      currentScreen.get.input(keyMapDelta, delta)
     }
     previousInput = keyMap.clone()
   }
+  
 
+  /** Maps key actions to functions */ 
   val inputMap =
     Map[Tuple2[scala.swing.event.Key.Value, Int], (Float) => Unit](
       ((Key.M, Input.KEYRELEASED), (delta) => {
@@ -114,6 +114,7 @@ class Adventure() extends Listener {
         changeScreen(screens("testScreen2D"))
       }))
 
+  /** Handles [event]. Takes time since last update as parameter [delta]. */
   def handleEvent(event: Event, delta: Float) {
     if (event.eventType == EventType.E_INPUT) {
       val eventKey =
@@ -124,9 +125,7 @@ class Adventure() extends Listener {
     }
   }
 
-  /**
-   * Used to change current screen
-   */
+  /** Change the current screen */
   def changeScreen(screen: Screen): Unit = {
     if (currentScreen != None)
       currentScreen.get.pause()
@@ -135,8 +134,9 @@ class Adventure() extends Listener {
     EventManager.setActiveInputListener(currentScreen.get)
     currentScreen.get.resume()
   }
+  
   def dispose() = {
-    
+
   }
 
 }
