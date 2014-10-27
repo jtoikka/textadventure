@@ -14,61 +14,59 @@ import o1.event.Listener
 import o1.event.EventType._
 import java.awt.Font
 
-
 ////////////////// NOTE TO STUDENTS //////////////////////////
 // For the purposes of our course, it's not necessary    
 // that you understand or even look at the code in this file.
 //////////////////////////////////////////////////////////////
 
-
 /**
- * The singleton object `AdventureGUI` represents a GUI-based version of the Adventure 
- * game application. The object serves as a possible entry point for the game, and can 
- * be run to start up a user interface that operates in a separate window. The GUI reads 
- * its input from a text field and displays information about the game world in uneditable 
+ * The singleton object `AdventureGUI` represents a GUI-based version of the Adventure
+ * game application. The object serves as a possible entry point for the game, and can
+ * be run to start up a user interface that operates in a separate window. The GUI reads
+ * its input from a text field and displays information about the game world in uneditable
  * text areas.
- * 
- * '''NOTE TO STUDENTS: In this course, you don't need to understand how this object works 
+ *
+ * '''NOTE TO STUDENTS: In this course, you don't need to understand how this object works
  * or can be used, apart from the fact that you can use this file to start the program.'''
- * 
- * @see [[AdventureTextUI]] 
+ *
+ * @see [[AdventureTextUI]]
  */
 object AdventureGUI extends SimpleSwingApplication with Listener {
   eventTypes = Vector(E_SYSTEM_EXIT)
-  
-  UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName) 
+
+  UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName)
   var keyMap = Map[scala.swing.event.Key.Value, Boolean](
-      (Key.W,false),(Key.S,false),
-      (Key.A,false),(Key.D,false),
-      (Key.Up,false),(Key.Down,false),
-      (Key.Right,false),(Key.Left,false),
-      (Key.M, false),(Key.N, false),
-      (Key.Enter, false),(Key.Escape, false),
-      (Key.Q,false))
-  
+    (Key.W, false), (Key.S, false),
+    (Key.A, false), (Key.D, false),
+    (Key.Up, false), (Key.Down, false),
+    (Key.Right, false), (Key.Left, false),
+    (Key.M, false), (Key.N, false),
+    (Key.Enter, false), (Key.Escape, false),
+    (Key.I, false), (Key.Q, false))
+
   def top = new MainFrame {
-    
+
     // Access to the internal logic of the application: 
     val game = new Adventure()
-    
+
     // Components: 
 
     val renderArea = new TextArea(game.screenHeight, game.screenWidth) {
       editable = false
       wordWrap = false
       lineWrap = false
-      
+
       background = Color.BLACK
       foreground = Color.WHITE
-      
+
       font = new Font(Font.MONOSPACED, 0, 12)
-      
+
       listenTo(keys)
-      
+
       reactions += {
-      case KeyPressed(_, Key.Space, _, _) =>
+        case KeyPressed(_, Key.Space, _, _) =>
           println("Space is down")
-      case KeyReleased(_, Key.Space, _, _) =>
+        case KeyReleased(_, Key.Space, _, _) =>
           println("Space is up")
       }
     }
@@ -76,7 +74,7 @@ object AdventureGUI extends SimpleSwingApplication with Listener {
     val turnCounter = new Label
 
     // Events: 
-    
+
     renderArea.reactions += {
       case KeyPressed(_, Key.Escape, _, _) =>
         keyMap(Key.Escape) = true
@@ -118,25 +116,29 @@ object AdventureGUI extends SimpleSwingApplication with Listener {
         keyMap(Key.Left) = true
       case KeyReleased(_, Key.Left, _, _) =>
         keyMap(Key.Left) = false
-      case KeyPressed(_, Key.Right,_, _) =>
+      case KeyPressed(_, Key.Right, _, _) =>
         keyMap(Key.Right) = true
       case KeyReleased(_, Key.Right, _, _) =>
         keyMap(Key.Right) = false
-      case KeyPressed(_, Key.M,_, _) =>
+      case KeyPressed(_, Key.M, _, _) =>
         keyMap(Key.M) = true
       case KeyReleased(_, Key.M, _, _) =>
         keyMap(Key.M) = false
-      case KeyPressed(_, Key.N,_, _) =>
+      case KeyPressed(_, Key.N, _, _) =>
         keyMap(Key.N) = true
       case KeyReleased(_, Key.N, _, _) =>
         keyMap(Key.N) = false
-        
+      case KeyPressed(_, Key.I, _, _) =>
+        keyMap(Key.I) = true
+      case KeyReleased(_, Key.I, _, _) =>
+        keyMap(Key.I) = false
+
     }
     var time = System.currentTimeMillis()
     var timeExtra = 0.0
-    
+
     val updatePeriod = 16 //33
-    
+
     var timer = new Timer(updatePeriod, new java.awt.event.ActionListener {
       def actionPerformed(e: java.awt.event.ActionEvent) = {
         var newTime = System.currentTimeMillis()
@@ -148,27 +150,27 @@ object AdventureGUI extends SimpleSwingApplication with Listener {
           update(updatePeriod / 100.0f)
       }
     })
-    
+
     timer.start()
-    
+
     // Layout: 
-    this.contents = new GridBagPanel { 
-      layout += renderArea-> new Constraints(1, 0, 1, 1, 1, 1, NorthWest.id, Fill.Both.id, new Insets(5, 5, 5, 5), 0, 0)
+    this.contents = new GridBagPanel {
+      layout += renderArea -> new Constraints(1, 0, 1, 1, 1, 1, NorthWest.id, Fill.Both.id, new Insets(5, 5, 5, 5), 0, 0)
     }
-    
+
     // Menu:
-    
+
     this.menuBar = new MenuBar {
-	  contents += new Menu("Program") {
-	    val quitAction = Action("Quit") { dispose() }
-	    contents += new MenuItem(quitAction)
-	  }
-    }  
+      contents += new Menu("Program") {
+        val quitAction = Action("Quit") { dispose() }
+        contents += new MenuItem(quitAction)
+      }
+    }
 
     // Set up the initial state of the GUI:
-    
+
     this.title = game.title
-//    this.updateInfo(this.game.welcomeMessage)
+    //    this.updateInfo(this.game.welcomeMessage)
     this.location = new Point(50, 50)
     this.pack()
     this.renderArea.requestFocusInWindow()
@@ -182,15 +184,15 @@ object AdventureGUI extends SimpleSwingApplication with Listener {
     def updateInfo(info: String) = {
       this.title = game.title
       this.renderArea.text = game.currentScreen.get.display
-    } 
+    }
   }
-  
+
   def handleEvent(event: o1.event.Event, delta: Float) = {
     if (event.eventType == E_SYSTEM_EXIT) {
       dispose()
     }
   }
-  
+
   def dispose(): Unit = {
     println("Application Exit!")
     this.quit()

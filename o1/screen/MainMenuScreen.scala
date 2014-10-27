@@ -37,7 +37,7 @@ class MainMenuScreen(parent: Adventure, rend: Renderer)
 
   var dialog = new Dialog(this,
     new Rectangle2D(26, 10, true),
-    "-" * 100 + "\nMain Menu\n" + "-" * 100,
+    "-" * 10 + "\nMain Menu\n" + "-" * 10,
     dialogOptions)
     
   def init(): Unit = {

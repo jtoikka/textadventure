@@ -11,6 +11,9 @@ import o1.adventure.render2D._
 import o1.event.CollisionCheck
 import o1.event._
 import o1.event.EventType._
+import o1.inventory.Inventory
+import o1.inventory.Page
+import o1.inventory.Coffee
 
 /**
  * GameScreen class.
@@ -123,6 +126,16 @@ class GameScreen(parent: Adventure, rend: Renderer)
       }),
       ((Key.Escape, Input.KEYRELEASED), (delta) => {
         EventManager.addEvent(new Event(Vector("menuScreen"),E_CHANGE_SCREEN))
+      }),
+      ((Key.I, Input.KEYRELEASED), (delta) => {
+        EventManager.addEvent(new Event(Vector("inventoryScreen"),E_CHANGE_SCREEN))
+      }),
+      ((Key.N, Input.KEYRELEASED), (delta) => {
+        if(Inventory.addItem(Page())) println("Added Page to inventory")
+
+      }),
+      ((Key.M, Input.KEYRELEASED), (delta) => {
+        if(Inventory.addItem(Coffee())) println("Added Page to inventory")
       }),
       ((Key.W, Input.KEYDOWN), (delta) => {
         movementMap(FORWARD) = 0.15f * delta
