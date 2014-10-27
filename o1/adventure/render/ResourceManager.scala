@@ -25,7 +25,6 @@ object ResourceManager {
   meshes("testMap").luminosity = 1.0f
 
   images("cross") = ImageIO.read(new File("data/logo.png"))
-
   strings("helpMenu") = "This text should wrap nicely. " +
     "Lorem ipsum dolor sit amet, consectetur adipiscing elit. " +
     "Morbi placerat dui nec cursus bibendum. Integer auctor, " +
