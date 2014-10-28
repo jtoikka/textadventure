@@ -87,9 +87,7 @@ class GameScreen(parent: Adventure, rend: Renderer)
           CollisionCheck.checkCollisions(entity, entitiesAsVector)
         }
         
-        if ((entity.getComponent(DestroyComponent.id)).isDefined) {
-          val i = entity.getComponent(DestroyComponent.id)
-          if (i.get.destroy)
+        if (entity.destroy) {
             destroyedEntities += entity
         }
       }

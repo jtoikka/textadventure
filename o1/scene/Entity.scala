@@ -12,6 +12,7 @@ import scala.collection.mutable.Map
  */
 class Entity {
   val components = Map[Class[_ <: Component], Component]()
+  var destroy = false
   
   def addComponent[T <: Component](component: T) {
     components(component.getClass()) = component
