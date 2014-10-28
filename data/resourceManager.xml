@@ -14,7 +14,19 @@
 		</item>
 	</meshes>
 	<images>
-		<item name="cross" path="data/logo.png"></item>
+		<item name="logo_main" path="data/logo.png"></item>
+		<item name="icon_arrow_down" path="data/icons/icon_arrow_down.png"></item>
+		<item name="icon_arrow_left" path="data/icons/icon_arrow_left.png"></item>
+		<item name="icon_arrow_right" path="data/icons/icon_arrow_right.png"></item>
+		<item name="icon_arrow_up" path="data/icons/icon_arrow_up.png"></item>
+		<item name="icon_coffee" path="data/icons/icon_coffee.png"></item>
+		<item name="icon_full" path="data/icons/icon_full.png"></item>
+		<item name="icon_minus" path="data/icons/icon_minus.png"></item>
+		<item name="icon_page" path="data/icons/icon_page.png"></item>
+		<item name="icon_plus" path="data/icons/icon_plus.png"></item>
+		<item name="icon_rupee" path="data/icons/icon_rupee.png"></item>
+		<item name="icon_scull" path="data/icons/icon_scull.png"></item>
+		<item name="icon_smile" path="data/icons/icon_smile.png"></item>
 	</images>
 	<strings>
 		<item name="helpMenu">

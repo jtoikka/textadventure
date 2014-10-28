@@ -164,9 +164,8 @@ class Renderer2D(w: Int, h: Int) extends Renderer(w, h) {
     val fill = image.defFill
     val locX = loc.x.toInt
     val locY = loc.y.toInt
-
-    for (x <- 0 until image.img.getWidth()) {
-      for (y <- 0 until image.img.getHeight()) {
+    for (x <- 0 until image.getWidth) {
+      for (y <- 0 until image.getHeight) {
         var value = image.grayArray(image.calcImageArrayIndex(x, y))
         var char = getCharFrom8Bit(value)
         if (!(!fill && value != 0))
@@ -212,7 +211,7 @@ class Renderer2D(w: Int, h: Int) extends Renderer(w, h) {
           while (!words.isEmpty) {
             var line = ""
             while (!words.isEmpty && // add as many words as possible to line
-                line.length() < lineWidth - words(0).length()) {
+              line.length() < lineWidth - words(0).length()) {
               line += words(0) + " "
               words = words.tail
             }

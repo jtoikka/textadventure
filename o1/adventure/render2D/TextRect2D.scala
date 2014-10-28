@@ -8,7 +8,7 @@ class TextRect2D(var rect: Rectangle2D, var text: String, var centerText: Boolea
   var offY = 1
   var offMinusX = 1
   var offMinusY = 1
-
+  
   def this(rect: Rectangle2D) = this(rect, "", false, false)
   def this(rect: Rectangle2D, text: String) =
     this(rect, text, false, false)
