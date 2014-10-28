@@ -2,11 +2,11 @@
 
 <ResourceManager>
 	<meshes>
-		<item name="sphere" path="data/sphere.obj"></item>
-		<item name="monkey" path="data/monkey.obj"></item>
-		<item name="cube" path="data/cube.obj"></item>
-		<item name="plate" path="data/4x4_plate_floor.obj"></item>
-		<item name="floor" path="data/floor.obj">
+		<item name="sphere" path="data/meshes/sphere.obj"></item>
+		<item name="monkey" path="data/meshes/monkey.obj"></item>
+		<item name="cube" path="data/meshes/cube.obj"></item>
+		<item name="plate" path="data/meshes/4x4_plate_floor.obj"></item>
+		<item name="floor" path="data/meshes/floor.obj">
 			<luminosity>0.6</luminosity>
 		</item>	
 		<item name="testMap" path="data/maps/00_testMap.obj">
@@ -14,7 +14,7 @@
 		</item>
 	</meshes>
 	<images>
-		<item name="logo_main" path="data/logo.png"></item>
+		<item name="logo_main" path="data/icons/logo_main.png"></item>
 		<item name="icon_arrow_down" path="data/icons/icon_arrow_down.png"></item>
 		<item name="icon_arrow_left" path="data/icons/icon_arrow_left.png"></item>
 		<item name="icon_arrow_right" path="data/icons/icon_arrow_right.png"></item>
