@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<ResourceManager>
+	<meshes>
+		<item name="sphere" path="data/sphere.obj"></item>
+		<item name="monkey" path="data/monkey.obj"></item>
+		<item name="cube" path="data/cube.obj"></item>
+		<item name="plate" path="data/4x4_plate_floor.obj"></item>
+		<item name="floor" path="data/floor.obj">
+			<luminosity>"0.6"</luminosity>
+		</item>	
+		<item name="testMap" path="data/maps/00_testMap.obj">
+			<luminosity>"1.0"</luminosity>
+		</item>
+	</meshes>
+	<images>
+		<item name="cross" path="data/logo.png"></item>
+	</images>
+	<strings>
+		<item name="helpMenu">
+			<string>This text should wrap nicely. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi placerat dui nec cursus bibendum. Integer auctor, dui gravida semper maximus, arcu massa semper libero, vitae laoreet nulla nulla non leo.\nThis should be alone on this line.
+			</string>
+		</item>
+	</strings>
+</ResourceManager>
