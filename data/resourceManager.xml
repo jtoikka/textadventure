@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<ResourceManager>
+<resources>
 	<meshes>
 		<item name="sphere" path="data/meshes/sphere.obj"></item>
 		<item name="monkey" path="data/meshes/monkey.obj"></item>
@@ -14,6 +14,7 @@
 		</item>
 	</meshes>
 	<images>
+		<item name="gradient" path="data/icons/gradient_test.png"></item>
 		<item name="logo_main" path="data/icons/logo_main.png"></item>
 		<item name="icon_arrow_down" path="data/icons/icon_arrow_down.png"></item>
 		<item name="icon_arrow_left" path="data/icons/icon_arrow_left.png"></item>
@@ -34,4 +35,4 @@
 			</string>
 		</item>
 	</strings>
-</ResourceManager>
+</resources>

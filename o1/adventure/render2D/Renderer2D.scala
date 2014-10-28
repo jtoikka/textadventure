@@ -168,7 +168,8 @@ class Renderer2D(w: Int, h: Int) extends Renderer(w, h) {
       for (y <- 0 until image.getHeight) {
         var value = image.grayArray(image.calcImageArrayIndex(x, y))
         var char = getCharFrom8Bit(value)
-        if (!(!fill && value != 0))
+//        if (!(!fill && value != 0))
+        if (value != 255)
           setPixel(locX + x, locY + y, char)
       }
     }
@@ -182,6 +183,7 @@ class Renderer2D(w: Int, h: Int) extends Renderer(w, h) {
 
     var char: Char = Renderer2D.chars.charAt(count)
     char
+    
   }
 
   def renderTextRectangle(tRect: TextRect2D, loc: Vec3) {
