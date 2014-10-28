@@ -38,7 +38,7 @@ object Factory2D {
     
     ResourceManager.shapes(uuid) = rect
     
-    var spatialComp = new SpatialComponent() 
+    var spatialComp = new SpatialComponent()
     ent.addComponent(spatialComp)
     
     var rendComp2D = new RenderComponent2D(uuid)

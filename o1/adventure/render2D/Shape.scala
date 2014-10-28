@@ -12,4 +12,6 @@ object Shape{
 abstract class Shape(var color1: Int, var color2: Int ) {
   def this() = this(Shape.defColor,Shape.defColor)
   def this(color: Int) = this(color,color)
+  def getWidth: Int
+  def getHeight: Int
 }
