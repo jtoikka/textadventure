@@ -24,8 +24,15 @@ object ResourceManager {
   for (m <- XMLmeshes) {
     val name = (m \ "@name")
     val path = (m \ "@path")
-    println("Loaded mesh: " + name + ", " + path)
+    val lum = (m \ "luminosity")
+    
+    print("Loaded mesh: " + name + ", " + path)
     meshes(name.text) = Mesh(path.text)
+    if(!lum.text.isEmpty){
+      print(" , Luminosity: " + lum.text.toFloat)
+      meshes(name.text).luminosity = lum.text.toFloat
+    }
+    print("\n")
   }
   
   for (m <- XMLimages) {

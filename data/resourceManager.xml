@@ -7,10 +7,10 @@
 		<item name="cube" path="data/cube.obj"></item>
 		<item name="plate" path="data/4x4_plate_floor.obj"></item>
 		<item name="floor" path="data/floor.obj">
-			<luminosity>"0.6"</luminosity>
+			<luminosity>0.6</luminosity>
 		</item>	
 		<item name="testMap" path="data/maps/00_testMap.obj">
-			<luminosity>"1.0"</luminosity>
+			<luminosity>1.0</luminosity>
 		</item>
 	</meshes>
 	<images>

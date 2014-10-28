@@ -76,7 +76,6 @@ class InventoryScreen(parent: Adventure, rend: Renderer)
 
     invScene.addEntity(rectEnt)
     changeScene(invScene)
-    println("invScreen init ready")
   }
   init()
 
