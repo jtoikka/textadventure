@@ -48,7 +48,6 @@ object ResourceManager {
     println("Loaded string: " + name)
     strings(name.text) = str.text
   }
-  
   //  meshes("sphere") = Mesh("data/sphere.obj")
   //  meshes("monkey") = Mesh("data/monkey.obj")
   //  meshes("cube") = Mesh("data/cube.obj")
