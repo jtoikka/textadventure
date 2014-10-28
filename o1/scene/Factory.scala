@@ -88,14 +88,13 @@ object Factory {
     cof.addComponent(collisionComponent)
     
     val invComponent = new InventoryItemComponent(Coffee())
-    val destComp = new DestroyComponent()
     
-    cof.addComponent(destComp)
     cof.addComponent(invComponent)
     
     cof.addComponent(renderComp)
     cof
   }
+  
   def createPlate() = {
     var monkey = new Entity()
     var spatialComp = new SpatialComponent()

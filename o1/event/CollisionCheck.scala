@@ -7,7 +7,6 @@ import o1.inventory.Inventory
 import o1.scene.SpatialComponent
 import scala.Vector
 import o1.scene.InventoryItemComponent
-import o1.scene.DestroyComponent
 
 object CollisionCheck {
 
@@ -61,8 +60,8 @@ object CollisionCheck {
     val invComp = other.getComponent(InventoryItemComponent.id)
     if(invComp.isDefined){
       val picked = Inventory.addItem(invComp.get.invItem)
-      if(picked && other.getComponent(DestroyComponent.id).isDefined){
-        other.getComponent(DestroyComponent.id).get.destroy = true
+      if(picked){
+        other.destroy = true
       }
     }
   }
