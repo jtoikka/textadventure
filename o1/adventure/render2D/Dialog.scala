@@ -41,6 +41,7 @@ class Dialog(
     updateText()
   }
 
+  // Changes current option
   def updateOption(option: Int) = {
     activeOption = activeOption % options.length
     updateText()
@@ -68,13 +69,6 @@ class Dialog(
         t += (indent * indentCount) + options(option)._1 + "\n"
     }
     text = t
-  }
-
-  override def handleEvents(delta: Float) = {
-    for (event <- events) {
-      handleEvent(event, delta)
-    }
-    events.clear()
   }
   
   def handleEvent(event: Event, delta: Float) = {
