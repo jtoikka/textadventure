@@ -21,6 +21,7 @@ object ResourceManager {
   val XMLimages = xml \ "images" \ "item"
   val XMLstrings = xml \ "strings" \ "item"
 
+  // Load meshes
   for (m <- XMLmeshes) {
     val name = (m \ "@name")
     val path = (m \ "@path")
@@ -35,6 +36,7 @@ object ResourceManager {
     print("\n")
   }
   
+  // Load images
   for (m <- XMLimages) {
     val name = (m \ "@name")
     val path = (m \ "@path")
@@ -42,25 +44,11 @@ object ResourceManager {
     images(name.text) = ImageIO.read(new File(path.text))
   }
   
+  // Load strings
   for (m <- XMLstrings) {
     val name = (m \ "@name")
     val str = (m \ "string")
     println("Loaded string: " + name)
     strings(name.text) = str.text
   }
-  //  meshes("sphere") = Mesh("data/sphere.obj")
-  //  meshes("monkey") = Mesh("data/monkey.obj")
-  //  meshes("cube") = Mesh("data/cube.obj")
-  //  meshes("plate") = Mesh("data/4x4_plate_floor.obj")
-  //  meshes("floor") = Mesh("data/floor.obj")
-  //  meshes("floor").luminosity = 0.6f
-  //  meshes("testMap") = Mesh("data/maps/00_testMap.obj")
-  //  meshes("testMap").luminosity = 1.0f
-  //
-  //  images("cross") = ImageIO.read(new File("data/logo.png"))
-  //  strings("helpMenu") = "This text should wrap nicely. " +
-  //    "Lorem ipsum dolor sit amet, consectetur adipiscing elit. " +
-  //    "Morbi placerat dui nec cursus bibendum. Integer auctor, " +
-  //    "dui gravida semper maximus, arcu massa semper libero, " +
-  //    "vitae laoreet nulla nulla non leo.\nThis should be alone on this line."  
 }

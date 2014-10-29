@@ -12,6 +12,7 @@ import o1.event.Listener
 
 abstract class Screen(private val parent: Adventure, private val rend: Renderer) extends Listener{
   var display = rend.display;
+  
 	/**
 	 * Update method. Used to update screen state
 	 */

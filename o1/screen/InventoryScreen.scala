@@ -20,7 +20,7 @@ import o1.inventory.Page
 import o1.inventory.Coffee
 
 class InventoryScreen(parent: Adventure, rend: Renderer)
-    extends Screen(parent, rend) with Listener {
+    extends Screen(parent, rend){
   eventTypes = Vector[EventType](E_INPUT, E_DIALOG, E_CHANGE_SCENE)
 
   val inputMap =

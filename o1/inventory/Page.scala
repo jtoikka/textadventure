@@ -14,6 +14,6 @@ object Page{
 
 class Page(name: String, desc: String) extends Item(name, desc) with Drawable { 
   
-  var icon: o1.adventure.render2D.Image2D = new Image2D(ImageIO.read(new File("data/cross.png")),false)
-  def getDescription: String = desc
+  var icon = Image2D("icon_page")
+
 }

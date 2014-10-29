@@ -13,8 +13,6 @@ object Coffee{
 }
 
 class Coffee(name: String, desc: String) extends Item(name, desc) with Drawable { 
-  
-  def getDescription: String = desc
 
   var icon = Image2D("icon_coffee")
 }

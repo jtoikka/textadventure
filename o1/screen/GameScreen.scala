@@ -23,9 +23,10 @@ import scala.collection.mutable.Buffer
  * @param parent parent Adventure class
  */
 class GameScreen(parent: Adventure, rend: Renderer)
-    extends Screen(parent, rend) with Listener {
+    extends Screen(parent, rend){
+    def this(parent: Adventure, x: Int, y: Int) = this(parent, new Renderer3D(x, y))
   eventTypes = Vector[EventType](E_INPUT, E_DIALOG)
-  def this(parent: Adventure, x: Int, y: Int) = this(parent, new Renderer3D(x, y))
+
 
   /* HUD -------------------------------------*/
   var rendHUD = new Renderer2D(rend.w, rend.h)

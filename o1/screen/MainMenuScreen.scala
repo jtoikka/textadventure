@@ -20,7 +20,7 @@ import o1.event.Input
 import scala.collection.mutable.Buffer
 
 class MainMenuScreen(parent: Adventure, rend: Renderer)
-    extends Screen(parent, rend) with Listener {
+    extends Screen(parent, rend){
   eventTypes = Vector[EventType](E_INPUT, E_DIALOG, E_CHANGE_SCENE)
 
   def this(parent: Adventure, x: Int, y: Int) = this(parent, new Renderer2D(x, y))
