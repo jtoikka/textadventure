@@ -17,6 +17,8 @@ class Vec2(var x: Float, var y: Float) {
   
   def -(other: Vec2) = new Vec2(this.x - other.x, this.y - other.y)
   
+  def neg() = new Vec2(-this.x, -this.y)
+  
   def *(other: Vec2) = new Vec2(this.x * other.x, this.y * other.y)
   
   def *(value: Float) = new Vec2(this.x * value, this.y * value)
