@@ -1,6 +1,7 @@
 package o1.scene
 
 import scala.collection.mutable.Map
+import scala.collection.mutable.MutableList
 
 /**
  * An entity is a container of components, that can represent any game element.
@@ -14,7 +15,9 @@ class Entity {
   val components = Map[Class[_ <: Component], Component]()
   var destroy = false
   
-  def addComponent[T <: Component](component: T) {
+  val children =  MutableList[Entity]()
+  
+  def addComponent[T <: Component](component: T) = {
     components(component.getClass()) = component
   }
   
@@ -23,5 +26,9 @@ class Entity {
       Some(components(componentClass).asInstanceOf[T])
     else 
       None
+  }
+  
+  def addChild(entity: Entity) = {
+    children += entity
   }
 }
