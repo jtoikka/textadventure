@@ -2,28 +2,30 @@ package o1.scene
 
 import o1.event._
 import o1.math.Vec2
+import o1.adventure.render.ResourceManager
+import scala.collection.mutable.Map
 
 class TileMap(val width: Int, val height: Int) {
   val TILEWIDTH = 2
-  
+
   val collisionMap = Array.fill[CollisionTile](width * height)(new EmptyTile())
   val visualMap = Array.fill[Int](width * height)(0)
-  
-  def getIndex(x: Int, y: Int): Int= {
+
+  def getIndex(x: Int, y: Int): Int = {
     if (x >= 0 && x < width && y >= 0 && y < height) {
       y * width + x
     } else {
       -1
     }
   }
-  
+
   def addCollisionTile[T <: CollisionTile](x: Int, y: Int, tileType: T) = {
     val index = getIndex(x, y)
     if (index != -1) {
       collisionMap(index) = tileType
     }
   }
-  
+
   def getCollisionTile(x: Int, y: Int): CollisionTile = {
     val index = getIndex(x, y)
     if (index >= 0) {
@@ -32,11 +34,11 @@ class TileMap(val width: Int, val height: Int) {
       new EmptyTile()
     }
   }
-  
+
   def checkCollision(pos: Vec2, radius: Float): Vec2 = {
     val upperTileX = (pos.x / TILEWIDTH + 0.5).toInt
     val upperTileY = (pos.y / TILEWIDTH + 0.5).toInt
-    
+
     // Check a 3 x 3 grid
     val tileAPos = Vec2(upperTileX, upperTileY)
     val tileBPos = tileAPos - Vec2(0.0f, 1.0f)
@@ -47,7 +49,7 @@ class TileMap(val width: Int, val height: Int) {
     val tileGPos = tileAPos - Vec2(1.0f, -1.0f)
     val tileHPos = tileAPos - Vec2(-1.0f, -1.0f)
     val tileIPos = tileAPos - Vec2(-1.0f, 1.0f)
-    
+
     val tileAIndex = getIndex(tileAPos.x.toInt, tileAPos.y.toInt)
     val tileBIndex = getIndex(tileBPos.x.toInt, tileBPos.y.toInt)
     val tileCIndex = getIndex(tileCPos.x.toInt, tileCPos.y.toInt)
@@ -57,8 +59,7 @@ class TileMap(val width: Int, val height: Int) {
     val tileGIndex = getIndex(tileGPos.x.toInt, tileGPos.y.toInt)
     val tileHIndex = getIndex(tileHPos.x.toInt, tileHPos.y.toInt)
     val tileIIndex = getIndex(tileIPos.x.toInt, tileIPos.y.toInt)
-    
-    
+
     var intersection = new Vec2(0.0f, 0.0f)
 
     def combineIntersection(intersectionA: Vec2, intersectionB: Vec2): Vec2 = {
@@ -83,7 +84,7 @@ class TileMap(val width: Int, val height: Int) {
       }
       newIntersection
     }
-    
+
     if (tileAIndex >= 0) {
       intersection = collisionMap(tileAIndex).checkIntersection(tileAPos * 2, pos, radius)
     }
@@ -127,31 +128,65 @@ class TileMap(val width: Int, val height: Int) {
         collisionMap(tileIIndex).checkIntersection(tileIPos * 2, pos, radius)
       intersection = combineIntersection(intersection, localIntersection)
     }
-    
+
     intersection
   }
 }
 
-class World(val width: Int, val depth: Int) {
-  val tileMap = new TileMap(10, 10)
+//class World(val width: Int, val depth: Int) {
+//  val tileMap = new TileMap(10, 10)
+//  
+//  tileMap.addCollisionTile(0, 0, new SolidTile())
+//  tileMap.addCollisionTile(1, 0, new SolidTile())
+//  tileMap.addCollisionTile(1, 1, new SolidTile())
+//  tileMap.addCollisionTile(1, 2, new SolidTile())
+//  tileMap.addCollisionTile(2, 0, new SolidTile())
+//  tileMap.addCollisionTile(3, 0, new SolidTile())
+//  tileMap.addCollisionTile(4, 0, new SolidTile())
+//  tileMap.addCollisionTile(5, 0, new SolidTile())
+//  tileMap.addCollisionTile(5, 1, new SolidTile())
+//  tileMap.addCollisionTile(5, 2, new SolidTile())
+//  tileMap.addCollisionTile(5, 3, new SolidTile())
+//  tileMap.addCollisionTile(5, 4, new SolidTile())
+//  tileMap.addCollisionTile(5, 5, new SolidTile())
+//  tileMap.addCollisionTile(5, 6, new SolidTile())
+//  tileMap.addCollisionTile(4, 6, new SolidTile())
+//  tileMap.addCollisionTile(3, 6, new SolidTile())
+//  tileMap.addCollisionTile(2, 6, new SolidTile())
+//  tileMap.addCollisionTile(1, 6, new SolidTile())
+//  tileMap.addCollisionTile(0, 6, new SolidTile())
+//}
+class World(val map: String) {
+
+  val xml = ResourceManager.maps(map)
+
+  val xmlDepth = (xml \ "@height")
+  val xmlWidth = (xml \ "@width")
+
+  val depth = xmlDepth.text.toInt
+  val width = xmlWidth.text.toInt
+
+  val tileMap = new TileMap(depth, width)
+
+  val layers = Map[String, scala.xml.Node]()
+
+  for (layer <- xml \ "layer") {
+    val name = layer \ "@name"
+    layers(name.text) = layer
+  }
   
-  tileMap.addCollisionTile(0, 0, new SolidTile())
-  tileMap.addCollisionTile(1, 0, new SolidTile())
-  tileMap.addCollisionTile(1, 1, new SolidTile())
-  tileMap.addCollisionTile(1, 2, new SolidTile())
-  tileMap.addCollisionTile(2, 0, new SolidTile())
-  tileMap.addCollisionTile(3, 0, new SolidTile())
-  tileMap.addCollisionTile(4, 0, new SolidTile())
-  tileMap.addCollisionTile(5, 0, new SolidTile())
-  tileMap.addCollisionTile(5, 1, new SolidTile())
-  tileMap.addCollisionTile(5, 2, new SolidTile())
-  tileMap.addCollisionTile(5, 3, new SolidTile())
-  tileMap.addCollisionTile(5, 4, new SolidTile())
-  tileMap.addCollisionTile(5, 5, new SolidTile())
-  tileMap.addCollisionTile(5, 6, new SolidTile())
-  tileMap.addCollisionTile(4, 6, new SolidTile())
-  tileMap.addCollisionTile(3, 6, new SolidTile())
-  tileMap.addCollisionTile(2, 6, new SolidTile())
-  tileMap.addCollisionTile(1, 6, new SolidTile())
-  tileMap.addCollisionTile(0, 6, new SolidTile())
+  val collisionTiles = (layers("collision") \ "data" \ "tile").toArray
+  val meshTiles = (layers("mesh") \ "data" \ "tile").toArray
+  for (y <- 0 until depth) {
+    for (x <- 0 until width) {
+      val g = collisionTiles(x * width + y) \ "@gid"
+      if(g.text.toInt == 1){ // firstGid => Solid Tile
+        tileMap.addCollisionTile(x, y, new SolidTile())
+
+      }else{
+      }
+      
+    }
+  }
+
 }
