@@ -81,7 +81,7 @@ object Factory {
 
     cof.addComponent(spatialComp)
 
-    var renderComp = new RenderComponent("cube")
+    var renderComp = new RenderComponent("coffee")
 
     var collisionComponent = new CollisionComponent(1.0f, Buffer[Int]())
     collisionComponent.isActive = false

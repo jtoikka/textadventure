@@ -18,10 +18,17 @@ import scala.collection.mutable.Buffer
 import o1.inventory.Inventory
 import o1.inventory.Page
 import o1.inventory.Coffee
+import o1.inventory.ItemContainer
 
 class InventoryScreen(parent: Adventure, rend: Renderer)
-    extends Screen(parent, rend){
+    extends Screen(parent, rend) {
   eventTypes = Vector[EventType](E_INPUT, E_DIALOG, E_CHANGE_SCENE)
+
+  val iconCoords = Array[Vec2]( Vec2(10, 5), Vec2(40, 5), Vec2(70, 5),
+                                Vec2(10, 25), Vec2(40, 25), Vec2(70, 25))
+                                
+  val iconPlaceFix = Vec2(2,2)
+  var paused = true
 
   val inputMap =
     Map[Tuple2[scala.swing.event.Key.Value, Int], (Float) => Unit](
@@ -55,15 +62,14 @@ class InventoryScreen(parent: Adventure, rend: Renderer)
 
   def this(parent: Adventure, x: Int, y: Int) = this(parent, new Renderer2D(x, y))
 
-  var scenes = Map[String, SceneUI]()
-  var activeScene: Option[SceneUI] = None
+  val scene = new Scene()
 
   val textRect = new TextRect2D(new Rectangle2D(100, 30, true),
     Inventory.toString())
 
-  def init(): Unit = {
-    var invScene = new SceneUI(inputMap)
+  var selected: Int = 0
 
+  def init(): Unit = {
     textRect.offX = 2
     textRect.offMinusX = 1
     textRect.offMinusY = 1
@@ -73,9 +79,12 @@ class InventoryScreen(parent: Adventure, rend: Renderer)
     var rectEnt = Factory2D.createTextRectangle(textRect)
     var testRectSpatial = rectEnt.getComponent(SpatialComponent.id)
     testRectSpatial.get.position = Vec3(rend.w / 2 - textRect.w / 2, rend.h / 2 - textRect.h / 2, 0.0f)
+    scene.addEntity(rectEnt)
 
-    invScene.addEntity(rectEnt)
-    changeScene(invScene)
+    var border = Factory2D.createRectangle(rend.w - 3, rend.h - 3, false)
+    var bSpatial = border.getComponent(SpatialComponent.id)
+    bSpatial.get.position = Vec3(1f, 1f, 0f)
+    scene.addEntity(border)
   }
   init()
 
@@ -84,33 +93,67 @@ class InventoryScreen(parent: Adventure, rend: Renderer)
    */
 
   def update(delta: Double): Unit = {
-    // update text
-    textRect.text = Inventory.toString()
-    handleEvents(delta.toFloat)
-    if (activeScene.isDefined)
-      activeScene.get.handleEvents(delta.toFloat)
-  }
+    // update invetory icons
 
+    if (!paused) {
+//      println("Inventory Screen update")
+      val invArray = Inventory.containers.toArray
+      clearScene()
+
+      // Add evety item to invArray
+      for (i <- invArray.indices) {
+//        println("Found inventory container: " + invArray(i).toString())
+        if (!invArray(i)._2.hiddenContainer) {
+          // Not hidden. Add to the list
+          val icon = invArray(i)._2.icon.get
+          val count = invArray(i)._2.size
+          val name = invArray(i)._2.name
+          
+          var img = Factory2D.createImage(icon)
+          var imgSpat = img.getComponent(SpatialComponent.id)
+          imgSpat.get.position = Vec3(iconCoords(i).x+iconPlaceFix.x, 
+                                 iconCoords(i).y +iconPlaceFix.y, 0.0f)
+          scene.addEntity(img)
+        }
+      }
+
+
+      textRect.text = Inventory.toString()
+    }
+    handleEvents(delta.toFloat)
+  }
+  def clearScene() = {
+    scene.clear()
+    
+    var border = Factory2D.createRectangle(rend.w - 3, rend.h - 3, false)
+    var bSpatial = border.getComponent(SpatialComponent.id)
+    bSpatial.get.position = Vec3(1f, 1f, 0f)
+    scene.addEntity(border)
+    
+    for(i <- iconCoords){
+      var border = Factory2D.createRectangle(19, 11, false)
+      var bSpatial = border.getComponent(SpatialComponent.id)
+      bSpatial.get.position = Vec3(i.x, i.y, 0f)
+      scene.addEntity(border)
+    }
+    
+  }
   /**
    * Draw method. Is used to draw screen to display etc
    */
   def draw(): Unit = {
     rend.clear()
-    if (activeScene.isDefined)
-      rend.renderScene(activeScene.get)
+    rend.renderScene(scene)
     display = rend.display
   }
 
   def resume(): Unit = {
-
-    if (activeScene.isDefined)
-      EventManager.setActiveInputListener(activeScene.get.defaultListener)
-    else
-      EventManager.setActiveInputListener(this)
+    paused = false
+    EventManager.setActiveInputListener(this)
   }
 
   def pause() {
-
+    paused = true
   }
 
   def handleEvent(event: Event, delta: Float) = {
@@ -121,11 +164,6 @@ class InventoryScreen(parent: Adventure, rend: Renderer)
         inputMap(eventKey)(delta)
       }
     }
-  }
-
-  def changeScene(scene: SceneUI) = {
-    activeScene = Some(scene)
-    EventManager.setActiveInputListener(activeScene.get.defaultListener)
   }
 
   def dispose() = {

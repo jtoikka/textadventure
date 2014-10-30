@@ -17,13 +17,14 @@ object Inventory {
 //      println("Container not found. Creating continer and adding item")
       containers(item.getClass()) = new ItemContainer
       val bool = containers(item.getClass()).addItem(item)
+      containers(item.getClass()).icon = Some(item.icon)
+      containers(item.getClass()).name = Some(item.name)
       if (nonHiddenCount > MAX_INVENTORY_ITEM_COUNT)
         println("More inventory items than slots in screen. This is a problem!")
       bool
     }
   }
-
-
+  
   def removeItem(item: Item): Boolean  = {
     if (containers.contains(item.getClass())) {
 //      println("Container exists. Removing item")
