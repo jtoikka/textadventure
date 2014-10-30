@@ -6,7 +6,7 @@
 		<item name="monkey" path="data/meshes/monkey.obj"></item>
 		<item name="cube" path="data/meshes/cube.obj"></item>
 		<item name="coffee" path="data/meshes/coffee.obj"></item>
-		<item name="page" path="data/meshes/cube.obj"></item>
+		<item name="page" path="data/meshes/page.obj"></item>
 		<item name="rupee" path="data/meshes/cube.obj"></item>
 		<item name="door" path="data/meshes/cube.obj"></item>
 		<item name="plate" path="data/meshes/4x4_plate_floor.obj"></item>

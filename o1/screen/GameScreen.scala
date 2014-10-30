@@ -207,7 +207,8 @@ class GameScreen(parent: Adventure, rend: Renderer)
     
 //    scene.world = Some(new World(10, 10))
     
-    scene.world = Some(new World("00_testmap"))
+    //scene.world = Some(new World("00_testmap"))
+    scene.loadMap("00_testmap")
     
     var player = Factory.createPlayer()
     var playerSpatial = player.getComponent(SpatialComponent.id)
@@ -215,39 +216,39 @@ class GameScreen(parent: Adventure, rend: Renderer)
     scene.addEntity(player)
 
     scene.camera = Some(Factory.createCamera(player))
-
-    //	  scene.camera.get.getComponent(SpatialComponent.id).get.position = 
-    //	    Vec3(0.0f, -1.2f, 0.0f)
-
-    //	  var sphere = Factory.createSphere()
-    //	  var spatialComp = sphere.getComponent(SpatialComponent.id)
-    //	  spatialComp.get.position = Vec3(-1.1f, 0.0f, -3.0f)
-    //	  scene.addEntity(sphere)
-
-    //	  var cube = Factory.createCube()
-    //	  var cubeSpatialComp = cube.getComponent(SpatialComponent.id)
-    //	  cubeSpatialComp.get.position = Vec3(-1.1f, 0.0f, -3.0f)
-    //	  scene.addEntity(cube)
-
-    var monkey = Factory.createMonkey()
-    var monkeySpatial = monkey.getComponent(SpatialComponent.id)
-    monkeySpatial.get.position = Vec3(0.0f, 1.0f, 0.5f)
-//    scene.addEntity(monkey)
-
-    var coffee = Factory.createCoffee()
-    var coffeeSpatial = coffee.getComponent(SpatialComponent.id)
-    coffeeSpatial.get.position = Vec3(2.0f, 0.0f, 0.0f)
-    scene.addEntity(coffee)
-
-    var floor = Factory.createFloor()
-    var floorSpatial = floor.getComponent(SpatialComponent.id)
-    val floorFollowCam = new FollowCameraComponent()
-    floor.addComponent(floorFollowCam)
-    floorSpatial.get.position = Vec3(0.0f, 0.05f, 0.0f)
-    //	  scene.addEntity(floor)
-
-    var level = Factory.createLevel()
-//    scene.addEntity(level)
+//
+//    //	  scene.camera.get.getComponent(SpatialComponent.id).get.position = 
+//    //	    Vec3(0.0f, -1.2f, 0.0f)
+//
+//    //	  var sphere = Factory.createSphere()
+//    //	  var spatialComp = sphere.getComponent(SpatialComponent.id)
+//    //	  spatialComp.get.position = Vec3(-1.1f, 0.0f, -3.0f)
+//    //	  scene.addEntity(sphere)
+//
+//    //	  var cube = Factory.createCube()
+//    //	  var cubeSpatialComp = cube.getComponent(SpatialComponent.id)
+//    //	  cubeSpatialComp.get.position = Vec3(-1.1f, 0.0f, -3.0f)
+//    //	  scene.addEntity(cube)
+//
+//    var monkey = Factory.createMonkey()
+//    var monkeySpatial = monkey.getComponent(SpatialComponent.id)
+//    monkeySpatial.get.position = Vec3(0.0f, 1.0f, 0.5f)
+////    scene.addEntity(monkey)
+//
+//    var coffee = Factory.createCoffee()
+//    var coffeeSpatial = coffee.getComponent(SpatialComponent.id)
+//    coffeeSpatial.get.position = Vec3(2.0f, 0.0f, 0.0f)
+//    scene.addEntity(coffee)
+//
+//    var floor = Factory.createFloor()
+//    var floorSpatial = floor.getComponent(SpatialComponent.id)
+//    val floorFollowCam = new FollowCameraComponent()
+//    floor.addComponent(floorFollowCam)
+//    floorSpatial.get.position = Vec3(0.0f, 0.05f, 0.0f)
+//    //	  scene.addEntity(floor)
+//
+//    var level = Factory.createLevel()
+////    scene.addEntity(level)
 
     /* HUD ----------------------------------------------------------*/
     hudTextRect = Some(new TextRect2D(new Rectangle2D(32, 5, true),

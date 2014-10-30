@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" orientation="orthogonal" renderorder="right-down" width="20" height="20" tilewidth="16" tileheight="16">
+<map version="1.0" orientation="orthogonal" renderorder="left-down" width="20" height="20" tilewidth="16" tileheight="16">
  <tileset firstgid="1" name="tile_collision" tilewidth="16" tileheight="16">
   <image source="../tilesets/tile_collision.png" width="128" height="128"/>
  </tileset>
@@ -410,7 +410,7 @@
    <tile gid="1"/>
   </data>
  </layer>
- <layer name="mesh" width="20" height="20" opacity="0.75">
+ <layer name="mesh" width="20" height="20" visible="0" opacity="0.75">
   <data>
    <tile gid="0"/>
    <tile gid="0"/>
@@ -496,14 +496,14 @@
    <tile gid="83"/>
    <tile gid="0"/>
    <tile gid="95"/>
-   <tile gid="89"/>
-   <tile gid="89"/>
-   <tile gid="89"/>
-   <tile gid="89"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
    <tile gid="82"/>
    <tile gid="82"/>
    <tile gid="82"/>
-   <tile gid="89"/>
+   <tile gid="0"/>
    <tile gid="82"/>
    <tile gid="82"/>
    <tile gid="82"/>
@@ -516,9 +516,9 @@
    <tile gid="83"/>
    <tile gid="0"/>
    <tile gid="95"/>
-   <tile gid="89"/>
-   <tile gid="89"/>
-   <tile gid="89"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
    <tile gid="94"/>
    <tile gid="0"/>
    <tile gid="0"/>
@@ -535,10 +535,10 @@
    <tile gid="0"/>
    <tile gid="78"/>
    <tile gid="82"/>
-   <tile gid="89"/>
-   <tile gid="89"/>
-   <tile gid="89"/>
-   <tile gid="89"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
    <tile gid="94"/>
    <tile gid="0"/>
    <tile gid="0"/>
@@ -547,7 +547,7 @@
    <tile gid="0"/>
    <tile gid="98"/>
    <tile gid="92"/>
-   <tile gid="89"/>
+   <tile gid="0"/>
    <tile gid="99"/>
    <tile gid="0"/>
    <tile gid="83"/>
@@ -556,18 +556,18 @@
    <tile gid="83"/>
    <tile gid="0"/>
    <tile gid="95"/>
-   <tile gid="89"/>
-   <tile gid="89"/>
-   <tile gid="89"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
    <tile gid="94"/>
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="78"/>
    <tile gid="82"/>
-   <tile gid="89"/>
-   <tile gid="89"/>
-   <tile gid="89"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
    <tile gid="94"/>
    <tile gid="0"/>
    <tile gid="83"/>
@@ -576,9 +576,9 @@
    <tile gid="83"/>
    <tile gid="0"/>
    <tile gid="95"/>
-   <tile gid="89"/>
-   <tile gid="89"/>
-   <tile gid="89"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
    <tile gid="94"/>
    <tile gid="0"/>
    <tile gid="0"/>
@@ -587,7 +587,7 @@
    <tile gid="0"/>
    <tile gid="106"/>
    <tile gid="93"/>
-   <tile gid="89"/>
+   <tile gid="0"/>
    <tile gid="107"/>
    <tile gid="0"/>
    <tile gid="83"/>
@@ -598,7 +598,7 @@
    <tile gid="106"/>
    <tile gid="93"/>
    <tile gid="93"/>
-   <tile gid="65"/>
+   <tile gid="0"/>
    <tile gid="93"/>
    <tile gid="82"/>
    <tile gid="82"/>
@@ -655,7 +655,7 @@
    <tile gid="0"/>
    <tile gid="78"/>
    <tile gid="82"/>
-   <tile gid="65"/>
+   <tile gid="0"/>
    <tile gid="94"/>
    <tile gid="0"/>
    <tile gid="83"/>
@@ -701,7 +701,7 @@
    <tile gid="83"/>
    <tile gid="0"/>
    <tile gid="95"/>
-   <tile gid="65"/>
+   <tile gid="0"/>
    <tile gid="82"/>
    <tile gid="70"/>
    <tile gid="0"/>
@@ -730,7 +730,7 @@
    <tile gid="98"/>
    <tile gid="92"/>
    <tile gid="92"/>
-   <tile gid="94"/>
+   <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="83"/>
@@ -748,9 +748,9 @@
    <tile gid="83"/>
    <tile gid="0"/>
    <tile gid="95"/>
-   <tile gid="89"/>
-   <tile gid="89"/>
-   <tile gid="94"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="95"/>
@@ -758,7 +758,7 @@
    <tile gid="92"/>
    <tile gid="92"/>
    <tile gid="92"/>
-   <tile gid="89"/>
+   <tile gid="0"/>
    <tile gid="92"/>
    <tile gid="92"/>
    <tile gid="92"/>
@@ -767,10 +767,10 @@
    <tile gid="82"/>
    <tile gid="77"/>
    <tile gid="92"/>
-   <tile gid="89"/>
-   <tile gid="89"/>
-   <tile gid="89"/>
-   <tile gid="94"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="106"/>
@@ -814,4 +814,54 @@
    <tile gid="0"/>
   </data>
  </layer>
+ <objectgroup name="objects">
+  <object name="TestPage" type="coffee" x="289.06" y="17.297" width="13.25" height="13.25">
+   <ellipse/>
+  </object>
+  <object name="TestPage" type="coffee" x="16.0417" y="288.708" width="13.25" height="13.25">
+   <ellipse/>
+  </object>
+  <object name="TestPage" type="coffee" x="16.0417" y="16.7083" width="13.25" height="13.25">
+   <ellipse/>
+  </object>
+  <object name="TestPage" type="coffee" x="287.375" y="290.042" width="13.25" height="13.25">
+   <ellipse/>
+  </object>
+  <object name="TestPage" type="page" x="107.375" y="111.375" width="13.25" height="13.25">
+   <ellipse/>
+  </object>
+  <object name="TestPage" type="monkey" x="77.375" y="90.0417" width="13.25" height="13.25">
+   <ellipse/>
+  </object>
+  <object name="TestPage" type="monkey" x="220.042" y="112.042" width="13.25" height="13.25">
+   <ellipse/>
+  </object>
+  <object name="TestPage" type="page" x="58.7083" y="211.375" width="13.25" height="13.25">
+   <ellipse/>
+  </object>
+  <object name="TestPage" type="page" x="133.375" y="218.708" width="13.25" height="13.25">
+   <ellipse/>
+  </object>
+  <object name="TestPage" type="page" x="254.708" y="252.042" width="13.25" height="13.25">
+   <ellipse/>
+  </object>
+  <object name="TestPage" type="page" x="250.042" y="168.042" width="13.25" height="13.25">
+   <ellipse/>
+  </object>
+  <object name="TestPage" type="page" x="252.042" y="114.042" width="13.25" height="13.25">
+   <ellipse/>
+  </object>
+  <object name="TestPage" type="page" x="127.375" y="281.375" width="13.25" height="13.25">
+   <ellipse/>
+  </object>
+  <object name="TestPage" type="page" x="62.7083" y="280.708" width="13.25" height="13.25">
+   <ellipse/>
+  </object>
+  <object name="TestPage" type="page" x="60.7083" y="128.042" width="13.25" height="13.25">
+   <ellipse/>
+  </object>
+  <object name="TestPage" type="page" x="77.375" y="56.7083" width="13.25" height="13.25">
+   <ellipse/>
+  </object>
+ </objectgroup>
 </map>
