@@ -233,7 +233,7 @@ class GameScreen(parent: Adventure, rend: Renderer)
 
     var coffee = Factory.createCoffee()
     var coffeeSpatial = coffee.getComponent(SpatialComponent.id)
-    coffeeSpatial.get.position = Vec3(2.0f, 1.0f, 0.5f)
+    coffeeSpatial.get.position = Vec3(2.0f, 0.0f, 0.0f)
     scene.addEntity(coffee)
 
     var floor = Factory.createFloor()

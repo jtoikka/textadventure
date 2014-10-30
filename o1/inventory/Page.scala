@@ -12,8 +12,7 @@ object Page{
   def apply() = new Page(defaultName,defaultDesc)
 }
 
-class Page(name: String, desc: String) extends Item(name, desc) with Drawable { 
-  
-  var icon = Image2D("icon_page")
+class Page(name: String, desc: String) extends Item(name, desc){
+  var icon = "icon_page"
 
 }

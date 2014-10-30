@@ -24,5 +24,8 @@ class Scene {
       if (i >= 0) {
         entities.remove(i)
       }
+  }  
+  def clear(){
+    entities.clear()
   }
 }

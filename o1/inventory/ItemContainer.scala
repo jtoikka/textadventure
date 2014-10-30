@@ -1,18 +1,24 @@
 package o1.inventory
 
 import scala.collection.mutable.Buffer
+import o1.adventure.render2D.Image2D
 
 object ItemContainer {
   val MAX_ITEM_COUNT = 99
 }
 
-class ItemContainer[T] {
-  private val items = Buffer[T]()
+class ItemContainer[Item] {
+  private val items = Buffer[Item]()
+  
   var hiddenContainer = false // if true doesn't show in inventory
-
-  def addItem(item: AnyRef): Boolean = { // fuck it
+  
+  var icon:Option[String] = None
+  var name:Option[String] = None
+    
+  def addItem(item: AnyRef): Boolean = {
     if (items.size < ItemContainer.MAX_ITEM_COUNT) {
-      items += item.asInstanceOf[T]
+      val it: Item = item.asInstanceOf[Item]
+      items += it
       true
     } else false
   }
