@@ -10,13 +10,10 @@
 		<item name="rupee" path="data/meshes/cube.obj"></item>
 		<item name="door" path="data/meshes/cube.obj"></item>
 		<item name="plate" path="data/meshes/4x4_plate_floor.obj"></item>
-		<item name="solidTile" path="data/solid_tile.obj"></item>
+		<item name="solidTile" path="data/meshes/solid_tile.obj"></item>
 		<item name="floor" path="data/meshes/floor.obj">
 			<luminosity>0.6</luminosity>
 		</item>	
-		<item name="testMap" path="data/maps/00_testMap.obj">
-			<luminosity>1.0</luminosity>
-		</item>
 	</meshes>
 	<images>
 		<item name="gradient" path="data/icons/gradient_test.png"></item>
@@ -40,4 +37,7 @@
 			</string>
 		</item>
 	</strings>
+	<maps>
+		<item name="00_testmap" path="data/maps/00_testmap.tmx"></item>
+	</maps>
 </resources>

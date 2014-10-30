@@ -205,8 +205,10 @@ class GameScreen(parent: Adventure, rend: Renderer)
 
   def init(): Unit = {
     
-    scene.world = Some(new World(10, 10))
-
+//    scene.world = Some(new World(10, 10))
+    
+    scene.world = Some(new World("00_testmap"))
+    
     var player = Factory.createPlayer()
     var playerSpatial = player.getComponent(SpatialComponent.id)
     playerSpatial.get.position = Vec3(3.1f, 1.2f, 5.1f)

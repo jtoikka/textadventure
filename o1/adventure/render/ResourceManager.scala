@@ -8,18 +8,20 @@ import java.io.File
 import java.awt.image.BufferedImage
 import o1.event.Event
 import o1.event.EventType._
-import scala.xml.XML
+import scala.xml.XML._
 
 object ResourceManager {
   val meshes = Map[String, Mesh]()
   val shapes = Map[String, Shape]()
   val images = Map[String, BufferedImage]()
   val strings = Map[String, String]()
-
-  val xml = XML.loadFile("data/resourceManager.xml")
+  val maps = Map[String, scala.xml.Elem]()
+  
+  val xml = loadFile("data/resourceManager.xml")
   val XMLmeshes = xml \ "meshes" \ "item"
   val XMLimages = xml \ "images" \ "item"
   val XMLstrings = xml \ "strings" \ "item"
+  val XMLmaps = xml \ "maps" \ "item"
 
   // Load meshes
   for (m <- XMLmeshes) {
@@ -50,5 +52,12 @@ object ResourceManager {
     val str = (m \ "string")
     println("Loaded string: " + name)
     strings(name.text) = str.text
+  }
+    // Load maps
+  for (m <- XMLmaps) {
+    val name = (m \ "@name")
+    val path = (m \ "@path")
+    println("Loaded string: " + name)
+    maps(name.text) = loadFile(path.text)
   }
 }
