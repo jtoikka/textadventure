@@ -2,6 +2,10 @@ package o1.scene
 
 import scala.collection.mutable.Buffer
 import o1.inventory.Coffee
+import scala.xml.Node
+import o1.math.Vec2
+import o1.math.Vec3
+import o1.inventory.Page
 
 /**
  * The Factory object is a collection of functions that can be used to create
@@ -15,7 +19,7 @@ object Factory {
 
     var spatialComp = new SpatialComponent()
     player.addComponent(spatialComp)
-    
+
     var collisionComponent = new CollisionComponent(0.6f, Buffer[Int]())
     player.addComponent(collisionComponent)
 
@@ -86,15 +90,15 @@ object Factory {
     var collisionComponent = new CollisionComponent(1.0f, Buffer[Int]())
     collisionComponent.isActive = false
     cof.addComponent(collisionComponent)
-    
+
     val invComponent = new InventoryItemComponent(Coffee())
-    
+
     cof.addComponent(invComponent)
-    
+
     cof.addComponent(renderComp)
     cof
   }
-  
+
   def createPlate() = {
     var monkey = new Entity()
     var spatialComp = new SpatialComponent()
@@ -129,5 +133,89 @@ object Factory {
 
     floor.addComponent(renderComp)
     floor
+  }
+
+  def createEntity(node: Node): Option[Entity] = {
+    val typeName = (node \ "@type").text
+    val ent = typeName match {
+      case "coffee" => Some(createCoffee(node))
+      case "page" => Some(createPage(node))
+      case "monkey" => Some(createMonkey(node))
+      case _ => None
+    }
+    ent
+  }
+
+  def createCoffee(node: Node) = {
+        // TODO: Fix magic size and location conversion
+    val name = (node \ "@name").text
+    val typeName = (node \ "@name").text
+    val loc = Vec2((node \ "@x").text.toFloat, (node \ "@y").text.toFloat)
+    val size = (node \ "@width").text.toFloat
+
+    val entity = new Entity()
+
+    val spatialComp = new SpatialComponent()
+    spatialComp.position = Vec3((loc.x*2)/ 16 , 0.5f, loc.y*2/ 16)
+    entity.addComponent(spatialComp)
+
+    val invComponent = new InventoryItemComponent(Coffee())
+    entity.addComponent(invComponent)
+    
+    var renderComp = new RenderComponent("coffee")
+    entity.addComponent(renderComp)
+    
+    var collisionComponent = new CollisionComponent(size / 16, Buffer[Int]())
+    collisionComponent.isActive = false
+    entity.addComponent(collisionComponent)
+    entity
+  }
+  
+  def createPage(node: Node) = {
+        // TODO: Fix magic size and location conversion
+    val name = (node \ "@name").text
+    val typeName = (node \ "@name").text
+    val loc = Vec2((node \ "@x").text.toFloat, (node \ "@y").text.toFloat)
+    val size = (node \ "@width").text.toFloat
+
+    val entity = new Entity()
+
+    val spatialComp = new SpatialComponent()
+    spatialComp.position = Vec3(loc.x*2/ 16, 0.5f, loc.y*2/ 16)
+    entity.addComponent(spatialComp)
+
+    val invComponent = new InventoryItemComponent(Page())
+    entity.addComponent(invComponent)
+    
+    var renderComp = new RenderComponent("page")
+    entity.addComponent(renderComp)
+    
+    // TODO: Fix magic size conversion
+    var collisionComponent = new CollisionComponent(size / 16, Buffer[Int]())
+    collisionComponent.isActive = false
+    entity.addComponent(collisionComponent)
+    entity
+  }
+  
+  def createMonkey(node: Node) = {
+        // TODO: Fix magic size and location conversion
+    val name = (node \ "@name").text
+    val typeName = (node \ "@name").text
+    val loc = Vec2((node \ "@x").text.toFloat, (node \ "@y").text.toFloat)
+    val size = (node \ "@width").text.toFloat
+
+    val entity = new Entity()
+
+    val spatialComp = new SpatialComponent()
+    spatialComp.position = Vec3(loc.x*2/ 16, 0.5f, loc.y*2/ 16)
+    entity.addComponent(spatialComp)
+    
+    var renderComp = new RenderComponent("monkey")
+    entity.addComponent(renderComp)
+    
+
+    var collisionComponent = new CollisionComponent(size / 16, Buffer[Int]())
+    entity.addComponent(collisionComponent)
+    entity
   }
 }

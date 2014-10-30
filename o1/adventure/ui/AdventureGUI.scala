@@ -137,7 +137,7 @@ object AdventureGUI extends SimpleSwingApplication with Listener {
     var time = System.currentTimeMillis()
     var timeExtra = 0.0
 
-    val updatePeriod = 16 //33
+    val updatePeriod = 33 //33
 
     var timer = new Timer(updatePeriod, new java.awt.event.ActionListener {
       def actionPerformed(e: java.awt.event.ActionEvent) = {

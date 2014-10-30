@@ -16,7 +16,8 @@ object ResourceManager {
   val images = Map[String, BufferedImage]()
   val strings = Map[String, String]()
   val maps = Map[String, scala.xml.Elem]()
-  
+  val entityInfo = Map[String, scala.xml.Node]()
+      
   val xml = loadFile("data/resourceManager.xml")
   val XMLmeshes = xml \ "meshes" \ "item"
   val XMLimages = xml \ "images" \ "item"
@@ -57,7 +58,7 @@ object ResourceManager {
   for (m <- XMLmaps) {
     val name = (m \ "@name")
     val path = (m \ "@path")
-    println("Loaded string: " + name)
+    println("Loaded map: " + name)
     maps(name.text) = loadFile(path.text)
   }
 }
