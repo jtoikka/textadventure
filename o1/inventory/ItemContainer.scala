@@ -7,8 +7,8 @@ object ItemContainer {
   val MAX_ITEM_COUNT = 99
 }
 
-class ItemContainer[Item] {
-  private val items = Buffer[Item]()
+class ItemContainer[T <: Item] {
+  private val items = Buffer[T]()
   
   var hiddenContainer = false // if true doesn't show in inventory
   
@@ -17,7 +17,7 @@ class ItemContainer[Item] {
     
   def addItem(item: AnyRef): Boolean = {
     if (items.size < ItemContainer.MAX_ITEM_COUNT) {
-      val it: Item = item.asInstanceOf[Item]
+      val it: T = item.asInstanceOf[T]
       items += it
       true
     } else false

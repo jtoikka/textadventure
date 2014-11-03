@@ -9,6 +9,8 @@ import java.awt.image.BufferedImage
 import o1.event.Event
 import o1.event.EventType._
 import scala.xml.XML._
+import scala.collection.mutable.Buffer
+import scala.reflect.api._
 
 object ResourceManager {
   val meshes = Map[String, Mesh]()
@@ -16,8 +18,9 @@ object ResourceManager {
   val images = Map[String, BufferedImage]()
   val strings = Map[String, String]()
   val maps = Map[String, scala.xml.Elem]()
-  val entityInfo = Map[String, scala.xml.Node]()
-      
+  // val entityInfo = Map[String, scala.xml.Node]()  
+//  val database = Map[Class[_], Map[String,_]]()
+  
   val xml = loadFile("data/resourceManager.xml")
   val XMLmeshes = xml \ "meshes" \ "item"
   val XMLimages = xml \ "images" \ "item"
