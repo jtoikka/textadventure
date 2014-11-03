@@ -132,30 +132,6 @@ class TileMap(val width: Int, val height: Int) {
     intersection
   }
 }
-
-//class World(val width: Int, val depth: Int) {
-//  val tileMap = new TileMap(10, 10)
-//  
-//  tileMap.addCollisionTile(0, 0, new SolidTile())
-//  tileMap.addCollisionTile(1, 0, new SolidTile())
-//  tileMap.addCollisionTile(1, 1, new SolidTile())
-//  tileMap.addCollisionTile(1, 2, new SolidTile())
-//  tileMap.addCollisionTile(2, 0, new SolidTile())
-//  tileMap.addCollisionTile(3, 0, new SolidTile())
-//  tileMap.addCollisionTile(4, 0, new SolidTile())
-//  tileMap.addCollisionTile(5, 0, new SolidTile())
-//  tileMap.addCollisionTile(5, 1, new SolidTile())
-//  tileMap.addCollisionTile(5, 2, new SolidTile())
-//  tileMap.addCollisionTile(5, 3, new SolidTile())
-//  tileMap.addCollisionTile(5, 4, new SolidTile())
-//  tileMap.addCollisionTile(5, 5, new SolidTile())
-//  tileMap.addCollisionTile(5, 6, new SolidTile())
-//  tileMap.addCollisionTile(4, 6, new SolidTile())
-//  tileMap.addCollisionTile(3, 6, new SolidTile())
-//  tileMap.addCollisionTile(2, 6, new SolidTile())
-//  tileMap.addCollisionTile(1, 6, new SolidTile())
-//  tileMap.addCollisionTile(0, 6, new SolidTile())
-//}
 class World(val map: String) {
 
   val xml = ResourceManager.maps(map)
@@ -179,7 +155,7 @@ class World(val map: String) {
   val meshTiles = (layers("mesh") \ "data" \ "tile").toArray
   for (y <- 0 until depth) {
     for (x <- 0 until width) {
-      val g = collisionTiles(x * width + y) \ "@gid"
+      val g = collisionTiles(y * width + x) \ "@gid"
       if(g.text.toInt == 1){ // firstGid => Solid Tile
         tileMap.addCollisionTile(x, y, new SolidTile())
 

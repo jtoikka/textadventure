@@ -134,20 +134,22 @@ object Factory {
     floor.addComponent(renderComp)
     floor
   }
-
+  
+  // Switch for entity creation , mapSize: Vec2, blockSize: Int
   def createEntity(node: Node): Option[Entity] = {
     val typeName = (node \ "@type").text
     val ent = typeName match {
       case "coffee" => Some(createCoffee(node))
       case "page" => Some(createPage(node))
       case "monkey" => Some(createMonkey(node))
+      case "player" => Some(createPlayer(node))
       case _ => None
     }
     ent
   }
 
   def createCoffee(node: Node) = {
-        // TODO: Fix magic size and location conversion
+    // TODO: Fix magic size and location conversion
     val name = (node \ "@name").text
     val typeName = (node \ "@name").text
     val loc = Vec2((node \ "@x").text.toFloat, (node \ "@y").text.toFloat)
@@ -156,23 +158,23 @@ object Factory {
     val entity = new Entity()
 
     val spatialComp = new SpatialComponent()
-    spatialComp.position = Vec3((loc.x*2)/ 16 , 0.5f, loc.y*2/ 16)
+    spatialComp.position = Vec3((loc.x * 2) / 16, 0.5f, loc.y * 2 / 16)
     entity.addComponent(spatialComp)
 
     val invComponent = new InventoryItemComponent(Coffee())
     entity.addComponent(invComponent)
-    
+
     var renderComp = new RenderComponent("coffee")
     entity.addComponent(renderComp)
-    
+
     var collisionComponent = new CollisionComponent(size / 16, Buffer[Int]())
     collisionComponent.isActive = false
     entity.addComponent(collisionComponent)
     entity
   }
-  
+
   def createPage(node: Node) = {
-        // TODO: Fix magic size and location conversion
+    // TODO: Fix magic size and location conversion
     val name = (node \ "@name").text
     val typeName = (node \ "@name").text
     val loc = Vec2((node \ "@x").text.toFloat, (node \ "@y").text.toFloat)
@@ -181,24 +183,24 @@ object Factory {
     val entity = new Entity()
 
     val spatialComp = new SpatialComponent()
-    spatialComp.position = Vec3(loc.x*2/ 16, 0.5f, loc.y*2/ 16)
+    spatialComp.position = Vec3(loc.x * 2 / 16, 0.5f, loc.y * 2 / 16)
     entity.addComponent(spatialComp)
 
     val invComponent = new InventoryItemComponent(Page())
     entity.addComponent(invComponent)
-    
+
     var renderComp = new RenderComponent("page")
     entity.addComponent(renderComp)
-    
+
     // TODO: Fix magic size conversion
     var collisionComponent = new CollisionComponent(size / 16, Buffer[Int]())
     collisionComponent.isActive = false
     entity.addComponent(collisionComponent)
     entity
   }
-  
+
   def createMonkey(node: Node) = {
-        // TODO: Fix magic size and location conversion
+    // TODO: Fix magic size and location conversion
     val name = (node \ "@name").text
     val typeName = (node \ "@name").text
     val loc = Vec2((node \ "@x").text.toFloat, (node \ "@y").text.toFloat)
@@ -207,15 +209,34 @@ object Factory {
     val entity = new Entity()
 
     val spatialComp = new SpatialComponent()
-    spatialComp.position = Vec3(loc.x*2/ 16, 0.5f, loc.y*2/ 16)
+    spatialComp.position = Vec3(loc.x * 2 / 16, 0.5f, loc.y * 2 / 16)
     entity.addComponent(spatialComp)
-    
+
     var renderComp = new RenderComponent("monkey")
     entity.addComponent(renderComp)
-    
 
     var collisionComponent = new CollisionComponent(size / 16, Buffer[Int]())
     entity.addComponent(collisionComponent)
     entity
+  }
+  
+  def createPlayer(node: Node) = {
+    val name = (node \ "@name").text
+    val typeName = (node \ "@name").text
+    val loc = Vec2((node \ "@x").text.toFloat, (node \ "@y").text.toFloat)
+    val size = (node \ "@width").text.toFloat
+    
+    var player = new Entity()
+
+    var spatialComp = new SpatialComponent()
+    spatialComp.position = Vec3(loc.x * 2 / 16, 1.2f, loc.y * 2 / 16)
+    player.addComponent(spatialComp)
+
+    var collisionComponent = new CollisionComponent(0.6f, Buffer[Int]())
+    player.addComponent(collisionComponent)
+
+    var inputComponent = new InputComponent()
+    player.addComponent(inputComponent)
+    player
   }
 }

@@ -210,13 +210,13 @@ class GameScreen(parent: Adventure, rend: Renderer)
     //scene.world = Some(new World("00_testmap"))
     scene.loadMap("00_testmap")
     
-    var player = Factory.createPlayer()
-    var playerSpatial = player.getComponent(SpatialComponent.id)
-    playerSpatial.get.position = Vec3(3.1f, 1.2f, 5.1f)
-    scene.addEntity(player)
-
-    scene.camera = Some(Factory.createCamera(player))
+//    var player = Factory.createPlayer()
+//    var playerSpatial = player.getComponent(SpatialComponent.id)
+//    playerSpatial.get.position = Vec3(3.1f, 1.2f, 5.1f)
+//    scene.addEntity(player)
 //
+//    scene.camera = Some(Factory.createCamera(player))
+////
 //    //	  scene.camera.get.getComponent(SpatialComponent.id).get.position = 
 //    //	    Vec3(0.0f, -1.2f, 0.0f)
 //

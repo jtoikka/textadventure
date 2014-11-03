@@ -32,18 +32,22 @@ class Scene {
       val name = layer \ "@name"
       objectGroups(name.text) = layer
     }
-    
+
     // main object layer. 
     val objects = objectGroups("objects") \ "object"
-    for(obj <- objects){
+    for (obj <- objects) {
       val ent = Factory.createEntity(obj)
-      if(ent.isDefined)
+      if (ent.isDefined)
         addEntity(ent.get)
     }
-    print(entities.toString)
-//    println(objectGroups)
+    
+    // player
+    val player = (objectGroups("player") \ "object")(0)
+    val playerEnt = Factory.createEntity(player)
+    addEntity(playerEnt.get)
+    this.camera = Some(Factory.createCamera(playerEnt.get))
   }
-  
+
   def addEntity(entity: Entity) {
     entities += entity
   }
