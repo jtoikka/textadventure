@@ -44,7 +44,7 @@ class GameScreen(parent: Adventure, rend: Renderer)
   val RIGHT = 1
   val ROTATERIGHT = 2
   // Grabs movement inputs
-  var movementMap = Map[Int, Float]()
+  val movementMap = Map[Int, Float]()
 
   init()
 
@@ -55,34 +55,13 @@ class GameScreen(parent: Adventure, rend: Renderer)
   def update(delta: Double): Unit = {
     if (!paused) {
       handleEvents(delta.toFloat)
-      val camSpatial = scene.camera.get.getComponent(SpatialComponent.id).get
       val entitiesAsVector = scene.entities.toVector
       val destroyedEntities = Buffer[Entity]()
       
       for (entity <- scene.entities) {
-        var spatialOption = entity.getComponent(SpatialComponent.id)
-        if (spatialOption.isDefined) {
-          var spatial = spatialOption.get
-          var flippedForward = Vec3()
-          flippedForward.x = -spatial.forward.x
-          flippedForward.z = spatial.forward.z
-          var right = spatial.up.cross(flippedForward)
+        if (entity.getComponent(SpatialComponent.id).isDefined) {
           if (entity.getComponent(InputComponent.id).isDefined) {
-            if (movementMap.contains(FORWARD)) {
-              spatial.position += flippedForward * movementMap(FORWARD)
-            }
-            if (movementMap.contains(RIGHT)) {
-              spatial.position -= right * movementMap(RIGHT)
-            }
-            if (movementMap.contains(ROTATERIGHT)) {
-              spatial.forward = (
-                Utility.rotateY(movementMap(ROTATERIGHT)) *
-                Vec4(spatial.forward, 0.0f)).xyz
-            }
-          }
-          if ((entity.getComponent(FollowCameraComponent.id)).isDefined) {
-            spatial.position = Vec3(-camSpatial.position.x, 0.2f, -camSpatial.position.z)
-            spatial.forward = Vec3(-camSpatial.forward.x, camSpatial.forward.y, camSpatial.forward.z)
+            handleMovement(entity)
           }
           CollisionCheck.checkCollisions(entity, entitiesAsVector, scene.world)
         }
@@ -100,6 +79,25 @@ class GameScreen(parent: Adventure, rend: Renderer)
       movementMap.clear()
     } else {
       events.clear()
+    }
+  }
+  
+  def handleMovement(entity: Entity) = {
+    val spatial = entity.getComponent(SpatialComponent.id).get
+    var flippedForward = Vec3()
+    flippedForward.x = -spatial.forward.x
+    flippedForward.z = spatial.forward.z
+    var right = spatial.up.cross(flippedForward)
+    if (movementMap.contains(FORWARD)) {
+      spatial.position += flippedForward * movementMap(FORWARD)
+    }
+    if (movementMap.contains(RIGHT)) {
+      spatial.position -= right * movementMap(RIGHT)
+    }
+    if (movementMap.contains(ROTATERIGHT)) {
+      spatial.forward = (
+        Utility.rotateY(movementMap(ROTATERIGHT)) *
+        Vec4(spatial.forward, 0.0f)).xyz
     }
   }
 
@@ -204,51 +202,7 @@ class GameScreen(parent: Adventure, rend: Renderer)
   }
 
   def init(): Unit = {
-    
-//    scene.world = Some(new World(10, 10))
-    
-    //scene.world = Some(new World("00_testmap"))
     scene.loadMap("00_testmap")
-    
-//    var player = Factory.createPlayer()
-//    var playerSpatial = player.getComponent(SpatialComponent.id)
-//    playerSpatial.get.position = Vec3(3.1f, 1.2f, 5.1f)
-//    scene.addEntity(player)
-//
-//    scene.camera = Some(Factory.createCamera(player))
-////
-//    //	  scene.camera.get.getComponent(SpatialComponent.id).get.position = 
-//    //	    Vec3(0.0f, -1.2f, 0.0f)
-//
-//    //	  var sphere = Factory.createSphere()
-//    //	  var spatialComp = sphere.getComponent(SpatialComponent.id)
-//    //	  spatialComp.get.position = Vec3(-1.1f, 0.0f, -3.0f)
-//    //	  scene.addEntity(sphere)
-//
-//    //	  var cube = Factory.createCube()
-//    //	  var cubeSpatialComp = cube.getComponent(SpatialComponent.id)
-//    //	  cubeSpatialComp.get.position = Vec3(-1.1f, 0.0f, -3.0f)
-//    //	  scene.addEntity(cube)
-//
-//    var monkey = Factory.createMonkey()
-//    var monkeySpatial = monkey.getComponent(SpatialComponent.id)
-//    monkeySpatial.get.position = Vec3(0.0f, 1.0f, 0.5f)
-////    scene.addEntity(monkey)
-//
-//    var coffee = Factory.createCoffee()
-//    var coffeeSpatial = coffee.getComponent(SpatialComponent.id)
-//    coffeeSpatial.get.position = Vec3(2.0f, 0.0f, 0.0f)
-//    scene.addEntity(coffee)
-//
-//    var floor = Factory.createFloor()
-//    var floorSpatial = floor.getComponent(SpatialComponent.id)
-//    val floorFollowCam = new FollowCameraComponent()
-//    floor.addComponent(floorFollowCam)
-//    floorSpatial.get.position = Vec3(0.0f, 0.05f, 0.0f)
-//    //	  scene.addEntity(floor)
-//
-//    var level = Factory.createLevel()
-////    scene.addEntity(level)
 
     /* HUD ----------------------------------------------------------*/
     hudTextRect = Some(new TextRect2D(new Rectangle2D(32, 5, true),

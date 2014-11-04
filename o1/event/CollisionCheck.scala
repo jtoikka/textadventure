@@ -7,8 +7,8 @@ import o1.inventory.Inventory
 import o1.scene.SpatialComponent
 import scala.Vector
 import o1.scene.InventoryItemComponent
-
 import o1.scene.World
+import o1.math.Vec3
 
 object CollisionCheck {
 
@@ -16,72 +16,73 @@ object CollisionCheck {
     val collisionComponent = entity.getComponent(CollisionComponent.id)
     val spatialComponent = entity.getComponent(SpatialComponent.id)
     if (collisionComponent.isDefined) {
-      for (otherEntity <- entities) {
-        if (otherEntity != entity) {
-          val otherCollisionComponent =
-            otherEntity.getComponent(CollisionComponent.id)
-            
-          if (otherCollisionComponent.isDefined) {
-            val otherSpatialComponent =
-              otherEntity.getComponent(SpatialComponent.id)
-              
-            val posEntity = spatialComponent.get.position.xz
-            val posOther = otherSpatialComponent.get.position.xz
-            
-            val diff = posEntity - posOther
+      for (otherEntity <- entities.filter((other) => {
+        other != entity && other.getComponent(CollisionComponent.id).isDefined
+      })) {
+        val otherCollisionComponent = 
+          otherEntity.getComponent(CollisionComponent.id)
+          
+        val otherSpatialComponent =
+          otherEntity.getComponent(SpatialComponent.id)
+          
+        val posEntity = spatialComponent.get.position.xz
+        val posOther = otherSpatialComponent.get.position.xz
+        
+        val diff = posEntity - posOther
+        
+        val totalRadius = 
+          collisionComponent.get.radius + otherCollisionComponent.get.radius
 
-            val entityRadius = collisionComponent.get.radius
-            val otherRadius = otherCollisionComponent.get.radius
-            
-            val totalRadius = entityRadius + otherRadius
-
-            // Check if collision
-            if (diff.length < totalRadius) {
-              // Multiply the vector 'entity to other' by the percentage
-              // intersection of the two collision shapes.
-              val intersection = 
-                diff * ((totalRadius - diff.length) / diff.length)
-              
-              val event1 = new Event(
-                Vector(entity, otherEntity, intersection),
-                EventType.E_COLLISION)
-              val event2 = new Event(
-                Vector(otherEntity, entity, intersection),
-                EventType.E_COLLISION)
-              EventManager.addEvent(event1)
-              EventManager.addEvent(event2)
-              handleCollision(entity, otherEntity, intersection)
-            }
+        // Check if collision
+        if (diff.length < totalRadius) {
+          // Multiply the vector 'entity to other' by the percentage
+          // intersection of the two collision shapes.
+          val intersection = 
+            diff * ((totalRadius - diff.length) / diff.length)
+          
+          def sendIntersectionEvent(entityA: Entity, entityB: Entity) = {
+            val event = new Event(
+              Vector(entityA, entityB, intersection),
+              EventType.E_COLLISION)
+            EventManager.addEvent(event)
           }
+          
+          sendIntersectionEvent(entity, otherEntity)
+          sendIntersectionEvent(otherEntity, entity)
+             
+          handleCollision(entity, otherEntity, intersection)
         }
       }
-      def greatestIntersection(intersections: Vector[Vec2]) = {
-        var greatest = 0.0f
-        var greatestVec = Vec2(0.0f, 0.0f)
-        for (intersection <- intersections) {
-          if (intersection.x.abs > greatest || intersection.y.abs > greatest) {
-            greatestVec = intersection
-            greatest = Math.max(intersection.x.abs, intersection.y.abs)
-          }
-        }
-        greatestVec
-      }
-      
-      if (world.isDefined) {
-        var intersections = world.get.tileMap.checkCollisions(
-            spatialComponent.get.position.xz, 
-            collisionComponent.get.radius)
-        var i = 0
-        while (!intersections.isEmpty && i < 4) {
-          val greatest = greatestIntersection(intersections)
-          spatialComponent.get.position.x -= greatest.x
-          spatialComponent.get.position.z -= greatest.y
-          intersections = world.get.tileMap.checkCollisions(
-            spatialComponent.get.position.xz, 
-            collisionComponent.get.radius) 
-          i += 1
+      checkWorldCollisions(spatialComponent.get.position, collisionComponent.get.radius, world.get)
+    }
+  }
+  
+  def checkWorldCollisions(position: Vec3, collisionRadius: Float, world: World) = {
+    def greatestIntersection(intersections: Vector[Vec2]) = {
+      var greatest = 0.0f
+      var greatestVec = Vec2(0.0f, 0.0f)
+      for (intersection <- intersections) {
+        if (intersection.x.abs > greatest || intersection.y.abs > greatest) {
+          greatestVec = intersection
+          greatest = Math.max(intersection.x.abs, intersection.y.abs)
         }
       }
+      greatestVec
+    }
+    
+    var intersections = world.tileMap.checkCollisions(
+            position.xz, 
+            collisionRadius)
+    var i = 0
+    val maxChecks = 4
+    while (!intersections.isEmpty && i < maxChecks) {
+      val greatest = greatestIntersection(intersections)
+      position.x -= greatest.x
+      position.z -= greatest.y
+      intersections = world.tileMap.checkCollisions(
+        position.xz, 
+        collisionRadius) 
+      i += 1
     }
   }
 

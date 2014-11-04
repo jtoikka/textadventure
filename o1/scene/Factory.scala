@@ -232,7 +232,7 @@ object Factory {
     spatialComp.position = Vec3(loc.x * 2 / 16, 1.2f, loc.y * 2 / 16)
     player.addComponent(spatialComp)
 
-    var collisionComponent = new CollisionComponent(0.6f, Buffer[Int]())
+    var collisionComponent = new CollisionComponent(0.3f, Buffer[Int]())
     player.addComponent(collisionComponent)
 
     var inputComponent = new InputComponent()
