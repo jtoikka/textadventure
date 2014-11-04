@@ -11,6 +11,7 @@ import o1.event.EventType._
 import scala.xml.XML._
 import scala.collection.mutable.Buffer
 import scala.reflect.api._
+import o1.adventure.render2D.Image2D
 
 object ResourceManager {
   val meshes = Map[String, Mesh]()

@@ -5,21 +5,21 @@ import scala.reflect.ClassTag
 
 class TweenObject[T](val obj: T,
                      val tweenType: Int,
-                     val target: Vector[Float],
-                     val duration: Int)(implicit m: ClassTag[T]) {
+                     val target: Vector[Double],
+                     val duration: Double)(implicit m: ClassTag[T]) {
                      
   private val valueCount = target.length
   private val startValues = accessor.getValues(obj, tweenType)
   private var currentValues = startValues
-  private var lastTimeError = Vector.tabulate(valueCount)(_ => 0.0f)
-  private var currentTime = 0
+  private var lastTimeError = Vector.tabulate(valueCount)(_ => 0.0)
+  private var currentTime:Double = 0
   private val steps = getSteps()
   
   
   val selfDestruct = true
   var ready = false
 
-  def update(delta: Int) = {
+  def update(delta: Double) = {
     if (!ready) {
       val time = delta.min(duration - currentTime)
 
@@ -45,7 +45,7 @@ class TweenObject[T](val obj: T,
   private def accessor: TweenAccessor[T] = TweenEngine.getAccessor(m)
 
   private def getSteps() = {
-    val arr = Buffer[Float]()
+    val arr = Buffer[Double]()
     for (i <- target.indices) {
       arr += (target(i) - startValues(i)) / duration
     }
