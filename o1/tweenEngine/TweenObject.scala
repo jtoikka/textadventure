@@ -15,6 +15,7 @@ class TweenObject[T](val obj: T,
   private var currentTime = 0
   private val steps = getSteps()
   
+  
   val selfDestruct = true
   var ready = false
 
