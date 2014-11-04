@@ -8,8 +8,7 @@ import o1.inventory.Item
  * Components make up the data of an entity.
  */
 
-abstract class Component {
-}
+abstract class Component {}
 
 /**
  * Contains the spatial information of an entity. Specifically its [position] in
@@ -20,7 +19,6 @@ case class SpatialComponent(
     var position: Vec3 = Vec3(0.0f, 0.0f, 0.0f),
     var forward: Vec3 = Vec3(0.0f, 0.0f, 1.0f), // The direction the entity is facing
     var up: Vec3 = Vec3(0.0f, 1.0f, 0.0f)) extends Component {
-  
 }
 object SpatialComponent {
   val id = classOf[SpatialComponent]
@@ -42,14 +40,6 @@ object RenderComponent2D {
 
 case class RenderComponent2D(val shape: String) extends Component {
   var isActive = true
-}
-
-object FollowCameraComponent {
-  val id = classOf[FollowCameraComponent]
-}
-
-class FollowCameraComponent extends Component {
-  
 }
 
 object FollowComponent {
