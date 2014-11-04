@@ -26,6 +26,8 @@ class Scene {
 
     // entities
     val xml = ResourceManager.maps(map)
+    val tileSize = (xml \ "@tilewidth").text.toInt
+    println("tileSize " + tileSize)
     val objectGroups = Map[String, scala.xml.Node]()
 
     for (layer <- xml \ "objectgroup") {
@@ -36,14 +38,14 @@ class Scene {
     // main object layer. 
     val objects = objectGroups("objects") \ "object"
     for (obj <- objects) {
-      val ent = Factory.createEntity(obj)
+      val ent = Factory.createEntity(obj,tileSize)
       if (ent.isDefined)
         addEntity(ent.get)
     }
     
     // player
     val player = (objectGroups("player") \ "object")(0)
-    val playerEnt = Factory.createEntity(player)
+    val playerEnt = Factory.createEntity(player,tileSize)
     addEntity(playerEnt.get)
     this.camera = Some(Factory.createCamera(playerEnt.get))
   }
