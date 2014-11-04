@@ -51,6 +51,7 @@ class Image2D(var img: BufferedImage, var defFill: Boolean, val fixWidth: Boolea
       }
     }
   }
+  
   /**
    * Duplicates every pixel horizontally.
    * Use with extreme caution!

@@ -7,23 +7,24 @@ import o1.scene.Entity
 
 object EntityAccessor {
   val ROTATION = 1
+  val X = 2
 }
 class EntityAccessor extends TweenAccessor[Entity] {
 
-  override def getValues(item: Entity, tweenType: Int): Vector[Float] = {
+  override def getValues(item: Entity, tweenType: Int): Vector[Double] = {
     tweenType match {
-      case EntityAccessor.ROTATION => {
-        val spat = item.getComponent(SpatialComponent.id).get
-        val rotation = spat.forward
+      case EntityAccessor.X => {
+        val spatial = item.getComponent(SpatialComponent.id)
+        Vector[Double](spatial.get.position.x)
       }
     }
-    Vector[Float]()
   }
 
-  override def setValues(item: Entity, tweenType: Int, values: Vector[Float]) = {
+  override def setValues(item: Entity, tweenType: Int, values: Vector[Double]) = {
     tweenType match {
-      case TestClassTween.XYZ => {
-
+      case EntityAccessor.X => {
+        val spatial = item.getComponent(SpatialComponent.id)
+        spatial.get.position.x = values(0).toFloat
       }
     }
   }

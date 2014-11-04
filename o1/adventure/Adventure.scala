@@ -12,6 +12,7 @@ import o1.mapGenerator.CornerMap
 import o1.adventure.render.ResourceManager
 import o1.event._
 import o1.event.EventType._
+import o1.tweenEngine.TweenEngine
 /**
  * The class `Adventure` represents text adventure games. An adventure consists of a player and
  * a number of areas that make up the game world. It provides methods for playing the game one
@@ -56,6 +57,7 @@ class Adventure() extends Listener {
    * @param keyMap A map of pressed/released keys
    */
   def update(delta: Double, keyMap: Map[scala.swing.event.Key.Value, Boolean]) = {
+    TweenEngine.update(delta)
     for (screen <- screens.values) {
       screen.update(delta)
     }
