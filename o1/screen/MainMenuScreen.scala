@@ -63,7 +63,7 @@ class MainMenuScreen(parent: Adventure, rend: Renderer)
     var name = "logo_main"
     var img = Factory2D.createImage(name)
     var spat = img.getComponent(SpatialComponent.id)
-//
+    
 //    var width = ResourceManager.images(name).getWidth()
 //    var heigth = ResourceManager.images(name).getHeight()
     val imgName = img.getComponent(RenderComponent2D.id).get.shape

@@ -49,7 +49,7 @@ object TweenEngine {
   /*
    * Updates all tweens
    */
-  def update(delta: Int) = {
+  def update(delta: Double) = {
     if (!tweens.isEmpty) tweens.foreach(_.update(delta))
     destroyTemp.foreach((i: TweenObject[_]) => if(tweens.indexOf(i) >= 0)tweens.remove(tweens.indexOf(i)))
   }

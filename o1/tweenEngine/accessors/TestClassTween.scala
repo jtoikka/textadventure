@@ -10,13 +10,13 @@ object TestClassTween{
 
 class TestClassTween extends TweenAccessor[TestClass] {
 
-  override def getValues(item: TestClass, tweenType: Int): Vector[Float] = {
+  override def getValues(item: TestClass, tweenType: Int): Vector[Double] = {
     tweenType match {
-      case TestClassTween.XYZ => Vector[Float](item.x, item.y, item.z)
+      case TestClassTween.XYZ => Vector[Double](item.x, item.y, item.z)
     }
   }
   
-  override def setValues(item: TestClass, tweenType: Int, values: Vector[Float]) = {
+  override def setValues(item: TestClass, tweenType: Int, values: Vector[Double]) = {
     tweenType match {
       case TestClassTween.XYZ => {
         item.x = values(0).round.toInt

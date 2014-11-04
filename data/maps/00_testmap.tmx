@@ -865,7 +865,7 @@
   </object>
  </objectgroup>
  <objectgroup name="player">
-  <object name="Player" type="player" x="224.875" y="288.375" width="13.25" height="13.25">
+  <object name="Player" type="player" x="176.875" y="272.375" width="13.25" height="13.25">
    <ellipse/>
   </object>
  </objectgroup>
