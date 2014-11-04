@@ -4,6 +4,7 @@ import o1.event._
 import o1.math.Vec2
 import o1.adventure.render.ResourceManager
 import scala.collection.mutable.Map
+import scala.collection.mutable.Buffer
 
 class TileMap(val width: Int, val height: Int) {
   val TILEWIDTH = 2
@@ -34,102 +35,30 @@ class TileMap(val width: Int, val height: Int) {
       new EmptyTile()
     }
   }
-
-  def checkCollision(pos: Vec2, radius: Float): Vec2 = {
-    val upperTileX = (pos.x / TILEWIDTH + 0.5).toInt
-    val upperTileY = (pos.y / TILEWIDTH + 0.5).toInt
-
-    // Check a 3 x 3 grid
-    val tileAPos = Vec2(upperTileX, upperTileY)
-    val tileBPos = tileAPos - Vec2(0.0f, 1.0f)
-    val tileCPos = tileAPos - Vec2(1.0f, 0.0f)
-    val tileDPos = tileAPos - Vec2(0.0f, -1.0f)
-    val tileEPos = tileAPos - Vec2(-1.0f, 0.0f)
-    val tileFPos = tileAPos - Vec2(1.0f, 1.0f)
-    val tileGPos = tileAPos - Vec2(1.0f, -1.0f)
-    val tileHPos = tileAPos - Vec2(-1.0f, -1.0f)
-    val tileIPos = tileAPos - Vec2(-1.0f, 1.0f)
-
-    val tileAIndex = getIndex(tileAPos.x.toInt, tileAPos.y.toInt)
-    val tileBIndex = getIndex(tileBPos.x.toInt, tileBPos.y.toInt)
-    val tileCIndex = getIndex(tileCPos.x.toInt, tileCPos.y.toInt)
-    val tileDIndex = getIndex(tileDPos.x.toInt, tileDPos.y.toInt)
-    val tileEIndex = getIndex(tileEPos.x.toInt, tileEPos.y.toInt)
-    val tileFIndex = getIndex(tileFPos.x.toInt, tileFPos.y.toInt)
-    val tileGIndex = getIndex(tileGPos.x.toInt, tileGPos.y.toInt)
-    val tileHIndex = getIndex(tileHPos.x.toInt, tileHPos.y.toInt)
-    val tileIIndex = getIndex(tileIPos.x.toInt, tileIPos.y.toInt)
-
-    var intersection = new Vec2(0.0f, 0.0f)
-
-    def combineIntersection(intersectionA: Vec2, intersectionB: Vec2): Vec2 = {
-      val newIntersection = new Vec2(intersectionA.x, intersectionA.y)
-      if (intersectionB.x != 0.0f) {
-        if (intersectionA.x != 0.0f) {
-          if (intersectionA.x.abs > intersectionB.x.abs) {
-            newIntersection.x = intersectionB.x
+  
+  def checkCollisions(pos: Vec2, radius: Float): Vector[Vec2] = {
+    val centerTileX = (pos.x / TILEWIDTH).toInt
+    val centerTileY = (pos.y / TILEWIDTH).toInt
+    
+    val intersections = Buffer[Vec2]()
+    
+    for (x <- -1 to 1) {
+      for (y <- -1 to 1) {
+        val tilePos = Vec2(centerTileX + x, centerTileY + y)
+        val tileIndex = getIndex(centerTileX + x, centerTileY + y)
+        
+        if (tileIndex >= 0) {
+          val intersection = 
+            collisionMap(tileIndex).checkIntersection(
+                tilePos * TILEWIDTH, pos, radius)
+                
+          if (intersection.x.abs + intersection.y.abs != 0) {
+            intersections += intersection
           }
-        } else {
-          newIntersection.x = intersectionB.x
         }
       }
-      if (intersectionB.y != 0.0f) {
-        if (intersectionA.y != 0.0f) {
-          if (intersectionA.y.abs < intersectionB.y.abs) {
-            newIntersection.y = intersectionB.y
-          }
-        } else {
-          newIntersection.y = intersectionB.y
-        }
-      }
-      newIntersection
-    }
-
-    if (tileAIndex >= 0) {
-      intersection = collisionMap(tileAIndex).checkIntersection(tileAPos * 2, pos, radius)
-    }
-    if (tileBIndex >= 0 && intersection.x == 0.0f && intersection.y == 0.0f) {
-      val localIntersection =
-        collisionMap(tileBIndex).checkIntersection(tileBPos * 2, pos, radius)
-      intersection = combineIntersection(intersection, localIntersection)
-    }
-    if (tileCIndex >= 0 && intersection.x == 0.0f && intersection.y == 0.0f) {
-      val localIntersection =
-        collisionMap(tileCIndex).checkIntersection(tileCPos * 2, pos, radius)
-      intersection = combineIntersection(intersection, localIntersection)
-    }
-    if (tileDIndex >= 0 && intersection.x == 0.0f && intersection.y == 0.0f) {
-      val localIntersection =
-        collisionMap(tileDIndex).checkIntersection(tileDPos * 2, pos, radius)
-      intersection = combineIntersection(intersection, localIntersection)
-    }
-    if (tileEIndex >= 0 && intersection.x == 0.0f && intersection.y == 0.0f) {
-      val localIntersection =
-        collisionMap(tileEIndex).checkIntersection(tileEPos * 2, pos, radius)
-      intersection = combineIntersection(intersection, localIntersection)
-    }
-    if (tileFIndex >= 0 && intersection.x == 0.0f && intersection.y == 0.0f) {
-      val localIntersection =
-        collisionMap(tileFIndex).checkIntersection(tileFPos * 2, pos, radius)
-      intersection = combineIntersection(intersection, localIntersection)
-    }
-    if (tileGIndex >= 0 && intersection.x == 0.0f && intersection.y == 0.0f) {
-      val localIntersection =
-        collisionMap(tileGIndex).checkIntersection(tileGPos * 2, pos, radius)
-      intersection = combineIntersection(intersection, localIntersection)
-    }
-    if (tileHIndex >= 0 && intersection.x == 0.0f && intersection.y == 0.0f) {
-      val localIntersection =
-        collisionMap(tileHIndex).checkIntersection(tileHPos * 2, pos, radius)
-      intersection = combineIntersection(intersection, localIntersection)
-    }
-    if (tileIIndex >= 0 && intersection.x == 0.0f && intersection.y == 0.0f) {
-      val localIntersection =
-        collisionMap(tileIIndex).checkIntersection(tileIPos * 2, pos, radius)
-      intersection = combineIntersection(intersection, localIntersection)
-    }
-
-    intersection
+    }    
+    intersections.toVector
   }
 }
 class World(val map: String) {
