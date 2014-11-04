@@ -3,7 +3,7 @@ package o1.tweenEngine
 import scala.collection.mutable.Buffer
 import scala.reflect.ClassTag
 
-class TweenObject[T](val obj: T,
+class TweenObject[T <: scala.Product](val obj: T,
                      val tweenType: Int,
                      val target: Vector[Float],
                      val duration: Int)(implicit m: ClassTag[T]) {
@@ -14,6 +14,7 @@ class TweenObject[T](val obj: T,
   private var lastTimeError = Vector.tabulate(valueCount)(_ => 0.0f)
   private var currentTime = 0
   private val steps = getSteps()
+  
   
   val selfDestruct = true
   var ready = false
