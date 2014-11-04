@@ -20,7 +20,7 @@ class Renderer3D(w: Int, h: Int) extends Renderer(w,h) {
   private var _viewRayBuffer = new Array[Vec3](framebufferWidth * h)
 /* ---------------------------------------------------------------------------*/
   
-  val zNear = 0.2f  // Near clipping plane
+  val zNear = 0.1f  // Near clipping plane
   val zFar = 30.0f // Far clipping plane
   
 //  val _ramp = "MWNQBHKR#EDFXOAPGUSVZYCLTJ$I*:\u2001"
