@@ -3,7 +3,7 @@ package o1.tweenEngine
 import scala.collection.mutable.Buffer
 import scala.reflect.ClassTag
 
-class TweenObject[T <: scala.Product](val obj: T,
+class TweenObject[T](val obj: T,
                      val tweenType: Int,
                      val target: Vector[Float],
                      val duration: Int)(implicit m: ClassTag[T]) {
