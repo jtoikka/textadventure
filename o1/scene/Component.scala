@@ -16,10 +16,11 @@ abstract class Component {
  * the scene, the direction [forward] it is pointing in, and the [up] direction
  * for its orientation (by default 'up' is equal to the world's y-axis).
  */
-class SpatialComponent extends Component {
-  var position = Vec3(0.0f, 0.0f, 0.0f)
-  var forward = Vec3(0.0f, 0.0f, 1.0f) // The direction the entity is facing
-  var up = Vec3(0.0f, 1.0f, 0.0f) // The up direction for the entity
+case class SpatialComponent(
+    var position: Vec3 = Vec3(0.0f, 0.0f, 0.0f),
+    var forward: Vec3 = Vec3(0.0f, 0.0f, 1.0f), // The direction the entity is facing
+    var up: Vec3 = Vec3(0.0f, 1.0f, 0.0f)) extends Component {
+  
 }
 object SpatialComponent {
   val id = classOf[SpatialComponent]
@@ -32,14 +33,14 @@ object RenderComponent {
   val id = classOf[RenderComponent]
 }
 
-class RenderComponent(val mesh: String) extends Component {
+case class RenderComponent(val mesh: String) extends Component {
 }
 
 object RenderComponent2D {
   val id = classOf[RenderComponent2D]
 }
 
-class RenderComponent2D(val shape: String) extends Component {
+case class RenderComponent2D(val shape: String) extends Component {
   var isActive = true
 }
 
@@ -55,7 +56,7 @@ object FollowComponent {
   val id = classOf[FollowComponent]
 }
 
-class FollowComponent(val entity: Entity) extends Component {
+case class FollowComponent(val entity: Entity) extends Component {
   
 }
 
@@ -83,8 +84,8 @@ object InventoryItemComponent {
   val id = classOf[InventoryItemComponent]
 }
 
-class InventoryItemComponent(
+case class InventoryItemComponent(
     val invItem: Item,
-    val count: Int) extends Component {
-  def this(invItem: Item) = this(invItem,1)
+    val count: Int = 1) extends Component {
+
 }

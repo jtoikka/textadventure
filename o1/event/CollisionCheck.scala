@@ -55,17 +55,30 @@ object CollisionCheck {
           }
         }
       }
+      def greatestIntersection(intersections: Vector[Vec2]) = {
+        var greatest = 0.0f
+        var greatestVec = Vec2(0.0f, 0.0f)
+        for (intersection <- intersections) {
+          if (intersection.x.abs > greatest || intersection.y.abs > greatest) {
+            greatestVec = intersection
+            greatest = Math.max(intersection.x.abs, intersection.y.abs)
+          }
+        }
+        greatestVec
+      }
+      
       if (world.isDefined) {
-        var intersection = world.get.tileMap.checkCollision(
+        var intersections = world.get.tileMap.checkCollisions(
             spatialComponent.get.position.xz, 
             collisionComponent.get.radius)
         var i = 0
-        while ((intersection.x != 0.0f || intersection.y != 0.0f) && i < 8) {
-          spatialComponent.get.position.x -= intersection.x
-          spatialComponent.get.position.z -= intersection.y
-          intersection = world.get.tileMap.checkCollision(
+        while (!intersections.isEmpty && i < 4) {
+          val greatest = greatestIntersection(intersections)
+          spatialComponent.get.position.x -= greatest.x
+          spatialComponent.get.position.z -= greatest.y
+          intersections = world.get.tileMap.checkCollisions(
             spatialComponent.get.position.xz, 
-            collisionComponent.get.radius)
+            collisionComponent.get.radius) 
           i += 1
         }
       }
