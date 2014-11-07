@@ -6,6 +6,7 @@ import scala.math._
 import o1.math._
 import o1.scene._
 import o1.event.SolidTile
+import o1.adventure.render2D.Image2D
 
 
 class Renderer3D(w: Int, h: Int) extends Renderer(w,h) {
@@ -164,7 +165,7 @@ class Renderer3D(w: Int, h: Int) extends Renderer(w,h) {
                     1.0f))
               var mv = worldToCam * translation
               var matrix = cameraToClipMatrix * mv
-              renderMesh(ResourceManager.meshes("solidTile"), matrix)
+              renderMesh(ResourceManager.meshes("uv_cube"), matrix, Image2D("icon_coffee"))
             }
           }
         }
@@ -183,7 +184,7 @@ class Renderer3D(w: Int, h: Int) extends Renderer(w,h) {
               spatialComp.get.up)
             var mv = worldToCam * translation * rotation
             var matrix = cameraToClipMatrix * mv
-            renderMesh(ResourceManager.meshes(renderComp.get.mesh), matrix)
+            renderMesh(ResourceManager.meshes(renderComp.get.mesh), matrix, Image2D("icon_cross"))
           }
         }
         renderEntity(entity)
@@ -217,6 +218,7 @@ class Renderer3D(w: Int, h: Int) extends Renderer(w,h) {
           val ambient = 0.0f * diffuse
           val diffuseLight = depth * 0.2f
           var lighting = specular + ambient + diffuseLight
+//          lighting = 1.0f
           if (depth >= 1.0) lighting = 0.0f
           val bayer = bayerMatrix(8 * bayesRow + bayesCollumn)
           var v = (lighting + (bayer * ditherStrength)) * _ramp.size
@@ -243,13 +245,13 @@ class Renderer3D(w: Int, h: Int) extends Renderer(w,h) {
  * Renders a [mesh] to screen. Applies Model-View-Projection matrix [MVP] to 
  * mesh prior to rendering.
  */
-  def renderMesh(mesh: Mesh, MVP: Mat4) = {
+  def renderMesh(mesh: Mesh, MVP: Mat4, texture: Image2D) = {
     mesh.transform(MVP)
-    for(i <- 0 to mesh.indexBuffer.length / 3) {
+    for(i <- 0 to mesh.numTriangles) {
       var triangles = mesh.getTriangles(i)
       if (!triangles.isEmpty) {
         for (triangle <- triangles) {
-          renderTriangle(triangle, mesh.luminosity)
+          renderTriangle(triangle, mesh.luminosity, texture)
         }
       }
     }
@@ -259,7 +261,7 @@ class Renderer3D(w: Int, h: Int) extends Renderer(w,h) {
  * Renders a mesh's triangle to screen. See mesh.getTriangle function for
  * details on how to get a triangle.
  */
-  def renderTriangle(triangle: Triangle, luminosity: Float) = {
+  def renderTriangle(triangle: Triangle, luminosity: Float, texture: Image2D) = {
     val screenA = screenCoordinates(triangle.a)
     val screenB = screenCoordinates(triangle.b)
     val screenC = screenCoordinates(triangle.c)
@@ -275,7 +277,7 @@ class Renderer3D(w: Int, h: Int) extends Renderer(w,h) {
 /* Culling -------------------------------------------------------------------*/
     val normal = vecB.xyz.cross(vecA.xyz)      
     if (screenNormal.z < 0.0) {
-      fillTriangle(screenA, screenB, screenC, luminosity, normal.normalize)
+      fillTexturedTriangle(screenA, screenB, screenC, triangle.uv1, triangle.uv2, triangle.uv3, texture, normal.normalize)
     }
   }
   
@@ -309,6 +311,84 @@ class Renderer3D(w: Int, h: Int) extends Renderer(w,h) {
             val i = (depth * _ramp.size).toInt
             _depthBuffer(index) = depth
             _diffuseBuffer(index) = luminosity
+            _normalBuffer(index) = normal
+          }
+        }
+      }
+    }
+  }
+  
+  val testTexture = Array[Int](
+        0, 255,   0, 255,   0, 255,   0, 255,
+      255,   0, 255,   0, 255,   0, 255,   0,
+        0,   0,   0, 255,   0, 255, 255, 255,
+      255,   0, 255,   0, 255,   0, 255,   0,
+        0, 255,   0,   0,   0, 255,   0, 255,
+      255,   0, 255,   0, 255,   0, 255,   0,
+        0,   0,   0, 255,   0, 255, 255, 255,
+      255,   0, 255,   0, 255,   0, 255,   0)
+      
+  val testTexture2 = Array[Int](
+      0, 1, 1, 0, 0, 1, 1, 0,
+      1, 0, 0, 1, 1, 0, 0, 1,
+      1, 0, 0, 0, 0, 0, 0, 1,
+      1, 0, 0, 0, 0, 0, 0, 1,
+      0, 1, 0, 0, 0, 0, 1, 0,
+      0, 1, 0, 0, 0, 0, 1, 0,
+      0, 0, 1, 0, 0, 1, 0, 0,
+      0, 0, 0, 1, 1, 0, 0, 0)
+      
+//  for (i <- testTexture2.indices) {
+//    pixel = pixel * 255
+//  }
+  
+  val testWidth = 8
+  
+  def fillTexturedTriangle(
+      a: Vec4, b: Vec4, c: Vec4,
+      uv1: Vec2, uv2: Vec2, uv3: Vec2,
+      image: Image2D, 
+      normal: Vec3) = {
+    var minX = max(0, min(a.x, min(b.x, c.x)))
+    var minY = max(0, min(a.y, min(b.y, c.y)))
+    var maxX = min(framebufferWidth - 1, max(a.x, max(b.x, c.x)))
+    var maxY = min(this.h - 1, max(a.y, max(b.y, c.y)))
+        
+    for (x <- minX.floor.toInt to maxX.ceil.toInt) {
+      for (y <- minY.floor.toInt to maxY.ceil.toInt) {
+        var bary = barycentricCoordinates(a.xy, b.xy, c.xy, Vec2(x, y));
+        
+        if (
+          (bary.x >= 0.0f) && 
+          (bary.y >= 0.0f) && 
+          (bary.z >= 0.0f) && 
+          (bary.x + bary.y + bary.z <= 1.01f)) {
+          
+          var depth = (bary.x * a.z + bary.y * b.z + bary.z * c.z) 
+          var w = (bary.x * a.w + bary.y * b.w + bary.z * c.w)
+          depth = depth
+          var fa = a.w
+          var fb = b.w
+          var fc = c.w
+          var fInterp = w
+//          println(w)
+          var u = (uv1.x * a.w) * bary.x + (uv2.x * b.w) * bary.y + (uv3.x * c.w) * bary.z
+          var v = (uv1.y * a.w) * bary.x + (uv2.y * b.w) * bary.y + (uv3.y * c.w) * bary.z
+          var uv = Vec2(u, v)
+//          var uv = Vec2(uv1.x * bary.x + uv2.x * bary.y + uv3.x * bary.z, uv1.y * bary.x + uv2.y * bary.y + uv3.y * bary.z)
+          uv = Vec2(uv.x / w, uv.y / w)
+//          uv = Vec2(bary.x, bary.z)
+          val index = calcDoubleIndex(x, y)
+          var picIndex = ((uv.y - uv.y.floor) * 8).toInt * 8 + ((uv.x - uv.x.floor) * 8).toInt
+          picIndex = min(picIndex, 63)
+          if (depth < _depthBuffer(index) && depth > 0.0) {
+            val i = (depth * _ramp.size).toInt
+            _depthBuffer(index) = depth
+            _diffuseBuffer(index) = testTexture(picIndex) / 255.0f
+//            _diffuseBuffer(index) = bary.x * (uv.x - uv.x.floor)
+//            _diffuseBuffer(index) = image.calcImageArrayIndex(
+//                ((uv.x - uv.x.floor) * image.getWidth()).toInt, 
+//                ((uv.y - uv.y.floor) * image.getHeight()).toInt) / 255.0f
             _normalBuffer(index) = normal
           }
         }

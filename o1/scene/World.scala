@@ -41,9 +41,7 @@ class TileMap(val width: Int, val height: Int) {
     val centerTileY = (pos.y / TILEWIDTH).toInt
     
     val intersections = Buffer[Vec2]()
-    
-    println(radius)
-    
+        
     for (x <- -1 to 1) {
       for (y <- -1 to 1) {
         val tilePos = Vec2(centerTileX + x, centerTileY + y)

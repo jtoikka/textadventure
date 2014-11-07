@@ -79,44 +79,44 @@ object CornerMap {
     nodes
   }
   
-  def createWallMesh(nodes: ArrayBuffer[Corner], wallHeight: Float): Mesh = {
-    var vertices = ArrayBuffer[Float]()
-    var indices = ArrayBuffer[Int]()
-    
-    var indexOffset = 0
-    
-    for (i <- 0 until nodes.size) {
-      var node = nodes(i)
-      var location = node.location
-      // Add floor vertex
-      vertices += location.x
-      vertices += 0.0f
-      vertices += location.y
-      // Add ceiling vertex
-      vertices += location.x
-      vertices += wallHeight
-      vertices += location.y
-      
-      indexOffset = (i - 1) * 2
-      
-      // Add indices for two triangles (form a quad)
-      if (i != 0) {
-        indices += 1 + indexOffset
-        indices += 0 + indexOffset
-        indices += 2 + indexOffset
-        indices += 1 + indexOffset
-        indices += 2 + indexOffset
-        indices += 3 + indexOffset
-      }
-    }
-    // Connect last and first corner
-    indices += indexOffset + 1
-    indices += indexOffset
-    indices += 0
-    indices += indexOffset + 1
-    indices += 0
-    indices += 1
-    
-    new Mesh(vertices, indices)
-  }
+//  def createWallMesh(nodes: ArrayBuffer[Corner], wallHeight: Float): Mesh = {
+//    var vertices = ArrayBuffer[Float]()
+//    var indices = ArrayBuffer[Int]()
+//    
+//    var indexOffset = 0
+//    
+//    for (i <- 0 until nodes.size) {
+//      var node = nodes(i)
+//      var location = node.location
+//      // Add floor vertex
+//      vertices += location.x
+//      vertices += 0.0f
+//      vertices += location.y
+//      // Add ceiling vertex
+//      vertices += location.x
+//      vertices += wallHeight
+//      vertices += location.y
+//      
+//      indexOffset = (i - 1) * 2
+//      
+//      // Add indices for two triangles (form a quad)
+//      if (i != 0) {
+//        indices += 1 + indexOffset
+//        indices += 0 + indexOffset
+//        indices += 2 + indexOffset
+//        indices += 1 + indexOffset
+//        indices += 2 + indexOffset
+//        indices += 3 + indexOffset
+//      }
+//    }
+//    // Connect last and first corner
+//    indices += indexOffset + 1
+//    indices += indexOffset
+//    indices += 0
+//    indices += indexOffset + 1
+//    indices += 0
+//    indices += 1
+//    
+//    new Mesh(vertices, indices)
+//  }
 }
