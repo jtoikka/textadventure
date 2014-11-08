@@ -131,8 +131,29 @@ class Renderer3D(w: Int, h: Int) extends Renderer(w,h) {
 /**
  * Clamps a [value] to the range [minimum, maximum].
  */
-  def clamp(value: Float, minimum: Float, maximum: Float): Float = {
+  private def clamp(value: Float, minimum: Float, maximum: Float): Float = {
     min(maximum, max(minimum, value))
+  }
+  
+  def cullObject(cameraPos: Vec2, cameraForward: Vec2, objectPos: Vec2, angleLimit: Double): Boolean = {
+    val posA = objectPos + Vec2(1.0f, 1.0f)
+    val posB = objectPos + Vec2(1.0f, -1.0f)
+    val posC = objectPos + Vec2(-1.0f, 1.0f)
+    val posD = objectPos + Vec2(-1.0f, -1.0f)
+    val dirFromCameraA = (posA + cameraPos).neg().normalize()
+    val dirFromCameraB = (posB + cameraPos).neg().normalize()
+    val dirFromCameraC = (posC + cameraPos).neg().normalize()
+    val dirFromCameraD = (posD + cameraPos).neg().normalize()
+    
+    val cosAngleBetweenA = dirFromCameraA.dot(cameraForward.normalize())
+    val cosAngleBetweenB = dirFromCameraB.dot(cameraForward.normalize())
+    val cosAngleBetweenC = dirFromCameraC.dot(cameraForward.normalize())
+    val cosAngleBetweenD = dirFromCameraD.dot(cameraForward.normalize())
+    
+    !((cosAngleBetweenA > angleLimit) || 
+      (cosAngleBetweenB > angleLimit) || 
+      (cosAngleBetweenC > angleLimit) ||
+      (cosAngleBetweenD > angleLimit))
   }
   
 /**
@@ -151,29 +172,31 @@ class Renderer3D(w: Int, h: Int) extends Renderer(w,h) {
           cameraSpatial.forward, 
           cameraSpatial.up)
           
-      val tileWidth = 2
-          
       if (scene.world.isDefined) {
         val world = scene.world.get
+        val tileWidth = world.tileMap.TILEWIDTH
         for (x <- 0 until world.width) {
           for (y <- 0 until world.depth) {
             if (world.tileMap.getCollisionTile(x, y).isInstanceOf[SolidTile]) {
-              var translation = 
-                Utility.translate(Vec4(
-                    x * tileWidth, 0.0f, 
-                    y * tileWidth, 
-                    1.0f))
-              var mv = worldToCam * translation
-              var matrix = cameraToClipMatrix * mv
-              renderMesh(
-                  ResourceManager.meshes("uv_cube"), 
-                  matrix, 
-                  Some(ResourceManager.textures("testTex")))
+              val worldX = x * tileWidth
+              val worldY = y * tileWidth
+              if (!cullObject(cameraSpatial.position.xz, cameraSpatial.forward.xz, Vec2(worldX, worldY), 0.7)) {
+                var translation = 
+                  Utility.translate(Vec4(
+                      worldX, 0.0f, 
+                      worldY, 
+                      1.0f))
+                var mv = worldToCam * translation
+                var matrix = cameraToClipMatrix * mv
+                renderMesh(
+                    ResourceManager.meshes("uv_cube"), 
+                    matrix, 
+                    Some(ResourceManager.textures("testTex")))
+              }
             }
           }
         }
-      }
-          
+      }          
       
       for (entity <- scene.entities) {
         def renderEntity(entity: Entity) = {

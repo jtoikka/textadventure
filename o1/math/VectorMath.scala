@@ -23,9 +23,9 @@ class Vec2(var x: Float, var y: Float) {
   
   def *(value: Float) = new Vec2(this.x * value, this.y * value)
   
-  def /(other: Vec2) = new Vec2(this.x / other.x, this.y * other.y)
+  def /(other: Vec2) = new Vec2(this.x / other.x, this.y / other.y)
   
-  def /(value: Float) = new Vec2(this.y / value, this.y / value)
+  def /(value: Float) = new Vec2(this.x / value, this.y / value)
   
   def ==(other: Vec2): Boolean = this.x == other.x && this.y == other.y
   def !=(other: Vec2): Boolean = this.x != other.x || this.y != other.y
