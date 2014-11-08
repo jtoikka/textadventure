@@ -84,17 +84,20 @@ object Mesh {
       faces += face
     }
     
-    new Mesh(vertexBuffer, faces)
+    new Mesh(vertexBuffer, faces, !uvBuffer.isEmpty)
   }
 }
 
 class Mesh(
     val vertexBuffer: ArrayBuffer[Vec3],
-    val faces: ArrayBuffer[Face]) {
+    val faces: ArrayBuffer[Face],
+    val uvMapped: Boolean) {
     
   var luminosity = 1.0f
   var transformedBuffer = 
     Array.fill[Vec4](vertexBuffer.size)(Vec4(0.0f, 0.0f, 0.0f, 0.0f))
+    
+  def hasUV = uvMapped
   
 /**
  * Gets a triangle from the mesh. An [index] of 0 returns the first triangle, 
