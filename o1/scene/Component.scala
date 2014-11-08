@@ -52,6 +52,13 @@ case class FollowComponent(val entity: Entity) extends Component {
   
 }
 
+object FaceCameraComponent {
+  val id = classOf[FaceCameraComponent]
+}
+case class FaceCameraComponent(var on: Boolean = true) extends Component {
+  
+}
+
 class CollisionMapComponent(val tileMap: Array[Int]) extends Component {}
 
 object CollisionComponent {

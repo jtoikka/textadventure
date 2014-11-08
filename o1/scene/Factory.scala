@@ -191,7 +191,10 @@ object Factory {
 
     var renderComp = new RenderComponent("page")
     entity.addComponent(renderComp)
-
+    
+    var faceCameraComp = new FaceCameraComponent()
+    entity.addComponent(faceCameraComp)
+    
     // TODO: Fix magic size conversion
     var collisionComponent = new CollisionComponent(size / 16, Buffer[Int]())
     collisionComponent.isActive = false
@@ -214,6 +217,10 @@ object Factory {
 
     var renderComp = new RenderComponent("monkey")
     entity.addComponent(renderComp)
+    
+    var faceCameraComp = new FaceCameraComponent()
+    entity.addComponent(faceCameraComp)
+    
 
     var collisionComponent = new CollisionComponent(size / 16, Buffer[Int]())
     entity.addComponent(collisionComponent)
