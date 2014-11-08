@@ -165,7 +165,10 @@ class Renderer3D(w: Int, h: Int) extends Renderer(w,h) {
                     1.0f))
               var mv = worldToCam * translation
               var matrix = cameraToClipMatrix * mv
-              renderMesh(ResourceManager.meshes("uv_cube"), matrix, ResourceManager.textures("testTex"))
+              renderMesh(
+                  ResourceManager.meshes("uv_cube"), 
+                  matrix, 
+                  Some(ResourceManager.textures("testTex")))
             }
           }
         }
@@ -184,7 +187,15 @@ class Renderer3D(w: Int, h: Int) extends Renderer(w,h) {
               spatialComp.get.up)
             var mv = worldToCam * translation * rotation
             var matrix = cameraToClipMatrix * mv
-            renderMesh(ResourceManager.meshes(renderComp.get.mesh), matrix, ResourceManager.textures("testTex"))
+            if (renderComp.get.texture.isDefined) {
+              renderMesh(
+                  ResourceManager.meshes(renderComp.get.mesh), 
+                  matrix, 
+                  Some(ResourceManager.textures(renderComp.get.texture.get)))
+            } else {
+              renderMesh(ResourceManager.meshes(renderComp.get.mesh), matrix)
+            }
+            renderMesh(ResourceManager.meshes(renderComp.get.mesh), matrix, Some(ResourceManager.textures("testTex")))
           }
         }
         renderEntity(entity)
@@ -206,25 +217,14 @@ class Renderer3D(w: Int, h: Int) extends Renderer(w,h) {
           var normal = (_normalBuffer(index1))
           var viewRay = _viewRayBuffer(index1)
           var depth = (_depthBuffer(index1) + _depthBuffer(index2)) / 2.0f
-          var attenuation = 2.0f * pow(1.0f - depth, 0.4f).toFloat
-//          var specular = clamp(normal.dot(viewRay), 0.0f, 1.0f) * diffuse * attenuation
-          var specular = clamp(normal.dot(viewRay), 0.0f, 1.0f) * -viewRay.z
-          if (normal.y < 0.9) {
-  //          depth = 1.0f - linearDepth(depth)
-            specular *= 2.0f / (depth + 5.0f * depth * depth)
-          } else {
-            // Floor lighting hack, fix it later...
-            // TODO: Make the rest of this function a little more readable as well
+          var attenuation = 3.0f / (depth + 5.0f * depth * depth)
+          var specular = clamp(normal.dot(viewRay), 0.0f, 1.0f) * -viewRay.z * attenuation
+          if (normal.y > 0.9) {
             specular = (1.0f - viewRay.y) * viewRay.z * viewRay.z * -viewRay.z * depth * 0.2f
           }
-          val ambient = 0.0f * diffuse
           val diffuseLight = depth * 0.3f * attenuation
-          var lighting = specular + ambient + diffuseLight
-//          val ambient = 0.0f * diffuse
-//          val diffuseLight = attenuation * diffuse
-//          var lighting = specular * 0.4f + ambient + diffuseLight * 0.4f
+          var lighting = specular + diffuseLight
           lighting = 1.0f - Math.exp(2.2 * -lighting).toFloat
-//          lighting = 1.0f
           if (depth >= 1.0) lighting = 0.0f
           val bayer = bayerMatrix(8 * bayesRow + bayesCollumn)
           var v = (lighting + (bayer * ditherStrength)) * _ramp.size
@@ -251,14 +251,14 @@ class Renderer3D(w: Int, h: Int) extends Renderer(w,h) {
  * Renders a [mesh] to screen. Applies Model-View-Projection matrix [MVP] to 
  * mesh prior to rendering.
  */
-  def renderMesh(mesh: Mesh, MVP: Mat4, texture: Texture) = {
+  def renderMesh(mesh: Mesh, MVP: Mat4, texture: Option[Texture] = None) = {
     mesh.transform(MVP)
     for(i <- 0 to mesh.numTriangles) {
       var triangles = mesh.getTriangles(i)
       if (!triangles.isEmpty) {
         for (triangle <- triangles) {
-          if (mesh.hasUV) {
-            renderTriangle(triangle, mesh.luminosity, Some(texture))
+          if (mesh.hasUV && texture.isDefined) {
+            renderTriangle(triangle, mesh.luminosity, texture)
           } else {
             renderTriangle(triangle, mesh.luminosity, None)
           }
