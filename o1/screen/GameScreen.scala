@@ -63,6 +63,9 @@ class GameScreen(parent: Adventure, rend: Renderer)
           if (entity.getComponent(InputComponent.id).isDefined) {
             handleMovement(entity)
           }
+          if (entity.getComponent(FaceCameraComponent.id).isDefined) {
+            faceCamera(entity, scene.camera.get)
+          }
           CollisionCheck.checkCollisions(entity, entitiesAsVector, scene.world)
         }
         
@@ -80,6 +83,13 @@ class GameScreen(parent: Adventure, rend: Renderer)
     } else {
       events.clear()
     }
+  }
+  
+  def faceCamera(entity: Entity, camera: Entity) = {
+    val spatial = entity.getComponent(SpatialComponent.id)
+    val cameraPos = camera.getComponent(SpatialComponent.id).get.position
+    spatial.get.forward = (spatial.get.position + cameraPos).normalize.neg
+    spatial.get.forward.x *= -1
   }
   
   def handleMovement(entity: Entity) = {
