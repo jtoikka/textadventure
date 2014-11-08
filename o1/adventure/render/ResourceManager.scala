@@ -17,6 +17,7 @@ object ResourceManager {
   val meshes = Map[String, Mesh]()
   val shapes = Map[String, Shape]()
   val images = Map[String, BufferedImage]()
+  val textures = Map[String, Texture]()
   val strings = Map[String, String]()
   val maps = Map[String, scala.xml.Elem]()
   // val entityInfo = Map[String, scala.xml.Node]()  
@@ -25,6 +26,7 @@ object ResourceManager {
   val xml = loadFile("data/resourceManager.xml")
   val XMLmeshes = xml \ "meshes" \ "item"
   val XMLimages = xml \ "images" \ "item"
+  val XMLtextures = xml \ "textures" \ "item"
   val XMLstrings = xml \ "strings" \ "item"
   val XMLmaps = xml \ "maps" \ "item"
 
@@ -49,6 +51,14 @@ object ResourceManager {
     val path = (m \ "@path")
     println("Loaded image: " + name + ", " + path)
     images(name.text) = ImageIO.read(new File(path.text))
+  }
+  
+  // Load textures
+  for (m <- XMLtextures) {
+    val name = (m \ "@name")
+    val path = (m \ "@path")
+    println("Loaded texture: " + name + ", " + path)
+    textures(name.text) = new Texture(path.text)
   }
   
   // Load strings

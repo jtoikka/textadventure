@@ -6,6 +6,7 @@ import scala.math._
 import o1.math._
 import o1.scene._
 import o1.event.SolidTile
+import o1.adventure.render2D.Image2D
 
 
 class Renderer3D(w: Int, h: Int) extends Renderer(w,h) {
@@ -164,7 +165,10 @@ class Renderer3D(w: Int, h: Int) extends Renderer(w,h) {
                     1.0f))
               var mv = worldToCam * translation
               var matrix = cameraToClipMatrix * mv
-              renderMesh(ResourceManager.meshes("solidTile"), matrix)
+              renderMesh(
+                  ResourceManager.meshes("uv_cube"), 
+                  matrix, 
+                  Some(ResourceManager.textures("testTex")))
             }
           }
         }
@@ -183,7 +187,15 @@ class Renderer3D(w: Int, h: Int) extends Renderer(w,h) {
               spatialComp.get.up)
             var mv = worldToCam * translation * rotation
             var matrix = cameraToClipMatrix * mv
-            renderMesh(ResourceManager.meshes(renderComp.get.mesh), matrix)
+            if (renderComp.get.texture.isDefined) {
+              renderMesh(
+                  ResourceManager.meshes(renderComp.get.mesh), 
+                  matrix, 
+                  Some(ResourceManager.textures(renderComp.get.texture.get)))
+            } else {
+              renderMesh(ResourceManager.meshes(renderComp.get.mesh), matrix)
+            }
+            renderMesh(ResourceManager.meshes(renderComp.get.mesh), matrix, Some(ResourceManager.textures("testTex")))
           }
         }
         renderEntity(entity)
@@ -205,18 +217,14 @@ class Renderer3D(w: Int, h: Int) extends Renderer(w,h) {
           var normal = (_normalBuffer(index1))
           var viewRay = _viewRayBuffer(index1)
           var depth = (_depthBuffer(index1) + _depthBuffer(index2)) / 2.0f
-          var specular = clamp(normal.dot(viewRay), 0.0f, 1.0f) * viewRay.z * viewRay.z
-          if (normal.y < 0.9) {
-  //          depth = 1.0f - linearDepth(depth)
-            specular *= 2.0f / (depth + 5.0f * depth * depth)
-          } else {
-            // Floor lighting hack, fix it later...
-            // TODO: Make the rest of this function a little more readable as well
+          var attenuation = 3.0f / (depth + 5.0f * depth * depth)
+          var specular = clamp(normal.dot(viewRay), 0.0f, 1.0f) * -viewRay.z * attenuation
+          if (normal.y > 0.9) {
             specular = (1.0f - viewRay.y) * viewRay.z * viewRay.z * -viewRay.z * depth * 0.2f
           }
-          val ambient = 0.0f * diffuse
-          val diffuseLight = depth * 0.2f
-          var lighting = specular + ambient + diffuseLight
+          val diffuseLight = depth * 0.3f * attenuation
+          var lighting = specular + diffuseLight
+          lighting = 1.0f - Math.exp(2.2 * -lighting).toFloat
           if (depth >= 1.0) lighting = 0.0f
           val bayer = bayerMatrix(8 * bayesRow + bayesCollumn)
           var v = (lighting + (bayer * ditherStrength)) * _ramp.size
@@ -243,13 +251,17 @@ class Renderer3D(w: Int, h: Int) extends Renderer(w,h) {
  * Renders a [mesh] to screen. Applies Model-View-Projection matrix [MVP] to 
  * mesh prior to rendering.
  */
-  def renderMesh(mesh: Mesh, MVP: Mat4) = {
+  def renderMesh(mesh: Mesh, MVP: Mat4, texture: Option[Texture] = None) = {
     mesh.transform(MVP)
-    for(i <- 0 to mesh.indexBuffer.length / 3) {
+    for(i <- 0 to mesh.numTriangles) {
       var triangles = mesh.getTriangles(i)
       if (!triangles.isEmpty) {
         for (triangle <- triangles) {
-          renderTriangle(triangle, mesh.luminosity)
+          if (mesh.hasUV && texture.isDefined) {
+            renderTriangle(triangle, mesh.luminosity, texture)
+          } else {
+            renderTriangle(triangle, mesh.luminosity, None)
+          }
         }
       }
     }
@@ -259,7 +271,7 @@ class Renderer3D(w: Int, h: Int) extends Renderer(w,h) {
  * Renders a mesh's triangle to screen. See mesh.getTriangle function for
  * details on how to get a triangle.
  */
-  def renderTriangle(triangle: Triangle, luminosity: Float) = {
+  def renderTriangle(triangle: Triangle, luminosity: Float, texture: Option[Texture]) = {
     val screenA = screenCoordinates(triangle.a)
     val screenB = screenCoordinates(triangle.b)
     val screenC = screenCoordinates(triangle.c)
@@ -275,6 +287,9 @@ class Renderer3D(w: Int, h: Int) extends Renderer(w,h) {
 /* Culling -------------------------------------------------------------------*/
     val normal = vecB.xyz.cross(vecA.xyz)      
     if (screenNormal.z < 0.0) {
+      if (texture.isDefined) {
+        fillTexturedTriangle(screenA, screenB, screenC, triangle.uv1, triangle.uv2, triangle.uv3, texture.get, normal.normalize)
+      }
       fillTriangle(screenA, screenB, screenC, luminosity, normal.normalize)
     }
   }
@@ -309,6 +324,59 @@ class Renderer3D(w: Int, h: Int) extends Renderer(w,h) {
             val i = (depth * _ramp.size).toInt
             _depthBuffer(index) = depth
             _diffuseBuffer(index) = luminosity
+            _normalBuffer(index) = normal
+          }
+        }
+      }
+    }
+  }
+  
+  val testTexture = Array[Int](
+        0, 255,   0, 255,   0, 255,   0, 255,
+      255,   0, 255,   0, 255,   0, 255,   0,
+        0,   0,   0, 255,   0, 255, 255, 255,
+      255,   0, 255,   0, 255,   0, 255,   0,
+        0, 255,   0,   0,   0, 255,   0, 255,
+      255,   0, 255,   0, 255,   0, 255,   0,
+        0,   0,   0, 255,   0, 255, 255, 255,
+      255,   0, 255,   0, 255,   0, 255,   0)
+  
+  val testWidth = 8
+  
+  def fillTexturedTriangle(
+      a: Vec4, b: Vec4, c: Vec4,
+      uv1: Vec2, uv2: Vec2, uv3: Vec2,
+      texture: Texture, 
+      normal: Vec3) = {
+    var minX = max(0, min(a.x, min(b.x, c.x)))
+    var minY = max(0, min(a.y, min(b.y, c.y)))
+    var maxX = min(framebufferWidth - 1, max(a.x, max(b.x, c.x)))
+    var maxY = min(this.h - 1, max(a.y, max(b.y, c.y)))
+        
+    for (x <- minX.floor.toInt to maxX.ceil.toInt) {
+      for (y <- minY.floor.toInt to maxY.ceil.toInt) {
+        var bary = barycentricCoordinates(a.xy, b.xy, c.xy, Vec2(x, y));
+        
+        if (
+          (bary.x >= 0.0f) && 
+          (bary.y >= 0.0f) && 
+          (bary.z >= 0.0f) && 
+          (bary.x + bary.y + bary.z <= 1.01f)) {
+          
+          var depth = (bary.x * a.z + bary.y * b.z + bary.z * c.z) 
+          var w = (bary.x * a.w + bary.y * b.w + bary.z * c.w)
+          depth = depth
+
+          var uv = uv1 * a.w * bary.x + uv2 * b.w * bary.y + uv3 * c.w * bary.z
+          uv = Vec2(uv.x / w, uv.y / w)
+//          uv = Vec2(bary.x, bary.z)
+          val index = calcDoubleIndex(x, y)
+//          var picIndex = ((uv.y - uv.y.floor) * 8).toInt * 8 + ((uv.x - uv.x.floor) * 8).toInt
+//          picIndex = min(picIndex, 63)
+          if (depth < _depthBuffer(index) && depth > 0.0) {
+            val i = (depth * _ramp.size).toInt
+            _depthBuffer(index) = depth
+            _diffuseBuffer(index) = texture.getPixel(uv.x, uv.y) / 255.0f
             _normalBuffer(index) = normal
           }
         }
