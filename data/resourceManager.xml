@@ -33,6 +33,9 @@
 		<item name="icon_smile" path="data/icons/icon_smile.png"></item>
 		<item name="icon_cross" path="data/icons/icon_cross.png"></item>
 	</images>
+	<textures>
+	    <item name="testTex" path="data/textures/W3d_protograywallshade1.png"></item>
+	</textures>
 	<strings>
 		<item name="helpMenu">
 			<string>This text should wrap nicely. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi placerat dui nec cursus bibendum. Integer auctor, dui gravida semper maximus, arcu massa semper libero, vitae laoreet nulla nulla non leo.\nThis should be alone on this line.
