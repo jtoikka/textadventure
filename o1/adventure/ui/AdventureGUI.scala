@@ -13,6 +13,7 @@ import scala.swing.Font
 import o1.event.Listener
 import o1.event.EventType._
 import java.awt.Font
+import java.io.File
 
 ////////////////// NOTE TO STUDENTS //////////////////////////
 // For the purposes of our course, it's not necessary    
@@ -59,7 +60,10 @@ object AdventureGUI extends SimpleSwingApplication with Listener {
       background = Color.BLACK
       foreground = Color.WHITE
 
-      font = new Font(Font.MONOSPACED, 0, 12)
+      font = Font.createFont(Font.TRUETYPE_FONT, new File("data/font/unifont-7.0.06.ttf"))
+      font = font.deriveFont(12f)
+      
+//      font = new Font(Font.MONOSPACED, 0, 12)
 
       listenTo(keys)
 

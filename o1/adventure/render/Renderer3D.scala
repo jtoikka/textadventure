@@ -24,14 +24,7 @@ class Renderer3D(w: Int, h: Int) extends Renderer(w,h) {
   val zNear = 0.1f  // Near clipping plane
   val zFar = 30.0f // Far clipping plane
   
-//  val _ramp = "MWNQBHKR#EDFXOAPGUSVZYCLTJ$I*:\u2001"
-//  val _ramp = "\u2588\u2591\u2001"
-//  val _ramp = "MHEXGZYJI*\\;:-'.\u2001"
-//  val _ramp = " .`-_':,;^=+/\"|)\\<>)iv%xclrs{*}I?!][1taeo7zjLu" + "nT#JCwfy325Fp6mqSghVd4EgXPGZbYkOA&8U$@KHDBWNMR0Q";
-//  val _ramp = "MEX$YTJI*!:,.\u2001"
-//  val _ramp = "METJI!:,.\u2001"
-  val _ramp = "METI!:,. "
-//  val _ramp = "MJI:\u2001"
+  val _ramp = "MEIi!:,. "
   
 /**
  * Matrix for ordered dithering. Used to shift a pixel's luminosity either up or
@@ -180,7 +173,10 @@ class Renderer3D(w: Int, h: Int) extends Renderer(w,h) {
             if (world.tileMap.getCollisionTile(x, y).isInstanceOf[SolidTile]) {
               val worldX = x * tileWidth
               val worldY = y * tileWidth
-              if (!cullObject(cameraSpatial.position.xz, cameraSpatial.forward.xz, Vec2(worldX, worldY), 0.7)) {
+              if (!cullObject(
+                  cameraSpatial.position.xz, 
+                  cameraSpatial.forward.xz, 
+                  Vec2(worldX, worldY), 0.7)) {
                 var translation = 
                   Utility.translate(Vec4(
                       worldX, 0.0f, 
@@ -191,6 +187,7 @@ class Renderer3D(w: Int, h: Int) extends Renderer(w,h) {
                 renderMesh(
                     ResourceManager.meshes("uv_cube"), 
                     matrix, 
+//                    None)
                     Some(ResourceManager.textures("testTex")))
               }
             }
@@ -203,22 +200,28 @@ class Renderer3D(w: Int, h: Int) extends Renderer(w,h) {
           var spatialComp = entity.getComponent(SpatialComponent.id)
           var renderComp = entity.getComponent(RenderComponent.id)
           if (spatialComp.isDefined && renderComp.isDefined) {
-            var translation = Utility.translate(Vec4(spatialComp.get.position, 1.0f))
-            var rotation = Camera.getLookMatrix(
-              Vec3(0.0f, 0.0f, 0.0f), 
-              spatialComp.get.forward, 
-              spatialComp.get.up)
-            var mv = worldToCam * translation * rotation
-            var matrix = cameraToClipMatrix * mv
-            if (renderComp.get.texture.isDefined) {
-              renderMesh(
-                  ResourceManager.meshes(renderComp.get.mesh), 
-                  matrix, 
-                  Some(ResourceManager.textures(renderComp.get.texture.get)))
-            } else {
-              renderMesh(ResourceManager.meshes(renderComp.get.mesh), matrix)
+            if (!cullObject(
+                cameraSpatial.position.xz, 
+                cameraSpatial.forward.xz, 
+                spatialComp.get.position.xz, 
+                0.7)) {
+              var translation = Utility.translate(Vec4(spatialComp.get.position, 1.0f))
+              var rotation = Camera.getLookMatrix(
+                Vec3(0.0f, 0.0f, 0.0f), 
+                spatialComp.get.forward, 
+                spatialComp.get.up)
+              var mv = worldToCam * translation * rotation
+              var matrix = cameraToClipMatrix * mv
+              if (renderComp.get.texture.isDefined) {
+                renderMesh(
+                    ResourceManager.meshes(renderComp.get.mesh), 
+                    matrix, 
+                    Some(ResourceManager.textures(renderComp.get.texture.get)))
+              } else {
+                renderMesh(ResourceManager.meshes(renderComp.get.mesh), matrix)
+              }
+              renderMesh(ResourceManager.meshes(renderComp.get.mesh), matrix, Some(ResourceManager.textures("testTex")))
             }
-            renderMesh(ResourceManager.meshes(renderComp.get.mesh), matrix, Some(ResourceManager.textures("testTex")))
           }
         }
         renderEntity(entity)
@@ -245,7 +248,7 @@ class Renderer3D(w: Int, h: Int) extends Renderer(w,h) {
           if (normal.y > 0.9) {
             specular = (1.0f - viewRay.y) * viewRay.z * viewRay.z * -viewRay.z * depth * 0.2f
           }
-          val diffuseLight = depth * 0.3f * attenuation
+          val diffuseLight = depth * 0.4f * attenuation
           var lighting = specular + diffuseLight
           lighting = 1.0f - Math.exp(2.2 * -lighting).toFloat
           if (depth >= 1.0) lighting = 0.0f
