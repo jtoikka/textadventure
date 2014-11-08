@@ -31,7 +31,9 @@ object RenderComponent {
   val id = classOf[RenderComponent]
 }
 
-case class RenderComponent(val mesh: String) extends Component {
+case class RenderComponent(
+    val mesh: String, 
+    val texture: Option[String] = None) extends Component {
 }
 
 object RenderComponent2D {
