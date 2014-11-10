@@ -11,8 +11,7 @@ class Texture(filePath: String) {
   private val _height = image.getHeight()
   
   private val _data = Vector.tabulate(width, height)((x, y) => {
-    // Use the red channel as the value for grey
-    (image.getRGB(x, height - y - 1) >> 16) & 0xFF
+    image.getRGB(x, height - y - 1)
   })
   
   def width = _width

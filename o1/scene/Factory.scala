@@ -142,6 +142,7 @@ object Factory {
       case "coffee" => Some(createCoffee(node))
       case "page" => Some(createPage(node))
       case "monkey" => Some(createMonkey(node))
+      case "enemy" => Some(createTestEnemy(node))
       case "player" => Some(createPlayer(node))
       case _ => None
     }
@@ -221,6 +222,30 @@ object Factory {
     var faceCameraComp = new FaceCameraComponent()
     entity.addComponent(faceCameraComp)
     
+
+    var collisionComponent = new CollisionComponent(size / 16, Buffer[Int]())
+    entity.addComponent(collisionComponent)
+    entity
+  }
+  
+  def createTestEnemy(node: Node) = {
+    // TODO: Fix magic size and location conversion
+    val name = (node \ "@name").text
+    val typeName = (node \ "@name").text
+    val loc = Vec2((node \ "@x").text.toFloat, (node \ "@y").text.toFloat)
+    val size = (node \ "@width").text.toFloat
+
+    val entity = new Entity()
+
+    val spatialComp = new SpatialComponent()
+    spatialComp.position = Vec3(loc.x * 2 / 16, 1.0f, loc.y * 2 / 16)
+    entity.addComponent(spatialComp)
+
+    var renderComp = new RenderComponent("test_enemy", Some("test_enemy_tex"))
+    entity.addComponent(renderComp)
+    
+    var faceCameraComp = new FaceCameraComponent()
+    entity.addComponent(faceCameraComp)
 
     var collisionComponent = new CollisionComponent(size / 16, Buffer[Int]())
     entity.addComponent(collisionComponent)

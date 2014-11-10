@@ -860,7 +860,10 @@
   <object name="TestPage" type="page" x="71.7083" y="119.042" width="13.25" height="13.25">
    <ellipse/>
   </object>
-  <object name="TestPage" type="page" x="77.375" y="56.7083" width="13.25" height="13.25">
+<!--   <object name="TestPage" type="page" x="77.375" y="56.7083" width="13.25" height="13.25">
+   <ellipse/>
+  </object> -->
+  <object name="TestEnemy" type="enemy" x="77.375" y="56.7083" width="13.25" height="13.25">
    <ellipse/>
   </object>
  </objectgroup>
