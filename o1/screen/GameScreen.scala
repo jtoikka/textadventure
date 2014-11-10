@@ -139,6 +139,8 @@ class GameScreen(parent: Adventure, rend: Renderer)
       println("dialog says: \"" + event.args(1) + "\"")
     }
   }
+  
+  val SPEED = 1.0f
 
   val inputMap =
     Map[Tuple2[scala.swing.event.Key.Value, Int], (Float) => Unit](
@@ -159,16 +161,16 @@ class GameScreen(parent: Adventure, rend: Renderer)
         if (Inventory.addItem(Coffee())) println("Added Coffee to inventory")
       }),
       ((Key.W, Input.KEYDOWN), (delta) => {
-        movementMap(FORWARD) = 0.15f * delta
+        movementMap(FORWARD) = SPEED * delta
       }),
       ((Key.S, Input.KEYDOWN), (delta) => {
-        movementMap(FORWARD) = -0.15f * delta
+        movementMap(FORWARD) = -SPEED * delta
       }),
       ((Key.A, Input.KEYDOWN), (delta) => {
-        movementMap(RIGHT) = -0.15f * delta
+        movementMap(RIGHT) = -SPEED * delta
       }),
       ((Key.D, Input.KEYDOWN), (delta) => {
-        movementMap(RIGHT) = 0.15f * delta
+        movementMap(RIGHT) = SPEED * delta
       }),
       ((Key.Left, Input.KEYDOWN), (delta) => {
         movementMap(ROTATERIGHT) = -0.2f * delta

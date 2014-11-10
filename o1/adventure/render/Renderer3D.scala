@@ -220,7 +220,6 @@ class Renderer3D(w: Int, h: Int) extends Renderer(w,h) {
               } else {
                 renderMesh(ResourceManager.meshes(renderComp.get.mesh), matrix)
               }
-              renderMesh(ResourceManager.meshes(renderComp.get.mesh), matrix, Some(ResourceManager.textures("testTex")))
             }
           }
         }
@@ -315,8 +314,9 @@ class Renderer3D(w: Int, h: Int) extends Renderer(w,h) {
     if (screenNormal.z < 0.0) {
       if (texture.isDefined) {
         fillTexturedTriangle(screenA, screenB, screenC, triangle.uv1, triangle.uv2, triangle.uv3, texture.get, normal.normalize)
+      } else {
+        fillTriangle(screenA, screenB, screenC, luminosity, normal.normalize)
       }
-      fillTriangle(screenA, screenB, screenC, luminosity, normal.normalize)
     }
   }
   
@@ -357,18 +357,6 @@ class Renderer3D(w: Int, h: Int) extends Renderer(w,h) {
     }
   }
   
-  val testTexture = Array[Int](
-        0, 255,   0, 255,   0, 255,   0, 255,
-      255,   0, 255,   0, 255,   0, 255,   0,
-        0,   0,   0, 255,   0, 255, 255, 255,
-      255,   0, 255,   0, 255,   0, 255,   0,
-        0, 255,   0,   0,   0, 255,   0, 255,
-      255,   0, 255,   0, 255,   0, 255,   0,
-        0,   0,   0, 255,   0, 255, 255, 255,
-      255,   0, 255,   0, 255,   0, 255,   0)
-  
-  val testWidth = 8
-  
   def fillTexturedTriangle(
       a: Vec4, b: Vec4, c: Vec4,
       uv1: Vec2, uv2: Vec2, uv3: Vec2,
@@ -382,7 +370,6 @@ class Renderer3D(w: Int, h: Int) extends Renderer(w,h) {
     for (x <- minX.floor.toInt to maxX.ceil.toInt) {
       for (y <- minY.floor.toInt to maxY.ceil.toInt) {
         var bary = barycentricCoordinates(a.xy, b.xy, c.xy, Vec2(x, y));
-        
         if (
           (bary.x >= 0.0f) && 
           (bary.y >= 0.0f) && 
@@ -395,15 +382,21 @@ class Renderer3D(w: Int, h: Int) extends Renderer(w,h) {
 
           var uv = uv1 * a.w * bary.x + uv2 * b.w * bary.y + uv3 * c.w * bary.z
           uv = Vec2(uv.x / w, uv.y / w)
-//          uv = Vec2(bary.x, bary.z)
           val index = calcDoubleIndex(x, y)
-//          var picIndex = ((uv.y - uv.y.floor) * 8).toInt * 8 + ((uv.x - uv.x.floor) * 8).toInt
-//          picIndex = min(picIndex, 63)
           if (depth < _depthBuffer(index) && depth > 0.0) {
-            val i = (depth * _ramp.size).toInt
-            _depthBuffer(index) = depth
-            _diffuseBuffer(index) = texture.getPixel(uv.x, uv.y) / 255.0f
-            _normalBuffer(index) = normal
+            val colour = texture.getPixel(uv.x, uv.y)
+            val a = colour >> 24 & 0xFF
+            val r = colour >> 16 & 0xFF
+            val g = colour >> 8 & 0xFF
+            val b = colour & 0xFF
+            if ((a != 0)) {
+              val r = colour >> 16 & 0xFF
+              
+              val i = (depth * _ramp.size).toInt
+              _depthBuffer(index) = depth
+              _diffuseBuffer(index) = r / 255.0f
+              _normalBuffer(index) = normal
+            }
           }
         }
       }

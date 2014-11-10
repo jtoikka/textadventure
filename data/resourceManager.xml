@@ -15,6 +15,9 @@
 		<item name="floor" path="data/meshes/floor.obj">
 			<luminosity>0.6</luminosity>
 		</item>	
+		<item name="test_enemy" path="data/meshes/billboard.obj">
+		    <texture>test_enemy_tex</texture>
+		</item>
 	</meshes>
 	<images>
 		<item name="gradient" path="data/icons/gradient_test.png"></item>
@@ -35,6 +38,7 @@
 	</images>
 	<textures>
 	    <item name="testTex" path="data/textures/W3d_protograywallshade1.png"></item>
+	    <item name="test_enemy_tex" path="data/textures/test_enemy.png"></item>
 	</textures>
 	<strings>
 		<item name="helpMenu">
