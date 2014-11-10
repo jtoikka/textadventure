@@ -38,6 +38,7 @@ class Adventure() extends Listener {
   val screens = Map[String, Screen](
     "menuScreen" -> new MainMenuScreen(this, screenWidth, screenHeight),
     "gameScreen" -> new GameScreen(this, screenWidth, screenHeight),
+    "mapScreen" -> new MapScreen(this, screenWidth, screenHeight),
     "inventoryScreen" -> new InventoryScreen(this, screenWidth, screenHeight))
   //  val menuScreen: Screen = new MainMenuScreen(this, screenWidth, screenHeight)
   //  val gameScreen: Screen = new GameScreen(this, screenWidth, screenHeight)

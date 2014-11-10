@@ -26,25 +26,25 @@ object Factory2D {
     ent
   }
   
-  def createTextRectangle(h: Int,w: Int,defFill: Boolean, 
-      text: String, offsetX: Int, offsetY: Int) = {
-    
-    var ent = new Entity()
-    var rect = new TextRect2D(new Rectangle2D(h,w,defFill),text)
-    rect.offX = offsetX
-    rect.offY = offsetY
-    
-    val uuid = randomUUID().toString()
-    
-    ResourceManager.shapes(uuid) = rect
-    
-    var spatialComp = new SpatialComponent()
-    ent.addComponent(spatialComp)
-    
-    var rendComp2D = new RenderComponent2D(uuid)
-    ent.addComponent(rendComp2D)
-    ent
-  }
+//  def createTextRectangle(h: Int,w: Int,defFill: Boolean, 
+//      text: String, offsetX: Int, offsetY: Int) = {
+//    
+//    var ent = new Entity()
+//    var rect = new TextRect2D(new Rectangle2D(h,w,defFill),text)
+//    rect.offX = offsetX
+//    rect.offY = offsetY
+//    
+//    val uuid = randomUUID().toString()
+//    
+//    ResourceManager.shapes(uuid) = rect
+//    
+//    var spatialComp = new SpatialComponent()
+//    ent.addComponent(spatialComp)
+//    
+//    var rendComp2D = new RenderComponent2D(uuid)
+//    ent.addComponent(rendComp2D)
+//    ent
+//  }
   
   def createTextRectangle(textRect: TextRect2D) = {
     var ent = new Entity()
@@ -92,12 +92,12 @@ object Factory2D {
     ent
   }
   
-  def createImage(rasterName: String) = {
+  def createImage(img: Image2D) = {
     var ent = new Entity()
     val uuid = randomUUID().toString()
     
-    var img = ResourceManager.images(rasterName)
-    var shape = new Image2D(img, false)
+//    var img = ResourceManager.images(rasterName)
+    var shape = img
     
     ResourceManager.shapes(uuid) = shape
     

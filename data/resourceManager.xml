@@ -45,6 +45,9 @@
 			<string>This text should wrap nicely. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi placerat dui nec cursus bibendum. Integer auctor, dui gravida semper maximus, arcu massa semper libero, vitae laoreet nulla nulla non leo.\nThis should be alone on this line.
 			</string>
 		</item>
+		<item name="inventoryTitle"><string>Inventory</string></item>
+		<item name="mainMenuTitle"><string>Main Menu</string></item>
+		<item name="mapTitle"><string>Map</string></item>
 	</strings>
 	<maps>
 		<item name="00_testmap" path="data/maps/00_testmap.tmx"></item>

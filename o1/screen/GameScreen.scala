@@ -155,10 +155,9 @@ class GameScreen(parent: Adventure, rend: Renderer)
       }),
       ((Key.N, Input.KEYRELEASED), (delta) => {
         if (Inventory.addItem(Page())) println("Added Page to inventory")
-
       }),
       ((Key.M, Input.KEYRELEASED), (delta) => {
-        if (Inventory.addItem(Coffee())) println("Added Coffee to inventory")
+        EventManager.addEvent(new Event(Vector("mapScreen"), E_CHANGE_SCREEN))
       }),
       ((Key.W, Input.KEYDOWN), (delta) => {
         movementMap(FORWARD) = SPEED * delta

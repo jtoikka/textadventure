@@ -59,13 +59,10 @@ class MainMenuScreen(parent: Adventure, rend: Renderer)
     bSpatial.get.position = Vec3(1f, 1f, 0f)
     mainMenuScene.addEntity(border)
 
-//    var name = "icon_coffee"
     var name = "logo_main"
-    var img = Factory2D.createImage(name)
+    var img = Factory2D.createImage(ResourceManager.images(name))
     var spat = img.getComponent(SpatialComponent.id)
     
-//    var width = ResourceManager.images(name).getWidth()
-//    var heigth = ResourceManager.images(name).getHeight()
     val imgName = img.getComponent(RenderComponent2D.id).get.shape
     val width = ResourceManager.shapes(imgName).getWidth
     val height = ResourceManager.shapes(imgName).getHeight
