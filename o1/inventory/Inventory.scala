@@ -1,26 +1,29 @@
 package o1.inventory
 import scala.collection.mutable.Map
 import o1.adventure.render.ResourceManager
+import scala.reflect.ClassTag
 
 object Inventory {
   val MAX_INVENTORY_ITEM_COUNT = 6
 
   val containers = Map[Class[_], ItemContainer[_]]()
-
+  
   def addItem(item: Item): Boolean = {
+//    println("Adding item")
     if (containers.contains(item.getClass())) {
       val bool = containers(item.getClass()).addItem(item)
-//      println("Adding item to container. Container now has " +
-//        containers(item.getClass()).size + " items")
       bool
     } else {
-//      println("Container not found. Creating continer and adding item")
       containers(item.getClass()) = new ItemContainer
+      
       val bool = containers(item.getClass()).addItem(item)
+      
       containers(item.getClass()).icon = Some(item.icon)
       containers(item.getClass()).name = Some(item.name)
-      if (nonHiddenCount > MAX_INVENTORY_ITEM_COUNT)
-        println("More inventory items than slots in screen. This is a problem!")
+      
+      if (nonHiddenCount > MAX_INVENTORY_ITEM_COUNT){
+//        println("More inventory items than slots in screen. This is a problem!")
+        }
       bool
     }
   }

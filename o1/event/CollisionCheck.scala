@@ -16,47 +16,49 @@ object CollisionCheck {
     val collisionComponent = entity.getComponent(CollisionComponent.id)
     val spatialComponent = entity.getComponent(SpatialComponent.id)
     if (collisionComponent.isDefined) {
-      for (otherEntity <- entities.filter((other) => {
-        other != entity && other.getComponent(CollisionComponent.id).isDefined
-      })) {
-        val otherCollisionComponent = 
+      for (
+        otherEntity <- entities.filter((other) => {
+          other != entity && other.getComponent(CollisionComponent.id).isDefined
+        })
+      ) {
+        val otherCollisionComponent =
           otherEntity.getComponent(CollisionComponent.id)
-          
+
         val otherSpatialComponent =
           otherEntity.getComponent(SpatialComponent.id)
-          
+
         val posEntity = spatialComponent.get.position.xz
         val posOther = otherSpatialComponent.get.position.xz
-        
+
         val diff = posEntity - posOther
-        
-        val totalRadius = 
+
+        val totalRadius =
           collisionComponent.get.radius + otherCollisionComponent.get.radius
 
         // Check if collision
         if (diff.length < totalRadius) {
           // Multiply the vector 'entity to other' by the percentage
           // intersection of the two collision shapes.
-          val intersection = 
+          val intersection =
             diff * ((totalRadius - diff.length) / diff.length)
-          
+
           def sendIntersectionEvent(entityA: Entity, entityB: Entity) = {
             val event = new Event(
               Vector(entityA, entityB, intersection),
               EventType.E_COLLISION)
             EventManager.addEvent(event)
           }
-          
+
           sendIntersectionEvent(entity, otherEntity)
           sendIntersectionEvent(otherEntity, entity)
-             
+
           handleCollision(entity, otherEntity, intersection)
         }
       }
       checkWorldCollisions(spatialComponent.get.position, collisionComponent.get.radius, world.get)
     }
   }
-  
+
   def checkWorldCollisions(position: Vec3, collisionRadius: Float, world: World) = {
     def greatestIntersection(intersections: Vector[Vec2]) = {
       var greatest = 0.0f
@@ -69,10 +71,10 @@ object CollisionCheck {
       }
       greatestVec
     }
-    
+
     var intersections = world.tileMap.checkCollisions(
-            position.xz, 
-            collisionRadius)
+      position.xz,
+      collisionRadius)
     var i = 0
     val maxChecks = 4
     while (!intersections.isEmpty && i < maxChecks) {
@@ -80,8 +82,8 @@ object CollisionCheck {
       position.x -= greatest.x
       position.z -= greatest.y
       intersections = world.tileMap.checkCollisions(
-        position.xz, 
-        collisionRadius) 
+        position.xz,
+        collisionRadius)
       i += 1
     }
   }
@@ -89,17 +91,19 @@ object CollisionCheck {
   def handleCollision(entity: Entity, other: Entity, intersection: Vec2) = {
     // This function is incomplete! 
     if (entity.getComponent(CollisionComponent.id).get.isActive &&
-        other.getComponent(CollisionComponent.id).get.isActive) {
+      other.getComponent(CollisionComponent.id).get.isActive) {
       val spatial = entity.getComponent(SpatialComponent.id).get;
       spatial.position.x += intersection.x
       spatial.position.z += intersection.y
     }
-     
+
     val invComp = other.getComponent(InventoryItemComponent.id)
-    if(invComp.isDefined){
-      val picked = Inventory.addItem(invComp.get.invItem)
-      if(picked){
-        other.destroy = true
+    if (invComp.isDefined) {
+      if (!other.destroy) {
+        val picked = Inventory.addItem(invComp.get.invItem)
+        if (picked) {
+          other.destroy = true
+        }
       }
     }
   }

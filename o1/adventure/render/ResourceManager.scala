@@ -16,9 +16,10 @@ import o1.adventure.render2D.Image2D
 object ResourceManager {
   val meshes = Map[String, Mesh]()
   val shapes = Map[String, Shape]()
-  val images = Map[String, BufferedImage]()
+//  val images = Map[String, BufferedImage]()
+  val images = Map[String, Image2D]()
   val textures = Map[String, Texture]()
-  val strings = Map[String, String]()
+  val strings = Map[String, String]().withDefaultValue("NoString")
   val maps = Map[String, scala.xml.Elem]()
   // val entityInfo = Map[String, scala.xml.Node]()  
 //  val database = Map[Class[_], Map[String,_]]()
@@ -50,7 +51,7 @@ object ResourceManager {
     val name = (m \ "@name")
     val path = (m \ "@path")
     println("Loaded image: " + name + ", " + path)
-    images(name.text) = ImageIO.read(new File(path.text))
+    images(name.text) = new Image2D(ImageIO.read(new File(path.text)),true)
   }
   
   // Load textures
