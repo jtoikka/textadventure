@@ -175,7 +175,7 @@ object Factory {
 
   def createPage(node: Node) = {
     // TODO: Fix magic size and location conversion
-    val name = (node \ "@name").text
+    val name = "Pages"//(node \ "@name").text
     val typeName = (node \ "@name").text
     val loc = Vec2((node \ "@x").text.toFloat, (node \ "@y").text.toFloat)
     val size = (node \ "@width").text.toFloat

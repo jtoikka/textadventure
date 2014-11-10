@@ -18,10 +18,18 @@ import scala.collection.mutable.Buffer
 import o1.inventory.Inventory
 import o1.inventory.Page
 import o1.inventory.Coffee
+import java.awt.image.BufferedImage
+import o1.event.EmptyTile
 
 class MapScreen(parent: Adventure, rend: Renderer)
-    extends Screen(parent, rend){
+    extends Screen(parent, rend) {
   eventTypes = Vector[EventType](E_INPUT, E_DIALOG, E_CHANGE_SCENE)
+
+  val iconBoxSize = Vec2(19, 11)
+  val scene = new Scene()
+
+  // TODO: Find less ugly way of getting map...
+  val map = MapInfo.map
 
   val inputMap =
     Map[Tuple2[scala.swing.event.Key.Value, Int], (Float) => Unit](
@@ -52,12 +60,11 @@ class MapScreen(parent: Adventure, rend: Renderer)
 
   def this(parent: Adventure, x: Int, y: Int) = this(parent, new Renderer2D(x, y))
 
-  
   var scenes = Map[String, SceneUI]()
   var activeScene: Option[SceneUI] = None
 
   def init(): Unit = {
-    
+    clearScene()
   }
   init()
 
@@ -76,22 +83,59 @@ class MapScreen(parent: Adventure, rend: Renderer)
    */
   def draw(): Unit = {
     rend.clear()
-    if (activeScene.isDefined)
-      rend.renderScene(activeScene.get)
+    rend.renderScene(scene)
     display = rend.display
   }
 
   def resume(): Unit = {
-    if (activeScene.isDefined)
-      EventManager.setActiveInputListener(activeScene.get.defaultListener)
-    else
-      EventManager.setActiveInputListener(this)
+    println("mapscreen resume!")
+    EventManager.setActiveInputListener(this)
+    updateMap()
   }
 
   def pause() {
 
   }
 
+  def updateMap() = {
+    if (map.isDefined) {
+      println("UpdateMap")
+      val bImg = new BufferedImage(map.get.width, map.get.height, BufferedImage.TYPE_BYTE_GRAY)
+      for (x <- 0 until map.get.width; y <- 0 until map.get.height) {
+        bImg.setRGB(x, y, map.get.getCollisionTile(x, y).color)
+      }
+      var mapImage = new Image2D(bImg, false, true)
+
+      var mapEnt = Factory2D.createImage(mapImage)
+      var mapImageSpat = mapEnt.getComponent(SpatialComponent.id)
+      mapImageSpat.get.position = Vec3(rend.w/2 - bImg.getWidth(), rend.h/2 - bImg.getHeight()/2, 0.0f)
+      scene.addEntity(mapEnt)
+    }
+  }
+
+  def clearScene() = {
+    scene.clear()
+    var textRect = new TextRect2D(new Rectangle2D(iconBoxSize.x.toInt, 2, true),
+      ResourceManager.strings("mapTitle"))
+    textRect.offX = 1
+    textRect.offY = 1
+    textRect.offMinusX = 1
+    textRect.offMinusY = 0
+    textRect.textWrap = true
+    textRect.centerText = true
+
+    var text = Factory2D.createTextRectangle(textRect)
+    var textSpat = text.getComponent(SpatialComponent.id)
+    textSpat.get.position = Vec3(rend.w / 2 - iconBoxSize.x / 2 - 1, 0, 0.0f)
+
+    var border = Factory2D.createRectangle(rend.w - 3, rend.h - 3, false)
+    var bSpatial = border.getComponent(SpatialComponent.id)
+    bSpatial.get.position = Vec3(1f, 1f, 0f)
+    scene.addEntity(border)
+
+    scene.addEntity(text)
+
+  }
   def handleEvent(event: Event, delta: Float) = {
     if (event.eventType == E_INPUT) {
       val eventKey =
@@ -100,11 +144,6 @@ class MapScreen(parent: Adventure, rend: Renderer)
         inputMap(eventKey)(delta)
       }
     }
-  }
-
-  def changeScene(scene: SceneUI) = {
-    activeScene = Some(scene)
-    EventManager.setActiveInputListener(activeScene.get.defaultListener)
   }
 
   def dispose() = {

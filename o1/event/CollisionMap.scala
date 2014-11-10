@@ -4,6 +4,7 @@ import o1.scene._
 import o1.math.Vec2
 
 abstract class CollisionTile() {
+  var color = -1
   var id = -1
   def checkIntersection(tilePosition: Vec2, entity: Entity): Vec2 = {
     val spatial = entity.getComponent(SpatialComponent.id)
@@ -19,6 +20,7 @@ abstract class CollisionTile() {
 }
 
 class EmptyTile extends CollisionTile {
+  color = 0xFFFFFF
   id = 0
   
   val halfWidth = 1.0
@@ -29,6 +31,7 @@ class EmptyTile extends CollisionTile {
 }
 
 class SolidTile extends CollisionTile {
+  color = 0
   id = 1
   
   val halfWidth = 1.0

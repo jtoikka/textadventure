@@ -6,8 +6,8 @@ import java.io.File
 import javax.imageio.ImageIO
 
 object Coffee{
-  val defaultName = "Page" // Should be in resourceManager
-  val defaultDesc = "Page Desc"
+  val defaultName = "Coffee" // Should be in resourceManager
+  val defaultDesc = "Coffee Desc"
   def apply(n: String,d:String ) = new Coffee(n,d)
   def apply() = new Coffee(defaultName,defaultDesc)
 }
