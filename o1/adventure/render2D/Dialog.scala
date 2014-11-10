@@ -52,11 +52,6 @@ class Dialog(
     for(i <- 1 to seperatorRows){
       t +="\n"
     }
-//    var optionStringLenght = 0
-//    for (option <- options.indices) {
-//      if(options(option)._1.length() > optionStringLenght)
-//        optionStringLenght = options(option)._1.length()
-//    }
     
     for (option <- options.indices) {
       if (activeOption == option)

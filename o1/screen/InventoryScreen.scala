@@ -24,10 +24,25 @@ class InventoryScreen(parent: Adventure, rend: Renderer)
     extends Screen(parent, rend) {
   eventTypes = Vector[EventType](E_INPUT, E_DIALOG, E_CHANGE_SCENE)
 
-  val iconCoords = Array[Vec2]( Vec2(10, 5), Vec2(40, 5), Vec2(70, 5),
-                                Vec2(10, 25), Vec2(40, 25), Vec2(70, 25))
-                                
-  val iconPlaceFix = Vec2(2,2)
+  val iconBoxSize = Vec2(19, 11)
+  //  val iconCoords = Array[Vec2](Vec2(10, 5), Vec2(40, 5), Vec2(70, 5),
+  //    Vec2(10, 25), Vec2(40, 25), Vec2(70, 25))
+  val itemsPerRow = Inventory.MAX_INVENTORY_ITEM_COUNT / 2
+  val sHeight = rend.h
+  val sWidth = rend.w
+
+  val topRow = Array.tabulate(itemsPerRow)(x =>
+    Vec2((sWidth / itemsPerRow) * x + (sWidth / itemsPerRow - iconBoxSize.x) / 2,
+      ((sHeight / 2) - iconBoxSize.x) / 2 + 6))
+
+  val bottomRow = Array.tabulate(itemsPerRow)(x =>
+    Vec2((sWidth / itemsPerRow) * x + (sWidth / itemsPerRow - iconBoxSize.x) / 2,
+      sHeight / 2 + (sHeight / 2 - iconBoxSize.x) / 2 + 2))
+
+  val iconCoords = topRow ++ bottomRow
+
+  val iconPlaceFix = Vec2(2, 2)
+  val textPlaceFix = Vec2(1, 11)
   var paused = true
 
   val inputMap =
@@ -42,7 +57,6 @@ class InventoryScreen(parent: Adventure, rend: Renderer)
       }),
       ((Key.N, Input.KEYRELEASED), (delta) => {
         if (Inventory.addItem(Page())) println("Added Page to inventory")
-
       }),
       ((Key.M, Input.KEYRELEASED), (delta) => {
         if (Inventory.addItem(Coffee())) println("Added Coffee to inventory")
@@ -70,21 +84,7 @@ class InventoryScreen(parent: Adventure, rend: Renderer)
   var selected: Int = 0
 
   def init(): Unit = {
-    textRect.offX = 2
-    textRect.offMinusX = 1
-    textRect.offMinusY = 1
-    textRect.textWrap = false
-    textRect.centerText = false
 
-    var rectEnt = Factory2D.createTextRectangle(textRect)
-    var testRectSpatial = rectEnt.getComponent(SpatialComponent.id)
-    testRectSpatial.get.position = Vec3(rend.w / 2 - textRect.w / 2, rend.h / 2 - textRect.h / 2, 0.0f)
-    scene.addEntity(rectEnt)
-
-    var border = Factory2D.createRectangle(rend.w - 3, rend.h - 3, false)
-    var bSpatial = border.getComponent(SpatialComponent.id)
-    bSpatial.get.position = Vec3(1f, 1f, 0f)
-    scene.addEntity(border)
   }
   init()
 
@@ -94,49 +94,40 @@ class InventoryScreen(parent: Adventure, rend: Renderer)
 
   def update(delta: Double): Unit = {
     // update invetory icons
-
     if (!paused) {
-//      println("Inventory Screen update")
-      val invArray = Inventory.containers.toArray
-      clearScene()
 
-      // Add evety item to invArray
-      for (i <- invArray.indices) {
-//        println("Found inventory container: " + invArray(i).toString())
-        if (!invArray(i)._2.hiddenContainer) {
-          // Not hidden. Add to the list
-          val icon = invArray(i)._2.icon.get
-          val count = invArray(i)._2.size
-          val name = invArray(i)._2.name
-          
-          var img = Factory2D.createImage(icon)
-          var imgSpat = img.getComponent(SpatialComponent.id)
-          imgSpat.get.position = Vec3(iconCoords(i).x+iconPlaceFix.x, 
-                                 iconCoords(i).y +iconPlaceFix.y, 0.0f)
-          scene.addEntity(img)
-        }
-      }
-
-
-      textRect.text = Inventory.toString()
     }
     handleEvents(delta.toFloat)
   }
+
   def clearScene() = {
     scene.clear()
-    
+    var textRect = new TextRect2D(new Rectangle2D(iconBoxSize.x.toInt, 2, true),
+      ResourceManager.strings("inventoryTitle"))
+    textRect.offX = 1
+    textRect.offY = 1
+    textRect.offMinusX = 1
+    textRect.offMinusY = 0
+    textRect.textWrap = true
+    textRect.centerText = true
+
+    var text = Factory2D.createTextRectangle(textRect)
+    var textSpat = text.getComponent(SpatialComponent.id)
+    textSpat.get.position = Vec3(rend.w / 2 - iconBoxSize.x / 2 - 1, 0, 0.0f)
+
     var border = Factory2D.createRectangle(rend.w - 3, rend.h - 3, false)
     var bSpatial = border.getComponent(SpatialComponent.id)
     bSpatial.get.position = Vec3(1f, 1f, 0f)
     scene.addEntity(border)
-    
-    for(i <- iconCoords){
-      var border = Factory2D.createRectangle(19, 11, false)
+
+    for (i <- iconCoords) {
+      var border = Factory2D.createRectangle(iconBoxSize.x.toInt, iconBoxSize.y.toInt, false)
       var bSpatial = border.getComponent(SpatialComponent.id)
       bSpatial.get.position = Vec3(i.x, i.y, 0f)
       scene.addEntity(border)
     }
-    
+    scene.addEntity(text)
+
   }
   /**
    * Draw method. Is used to draw screen to display etc
@@ -146,10 +137,49 @@ class InventoryScreen(parent: Adventure, rend: Renderer)
     rend.renderScene(scene)
     display = rend.display
   }
+  
+  def updateInventory() = {
+     val invArray = Inventory.containers.toArray
+    clearScene()
 
+    // Add evety item to invArray
+    for (i <- invArray.indices) {
+      if (!invArray(i)._2.hiddenContainer) {
+        // Not hidden. Add to the list
+        val icon = invArray(i)._2.icon.get
+        val count = invArray(i)._2.size
+        val name = invArray(i)._2.name.get
+
+        var img = Factory2D.createImage(ResourceManager.images(icon))
+        var imgSpat = img.getComponent(SpatialComponent.id)
+        imgSpat.get.position = Vec3(iconCoords(i).x + iconPlaceFix.x,
+          iconCoords(i).y + iconPlaceFix.y, 0.0f)
+
+        var textRect = new TextRect2D(new Rectangle2D(17, 2, true), name + ": " + count)
+        textRect.offX = 1
+        textRect.offY = 1
+        textRect.offMinusX = 1
+        textRect.offMinusY = 0
+        textRect.textWrap = true
+        textRect.centerText = true
+
+        var text = Factory2D.createTextRectangle(textRect)
+        var textSpat = text.getComponent(SpatialComponent.id)
+        textSpat.get.position = Vec3(iconCoords(i).x + textPlaceFix.x,
+          iconCoords(i).y + textPlaceFix.y, 0.0f)
+        scene.addEntity(img)
+        scene.addEntity(text)
+      }
+    }
+
+    textRect.text = Inventory.toString()
+  }
+  
   def resume(): Unit = {
     paused = false
     EventManager.setActiveInputListener(this)
+    updateInventory()
+   
   }
 
   def pause() {

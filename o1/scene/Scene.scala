@@ -22,7 +22,7 @@ class Scene {
 
   def loadMap(map: String) {
     // world
-    world = Some(new World("00_testmap"))
+    world = Some(new World(map))
 
     // entities
     val xml = ResourceManager.maps(map)

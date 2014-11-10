@@ -2,15 +2,8 @@ package o1.adventure.render2D
 
 import java.awt.image.BufferedImage
 import o1.adventure.render.ResourceManager
-object Image2D {
-  def apply(name: String) =
-    new Image2D(ResourceManager.images(name), true)
-  def apply(name: String, defFill: Boolean) =
-    new Image2D(ResourceManager.images(name), defFill)
-  def apply(name: String, defFill: Boolean, fixWidth: Boolean) =
-    new Image2D(ResourceManager.images(name), defFill, fixWidth)
-}
-class Image2D(var img: BufferedImage, var defFill: Boolean, val fixWidth: Boolean)
+
+class Image2D(var img: BufferedImage, var defFill: Boolean, var fixWidth: Boolean)
     extends Shape(Shape.defColor, Shape.defColor) {
   def this(img: BufferedImage, defFill: Boolean) = this(img, defFill, true)
 
@@ -50,14 +43,6 @@ class Image2D(var img: BufferedImage, var defFill: Boolean, val fixWidth: Boolea
         }
       }
     }
-  }
-  
-  /**
-   * Duplicates every pixel horizontally.
-   * Use with extreme caution!
-   */
-  def fixPixelShape() = {
-
   }
 
   def getWidth(): Int = if (fixWidth) img.getWidth() * 2 else img.getWidth()
