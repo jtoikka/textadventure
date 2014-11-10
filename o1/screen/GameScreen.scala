@@ -140,7 +140,7 @@ class GameScreen(parent: Adventure, rend: Renderer)
     }
   }
   
-  val SPEED = 1.0f
+  val SPEED = 0.91f
 
   val inputMap =
     Map[Tuple2[scala.swing.event.Key.Value, Int], (Float) => Unit](
