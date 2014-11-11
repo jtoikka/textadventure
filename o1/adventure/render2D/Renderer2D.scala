@@ -104,7 +104,6 @@ class Renderer2D(w: Int, h: Int) extends Renderer(w, h) {
    * Renders scene to framebuffer
    */
   def renderScene(scene: Scene): Unit = {
-    println("rendering 2D scene")
     for (entity <- scene.entities) {
       var rendComp = entity.getComponent(RenderComponent2D.id)
       if (rendComp.isDefined && rendComp.get.isActive) {

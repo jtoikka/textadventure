@@ -22,7 +22,7 @@ import o1.inventory.ItemContainer
 
 class InventoryScreen(parent: Adventure, rend: Renderer)
     extends Screen(parent, rend) {
-  eventTypes = Vector[EventType](E_INPUT, E_DIALOG, E_CHANGE_SCENE)
+  eventTypes = Vector[EventType](E_INPUT, E_DIALOG)
 
   val iconBoxSize = Vec2(19, 11)
   val itemsPerRow = Inventory.MAX_INVENTORY_ITEM_COUNT / 2

@@ -8,4 +8,5 @@ abstract class Renderer(val w: Int, val h: Int) {
   def renderScene(scene: Scene): Unit
   def display: String
   def clear(): Unit
+  def displayOverlay(disp:String): String
 }
