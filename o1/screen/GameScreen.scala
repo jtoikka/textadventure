@@ -69,6 +69,9 @@ class GameScreen(parent: Adventure, rend: Renderer)
           if (entity.getComponent(AIComponent.id).isDefined) {
             handleAI(entity, delta)
           }
+          if (entity.getComponent(PhysicsComponent.id).isDefined) {
+            Physics.applyPhysics(entity, delta)
+          }
           CollisionCheck.checkCollisions(entity, entitiesAsVector, scene.world)
         }
         
@@ -188,7 +191,7 @@ class GameScreen(parent: Adventure, rend: Renderer)
       ((Key.Space, Input.KEYPRESSED), (delta) => {
         println("Toss coffee")
         val cameraSpatial = scene.camera.get.getComponent(SpatialComponent.id).get
-        scene.addEntity(Factory.createCoffeeBullet(cameraSpatial.position.neg()))
+        scene.addEntity(Factory.createCoffeeBullet(cameraSpatial.position.neg(), cameraSpatial.forward.neg))
       }))
 
   /**
