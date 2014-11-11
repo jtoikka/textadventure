@@ -67,13 +67,6 @@ object AdventureGUI extends SimpleSwingApplication with Listener {
 //      font = new Font(Font.MONOSPACED, 0, 12)
 
       listenTo(keys)
-
-//      reactions += {
-//        case KeyPressed(_, Key.Space, _, _) =>
-//          println("Space is down")
-//        case KeyReleased(_, Key.Space, _, _) =>
-//          println("Space is up")
-//      }
     }
     this.listenTo(renderArea.keys)
     val turnCounter = new Label

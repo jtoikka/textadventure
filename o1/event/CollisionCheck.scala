@@ -9,6 +9,7 @@ import scala.Vector
 import o1.scene.InventoryItemComponent
 import o1.scene.World
 import o1.math.Vec3
+import o1.scene.PhysicsComponent
 
 object CollisionCheck {
 
@@ -55,11 +56,12 @@ object CollisionCheck {
           handleCollision(entity, otherEntity, intersection)
         }
       }
-      checkWorldCollisions(spatialComponent.get.position, collisionComponent.get.radius, world.get)
+      checkWorldCollisions(entity, collisionComponent.get.radius, world.get)
     }
   }
 
-  def checkWorldCollisions(position: Vec3, collisionRadius: Float, world: World) = {
+  def checkWorldCollisions(entity: Entity, collisionRadius: Float, world: World) = {
+    val position = entity.getComponent(SpatialComponent.id).get.position
     def greatestIntersection(intersections: Vector[Vec2]) = {
       var greatest = 0.0f
       var greatestVec = Vec2(0.0f, 0.0f)
@@ -81,6 +83,16 @@ object CollisionCheck {
       val greatest = greatestIntersection(intersections)
       position.x -= greatest.x
       position.z -= greatest.y
+      val physComp = entity.getComponent(PhysicsComponent.id)
+      if (physComp.isDefined) {
+        val velocity = physComp.get.velocity
+        if (greatest.x != 0) {
+          velocity.x = -velocity.x
+        }
+        if (greatest.y != 0) {
+          velocity.z = -velocity.z
+        }
+      }
       intersections = world.tileMap.checkCollisions(
         position.xz,
         collisionRadius)

@@ -103,7 +103,19 @@ object Factory {
   }
   
   def createCoffeeBullet(position: Vec3, direction: Vec3) = {
-    var cof = new Entity(Vector())
+    var cof = new Entity(Vector(EventType.E_COLLISION))
+    
+    cof.eventHandle = (event, delta) => {
+      val entityA = event.args(0).asInstanceOf[Entity]
+      val entityB = event.args(1).asInstanceOf[Entity]
+      
+      if (entityA == cof) {
+        if (entityB.getComponent(DamageComponent.id).isDefined) {
+          cof.destroy = true
+        }
+      }
+    } 
+    
     var spatialComp = new SpatialComponent()
     spatialComp.position = position
     spatialComp.position.y = 0.8f
@@ -122,11 +134,8 @@ object Factory {
     var damageComp = new DamageComponent(1)
     cof.addComponent(damageComp)
     
-//    var listenerComp = new ListenerComponent(
-//        Vector(EventType.E_COLLISION), (event, delta) => {
-//      var entityA = event.args(0).asInstanceOf[Entity]
-//      if (entity)
-//    })
+    var breakableComp = new BreakableComponent()
+    cof.addComponent(breakableComp)
 
     cof.addComponent(renderComp)
     cof
@@ -273,9 +282,16 @@ object Factory {
     entity.eventHandle = (event, delta) => {
       val entityA = event.args(0).asInstanceOf[Entity]
       val entityB = event.args(1).asInstanceOf[Entity]
-      if (entityA == entity) {
+      if (entityA == entity && !entityB.destroy) {
         if (entityB.getComponent(DamageComponent.id).isDefined) {
-          println("Took damage")
+          val healthComp = entity.getComponent(HealthComponent.id).get
+          healthComp.hp -= 1
+          if (healthComp.hp <= 0) {
+            entity.destroy = true
+          }
+          if (entityB.getComponent(BreakableComponent.id).isDefined) {
+            entityB.destroy = true
+          }
         }
       }
     } 
@@ -293,16 +309,11 @@ object Factory {
     val AIComponent = new AIComponent("lovebot")
     entity.addComponent(AIComponent)
     
-//    val listenerComp = new ListenerComponent(
-//        Vector(EventType.E_COLLISION), (event, delta) => {
-//      val entityA = event.args(0).asInstanceOf[Entity]
-//      val entityB = event.args(1).asInstanceOf[Entity]
-//      
-//      if (entityB.getComponent(DamageComponent.id).isDefined) {
-//        println("Took damage")
-//      }
-//    })
-//    entity.addComponent(listenerComp)
+    val damageComp = new DamageComponent(2)
+    entity.addComponent(damageComp)
+    
+    val healthComp = new HealthComponent(4)
+    entity.addComponent(healthComp)
 
     var collisionComponent = new CollisionComponent(size / 16, Buffer[Int]())
     entity.addComponent(collisionComponent)
