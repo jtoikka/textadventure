@@ -159,7 +159,7 @@ class GameScreen(parent: Adventure, rend: Renderer)
         EventManager.addEvent(new Event(Vector("inventoryScreen"), E_CHANGE_SCREEN))
       }),
       ((Key.N, Input.KEYRELEASED), (delta) => {
-        if (Inventory.addItem(Page())) println("Added Page to inventory")
+        EventManager.addEvent(new Event(Vector("helpMenuScreen"), E_CHANGE_SCREEN))
         
       }),
       ((Key.M, Input.KEYRELEASED), (delta) => {
@@ -203,6 +203,7 @@ class GameScreen(parent: Adventure, rend: Renderer)
     
     parent.screens("hudScreen").draw()
     parent.screens("hudScreen").rend.displayOverlay(tmpDisplay)
+    
   }
 
   def init(): Unit = {

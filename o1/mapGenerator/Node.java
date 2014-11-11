@@ -124,6 +124,7 @@ public class Node{
 		}
 	} // Method
 	
+	@Override
 	public String toString(){
 		return "Node: " + block.toString();
 	} // Method
