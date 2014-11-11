@@ -101,7 +101,30 @@ object Factory {
   }
   
   def createCoffeeBullet(position: Vec3, direction: Vec3) = {
-    var cof = new Entity(Vector())
+    var cof = new Entity(Vector(EventType.E_COLLISION))
+    
+    cof.eventHandle = (event, delta) => {
+      val entityA = event.args(0).asInstanceOf[Entity]
+      val entityB = event.args(1).asInstanceOf[Entity]
+      
+      val intersection = event.args(2).asInstanceOf[Vec2]
+      
+      val physics = cof.getComponent(PhysicsComponent.id).get
+      
+//      if (entityB.getComponent(DamageComponent.id).isDefined){
+//        if (intersection.x.abs < intersection.y.abs) {
+//          physics.velocity.x = 0.0f
+//        } else {
+//          physics.velocity.z = 0.0f
+//        }
+//      }
+      if (entityA == cof) {
+        if (entityB.getComponent(DamageComponent.id).isDefined) {
+          cof.destroy = true
+        }
+      }
+    } 
+    
     var spatialComp = new SpatialComponent()
     spatialComp.position = position
     spatialComp.position.y = 0.8f
@@ -119,12 +142,6 @@ object Factory {
     
     var damageComp = new DamageComponent(1)
     cof.addComponent(damageComp)
-    
-//    var listenerComp = new ListenerComponent(
-//        Vector(EventType.E_COLLISION), (event, delta) => {
-//      var entityA = event.args(0).asInstanceOf[Entity]
-//      if (entity)
-//    })
 
     cof.addComponent(renderComp)
     cof
@@ -290,6 +307,9 @@ object Factory {
     
     val AIComponent = new AIComponent("lovebot")
     entity.addComponent(AIComponent)
+    
+    val damageComp = new DamageComponent(2)
+    entity.addComponent(damageComp)
     
 //    val listenerComp = new ListenerComponent(
 //        Vector(EventType.E_COLLISION), (event, delta) => {
