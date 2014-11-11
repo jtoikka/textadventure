@@ -65,10 +65,13 @@ class CollisionMapComponent(val tileMap: Array[Int]) extends Component {}
 
 object CollisionComponent {
   val id = classOf[CollisionComponent]
+  
+  val CIRCLE = 1
+  val SQUARE = 2
 }
 
 class CollisionComponent(
-    val radius: Float, 
+    val radius: Float, val shape: Int,
     val attributes: Buffer[Int]) extends Component {
   var isActive = true
 }
@@ -109,9 +112,13 @@ case class PhysicsComponent(var velocity: Vec3, var acceleration: Vec3) extends 
 
 object DamageComponent {
   val id = classOf[DamageComponent]
+  
+  val NONE = 0
+  val PLAYER = 1
+  val ENEMY = 2
 }
 
-case class DamageComponent(val amount: Int) extends Component {
+case class DamageComponent(val amount: Int, val canDamage: Int) extends Component {
   
 }
 
