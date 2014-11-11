@@ -16,7 +16,7 @@ import o1.event.EventType
 object Factory {
 
   def createPlayer() = {
-    var player = new Entity()
+    var player = new Entity(Vector())
 
     var spatialComp = new SpatialComponent()
     player.addComponent(spatialComp)
@@ -30,7 +30,7 @@ object Factory {
   }
 
   def createCamera(followEntity: Entity) = {
-    var camera = new Entity()
+    var camera = new Entity(Vector())
 
     var spatialComp = new SpatialComponent()
     camera.addComponent(spatialComp)
@@ -42,7 +42,7 @@ object Factory {
   }
 
   def createSphere() = {
-    var sphere = new Entity()
+    var sphere = new Entity(Vector())
     var spatialComp = new SpatialComponent()
 
     sphere.addComponent(spatialComp)
@@ -54,7 +54,7 @@ object Factory {
   }
 
   def createCube() = {
-    var sphere = new Entity()
+    var sphere = new Entity(Vector())
     var spatialComp = new SpatialComponent()
 
     sphere.addComponent(spatialComp)
@@ -66,7 +66,7 @@ object Factory {
   }
 
   def createMonkey() = {
-    var monkey = new Entity()
+    var monkey = new Entity(Vector())
     var spatialComp = new SpatialComponent()
 
     monkey.addComponent(spatialComp)
@@ -81,7 +81,7 @@ object Factory {
   }
 
   def createCoffee() = {
-    var cof = new Entity()
+    var cof = new Entity(Vector())
     var spatialComp = new SpatialComponent()
 
     cof.addComponent(spatialComp)
@@ -101,7 +101,7 @@ object Factory {
   }
   
   def createCoffeeBullet(position: Vec3, direction: Vec3) = {
-    var cof = new Entity()
+    var cof = new Entity(Vector())
     var spatialComp = new SpatialComponent()
     spatialComp.position = position
     spatialComp.position.y = 0.8f
@@ -120,17 +120,18 @@ object Factory {
     var damageComp = new DamageComponent(1)
     cof.addComponent(damageComp)
     
-    var listenerComp = new ListenerComponent(
-        Vector(EventType.E_COLLISION), (event, delta) => {
-      
-    })
+//    var listenerComp = new ListenerComponent(
+//        Vector(EventType.E_COLLISION), (event, delta) => {
+//      var entityA = event.args(0).asInstanceOf[Entity]
+//      if (entity)
+//    })
 
     cof.addComponent(renderComp)
     cof
   }
 
   def createPlate() = {
-    var monkey = new Entity()
+    var monkey = new Entity(Vector())
     var spatialComp = new SpatialComponent()
 
     monkey.addComponent(spatialComp)
@@ -142,7 +143,7 @@ object Factory {
   }
 
   def createLevel() = {
-    var monkey = new Entity()
+    var monkey = new Entity(Vector())
     var spatialComp = new SpatialComponent()
 
     monkey.addComponent(spatialComp)
@@ -154,7 +155,7 @@ object Factory {
   }
 
   def createFloor() = {
-    var floor = new Entity()
+    var floor = new Entity(Vector())
     var spatialComp = new SpatialComponent()
 
     floor.addComponent(spatialComp)
@@ -186,7 +187,7 @@ object Factory {
     val loc = Vec2((node \ "@x").text.toFloat, (node \ "@y").text.toFloat)
     val size = (node \ "@width").text.toFloat
 
-    val entity = new Entity()
+    val entity = new Entity(Vector())
 
     val spatialComp = new SpatialComponent()
     spatialComp.position = Vec3((loc.x * 2) / 16, 0.5f, loc.y * 2 / 16)
@@ -211,7 +212,7 @@ object Factory {
     val loc = Vec2((node \ "@x").text.toFloat, (node \ "@y").text.toFloat)
     val size = (node \ "@width").text.toFloat
 
-    val entity = new Entity()
+    val entity = new Entity(Vector())
 
     val spatialComp = new SpatialComponent()
     spatialComp.position = Vec3(loc.x * 2 / 16, 0.5f, loc.y * 2 / 16)
@@ -240,7 +241,7 @@ object Factory {
     val loc = Vec2((node \ "@x").text.toFloat, (node \ "@y").text.toFloat)
     val size = (node \ "@width").text.toFloat
 
-    val entity = new Entity()
+    val entity = new Entity(Vector())
 
     val spatialComp = new SpatialComponent()
     spatialComp.position = Vec3(loc.x * 2 / 16, 0.5f, loc.y * 2 / 16)
@@ -265,7 +266,17 @@ object Factory {
     val loc = Vec2((node \ "@x").text.toFloat, (node \ "@y").text.toFloat)
     val size = (node \ "@width").text.toFloat
 
-    val entity = new Entity()
+    val entity: Entity = new Entity(Vector(EventType.E_COLLISION))
+    
+    entity.eventHandle = (event, delta) => {
+      val entityA = event.args(0).asInstanceOf[Entity]
+      val entityB = event.args(1).asInstanceOf[Entity]
+      if (entityA == entity) {
+        if (entityB.getComponent(DamageComponent.id).isDefined) {
+          println("Took damage")
+        }
+      }
+    } 
 
     val spatialComp = new SpatialComponent()
     spatialComp.position = Vec3(loc.x * 2 / 16, 1.0f, loc.y * 2 / 16)
@@ -280,16 +291,16 @@ object Factory {
     val AIComponent = new AIComponent("lovebot")
     entity.addComponent(AIComponent)
     
-    val listenerComp = new ListenerComponent(
-        Vector(EventType.E_COLLISION), (event, delta) => {
-      val entityA = event.args(0).asInstanceOf[Entity]
-      val entityB = event.args(1).asInstanceOf[Entity]
-      
-      if (entityB.getComponent(DamageComponent.id).isDefined) {
-        println("Took damage")
-      }
-    })
-    entity.addComponent(listenerComp)
+//    val listenerComp = new ListenerComponent(
+//        Vector(EventType.E_COLLISION), (event, delta) => {
+//      val entityA = event.args(0).asInstanceOf[Entity]
+//      val entityB = event.args(1).asInstanceOf[Entity]
+//      
+//      if (entityB.getComponent(DamageComponent.id).isDefined) {
+//        println("Took damage")
+//      }
+//    })
+//    entity.addComponent(listenerComp)
 
     var collisionComponent = new CollisionComponent(size / 16, Buffer[Int]())
     entity.addComponent(collisionComponent)
@@ -302,7 +313,7 @@ object Factory {
     val loc = Vec2((node \ "@x").text.toFloat, (node \ "@y").text.toFloat)
     val size = (node \ "@width").text.toFloat
     
-    val player = new Entity()
+    val player = new Entity(Vector())
 
     val spatialComp = new SpatialComponent()
     spatialComp.position = Vec3(loc.x * 2 / 16, 1.2f, loc.y * 2 / 16)

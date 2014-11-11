@@ -2,6 +2,9 @@ package o1.scene
 
 import scala.collection.mutable.Map
 import scala.collection.mutable.MutableList
+import o1.event.EventType
+import o1.event.Listener
+import o1.event.Event
 
 /**
  * An entity is a container of components, that can represent any game element.
@@ -11,7 +14,12 @@ import scala.collection.mutable.MutableList
  * game-world, and information about its physical characteristics; the game's
  * renderer can use these to create a visual representation of the entity.
  */
-class Entity {
+class Entity(listenerEventTypes: Vector[EventType.EventType]) extends Listener {
+  
+  eventTypes = listenerEventTypes
+  
+  var eventHandle: (Event, Float) => Unit = (event, delta) => Unit
+  
   val components = Map[Class[_ <: Component], Component]()
   var destroy = false
   
@@ -31,4 +39,10 @@ class Entity {
   def addChild(entity: Entity) = {
     children += entity
   }
+  
+  def handleEvent(event: Event, delta: Float) = {
+    eventHandle(event, delta)
+  }
+  
+  def dispose = {}
 }
