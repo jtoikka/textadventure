@@ -99,13 +99,16 @@ object Factory {
     cof
   }
   
-  def createCoffeeBullet(position: Vec3) = {
+  def createCoffeeBullet(position: Vec3, direction: Vec3) = {
     var cof = new Entity()
     var spatialComp = new SpatialComponent()
     spatialComp.position = position
     spatialComp.position.y = 0.8f
 
     cof.addComponent(spatialComp)
+    
+    val physicsComp = new PhysicsComponent(Vec3(direction.x, 0.2f, direction.z), Vec3(0.0f, -0.0981f, 0.0f))
+    cof.addComponent(physicsComp)
 
     var renderComp = new RenderComponent("coffee")
 
