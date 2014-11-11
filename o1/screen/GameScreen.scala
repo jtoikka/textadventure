@@ -150,7 +150,7 @@ class GameScreen(parent: Adventure, rend: Renderer)
   val inputMap =
     Map[Tuple2[scala.swing.event.Key.Value, Int], (Float) => Unit](
       ((Key.Q, Input.KEYRELEASED), (delta) => {
-//        showHUD = !showHUD
+        
       }),
       ((Key.Escape, Input.KEYRELEASED), (delta) => {
         EventManager.addEvent(new Event(Vector("menuScreen"), E_CHANGE_SCREEN))
@@ -160,6 +160,7 @@ class GameScreen(parent: Adventure, rend: Renderer)
       }),
       ((Key.N, Input.KEYRELEASED), (delta) => {
         if (Inventory.addItem(Page())) println("Added Page to inventory")
+        
       }),
       ((Key.M, Input.KEYRELEASED), (delta) => {
         EventManager.addEvent(new Event(Vector("mapScreen"), E_CHANGE_SCREEN))

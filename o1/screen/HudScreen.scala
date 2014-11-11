@@ -22,11 +22,11 @@ import o1.inventory.ItemContainer
 
 class HudScreen(parent: Adventure, rend: Renderer)
     extends Screen(parent, rend) {
-  eventTypes = Vector[EventType](E_INPUT, E_DIALOG, E_CHANGE_HUD_INFO)
-  
-  var paused = true
-  var hudInfo: Option[Vector[Any]] = None
-  
+  eventTypes = Vector[EventType](E_INPUT, E_PLAYER_CREATION)
+
+  var paused = false
+  var hudInfoPlayer: Option[Entity] = None
+
   val inputMap =
     Map[Tuple2[scala.swing.event.Key.Value, Int], (Float) => Unit](
       ((Key.Q, Input.KEYRELEASED), (delta) => {
@@ -61,14 +61,24 @@ class HudScreen(parent: Adventure, rend: Renderer)
   val scene = new Scene()
 
   def init(): Unit = {
-    var border = Factory2D.createRectangle(rend.w - 3, rend.h - 3, false)
-    var bSpatial = border.getComponent(SpatialComponent.id)
-    bSpatial.get.position = Vec3(1f, 1f, 0f)
-    scene.addEntity(border)
-    
-    var mainInfoBox = Factory2D.createRectangle(20, 10, false)
+
+    var mainInfoBox = Factory2D.createTextRectangle(
+      new TextRect2D(
+        new Rectangle2D(50, 5, true)))
     var infoSpatial = mainInfoBox.getComponent(SpatialComponent.id)
     infoSpatial.get.position = Vec3(1f, 1f, 0f)
+
+    mainInfoBox.eventTypes = Vector(E_CHANGE_HUD_INFO)
+    mainInfoBox.eventHandle = (event, delta) => {
+      val playerHP = event.args(0).asInstanceOf[Int]
+      val playerMana = event.args(1).asInstanceOf[Int]
+      val playerLoc = event.args(2).asInstanceOf[Vec3]
+      val playerHeading = event.args(3).asInstanceOf[Vec3]
+      val box = ResourceManager.shapes(mainInfoBox.getComponent(RenderComponent2D.id).get.shape)
+      box.asInstanceOf[TextRect2D].text = "Location: " + playerLoc +
+        "\nHeading: " + playerHeading
+    }
+
     scene.addEntity(mainInfoBox)
   }
   init()
@@ -79,16 +89,20 @@ class HudScreen(parent: Adventure, rend: Renderer)
 
   def update(delta: Double): Unit = {
     // update invetory icons
-    if (!paused) {
-
+    if (!paused && hudInfoPlayer.isDefined) {
+      EventManager.addEvent(new Event(Vector(69, 420,
+        hudInfoPlayer.get.getComponent(SpatialComponent.id).get.position,
+        hudInfoPlayer.get.getComponent(SpatialComponent.id).get.forward),
+        E_CHANGE_HUD_INFO))
     }
     handleEvents(delta.toFloat)
+    scene.entities.foreach(_.handleEvents(delta.toFloat))
   }
 
   def clearScene() = {
     scene.clear()
   }
-  
+
   /**
    * Draw method. Is used to draw screen to display etc
    */
@@ -116,8 +130,8 @@ class HudScreen(parent: Adventure, rend: Renderer)
         inputMap(eventKey)(delta)
       }
     }
-    if (event.eventType == E_CHANGE_HUD_INFO) {
-      hudInfo = Some(event.args)
+    if (event.eventType == E_PLAYER_CREATION) {
+      hudInfoPlayer = Some(event.args(0).asInstanceOf[Entity])
     }
   }
 
