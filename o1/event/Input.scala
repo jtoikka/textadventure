@@ -5,8 +5,8 @@ import scala.collection.mutable.Map
 object Input {
   val KEYUP = 0
   val KEYDOWN = 1
-  val KEYRELEASED = 2
-  val KEYPRESSED = 3
+  val KEYPRESSED = 2
+  val KEYRELEASED = 3
 
   def handleInput(
       keyMap: Map[scala.swing.event.Key.Value, Int],
