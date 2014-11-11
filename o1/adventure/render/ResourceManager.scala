@@ -30,7 +30,7 @@ object ResourceManager {
   val XMLtextures = xml \ "textures" \ "item"
   val XMLstrings = xml \ "strings" \ "item"
   val XMLmaps = xml \ "maps" \ "item"
-
+  
   // Load meshes
   for (m <- XMLmeshes) {
     val name = (m \ "@name")

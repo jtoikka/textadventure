@@ -122,11 +122,12 @@ class MainMenuScreen(parent: Adventure, rend: Renderer)
   /**
    * Draw method. Is used to draw screen to display etc
    */
-  def draw(): Unit = {
+  def draw(): String = {
     rend.clear()
     if (activeScene.isDefined)
       rend.renderScene(activeScene.get)
     display = rend.display
+    display
   }
 
   def resume(): Unit = {

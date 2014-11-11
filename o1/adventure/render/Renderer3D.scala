@@ -7,6 +7,7 @@ import o1.math._
 import o1.scene._
 import o1.event.SolidTile
 import o1.adventure.render2D.Image2D
+import o1.adventure.render2D.Renderer2D
 
 
 class Renderer3D(w: Int, h: Int) extends Renderer(w,h) {
@@ -438,4 +439,14 @@ class Renderer3D(w: Int, h: Int) extends Renderer(w,h) {
  * text area.
  */
   def display = this._frontBuffer.mkString("")
+  
+  def displayOverlay(disp: String): String = {
+    var str = disp.toCharArray()
+    for (i <- 0 to str.length - 1) {
+      if (_frontBuffer(i) != Renderer.empty &&
+        _frontBuffer(i) != '\n' && str(i) != '\n')
+        str(i) = _frontBuffer(i)
+    }
+    str.mkString("")
+  }
 }

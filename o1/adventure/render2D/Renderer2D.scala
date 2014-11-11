@@ -285,7 +285,7 @@ class Renderer2D(w: Int, h: Int) extends Renderer(w, h) {
   def displayOverlay(disp: String): String = {
     var str = disp.toCharArray()
     for (i <- 0 to str.length - 1) {
-      if (frameBuffer(i) != Renderer2D.empty &&
+      if (frameBuffer(i) != Renderer.empty &&
         frameBuffer(i) != '\n' && str(i) != '\n')
         str(i) = frameBuffer(i)
     }

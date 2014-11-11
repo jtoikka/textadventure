@@ -21,7 +21,7 @@ abstract class Screen(private val parent: Adventure, private val rend: Renderer)
 	/**
 	 * Draw method. Is used to draw screen to display etc
 	 */
-	def draw()
+	def draw(): String
 	
 	/**
 	 * Initializing method. Should be used when screen is created
