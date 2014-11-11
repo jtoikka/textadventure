@@ -24,6 +24,7 @@ class Renderer3D(w: Int, h: Int) extends Renderer(w,h) {
   
   val zNear = 0.1f  // Near clipping plane
   val zFar = 30.0f // Far clipping plane
+  val fov = 60.0f
   
   val _ramp = "MEIi!:,. "
   
@@ -51,12 +52,12 @@ class Renderer3D(w: Int, h: Int) extends Renderer(w,h) {
   
   val ditherStrength = 1.0f / (64.0f * _ramp.size)
     
-  val pixelRatio = 0.6f // Pixel height/width
+  val pixelRatio = 0.5f // Pixel height/width
 
   var cubeRotation = Mat4.identity()
   
   var cameraToClipMatrix = 
-    Camera.perspectiveProjection(w * pixelRatio, h, 40.0f, zNear, zFar)
+    Camera.perspectiveProjection(w * pixelRatio, h, fov, zNear, zFar)
 
 /**
  * Sets a pixel at index [position] to [character]. Use the function calcIndex
@@ -177,7 +178,7 @@ class Renderer3D(w: Int, h: Int) extends Renderer(w,h) {
               if (!cullObject(
                   cameraSpatial.position.xz, 
                   cameraSpatial.forward.xz, 
-                  Vec2(worldX, worldY), 0.7)) {
+                  Vec2(worldX, worldY), cos(fov / 360 * 2 * Math.PI))) {
                 var translation = 
                   Utility.translate(Vec4(
                       worldX, 0.0f, 
@@ -243,18 +244,18 @@ class Renderer3D(w: Int, h: Int) extends Renderer(w,h) {
           var normal = (_normalBuffer(index1))
           var viewRay = _viewRayBuffer(index1)
           var depth = (_depthBuffer(index1) + _depthBuffer(index2)) / 2.0f
-          var attenuation = 3.0f / (depth + 5.0f * depth * depth)
-          var specular = clamp(normal.dot(viewRay), 0.0f, 1.0f) * -viewRay.z * attenuation
+          var attenuation = 4.0f / (depth + 8.0f * depth * depth)
+          var specular = clamp(normal.dot(viewRay), 0.0f, 1.0f) * -viewRay.z * attenuation * diffuse
           if (normal.y > 0.9) {
-            specular = (1.0f - viewRay.y) * viewRay.z * viewRay.z * -viewRay.z * depth * 0.2f
+            specular = (1.0f - viewRay.y) * viewRay.z * viewRay.z * -viewRay.z * depth * 0.2f * attenuation
           }
-          val diffuseLight = depth * 0.4f * attenuation
-          var lighting = specular + diffuseLight
+          val diffuseLight = depth * 0.4f * attenuation * diffuse
+          var lighting = specular * 0.4f + diffuseLight * 1.0f
           lighting = 1.0f - Math.exp(2.2 * -lighting).toFloat
           if (depth >= 1.0) lighting = 0.0f
           val bayer = bayerMatrix(8 * bayesRow + bayesCollumn)
           var v = (lighting + (bayer * ditherStrength)) * _ramp.size
-          v = clamp(v, 0.0f, _ramp.size.toFloat - 1.0f) * diffuse
+          v = clamp(v, 0.0f, _ramp.size.toFloat - 1.0f)
           
           setPixel(calcFrontIndex(x, y), _ramp(_ramp.size - v.toInt - 1))
         }
@@ -387,6 +388,7 @@ class Renderer3D(w: Int, h: Int) extends Renderer(w,h) {
           if (depth < _depthBuffer(index) && depth > 0.0) {
             val colour = texture.getPixel(uv.x, uv.y)
             val a = colour >> 24 & 0xFF
+            val aNormalized = a / 255.0f
             val r = colour >> 16 & 0xFF
             val g = colour >> 8 & 0xFF
             val b = colour & 0xFF
@@ -395,7 +397,7 @@ class Renderer3D(w: Int, h: Int) extends Renderer(w,h) {
               
               val i = (depth * _ramp.size).toInt
               _depthBuffer(index) = depth
-              _diffuseBuffer(index) = r / 255.0f
+              _diffuseBuffer(index) = (r * 0.299f + g * 0.587f + b * 0.114f) / 255.0f
               _normalBuffer(index) = normal
             }
           }
