@@ -216,8 +216,10 @@ class GameScreen(parent: Adventure, rend: Renderer)
     /* HUD -------------------------------------*/
 
     lastDrawTime = System.currentTimeMillis() - drawStartTime
+    parent.screens("hudScreen").rend.displayOverlay(tmpDisplay)
     
-    rendHUD.displayOverlay(tmpDisplay)
+    
+//    rendHUD.displayOverlay(tmpDisplay)
   }
 
   private def updateHUD(playerLoc: Vec3) {
