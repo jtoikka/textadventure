@@ -65,6 +65,11 @@ class HudScreen(parent: Adventure, rend: Renderer)
     var bSpatial = border.getComponent(SpatialComponent.id)
     bSpatial.get.position = Vec3(1f, 1f, 0f)
     scene.addEntity(border)
+    
+    var mainInfoBox = Factory2D.createRectangle(20, 10, false)
+    var infoSpatial = mainInfoBox.getComponent(SpatialComponent.id)
+    infoSpatial.get.position = Vec3(1f, 1f, 0f)
+    scene.addEntity(mainInfoBox)
   }
   init()
 
@@ -83,6 +88,7 @@ class HudScreen(parent: Adventure, rend: Renderer)
   def clearScene() = {
     scene.clear()
   }
+  
   /**
    * Draw method. Is used to draw screen to display etc
    */
