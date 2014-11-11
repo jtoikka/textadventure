@@ -10,7 +10,8 @@ object EventType extends Enumeration{
       E_CHANGE_SCENE,
       E_GAME_EVENT,
       E_GAME_UPDATE, 
-      E_CHANGE_MAP,// 
+      E_CHANGE_MAP,
+      E_CHANGE_HUD_INFO,
       E_SYSTEM_EXIT = Value
 }
 import o1.event.EventType._
