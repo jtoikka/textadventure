@@ -68,10 +68,7 @@ class GameScreen(parent: Adventure, rend: Renderer)
             entity.destroy = true
           }
         }
-        val listener = entity.getComponent(ListenerComponent.id)
-        if (listener.isDefined) {
-          listener.get.handleEvents(delta.toFloat)
-        }
+        entity.handleEvents(delta.toFloat)
         
         if (entity.destroy) {
             destroyedEntities += entity

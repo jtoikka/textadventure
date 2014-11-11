@@ -107,22 +107,22 @@ case class PhysicsComponent(var velocity: Vec3, var acceleration: Vec3) extends 
   
 }
 
-object ListenerComponent {
-  val id = classOf[ListenerComponent]
-}
+//object ListenerComponent {
+//  val id = classOf[ListenerComponent]
+//}
 
-case class ListenerComponent(
-    listenerEventTypes: Vector[EventType.EventType], 
-    eventHandle: (Event, Float) => Unit) extends Component with Listener {
-  eventTypes = listenerEventTypes
-  def handleEvent(event: Event, delta: Float) = {
-    eventHandle(event, delta)
-  }
-  
-  def dispose() = {
-    
-  }
-}
+//case class ListenerComponent(
+//    listenerEventTypes: Vector[EventType.EventType], 
+//    eventHandle: (Event, Float) => Unit) extends Component with Listener {
+//  eventTypes = listenerEventTypes
+//  def handleEvent(event: Event, delta: Float) = {
+//    eventHandle(event, delta)
+//  }
+//  
+//  def dispose() = {
+//    
+//  }
+//}
 
 object DamageComponent {
   val id = classOf[DamageComponent]
@@ -136,6 +136,6 @@ object BreakableComponent {
   val id = classOf[BreakableComponent]
 }
 
-case class BreakableComponent() {
+case class BreakableComponent() extends Component {
   
 }
