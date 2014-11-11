@@ -10,7 +10,7 @@ import o1.event.Listener
  * @param parent parent Adventure class
  **/
 
-abstract class Screen(private val parent: Adventure, private val rend: Renderer) extends Listener{
+abstract class Screen(private val parent: Adventure, val rend: Renderer) extends Listener{
 //  var display = rend.display;
   
 	/**
