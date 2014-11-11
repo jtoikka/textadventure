@@ -88,3 +88,11 @@ case class InventoryItemComponent(
     val count: Int = 1) extends Component {
 
 }
+
+object AIComponent {
+  val id = classOf[AIComponent]
+}
+
+case class AIComponent(val botType: String) extends Component {
+  
+}

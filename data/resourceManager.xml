@@ -38,7 +38,7 @@
 	</images>
 	<textures>
 	    <item name="testTex" path="data/textures/W3d_protograywallshade1.png"></item>
-	    <item name="test_enemy_tex" path="data/textures/test_enemy.png"></item>
+	    <item name="test_enemy_tex" path="data/textures/psychobot.png"></item>
 	</textures>
 	<strings>
 		<item name="helpMenu">

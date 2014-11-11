@@ -66,6 +66,9 @@ class GameScreen(parent: Adventure, rend: Renderer)
           if (entity.getComponent(FaceCameraComponent.id).isDefined) {
             faceCamera(entity, scene.camera.get)
           }
+          if (entity.getComponent(AIComponent.id).isDefined) {
+            handleAI(entity, delta)
+          }
           CollisionCheck.checkCollisions(entity, entitiesAsVector, scene.world)
         }
         
@@ -83,6 +86,11 @@ class GameScreen(parent: Adventure, rend: Renderer)
     } else {
       events.clear()
     }
+  }
+  
+  def handleAI(entity: Entity, delta: Double) = {
+    val aiComponent = entity.getComponent(AIComponent.id).get
+    AI.functionMap(aiComponent.botType)(entity, delta)
   }
   
   def faceCamera(entity: Entity, camera: Entity) = {
@@ -140,7 +148,7 @@ class GameScreen(parent: Adventure, rend: Renderer)
     }
   }
   
-  val SPEED = 1.0f
+  val SPEED = 0.30f
 
   val inputMap =
     Map[Tuple2[scala.swing.event.Key.Value, Int], (Float) => Unit](
