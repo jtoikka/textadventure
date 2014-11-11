@@ -28,7 +28,7 @@ class MapScreen(parent: Adventure, rend: Renderer)
   val iconBoxSize = Vec2(19, 11)
   val scene = new Scene()
 
-  var world:Option[World] = None
+  var world: Option[World] = None
 
   val inputMap =
     Map[Tuple2[scala.swing.event.Key.Value, Int], (Float) => Unit](
@@ -81,9 +81,16 @@ class MapScreen(parent: Adventure, rend: Renderer)
    * Draw method. Is used to draw screen to display etc
    */
   def draw(): String = {
+
     rend.clear()
     rend.renderScene(scene)
-    rend.display
+
+    parent.screens("gameScreen").draw()
+    var tmpDisplay: String = parent.screens("gameScreen").rend.display
+    
+    rend.displayOverlay(tmpDisplay)
+    
+    
   }
 
   def resume(): Unit = {
@@ -108,7 +115,7 @@ class MapScreen(parent: Adventure, rend: Renderer)
 
       var mapEnt = Factory2D.createImage(mapImage)
       var mapImageSpat = mapEnt.getComponent(SpatialComponent.id)
-      mapImageSpat.get.position = Vec3(rend.w/2 - bImg.getWidth(), rend.h/2 - bImg.getHeight()/2, 0.0f)
+      mapImageSpat.get.position = Vec3(rend.w / 2 - bImg.getWidth(), rend.h / 2 - bImg.getHeight() / 2, 0.0f)
       scene.addEntity(mapEnt)
     }
   }
@@ -145,7 +152,7 @@ class MapScreen(parent: Adventure, rend: Renderer)
       }
     } else if (event.eventType == E_CHANGE_MAP) {
       world = event.args(0).asInstanceOf[Option[World]]
-      
+
     }
   }
 

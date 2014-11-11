@@ -131,13 +131,17 @@ class InventoryScreen(parent: Adventure, rend: Renderer)
    * Draw method. Is used to draw screen to display etc
    */
   def draw(): String = {
+
     rend.clear()
     rend.renderScene(scene)
-    rend.display
+
+    parent.screens("gameScreen").draw()
+    var tmpDisplay: String = parent.screens("gameScreen").rend.display
+    rend.displayOverlay(tmpDisplay)
   }
-  
+
   def updateInventory() = {
-     val invArray = Inventory.containers.toArray
+    val invArray = Inventory.containers.toArray
     clearScene()
 
     // Add evety item to invArray
@@ -172,12 +176,12 @@ class InventoryScreen(parent: Adventure, rend: Renderer)
 
     textRect.text = Inventory.toString()
   }
-  
+
   def resume(): Unit = {
     paused = false
     EventManager.setActiveInputListener(this)
     updateInventory()
-   
+
   }
 
   def pause() {
