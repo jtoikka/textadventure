@@ -184,12 +184,17 @@ class GameScreen(parent: Adventure, rend: Renderer)
       }),
       ((Key.Right, Input.KEYDOWN), (delta) => {
         movementMap(ROTATERIGHT) = 0.2f * delta
+      }),
+      ((Key.Space, Input.KEYPRESSED), (delta) => {
+        println("Toss coffee")
+        val cameraSpatial = scene.camera.get.getComponent(SpatialComponent.id).get
+        scene.addEntity(Factory.createCoffeeBullet(cameraSpatial.position.neg()))
       }))
 
   /**
    * Draw method. Is used to draw screen to display etc
    */
-  def draw(): Unit = {
+  def draw(): String = {
     var drawStartTime: Long = System.currentTimeMillis()
     var tmpDisplay: String = ""
 
@@ -209,6 +214,8 @@ class GameScreen(parent: Adventure, rend: Renderer)
     /* HUD -------------------------------------*/
 
     lastDrawTime = System.currentTimeMillis() - drawStartTime
+    
+    display
   }
 
   private def updateHUD(playerLoc: Vec3) {

@@ -98,6 +98,24 @@ object Factory {
     cof.addComponent(renderComp)
     cof
   }
+  
+  def createCoffeeBullet(position: Vec3) = {
+    var cof = new Entity()
+    var spatialComp = new SpatialComponent()
+    spatialComp.position = position
+    spatialComp.position.y = 0.8f
+
+    cof.addComponent(spatialComp)
+
+    var renderComp = new RenderComponent("coffee")
+
+    var collisionComponent = new CollisionComponent(0.1f, Buffer[Int]())
+    collisionComponent.isActive = false
+    cof.addComponent(collisionComponent)
+
+    cof.addComponent(renderComp)
+    cof
+  }
 
   def createPlate() = {
     var monkey = new Entity()
