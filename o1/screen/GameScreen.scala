@@ -73,6 +73,13 @@ class GameScreen(parent: Adventure, rend: Renderer)
             Physics.applyPhysics(entity, delta)
           }
           CollisionCheck.checkCollisions(entity, entitiesAsVector, scene.world)
+          if (entity.getComponent(SpatialComponent.id).get.position.y < 0) {
+            entity.destroy = true
+          }
+        }
+        val listener = entity.getComponent(ListenerComponent.id)
+        if (listener.isDefined) {
+          listener.get.handleEvents(delta.toFloat)
         }
         
         if (entity.destroy) {

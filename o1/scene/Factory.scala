@@ -6,6 +6,7 @@ import scala.xml.Node
 import o1.math.Vec2
 import o1.math.Vec3
 import o1.inventory.Page
+import o1.event.EventType
 
 /**
  * The Factory object is a collection of functions that can be used to create
@@ -115,6 +116,14 @@ object Factory {
     var collisionComponent = new CollisionComponent(0.1f, Buffer[Int]())
     collisionComponent.isActive = false
     cof.addComponent(collisionComponent)
+    
+    var damageComp = new DamageComponent(1)
+    cof.addComponent(damageComp)
+    
+    var listenerComp = new ListenerComponent(
+        Vector(EventType.E_COLLISION), (event, delta) => {
+      
+    })
 
     cof.addComponent(renderComp)
     cof
@@ -270,6 +279,17 @@ object Factory {
     
     val AIComponent = new AIComponent("lovebot")
     entity.addComponent(AIComponent)
+    
+    val listenerComp = new ListenerComponent(
+        Vector(EventType.E_COLLISION), (event, delta) => {
+      val entityA = event.args(0).asInstanceOf[Entity]
+      val entityB = event.args(1).asInstanceOf[Entity]
+      
+      if (entityB.getComponent(DamageComponent.id).isDefined) {
+        println("Took damage")
+      }
+    })
+    entity.addComponent(listenerComp)
 
     var collisionComponent = new CollisionComponent(size / 16, Buffer[Int]())
     entity.addComponent(collisionComponent)
