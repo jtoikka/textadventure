@@ -10,7 +10,7 @@ class TileMap(val width: Int, val height: Int) {
   val TILEWIDTH = 2
 
   val collisionMap = Array.fill[CollisionTile](width * height)(new EmptyTile())
-  MapInfo.map = Some(this)
+//  MapInfo.map = Some(this)
   val visualMap = Array.fill[Int](width * height)(0)
 
   def getIndex(x: Int, y: Int): Int = {
