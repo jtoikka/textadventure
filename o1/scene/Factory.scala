@@ -98,6 +98,24 @@ object Factory {
     cof.addComponent(renderComp)
     cof
   }
+  
+  def createCoffeeBullet(position: Vec3) = {
+    var cof = new Entity()
+    var spatialComp = new SpatialComponent()
+    spatialComp.position = position
+    spatialComp.position.y = 0.8f
+
+    cof.addComponent(spatialComp)
+
+    var renderComp = new RenderComponent("coffee")
+
+    var collisionComponent = new CollisionComponent(0.1f, Buffer[Int]())
+    collisionComponent.isActive = false
+    cof.addComponent(collisionComponent)
+
+    cof.addComponent(renderComp)
+    cof
+  }
 
   def createPlate() = {
     var monkey = new Entity()
@@ -241,11 +259,14 @@ object Factory {
     spatialComp.position = Vec3(loc.x * 2 / 16, 1.0f, loc.y * 2 / 16)
     entity.addComponent(spatialComp)
 
-    var renderComp = new RenderComponent("test_enemy", Some("test_enemy_tex"))
+    val renderComp = new RenderComponent("test_enemy", Some("test_enemy_tex"))
     entity.addComponent(renderComp)
     
-    var faceCameraComp = new FaceCameraComponent()
+    val faceCameraComp = new FaceCameraComponent()
     entity.addComponent(faceCameraComp)
+    
+    val AIComponent = new AIComponent("lovebot")
+    entity.addComponent(AIComponent)
 
     var collisionComponent = new CollisionComponent(size / 16, Buffer[Int]())
     entity.addComponent(collisionComponent)
@@ -258,16 +279,16 @@ object Factory {
     val loc = Vec2((node \ "@x").text.toFloat, (node \ "@y").text.toFloat)
     val size = (node \ "@width").text.toFloat
     
-    var player = new Entity()
+    val player = new Entity()
 
-    var spatialComp = new SpatialComponent()
+    val spatialComp = new SpatialComponent()
     spatialComp.position = Vec3(loc.x * 2 / 16, 1.2f, loc.y * 2 / 16)
     player.addComponent(spatialComp)
 
-    var collisionComponent = new CollisionComponent(0.3f, Buffer[Int]())
+    val collisionComponent = new CollisionComponent(0.3f, Buffer[Int]())
     player.addComponent(collisionComponent)
 
-    var inputComponent = new InputComponent()
+    val inputComponent = new InputComponent()
     player.addComponent(inputComponent)
     player
   }
