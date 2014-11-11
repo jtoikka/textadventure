@@ -23,13 +23,12 @@ import o1.event.EmptyTile
 
 class MapScreen(parent: Adventure, rend: Renderer)
     extends Screen(parent, rend) {
-  eventTypes = Vector[EventType](E_INPUT, E_DIALOG, E_CHANGE_SCENE)
+  eventTypes = Vector[EventType](E_INPUT, E_DIALOG, E_CHANGE_SCENE, E_CHANGE_MAP)
 
   val iconBoxSize = Vec2(19, 11)
   val scene = new Scene()
 
-  // TODO: Find less ugly way of getting map...
-  val map = MapInfo.map
+  var world:Option[World] = None
 
   val inputMap =
     Map[Tuple2[scala.swing.event.Key.Value, Int], (Float) => Unit](
@@ -84,8 +83,7 @@ class MapScreen(parent: Adventure, rend: Renderer)
   def draw(): String = {
     rend.clear()
     rend.renderScene(scene)
-    display = rend.display
-    display
+    rend.display
   }
 
   def resume(): Unit = {
@@ -99,11 +97,12 @@ class MapScreen(parent: Adventure, rend: Renderer)
   }
 
   def updateMap() = {
-    if (map.isDefined) {
+    if (world.isDefined) {
+      val tileMap = world.get.tileMap
       println("UpdateMap")
-      val bImg = new BufferedImage(map.get.width, map.get.height, BufferedImage.TYPE_BYTE_GRAY)
-      for (x <- 0 until map.get.width; y <- 0 until map.get.height) {
-        bImg.setRGB(x, y, map.get.getCollisionTile(x, y).color)
+      val bImg = new BufferedImage(tileMap.width, tileMap.height, BufferedImage.TYPE_BYTE_GRAY)
+      for (x <- 0 until tileMap.width; y <- 0 until tileMap.height) {
+        bImg.setRGB(x, y, tileMap.getCollisionTile(x, y).color)
       }
       var mapImage = new Image2D(bImg, false, true)
 
@@ -144,6 +143,9 @@ class MapScreen(parent: Adventure, rend: Renderer)
       if (inputMap.contains(eventKey)) {
         inputMap(eventKey)(delta)
       }
+    } else if (event.eventType == E_CHANGE_MAP) {
+      world = event.args(0).asInstanceOf[Option[World]]
+      
     }
   }
 

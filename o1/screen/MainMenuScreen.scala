@@ -124,10 +124,10 @@ class MainMenuScreen(parent: Adventure, rend: Renderer)
    */
   def draw(): String = {
     rend.clear()
-    if (activeScene.isDefined)
+    if (activeScene.isDefined){
       rend.renderScene(activeScene.get)
-    display = rend.display
-    display
+    }
+    rend.display
   }
 
   def resume(): Unit = {

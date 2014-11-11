@@ -39,10 +39,8 @@ class Adventure() extends Listener {
     "menuScreen" -> new MainMenuScreen(this, screenWidth, screenHeight),
     "gameScreen" -> new GameScreen(this, screenWidth, screenHeight),
     "mapScreen" -> new MapScreen(this, screenWidth, screenHeight),
-    "inventoryScreen" -> new InventoryScreen(this, screenWidth, screenHeight))
-  //  val menuScreen: Screen = new MainMenuScreen(this, screenWidth, screenHeight)
-  //  val gameScreen: Screen = new GameScreen(this, screenWidth, screenHeight)
-  //  val testScreen2D: Screen = new TestScreen2D(this,screenWidth, screenHeight) 
+    "inventoryScreen" -> new InventoryScreen(this, screenWidth, screenHeight),
+    "hudScreen" -> new HudScreen(this, screenWidth, screenHeight))
   var currentScreen: Option[Screen] = None
   changeScreen(screens("menuScreen"))
 
@@ -64,7 +62,11 @@ class Adventure() extends Listener {
     }
     totalTime += delta
     val period = math.Pi * 2.0f / 8.0f
-    currentScreen.get.draw()
+    display = currentScreen.get.draw
+    
+    if(display.isEmpty())
+      println("WTF!")
+      
     handleInput(keyMap, delta)
     handleEvents(delta.toFloat)
     EventManager.delegateEvents()
