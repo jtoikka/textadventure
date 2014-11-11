@@ -284,7 +284,7 @@ object Factory {
     val entity = new Entity(Vector())
 
     val spatialComp = new SpatialComponent()
-    spatialComp.position = Vec3(loc.x * 2 / 16, 0.5f, loc.y * 2 / 16)
+    spatialComp.position = Vec3(loc.x * 2 / 16, 1.0f, loc.y * 2 / 16)
     entity.addComponent(spatialComp)
 
     var renderComp = new RenderComponent("cube")
