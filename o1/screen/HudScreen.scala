@@ -64,10 +64,9 @@ class HudScreen(parent: Adventure, rend: Renderer)
 
     var mainInfoBox = Factory2D.createTextRectangle(
       new TextRect2D(
-        new Rectangle2D(50, 5, true)))
+        new Rectangle2D(50, 3, true)))
     var infoSpatial = mainInfoBox.getComponent(SpatialComponent.id)
     infoSpatial.get.position = Vec3(0f, 0f, 0f)
-
     mainInfoBox.eventTypes = Vector(E_CHANGE_HUD_INFO)
     mainInfoBox.eventHandle = (event, delta) => {
       val playerHP = event.args(0).asInstanceOf[Int]

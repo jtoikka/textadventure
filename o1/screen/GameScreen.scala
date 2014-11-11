@@ -203,6 +203,7 @@ class GameScreen(parent: Adventure, rend: Renderer)
     
     parent.screens("hudScreen").draw()
     parent.screens("hudScreen").rend.displayOverlay(tmpDisplay)
+    
   }
 
   def init(): Unit = {
