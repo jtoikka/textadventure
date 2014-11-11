@@ -1,8 +1,10 @@
 package o1.scene
 
 import o1.math._
+
 import scala.collection.mutable.Buffer
 import o1.inventory.Item
+import o1.event._
 
 /**
  * Components make up the data of an entity.
@@ -102,5 +104,38 @@ object PhysicsComponent {
 }
 
 case class PhysicsComponent(var velocity: Vec3, var acceleration: Vec3) extends Component {
+  
+}
+
+object ListenerComponent {
+  val id = classOf[ListenerComponent]
+}
+
+case class ListenerComponent(
+    listenerEventTypes: Vector[EventType.EventType], 
+    eventHandle: (Event, Float) => Unit) extends Component with Listener {
+  eventTypes = listenerEventTypes
+  def handleEvent(event: Event, delta: Float) = {
+    eventHandle(event, delta)
+  }
+  
+  def dispose() = {
+    
+  }
+}
+
+object DamageComponent {
+  val id = classOf[DamageComponent]
+}
+
+case class DamageComponent(val amount: Int) extends Component {
+  
+}
+
+object BreakableComponent {
+  val id = classOf[BreakableComponent]
+}
+
+case class BreakableComponent() {
   
 }
