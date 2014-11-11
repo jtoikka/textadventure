@@ -203,22 +203,24 @@ class GameScreen(parent: Adventure, rend: Renderer)
 
     rend.clear()
     rend.renderScene(scene)
-
+    
     /* HUD -------------------------------------*/
     tmpDisplay = rend.display
 
-    if (showHUD) {
-      rendHUD.clear()
-      rendHUD.renderScene(sceneHUD)
-      display = rendHUD.displayOverlay(tmpDisplay)
-    } else {
-      display = tmpDisplay
-    }
+//    if (showHUD) {
+//      rendHUD.clear()
+//      rendHUD.renderScene(sceneHUD)
+//      display = rendHUD.displayOverlay(tmpDisplay)
+//    } else {
+//      display = tmpDisplay
+//    }
+//    val hudScreen = parent.screens("h")
+//    display = rendHUD.displayOverlay(tmpDisplay)
     /* HUD -------------------------------------*/
 
     lastDrawTime = System.currentTimeMillis() - drawStartTime
     
-    display
+    rendHUD.displayOverlay(tmpDisplay)
   }
 
   private def updateHUD(playerLoc: Vec3) {
@@ -232,7 +234,7 @@ class GameScreen(parent: Adventure, rend: Renderer)
 
   def init(): Unit = {
     scene.loadMap("00_testmap")
-
+    EventManager.addEvent(new Event(Vector(scene.world), E_CHANGE_MAP))
     /* HUD ----------------------------------------------------------*/
     hudTextRect = Some(new TextRect2D(new Rectangle2D(32, 5, true),
       "Caffeine: 10\nX: 0\n" + "Y: 0\nDeltaTime: 0"))

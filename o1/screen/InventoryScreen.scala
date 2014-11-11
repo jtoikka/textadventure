@@ -25,8 +25,6 @@ class InventoryScreen(parent: Adventure, rend: Renderer)
   eventTypes = Vector[EventType](E_INPUT, E_DIALOG, E_CHANGE_SCENE)
 
   val iconBoxSize = Vec2(19, 11)
-  //  val iconCoords = Array[Vec2](Vec2(10, 5), Vec2(40, 5), Vec2(70, 5),
-  //    Vec2(10, 25), Vec2(40, 25), Vec2(70, 25))
   val itemsPerRow = Inventory.MAX_INVENTORY_ITEM_COUNT / 2
   val sHeight = rend.h
   val sWidth = rend.w
@@ -135,8 +133,7 @@ class InventoryScreen(parent: Adventure, rend: Renderer)
   def draw(): String = {
     rend.clear()
     rend.renderScene(scene)
-    display = rend.display
-    display
+    rend.display
   }
   
   def updateInventory() = {
