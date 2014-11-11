@@ -204,14 +204,14 @@ class GameScreen(parent: Adventure, rend: Renderer)
     /* HUD -------------------------------------*/
     tmpDisplay = rend.display
 
-//    if (showHUD) {
-//      rendHUD.clear()
-//      rendHUD.renderScene(sceneHUD)
-//      display = rendHUD.displayOverlay(tmpDisplay)
-//    } else {
-//      display = tmpDisplay
-//    }
-    val hudScreen = parent.screens("h")
+    if (showHUD) {
+      rendHUD.clear()
+      rendHUD.renderScene(sceneHUD)
+      display = rendHUD.displayOverlay(tmpDisplay)
+    } else {
+      display = tmpDisplay
+    }
+//    val hudScreen = parent.screens("h")
     display = rendHUD.displayOverlay(tmpDisplay)
     /* HUD -------------------------------------*/
 
