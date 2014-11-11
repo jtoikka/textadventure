@@ -13,6 +13,8 @@ import o1.adventure.render.ResourceManager
 import o1.event._
 import o1.event.EventType._
 import o1.tweenEngine.TweenEngine
+import o1.screen.menu.MainMenuScreen
+import o1.screen.menu.HelpMenuScreen
 /**
  * The class `Adventure` represents text adventure games. An adventure consists of a player and
  * a number of areas that make up the game world. It provides methods for playing the game one
@@ -24,7 +26,7 @@ import o1.tweenEngine.TweenEngine
  * games, you will need to modify or replace the source code of this class.
  */
 class Adventure() extends Listener {
-  eventTypes = Vector(E_INPUT,E_CHANGE_SCREEN)
+  eventTypes = Vector(E_INPUT, E_CHANGE_SCREEN)
   /** The title of the adventure game. */
   var title = "A Forest Adventure"
 
@@ -40,7 +42,10 @@ class Adventure() extends Listener {
     "gameScreen" -> new GameScreen(this, screenWidth, screenHeight),
     "mapScreen" -> new MapScreen(this, screenWidth, screenHeight),
     "inventoryScreen" -> new InventoryScreen(this, screenWidth, screenHeight),
+    "helpMenuScreen" -> new HelpMenuScreen(this, screenWidth, screenHeight),
     "hudScreen" -> new HudScreen(this, screenWidth, screenHeight))
+
+  var previousScreen: Option[Screen] = None
   var currentScreen: Option[Screen] = None
   changeScreen(screens("menuScreen"))
 
@@ -51,7 +56,7 @@ class Adventure() extends Listener {
   /**
    * Updates all screens, and renders the currently active screen. Handles
    * events and user input.
-   * 
+   *
    * @param delta amount of time since last update
    * @param keyMap A map of pressed/released keys
    */
@@ -63,10 +68,10 @@ class Adventure() extends Listener {
     totalTime += delta
     val period = math.Pi * 2.0f / 8.0f
     display = currentScreen.get.draw
-    
-    if(display.isEmpty())
+
+    if (display.isEmpty())
       println("WTF!")
-      
+
     handleInput(keyMap, delta)
     handleEvents(delta.toFloat)
     EventManager.delegateEvents()
@@ -76,7 +81,7 @@ class Adventure() extends Listener {
    * Checks which keys are held down, which keys are up, and which keys have
    * been pressed or released since the last frame update. Forwards them as
    * constant values to the Input object.
-   * 
+   *
    * @param keyMap The current state of keys (up or down)
    * @param delta Time in seconds since the previous frame update
    */
@@ -105,9 +110,8 @@ class Adventure() extends Listener {
     }
     previousInput = keyMap.clone()
   }
-  
 
-  /** Maps key actions to functions */ 
+  /** Maps key actions to functions */
   val inputMap =
     Map[Tuple2[scala.swing.event.Key.Value, Int], (Float) => Unit](
       ((Key.M, Input.KEYRELEASED), (delta) => {
@@ -129,8 +133,7 @@ class Adventure() extends Listener {
       if (inputMap.contains(eventKey)) {
         inputMap(eventKey)(delta)
       }
-    }
-    else if (event.eventType == EventType.E_CHANGE_SCREEN) {
+    } else if (event.eventType == EventType.E_CHANGE_SCREEN) {
       val a = event.args(0).asInstanceOf[String]
       changeScreen(a)
     }
@@ -141,14 +144,21 @@ class Adventure() extends Listener {
    */
   def changeScreen(screen: String): Unit = changeScreen(screens(screen))
   def changeScreen(screen: Screen): Unit = {
-    if (currentScreen != None)
+    if (currentScreen != None) {
+      previousScreen = currentScreen
       currentScreen.get.pause()
-    this.currentScreen = Some(screen)
+    }
+      this.currentScreen = Some(screen)
+      EventManager.setActiveInputListener(currentScreen.get)
+      currentScreen.get.resume()
     
-    EventManager.setActiveInputListener(currentScreen.get)
-    currentScreen.get.resume()
   }
-  
+
+  def changeToPreviousScreen() = {
+    if (previousScreen.isDefined)
+      changeScreen(previousScreen.get)
+  }
+
   def dispose() = {
 
   }

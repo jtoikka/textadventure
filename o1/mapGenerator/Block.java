@@ -48,6 +48,7 @@ public class Block{
 		return false;
 	}
 	
+	@Override
 	public String toString(){
 		return "Block: " + x + ", " + y + ", " + width + ", " + height;
 	} // Method
