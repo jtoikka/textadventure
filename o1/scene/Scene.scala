@@ -40,7 +40,7 @@ class Scene {
       if (ent.isDefined)
         addEntity(ent.get)
     }
-    
+
     // player
     val player = (objectGroups("player") \ "object")(0)
     val playerEnt = Factory.createEntity(player)

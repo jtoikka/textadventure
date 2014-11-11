@@ -189,6 +189,7 @@ object Factory {
       case "monkey" => Some(createMonkey(node))
       case "enemy" => Some(createTestEnemy(node))
       case "player" => Some(createPlayer(node))
+      case "door" => Some(createDoor(node))
       case _ => None
     }
     ent
@@ -268,6 +269,27 @@ object Factory {
     entity.addComponent(faceCameraComp)
     
 
+    var collisionComponent = new CollisionComponent(size / 16, CollisionComponent.SQUARE, Buffer[Int]())
+    entity.addComponent(collisionComponent)
+    entity
+  }
+  
+  def createDoor(node: Node) = {
+    // TODO: Fix magic size and location conversion
+    val name = (node \ "@name").text
+    val typeName = (node \ "@name").text
+    val loc = Vec2((node \ "@x").text.toFloat, (node \ "@y").text.toFloat)
+    val size = (node \ "@width").text.toFloat
+
+    val entity = new Entity(Vector())
+
+    val spatialComp = new SpatialComponent()
+    spatialComp.position = Vec3(loc.x * 2 / 16, 0.5f, loc.y * 2 / 16)
+    entity.addComponent(spatialComp)
+
+    var renderComp = new RenderComponent("cube")
+    entity.addComponent(renderComp)
+    
     var collisionComponent = new CollisionComponent(size / 16, CollisionComponent.SQUARE, Buffer[Int]())
     entity.addComponent(collisionComponent)
     entity
