@@ -145,6 +145,7 @@ object AdventureGUI extends SimpleSwingApplication with Listener {
       def actionPerformed(e: java.awt.event.ActionEvent) = {
         var newTime = System.currentTimeMillis()
         var delta = newTime - time + timeExtra
+//        println(1.0 / (newTime - time) * 1000) //fps
         var numUpdates = (delta / updatePeriod).toInt
         timeExtra = delta - numUpdates * updatePeriod
         time = newTime

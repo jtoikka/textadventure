@@ -87,10 +87,10 @@ object CollisionCheck {
       if (physComp.isDefined) {
         val velocity = physComp.get.velocity
         if (greatest.x != 0) {
-          velocity.x = -velocity.x
+          velocity.x = 0.0f
         }
         if (greatest.y != 0) {
-          velocity.z = -velocity.z
+          velocity.z = 0.0f
         }
       }
       intersections = world.tileMap.checkCollisions(
