@@ -30,14 +30,16 @@ class HelpMenuScreen(parent: Adventure, rend: Renderer)
     var bSpatial = border.getComponent(SpatialComponent.id)
     bSpatial.get.position = Vec3(1f, 1f, 0f)
     scene.addEntity(border)
-    
-    var helpTextRect = new TextRect2D(new Rectangle2D(50, 10, true), ResourceManager.strings("helpMenu"))
-    helpTextRect.offX = 3
-    helpTextRect.offY = 2
-    helpTextRect.offMinusX = 2
-    helpTextRect.offMinusY = 2
-    helpTextRect.textWrap = true
-    helpTextRect.centerText = true
+
+    var helpTextRect = new TextRect2D(new Rectangle2D(50, 10, true), ResourceManager.strings("helpMenu")) {
+      offX = 3
+      offY = 2
+      offMinusX = 2
+      offMinusY = 2
+      textWrap = true
+      centerText = true
+    }
+
     val helpEnt = Factory2D.createTextRectangle(helpTextRect)
 
     var helpSpatial = helpEnt.getComponent(SpatialComponent.id)
