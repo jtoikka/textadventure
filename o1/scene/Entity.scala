@@ -5,6 +5,7 @@ import scala.collection.mutable.MutableList
 import o1.event.EventType
 import o1.event.Listener
 import o1.event.Event
+import o1.event.EventManager
 
 /**
  * An entity is a container of components, that can represent any game element.
@@ -44,5 +45,7 @@ class Entity(listenerEventTypes: Vector[EventType.EventType]) extends Listener {
     eventHandle(event, delta)
   }
   
-  def dispose = {}
+  def dispose = {
+    EventManager.removeListener(this)
+  }
 }
