@@ -7,6 +7,8 @@ import o1.math.Vec2
 import o1.math.Vec3
 import o1.inventory.Page
 import o1.event.EventType
+import o1.event.EventManager
+import o1.event.Event
 
 /**
  * The Factory object is a collection of functions that can be used to create
@@ -335,6 +337,7 @@ object Factory {
 
     val inputComponent = new InputComponent()
     player.addComponent(inputComponent)
+    EventManager.addEvent(new Event(Vector(player), EventType.E_PLAYER_CREATION))
     player
   }
 }
