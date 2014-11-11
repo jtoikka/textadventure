@@ -57,6 +57,7 @@ class Scene {
     if (i >= 0) {
       entities.remove(i)
     }
+    entity.dispose()
   }
   def clear() {
     entities.clear()

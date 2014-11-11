@@ -186,7 +186,7 @@ class GameScreen(parent: Adventure, rend: Renderer)
       ((Key.Space, Input.KEYPRESSED), (delta) => {
         println("Toss coffee")
         val cameraSpatial = scene.camera.get.getComponent(SpatialComponent.id).get
-        scene.addEntity(Factory.createCoffeeBullet(cameraSpatial.position.neg(), cameraSpatial.forward.neg))
+        scene.addEntity(Factory.createCoffeeBullet(cameraSpatial.position.neg() + cameraSpatial.forward.neg * 0.5f, cameraSpatial.forward.neg * 0.8f))
       }))
 
   /**
