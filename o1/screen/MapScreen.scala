@@ -83,8 +83,7 @@ class MapScreen(parent: Adventure, rend: Renderer)
   def draw(): String = {
     rend.clear()
     rend.renderScene(scene)
-//    display = rend.display
-    display
+    rend.display
   }
 
   def resume(): Unit = {

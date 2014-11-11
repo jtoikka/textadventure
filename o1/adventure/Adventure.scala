@@ -62,7 +62,11 @@ class Adventure() extends Listener {
     }
     totalTime += delta
     val period = math.Pi * 2.0f / 8.0f
-    display = currentScreen.get.draw()
+    display = currentScreen.get.draw
+    
+    if(display.isEmpty())
+      println("WTF!")
+      
     handleInput(keyMap, delta)
     handleEvents(delta.toFloat)
     EventManager.delegateEvents()

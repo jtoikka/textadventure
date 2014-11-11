@@ -204,20 +204,20 @@ class GameScreen(parent: Adventure, rend: Renderer)
     /* HUD -------------------------------------*/
     tmpDisplay = rend.display
 
-    if (showHUD) {
-      rendHUD.clear()
-      rendHUD.renderScene(sceneHUD)
-      display = rendHUD.displayOverlay(tmpDisplay)
-    } else {
-      display = tmpDisplay
-    }
+//    if (showHUD) {
+//      rendHUD.clear()
+//      rendHUD.renderScene(sceneHUD)
+//      display = rendHUD.displayOverlay(tmpDisplay)
+//    } else {
+//      display = tmpDisplay
+//    }
 //    val hudScreen = parent.screens("h")
-    display = rendHUD.displayOverlay(tmpDisplay)
+//    display = rendHUD.displayOverlay(tmpDisplay)
     /* HUD -------------------------------------*/
 
     lastDrawTime = System.currentTimeMillis() - drawStartTime
     
-    display
+    rendHUD.displayOverlay(tmpDisplay)
   }
 
   private def updateHUD(playerLoc: Vec3) {
