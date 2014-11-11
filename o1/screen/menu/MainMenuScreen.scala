@@ -1,4 +1,4 @@
-package o1.screen
+package o1.screen.menu
 
 import scala.swing.event.Key
 import scala.collection.mutable.Map
@@ -9,15 +9,12 @@ import scala.math._
 import o1.math._
 import o1.scene._
 import o1.adventure.render2D._
-import scala.swing.Font
-import o1.mapGenerator.MapGenerator
-import o1.mapGenerator.CornerMap
-import o1.event.Listener
 import o1.event.Event
 import o1.event.EventType._
 import o1.event.EventManager
 import o1.event.Input
-import scala.collection.mutable.Buffer
+import o1.screen.Screen
+import scala.Vector
 
 class MainMenuScreen(parent: Adventure, rend: Renderer)
     extends Screen(parent, rend) {
@@ -30,7 +27,7 @@ class MainMenuScreen(parent: Adventure, rend: Renderer)
 
   var dialogOptions: Array[Tuple2[String, Event]] = Array[Tuple2[String, Event]](
     ("Play Game", new Event(Vector("gameScreen"), E_CHANGE_SCREEN)),
-    ("Help", new Event(Vector("helpMenu", this), E_CHANGE_SCENE)),
+    ("Help", new Event(Vector("helpMenuScreen"), E_CHANGE_SCREEN)),
     ("Options", new Event(Vector("optionsMenu", this), E_CHANGE_SCENE)),
     ("Credits", new Event(Vector("creditsMenu", this), E_CHANGE_SCENE)),
     ("Exit Game", new Event(null, E_SYSTEM_EXIT)))

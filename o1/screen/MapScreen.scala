@@ -27,7 +27,7 @@ class MapScreen(parent: Adventure, rend: Renderer)
 
   val iconBoxSize = Vec2(19, 11)
   val scene = new Scene()
-
+  val paused = true
   var world: Option[World] = None
 
   val inputMap =
@@ -59,9 +59,6 @@ class MapScreen(parent: Adventure, rend: Renderer)
 
   def this(parent: Adventure, x: Int, y: Int) = this(parent, new Renderer2D(x, y))
 
-  var scenes = Map[String, SceneUI]()
-  var activeScene: Option[SceneUI] = None
-
   def init(): Unit = {
     clearScene()
   }
@@ -72,9 +69,10 @@ class MapScreen(parent: Adventure, rend: Renderer)
    */
 
   def update(delta: Double): Unit = {
+    if (!paused) {
+
+    }
     handleEvents(delta.toFloat)
-    if (activeScene.isDefined)
-      activeScene.get.handleEvents(delta.toFloat)
   }
 
   /**
