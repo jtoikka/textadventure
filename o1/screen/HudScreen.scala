@@ -22,9 +22,11 @@ import o1.inventory.ItemContainer
 
 class HudScreen(parent: Adventure, rend: Renderer)
     extends Screen(parent, rend) {
-  eventTypes = Vector[EventType](E_INPUT, E_DIALOG, E_CHANGE_SCENE)
+  eventTypes = Vector[EventType](E_INPUT, E_DIALOG, E_CHANGE_HUD_INFO)
+  
   var paused = true
-
+  var hudInfo: Option[Vector[Any]] = None
+  
   val inputMap =
     Map[Tuple2[scala.swing.event.Key.Value, Int], (Float) => Unit](
       ((Key.Q, Input.KEYRELEASED), (delta) => {
@@ -107,6 +109,9 @@ class HudScreen(parent: Adventure, rend: Renderer)
       if (inputMap.contains(eventKey)) {
         inputMap(eventKey)(delta)
       }
+    }
+    if (event.eventType == E_CHANGE_HUD_INFO) {
+      hudInfo = Some(event.args)
     }
   }
 

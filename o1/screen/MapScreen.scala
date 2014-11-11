@@ -23,7 +23,7 @@ import o1.event.EmptyTile
 
 class MapScreen(parent: Adventure, rend: Renderer)
     extends Screen(parent, rend) {
-  eventTypes = Vector[EventType](E_INPUT, E_DIALOG, E_CHANGE_SCENE, E_CHANGE_MAP)
+  eventTypes = Vector[EventType](E_INPUT, E_DIALOG, E_CHANGE_MAP)
 
   val iconBoxSize = Vec2(19, 11)
   val scene = new Scene()

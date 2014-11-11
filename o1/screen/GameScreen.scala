@@ -27,19 +27,10 @@ class GameScreen(parent: Adventure, rend: Renderer)
     def this(parent: Adventure, x: Int, y: Int) = this(parent, new Renderer3D(x, y))
   eventTypes = Vector[EventType](E_INPUT, E_DIALOG)
 
-
-  /* HUD -------------------------------------*/
-  var rendHUD = new Renderer2D(rend.w, rend.h)
-  var hudTextRect: Option[TextRect2D] = None
-  var lastDrawTime: Long = 0
-  var sceneHUD = new Scene()
-  var showHUD = true;
-  /* -----------------------------------------*/
-
   var scene = new Scene()
   
   var paused = true
-
+  
   val FORWARD = 0
   val RIGHT = 1
   val ROTATERIGHT = 2
@@ -135,7 +126,6 @@ class GameScreen(parent: Adventure, rend: Renderer)
     camSpatial.forward.y = followSpatial.get.forward.y
     camSpatial.forward.z = -followSpatial.get.forward.z
 
-    updateHUD(camSpatial.position)
   }
 
   def handleEvent(event: Event, delta: Float) {
@@ -156,7 +146,7 @@ class GameScreen(parent: Adventure, rend: Renderer)
   val inputMap =
     Map[Tuple2[scala.swing.event.Key.Value, Int], (Float) => Unit](
       ((Key.Q, Input.KEYRELEASED), (delta) => {
-        showHUD = !showHUD
+//        showHUD = !showHUD
       }),
       ((Key.Escape, Input.KEYRELEASED), (delta) => {
         EventManager.addEvent(new Event(Vector("menuScreen"), E_CHANGE_SCREEN))
@@ -204,58 +194,15 @@ class GameScreen(parent: Adventure, rend: Renderer)
     rend.clear()
     rend.renderScene(scene)
     
-    /* HUD -------------------------------------*/
     tmpDisplay = rend.display
-
-//    if (showHUD) {
-//      rendHUD.clear()
-//      rendHUD.renderScene(sceneHUD)
-//      display = rendHUD.displayOverlay(tmpDisplay)
-//    } else {
-//      display = tmpDisplay
-//    }
-//    val hudScreen = parent.screens("h")
-//    display = rendHUD.displayOverlay(tmpDisplay)
-    /* HUD -------------------------------------*/
-
-    lastDrawTime = System.currentTimeMillis() - drawStartTime
+    
+    parent.screens("hudScreen").draw()
     parent.screens("hudScreen").rend.displayOverlay(tmpDisplay)
-    
-    
-//    rendHUD.displayOverlay(tmpDisplay)
-  }
-
-  private def updateHUD(playerLoc: Vec3) {
-    var c = " ♥♥♥♥♥♥♥♥"
-    if (hudTextRect.isDefined)
-      hudTextRect.get.text = "HP:" + c + "\n" +
-        "X: " + playerLoc.x + "\n" +
-        "Y: " + playerLoc.z + "\n" +
-        "drawTime: " + lastDrawTime + "\n"
   }
 
   def init(): Unit = {
     scene.loadMap("00_testmap")
     EventManager.addEvent(new Event(Vector(scene.world), E_CHANGE_MAP))
-    /* HUD ----------------------------------------------------------*/
-    hudTextRect = Some(new TextRect2D(new Rectangle2D(32, 5, true),
-      "Caffeine: 10\nX: 0\n" + "Y: 0\nDeltaTime: 0"))
-
-    hudTextRect.get.offX = 2
-    hudTextRect.get.offMinusX = 1
-    hudTextRect.get.offMinusY = 1
-
-    var rectEnt = Factory2D.createTextRectangle(hudTextRect.get)
-    var testRectSpatial = rectEnt.getComponent(SpatialComponent.id)
-    testRectSpatial.get.position = Vec3(0.0f, rendHUD.h - 6, 0.0f)
-
-    sceneHUD.addEntity(rectEnt)
-    /* --------------------------------------------------------------*/
-
-    var dialogOptions: Array[Tuple2[String, Event]] = Array[Tuple2[String, Event]](
-      ("Continue", new Event(Vector(this, "cont"), E_DIALOG)),
-      ("Ok", new Event(Vector(this, "ok"), E_DIALOG)))
-
   }
 
   def resume() {
