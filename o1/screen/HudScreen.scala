@@ -66,7 +66,7 @@ class HudScreen(parent: Adventure, rend: Renderer)
       new TextRect2D(
         new Rectangle2D(50, 5, true)))
     var infoSpatial = mainInfoBox.getComponent(SpatialComponent.id)
-    infoSpatial.get.position = Vec3(1f, 1f, 0f)
+    infoSpatial.get.position = Vec3(0f, 0f, 0f)
 
     mainInfoBox.eventTypes = Vector(E_CHANGE_HUD_INFO)
     mainInfoBox.eventHandle = (event, delta) => {
