@@ -20,43 +20,120 @@ object CollisionCheck {
       for (
         otherEntity <- entities.filter((other) => {
           other != entity && other.getComponent(CollisionComponent.id).isDefined
-        })
-      ) {
+        })) {
         val otherCollisionComponent =
           otherEntity.getComponent(CollisionComponent.id)
 
         val otherSpatialComponent =
           otherEntity.getComponent(SpatialComponent.id)
 
-        val posEntity = spatialComponent.get.position.xz
-        val posOther = otherSpatialComponent.get.position.xz
-
-        val diff = posEntity - posOther
-
-        val totalRadius =
-          collisionComponent.get.radius + otherCollisionComponent.get.radius
-
-        // Check if collision
-        if (diff.length < totalRadius) {
-          // Multiply the vector 'entity to other' by the percentage
-          // intersection of the two collision shapes.
-          val intersection =
-            diff * ((totalRadius - diff.length) / diff.length)
-
-          def sendIntersectionEvent(entityA: Entity, entityB: Entity) = {
-            val event = new Event(
-              Vector(entityA, entityB, intersection),
-              EventType.E_COLLISION)
-            EventManager.addEvent(event)
+        val posEntity = spatialComponent.get.position
+        val posOther = otherSpatialComponent.get.position
+        
+        var intersection = Vec3(0.0f, 0.0f, 0.0f)
+        
+        if (otherCollisionComponent.get.shape == CollisionComponent.CIRCLE &&
+            collisionComponent.get.shape == CollisionComponent.CIRCLE) {
+          val diff = posEntity - posOther
+  
+          val totalRadius =
+            collisionComponent.get.radius + otherCollisionComponent.get.radius
+            
+          intersection = checkRoundIntersection(
+              posEntity, posOther, 
+              collisionComponent.get.radius, 
+              otherCollisionComponent.get.radius)
+          if (intersection.x != 0 || intersection.z != 0) {
+            handleCollision(entity, otherEntity, intersection.xz)
           }
-
-          sendIntersectionEvent(entity, otherEntity)
-          sendIntersectionEvent(otherEntity, entity)
-
-          handleCollision(entity, otherEntity, intersection)
+              
+        } else if (collisionComponent.get.shape == CollisionComponent.CIRCLE &&
+                   otherCollisionComponent.get.shape == CollisionComponent.SQUARE) {
+          intersection = checkSquareIntersection(
+              posOther.xz, 
+              otherCollisionComponent.get.radius, 
+              posEntity.xz, 
+              collisionComponent.get.radius).neg()
+          if (intersection.x != 0 || intersection.z != 0) {
+            handleCollision(entity, otherEntity, intersection.xz)
+          }
+        } else if (otherCollisionComponent.get.shape == CollisionComponent.CIRCLE &&
+                   collisionComponent.get.shape == CollisionComponent.SQUARE) {
+          intersection = checkSquareIntersection(
+              posEntity.xz, 
+              collisionComponent.get.radius, 
+              posOther.xz, 
+              otherCollisionComponent.get.radius).neg()
+          if (intersection.x != 0 || intersection.z != 0) {
+            handleCollision(otherEntity, entity, intersection.xz)
+          }
         }
+        if (intersection.x != 0 || intersection.z != 0) {
+            def sendIntersectionEvent(entityA: Entity, entityB: Entity) = {
+              val event = new Event(
+                Vector(entityA, entityB, intersection),
+                EventType.E_COLLISION)
+              EventManager.addEvent(event)
+            }
+            sendIntersectionEvent(entity, otherEntity)
+            sendIntersectionEvent(otherEntity, entity)
+          }
       }
       checkWorldCollisions(entity, collisionComponent.get.radius, world.get)
+    }
+  }
+  
+  def checkRoundIntersection(posEntity: Vec3, posOther: Vec3, radiusEntity: Float, radiusOther: Float): Vec3 = {
+    val diff = posEntity - posOther
+
+    val totalRadius =
+      radiusEntity + radiusOther
+
+    // Check if collision
+    if (diff.length < totalRadius) {
+      val intersection =
+        diff * ((totalRadius - diff.length) / diff.length)
+        
+     intersection
+
+    } else {
+      Vec3(0.0f, 0.0f, 0.0f)
+    }
+  }
+  
+  def checkSquareIntersection(squarePosition: Vec2, halfWidth: Float, pos: Vec2, radius: Float): Vec3 = {
+    var intersection = Vec2(0.0f, 0.0f)
+    
+    val relativePosition = pos - squarePosition
+    
+    val sumAxes = radius + halfWidth
+    
+    val intersectionX = relativePosition.x.abs - sumAxes
+    val intersectionY = relativePosition.y.abs - sumAxes
+        
+    if (intersectionX < 0.0f && intersectionY < 0.0f) {
+     if ((relativePosition.x < sumAxes && relativePosition.x > -sumAxes) ||
+         (relativePosition.y < sumAxes && relativePosition.y > -sumAxes)) { 
+          intersection = 
+            Vec2((intersectionX * relativePosition.x.signum).toFloat, (intersectionY * relativePosition.y.signum).toFloat)
+      } else {
+        val cornerX = relativePosition.x.signum * halfWidth
+        val cornerY = relativePosition.y.signum * halfWidth
+        
+        val colliderToCorner = pos - Vec2(cornerX.toFloat, cornerY.toFloat)
+        
+        val colliderToConerLength = colliderToCorner.length
+        
+        if (colliderToConerLength < radius) {
+          intersection = colliderToCorner * (radius - colliderToConerLength)
+        }
+      }
+    }
+    
+    if (intersection.x.abs > intersection.y.abs) {
+      new Vec3(0.0f, 0.0f, intersection.y)
+    } else {
+      new Vec3(intersection.x, 0.0f, 0.0f)
     }
   }
 
