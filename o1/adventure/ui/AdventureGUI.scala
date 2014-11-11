@@ -192,7 +192,7 @@ object AdventureGUI extends SimpleSwingApplication with Listener {
 
     def updateInfo(info: String) = {
       this.title = game.title
-      this.renderArea.text = game.currentScreen.get.display
+      this.renderArea.text = game.display
     }
   }
 
