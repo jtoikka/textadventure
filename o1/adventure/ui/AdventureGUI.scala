@@ -43,7 +43,8 @@ object AdventureGUI extends SimpleSwingApplication with Listener {
     (Key.Right, false), (Key.Left, false),
     (Key.M, false), (Key.N, false),
     (Key.Enter, false), (Key.Escape, false),
-    (Key.I, false), (Key.Q, false))
+    (Key.I, false), (Key.Q, false),
+    (Key.Space, false))
 
   def top = new MainFrame {
 
@@ -67,12 +68,12 @@ object AdventureGUI extends SimpleSwingApplication with Listener {
 
       listenTo(keys)
 
-      reactions += {
-        case KeyPressed(_, Key.Space, _, _) =>
-          println("Space is down")
-        case KeyReleased(_, Key.Space, _, _) =>
-          println("Space is up")
-      }
+//      reactions += {
+//        case KeyPressed(_, Key.Space, _, _) =>
+//          println("Space is down")
+//        case KeyReleased(_, Key.Space, _, _) =>
+//          println("Space is up")
+//      }
     }
     this.listenTo(renderArea.keys)
     val turnCounter = new Label
@@ -136,6 +137,10 @@ object AdventureGUI extends SimpleSwingApplication with Listener {
         keyMap(Key.I) = true
       case KeyReleased(_, Key.I, _, _) =>
         keyMap(Key.I) = false
+      case KeyPressed(_, Key.Space, _, _) =>
+        keyMap(Key.Space) = true
+      case KeyReleased(_, Key.Space, _, _) =>
+        keyMap(Key.Space) = false
 
     }
     var time = System.currentTimeMillis()

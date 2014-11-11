@@ -96,3 +96,11 @@ object AIComponent {
 case class AIComponent(val botType: String) extends Component {
   
 }
+
+object PhysicsComponent {
+  val id = classOf[PhysicsComponent]
+}
+
+case class PhysicsComponent(var velocity: Vec3, var acceleration: Vec3) extends Component {
+  
+}
