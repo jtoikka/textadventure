@@ -4,12 +4,12 @@ import o1.adventure.render.ResourceManager
 import scala.reflect.ClassTag
 
 object Inventory {
-  val MAX_INVENTORY_ITEM_COUNT = 6
-
+    val MAX_INVENTORY_ITEM_COUNT = 6
+}
+class Inventory {
   val containers = Map[Class[_], ItemContainer[_]]()
   
   def addItem(item: Item): Boolean = {
-//    println("Adding item")
     if (containers.contains(item.getClass())) {
       val bool = containers(item.getClass()).addItem(item)
       bool
@@ -21,8 +21,7 @@ object Inventory {
       containers(item.getClass()).icon = Some(item.icon)
       containers(item.getClass()).name = Some(item.name)
       
-      if (nonHiddenCount > MAX_INVENTORY_ITEM_COUNT){
-//        println("More inventory items than slots in screen. This is a problem!")
+      if (nonHiddenCount > Inventory.MAX_INVENTORY_ITEM_COUNT){
         }
       bool
     }
@@ -30,21 +29,18 @@ object Inventory {
   
   def removeItem(item: Item): Boolean  = {
     if (containers.contains(item.getClass())) {
-//      println("Container exists. Removing item")
       containers(item.getClass()).removeItem(item)
-      if (containers(item.getClass()).size <= 0) { // remove if no items
+      if (containers(item.getClass()).size <= 0) {
         containers.remove(item.getClass()) 
       }
       true
     } else {
-//      println("Container not found. Can't remove")
       false
     }
   }
 
   def removeOneOfType(item: Item): Boolean = {
     if (containers.contains(item.getClass())) {
-//      println("Container exists. Removing one of type")
       containers(item.getClass()).removeOne
       true
     } else false
