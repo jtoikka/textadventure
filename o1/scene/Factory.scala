@@ -406,15 +406,13 @@ object Factory {
   }
 
   def createRupee(node: Node) = {
-    val name = (node \ "@name").text
+      // TODO: Fix magic size and location conversion
+    val name = "Pages" //(node \ "@name").text
     val typeName = (node \ "@name").text
     val loc = Vec2((node \ "@x").text.toFloat, (node \ "@y").text.toFloat)
     val size = (node \ "@width").text.toFloat
 
     val entity = new Entity()
-
-    val renderComp = new RenderComponent("rupee")
-    entity.addComponent(renderComp)
     
     entity.eventHandlers = scala.collection.immutable.Map(
       (EventType.E_COLLISION, (event, delta) => {
@@ -428,21 +426,26 @@ object Factory {
           entity.destroy = true
         }
     }))
-    val invComponent = new InventoryItemComponent(Coffee())
-    entity.addComponent(invComponent)
-    
+
     val spatialComp = new SpatialComponent()
-    spatialComp.position = Vec3(loc.x * 2 / 16, 0.3f, loc.y * 2 / 16)
-    spatialComp.scale = Vec3(0.5f, 0.5f, 0.5f)
+    spatialComp.position = Vec3(loc.x * 2 / 16, 0.0f, loc.y * 2 / 16)
     entity.addComponent(spatialComp)
 
-    val collisionComponent = new CollisionComponent(0.1f, CollisionComponent.CIRCLE)
+    val invComponent = new InventoryItemComponent(Page())
+    entity.addComponent(invComponent)
+
+    var renderComp = new RenderComponent("rupee")
+    entity.addComponent(renderComp)
+
+//    var faceCameraComp = new FaceCameraComponent()
+//    entity.addComponent(faceCameraComp)
+    
+    val rotateComp = new RotateComponent(-0.2f)
+    entity.addComponent(rotateComp)
+    // TODO: Fix magic size conversion
+    var collisionComponent = new CollisionComponent(size / 16, CollisionComponent.CIRCLE)
     collisionComponent.isActive = false
     entity.addComponent(collisionComponent)
-
-    val rotateComponent = new RotateComponent(-0.2f)
-    entity.addComponent(rotateComponent)
-
     entity
   }
 

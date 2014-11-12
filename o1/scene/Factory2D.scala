@@ -12,7 +12,7 @@ import java.awt.image.BufferedImage
 object Factory2D {
   
   def createRectangle(h: Int,w: Int,defFill: Boolean) = {
-    var ent = new Entity(Vector())
+    var ent = new Entity()
     var rect = new Rectangle2D(h,w,defFill)
     val uuid = randomUUID().toString()
     
@@ -47,7 +47,7 @@ object Factory2D {
 //  }
   
   def createTextRectangle(textRect: TextRect2D) = {
-    var ent = new Entity(Vector())
+    var ent = new Entity()
     var rect = textRect
     
     val uuid = randomUUID().toString()
@@ -63,7 +63,7 @@ object Factory2D {
   }
   
     def createRectangle(rect: Rectangle2D) = {
-    var ent = new Entity(Vector())
+    var ent = new Entity()
     
     val uuid = randomUUID().toString()
     
@@ -78,7 +78,7 @@ object Factory2D {
   }
     
   def createTriangle(tri: Triangle2D) = {
-    var ent = new Entity(Vector())
+    var ent = new Entity()
     
     val uuid = randomUUID().toString()
     
@@ -93,7 +93,7 @@ object Factory2D {
   }
   
   def createImage(img: Image2D) = {
-    var ent = new Entity(Vector())
+    var ent = new Entity()
     val uuid = randomUUID().toString()
     
 //    var img = ResourceManager.images(rasterName)
