@@ -160,7 +160,6 @@ class GameScreen(parent: Adventure, rend: Renderer)
       }),
       ((Key.N, Input.KEYRELEASED), (delta) => {
         EventManager.addEvent(new Event(Vector("helpMenuScreen"), E_CHANGE_SCREEN))
-        
       }),
       ((Key.M, Input.KEYRELEASED), (delta) => {
         EventManager.addEvent(new Event(Vector("mapScreen"), E_CHANGE_SCREEN))
