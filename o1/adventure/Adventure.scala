@@ -99,10 +99,11 @@ class Adventure() extends Listener {
         if (previousValue == value) {
           if (value) state = Input.KEYDOWN // else 0
         } else {
-          if (value)
-            state = Input.KEYRELEASED
-          else
+          if (value) {
             state = Input.KEYPRESSED
+          } else {
+            state = Input.KEYRELEASED
+          }
         }
         keyMapDelta(key) = state
       }
