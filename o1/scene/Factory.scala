@@ -105,6 +105,8 @@ object Factory {
   def createCoffeeBullet(position: Vec3, direction: Vec3) = {
     var cof = new Entity(Vector(EventType.E_COLLISION))
     
+    cof.description = "Coffee bullet"
+    
     cof.eventHandle = (event, delta) => {
       val entityA = event.args(0).asInstanceOf[Entity]
       val entityB = event.args(1).asInstanceOf[Entity]
@@ -131,7 +133,7 @@ object Factory {
     var renderComp = new RenderComponent("coffee")
 
     var collisionComponent = new CollisionComponent(0.1f, CollisionComponent.CIRCLE)
-    collisionComponent.isActive = false
+    collisionComponent.isActive = true
     cof.addComponent(collisionComponent)
     
     var damageComp = new DamageComponent(1, DamageComponent.ENEMY)
@@ -257,6 +259,18 @@ object Factory {
     val size = (node \ "@width").text.toFloat
 
     val entity = new Entity(Vector())
+    
+    entity.description = "Monkey"
+    
+//    entity.eventHandle = (event, delta) => {
+//      val entityA = event.args(0).asInstanceOf[Entity]
+//      val entityB = event.args(1).asInstanceOf[Entity]
+//      if (entityA == entity && !entityB.destroy) {
+//        if (entityB.getComponent(BreakableComponent.id).isDefined) {
+//          entityB.destroy = true
+//        }
+//      }
+//    }
 
     val spatialComp = new SpatialComponent()
     spatialComp.position = Vec3(loc.x * 2 / 16, 0.5f, loc.y * 2 / 16)
@@ -266,8 +280,7 @@ object Factory {
     entity.addComponent(renderComp)
     
     var faceCameraComp = new FaceCameraComponent()
-    entity.addComponent(faceCameraComp)
-    
+    entity.addComponent(faceCameraComp)  
 
     var collisionComponent = new CollisionComponent(
         size / 16, CollisionComponent.SQUARE, 
