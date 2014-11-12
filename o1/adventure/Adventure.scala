@@ -34,6 +34,8 @@ class Adventure() extends Listener {
 
   private val renderer = new Renderer3D(screenWidth, screenHeight) // We draw the world here!
   var display = renderer.display // A String displaying the world
+  
+  private val dialogOverlay = new DialogScreen(this, screenWidth, screenHeight)
 
   // Screen stuff
   val screens = Map[String, Screen](
@@ -66,7 +68,10 @@ class Adventure() extends Listener {
     }
     totalTime += delta
     val period = math.Pi * 2.0f / 8.0f
-    display = currentScreen.get.draw
+    dialogOverlay.update(delta)
+    val tmpDisplay = currentScreen.get.draw
+    display = dialogOverlay.drawOverlay(tmpDisplay)
+    //    display = currentScreen.get.draw
 
     if (display.isEmpty())
       println("WTF!")
@@ -124,7 +129,7 @@ class Adventure() extends Listener {
       ((Key.N, Input.KEYRELEASED), (delta) => {
         changeScreen(screens("testScreen2D"))
       }))
-  
+
   eventHandlers = scala.collection.immutable.Map(
     (E_INPUT, (event, delta) => {
       val eventKey =
@@ -136,7 +141,7 @@ class Adventure() extends Listener {
     (E_CHANGE_SCREEN, (event, delta) => {
       val a = event.args(0).asInstanceOf[String]
       changeScreen(a)
-  }))
+    }))
 
   /**
    * Used to change current screen
@@ -147,10 +152,10 @@ class Adventure() extends Listener {
       previousScreen = currentScreen
       currentScreen.get.pause()
     }
-      this.currentScreen = Some(screen)
-      EventManager.setActiveInputListener(currentScreen.get)
-      currentScreen.get.resume()
-    
+    this.currentScreen = Some(screen)
+    EventManager.setActiveInputListener(currentScreen.get)
+    currentScreen.get.resume()
+
   }
 
   def changeToPreviousScreen() = {
