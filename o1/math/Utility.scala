@@ -22,4 +22,13 @@ object Utility {
     matrix(3)(3) = 1.0f
     matrix
   }
+  
+  def scale(amount: Vec3): Mat4 = {
+    var matrix = Mat4.identity()
+    matrix(0)(0) = amount.x
+    matrix(1)(1) = amount.y
+    matrix(2)(2) = amount.z
+    
+    matrix
+  }
 }

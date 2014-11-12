@@ -192,6 +192,7 @@ object Factory {
       case "enemy" => Some(createTestEnemy(node))
       case "player" => Some(createPlayer(node))
       case "door" => Some(createVerticalDoor(node))
+      case "rupee" => Some(createRupee(node))
       case _ => None
     }
     ent
@@ -362,6 +363,31 @@ object Factory {
 
     var collisionComponent = new CollisionComponent(size / 16, CollisionComponent.CIRCLE)
     entity.addComponent(collisionComponent)
+    entity
+  }
+  
+  def createRupee(node: Node) = {
+    val name = (node \ "@name").text
+    val typeName = (node \ "@name").text
+    val loc = Vec2((node \ "@x").text.toFloat, (node \ "@y").text.toFloat)
+    val size = (node \ "@width").text.toFloat
+    
+    val entity = new Entity(Vector())
+    
+    val renderComp = new RenderComponent("rupee")
+    entity.addComponent(renderComp)
+
+    val spatialComp = new SpatialComponent()
+    spatialComp.position = Vec3(loc.x * 2 / 16, 0.3f, loc.y * 2 / 16)
+    spatialComp.scale = Vec3(0.5f, 0.5f, 0.5f)
+    entity.addComponent(spatialComp)
+    
+    val collisionComponent = new CollisionComponent(0.1f, CollisionComponent.CIRCLE)
+    entity.addComponent(collisionComponent)
+    
+    val rotateComponent = new RotateComponent(-0.2f)
+    entity.addComponent(rotateComponent)
+    
     entity
   }
   

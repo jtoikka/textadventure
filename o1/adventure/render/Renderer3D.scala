@@ -208,11 +208,12 @@ class Renderer3D(w: Int, h: Int) extends Renderer(w,h) {
                 spatialComp.get.position.xz, 
                 cos((fov + 30)/ 360 * 2 * Math.PI))) {
               var translation = Utility.translate(Vec4(spatialComp.get.position, 1.0f))
+              var scale = Utility.scale(spatialComp.get.scale)
               var rotation = Camera.getLookMatrix(
                 Vec3(0.0f, 0.0f, 0.0f), 
                 spatialComp.get.forward, 
                 spatialComp.get.up)
-              var mv = worldToCam * translation * rotation
+              var mv = worldToCam * translation * rotation * scale
               var matrix = cameraToClipMatrix * mv
               if (renderComp.get.texture.isDefined) {
                 renderMesh(
