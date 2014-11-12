@@ -92,7 +92,7 @@ object CollisionCheck {
       radiusEntity + radiusOther
 
     // Check if collision
-    if (diff.length < totalRadius) {
+    if (diff.xz.length < totalRadius) {
       val intersection =
         diff * ((totalRadius - diff.length) / diff.length)
         
@@ -100,42 +100,6 @@ object CollisionCheck {
 
     } else {
       Vec3(0.0f, 0.0f, 0.0f)
-    }
-  }
-  
-  def checkSquareIntersection(squarePosition: Vec2, halfWidth: Float, pos: Vec2, radius: Float): Vec3 = {
-    var intersection = Vec2(0.0f, 0.0f)
-    
-    val relativePosition = pos - squarePosition
-    
-    val sumAxes = radius + halfWidth
-    
-    val intersectionX = relativePosition.x.abs - sumAxes
-    val intersectionY = relativePosition.y.abs - sumAxes
-        
-    if (intersectionX < 0.0f && intersectionY < 0.0f) {
-     if ((relativePosition.x < sumAxes && relativePosition.x > -sumAxes) ||
-         (relativePosition.y < sumAxes && relativePosition.y > -sumAxes)) { 
-          intersection = 
-            Vec2((intersectionX * relativePosition.x.signum).toFloat, (intersectionY * relativePosition.y.signum).toFloat)
-      } else {
-        val cornerX = relativePosition.x.signum * halfWidth
-        val cornerY = relativePosition.y.signum * halfWidth
-        
-        val colliderToCorner = pos - Vec2(cornerX.toFloat, cornerY.toFloat)
-        
-        val colliderToConerLength = colliderToCorner.length
-        
-        if (colliderToConerLength < radius) {
-          intersection = colliderToCorner * (radius - colliderToConerLength)
-        }
-      }
-    }
-    
-    if (intersection.x.abs > intersection.y.abs) {
-      new Vec3(0.0f, 0.0f, intersection.y)
-    } else {
-      new Vec3(intersection.x, 0.0f, 0.0f)
     }
   }
   

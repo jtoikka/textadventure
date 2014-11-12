@@ -151,7 +151,7 @@ object RotateComponent {
   val id = classOf[RotateComponent]
 }
 
-case class RotateComponent(val rate: Float) extends Component {
+case class RotateComponent(val rateForward: Float = 0.0f, val rateUp: Float = 0.0f) extends Component {
   
 }
 
