@@ -99,10 +99,26 @@ class GameScreen(parent: Adventure, rend: Renderer)
         scene.removeEntity(e)
       }
       
+      traceFront()
+      
       updateCamera()
       movementMap.clear()
     } else {
       events.clear()
+    }
+  }
+    
+  def traceFront() = {
+    val camSpatial = scene.camera.get.getComponent(SpatialComponent.id).get
+    val forward = camSpatial.forward.neg
+//    forward.x *=  -1
+    val inFront = RayTrace.trace(
+        camSpatial.position.neg, 
+        forward.normalize(), 
+        scene, 2.0f, 40, 
+        (entity) => entity.getComponent(InputComponent.id).isEmpty)
+    if (inFront.isDefined) {
+      println(inFront.get)
     }
   }
   
@@ -180,7 +196,8 @@ class GameScreen(parent: Adventure, rend: Renderer)
         EventManager.addEvent(new Event(Vector("inventoryScreen"), E_CHANGE_SCREEN))
       }),
       ((Key.N, Input.KEYRELEASED), (delta) => {
-        EventManager.addEvent(new Event(Vector("helpMenuScreen"), E_CHANGE_SCREEN))
+//        EventManager.addEvent(new Event(Vector("helpMenuScreen"), E_CHANGE_SCREEN))
+        EventManager.addEvent(new Event(Vector("helpMenuScreen"), E_TEST))
       }),
       ((Key.M, Input.KEYRELEASED), (delta) => {
         EventManager.addEvent(new Event(Vector("mapScreen"), E_CHANGE_SCREEN))

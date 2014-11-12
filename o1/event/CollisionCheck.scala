@@ -1,18 +1,91 @@
 package o1.event
 
 import o1.math.Vec2
-import o1.scene.CollisionComponent
-import o1.scene.Entity
 import o1.inventory.Inventory
-import o1.scene.SpatialComponent
 import scala.Vector
-import o1.scene.InventoryItemComponent
-import o1.scene.World
 import o1.math.Vec3
-import o1.scene.PhysicsComponent
+import o1.scene._
 
 object CollisionCheck {
+  
+  def findEntityCollision(entity: Entity, entities: Vector[Entity], filter: (Entity) => Boolean): Option[Entity] = {
+    val collisionComponent = entity.getComponent(CollisionComponent.id)
+    val spatialComponent = entity.getComponent(SpatialComponent.id)
+    if (collisionComponent.isDefined) {
+      for (
+        otherEntity <- entities.filter((other) => {
+          other != entity && other.getComponent(CollisionComponent.id).isDefined &&
+          filter(other)
+        })) {
+        val otherCollisionComponent =
+          otherEntity.getComponent(CollisionComponent.id)
 
+        val otherSpatialComponent =
+          otherEntity.getComponent(SpatialComponent.id)
+
+        val posEntity = spatialComponent.get.position
+        val posOther = otherSpatialComponent.get.position
+        
+        var intersection = Vec3(0.0f, 0.0f, 0.0f)
+        
+        if (otherCollisionComponent.get.shape == CollisionComponent.CIRCLE &&
+            collisionComponent.get.shape == CollisionComponent.CIRCLE) {
+          val diff = posEntity - posOther
+  
+          val totalRadius =
+            collisionComponent.get.radius + otherCollisionComponent.get.radius
+            
+          intersection = checkRoundIntersection(
+              posEntity, posOther, 
+              collisionComponent.get.radius, 
+              otherCollisionComponent.get.radius)
+        } else if (collisionComponent.get.shape == CollisionComponent.CIRCLE &&
+                   otherCollisionComponent.get.shape == CollisionComponent.SQUARE) {
+          intersection = checkRectangleIntersection(
+              posOther, 
+              otherCollisionComponent.get.halfWidth,
+              otherCollisionComponent.get.halfHeight,
+              posEntity, 
+              collisionComponent.get.radius).neg()
+        } else if (otherCollisionComponent.get.shape == CollisionComponent.CIRCLE &&
+                   collisionComponent.get.shape == CollisionComponent.SQUARE) {
+          intersection = checkRectangleIntersection(
+              posEntity, 
+              collisionComponent.get.halfWidth,
+              collisionComponent.get.halfHeight,
+              posOther, 
+              otherCollisionComponent.get.radius).neg()
+        }
+        if (intersection.x != 0 || intersection.z != 0) {
+          return Some(otherEntity)
+        }
+      }
+    }
+    None
+  }
+
+  def findWorldCollision(entity: Entity, collisionRadius: Float, world: World): Boolean = {
+    val position = entity.getComponent(SpatialComponent.id).get.position
+    def greatestIntersection(intersections: Vector[Vec2]) = {
+      var greatest = 0.0f
+      var greatestVec = Vec2(0.0f, 0.0f)
+      for (intersection <- intersections) {
+        if (intersection.x.abs > greatest || intersection.y.abs > greatest) {
+          greatestVec = intersection
+          greatest = Math.max(intersection.x.abs, intersection.y.abs)
+        }
+      }
+      greatestVec
+    }
+
+    var intersections = world.tileMap.checkCollisions(
+      position.xz,
+      collisionRadius)
+    var i = 0
+    val maxChecks = 4
+    !intersections.isEmpty
+  }
+  
   def checkCollisions(entity: Entity, entities: Vector[Entity], world: Option[World]) = {
     val collisionComponent = entity.getComponent(CollisionComponent.id)
     val spatialComponent = entity.getComponent(SpatialComponent.id)

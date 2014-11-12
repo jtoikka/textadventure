@@ -85,6 +85,8 @@ object Factory {
   def createCoffee() = {
     var cof = new Entity()
     var spatialComp = new SpatialComponent()
+    
+    cof.description = "Coffee"
 
     cof.addComponent(spatialComp)
 
@@ -118,7 +120,6 @@ object Factory {
     var cof = new Entity()
 
     cof.description = "Coffee bullet"
-    
     
     cof.eventHandlers = scala.collection.immutable.Map(
       (EventType.E_COLLISION, (event, delta) => {
@@ -222,6 +223,8 @@ object Factory {
     val size = (node \ "@width").text.toFloat
 
     val entity = new Entity()
+    
+    entity.description = "coffee"
 
     val spatialComp = new SpatialComponent()
     spatialComp.position = Vec3((loc.x * 2) / 16, 0.5f, loc.y * 2 / 16)
@@ -263,6 +266,8 @@ object Factory {
     val size = (node \ "@width").text.toFloat
 
     val entity = new Entity()
+    
+    entity.description = "page"
     
     entity.eventHandlers = scala.collection.immutable.Map(
       (EventType.E_COLLISION, (event, delta) => {
@@ -306,17 +311,7 @@ object Factory {
 
     val entity = new Entity()
 
-    entity.description = "Monkey"
-
-    //    entity.eventHandle = (event, delta) => {
-    //      val entityA = event.args(0).asInstanceOf[Entity]
-    //      val entityB = event.args(1).asInstanceOf[Entity]
-    //      if (entityA == entity && !entityB.destroy) {
-    //        if (entityB.getComponent(BreakableComponent.id).isDefined) {
-    //          entityB.destroy = true
-    //        }
-    //      }
-    //    }
+    entity.description = "monkey"
 
     val spatialComp = new SpatialComponent()
     spatialComp.position = Vec3(loc.x * 2 / 16, 0.5f, loc.y * 2 / 16)
@@ -344,6 +339,8 @@ object Factory {
     val h = (node \ "@height").text.toFloat / 8
 
     val entity = new Entity()
+    
+    entity.description = "door"
 
     val spatialComp = new SpatialComponent()
     spatialComp.position = Vec3(loc.x * 2 / 16, 0.0f, loc.y * 2 / 16)
@@ -368,6 +365,8 @@ object Factory {
     val size = (node \ "@width").text.toFloat
 
     val entity: Entity = new Entity()
+    
+    entity.description = "test enemy"
     
     entity.eventHandlers = scala.collection.immutable.Map(
       (EventType.E_COLLISION, (event, delta) => {
@@ -420,6 +419,8 @@ object Factory {
     val size = (node \ "@width").text.toFloat
 
     val entity = new Entity()
+    
+    entity.description = "rupee"
     
     entity.eventHandlers = scala.collection.immutable.Map(
       (EventType.E_COLLISION, (event, delta) => {
