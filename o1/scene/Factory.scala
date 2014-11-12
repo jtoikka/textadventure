@@ -18,7 +18,7 @@ import o1.event.Event
 object Factory {
 
   def createPlayer() = {
-    var player = new Entity(Vector())
+    var player = new Entity()
 
     var spatialComp = new SpatialComponent()
     player.addComponent(spatialComp)
@@ -32,7 +32,7 @@ object Factory {
   }
 
   def createCamera(followEntity: Entity) = {
-    var camera = new Entity(Vector())
+    var camera = new Entity()
 
     var spatialComp = new SpatialComponent()
     camera.addComponent(spatialComp)
@@ -44,7 +44,7 @@ object Factory {
   }
 
   def createSphere() = {
-    var sphere = new Entity(Vector())
+    var sphere = new Entity()
     var spatialComp = new SpatialComponent()
 
     sphere.addComponent(spatialComp)
@@ -56,7 +56,7 @@ object Factory {
   }
 
   def createCube() = {
-    var sphere = new Entity(Vector())
+    var sphere = new Entity()
     var spatialComp = new SpatialComponent()
 
     sphere.addComponent(spatialComp)
@@ -68,7 +68,7 @@ object Factory {
   }
 
   def createMonkey() = {
-    var monkey = new Entity(Vector())
+    var monkey = new Entity()
     var spatialComp = new SpatialComponent()
 
     monkey.addComponent(spatialComp)
@@ -83,7 +83,7 @@ object Factory {
   }
 
   def createCoffee() = {
-    var cof = new Entity(Vector(EventType.E_COLLISION))
+    var cof = new Entity()
     var spatialComp = new SpatialComponent()
 
     cof.addComponent(spatialComp)
@@ -115,7 +115,7 @@ object Factory {
   }
 
   def createCoffeeBullet(position: Vec3, direction: Vec3) = {
-    var cof = new Entity(Vector(EventType.E_COLLISION))
+    var cof = new Entity()
 
     cof.description = "Coffee bullet"
     
@@ -160,7 +160,7 @@ object Factory {
   }
 
   def createPlate() = {
-    var monkey = new Entity(Vector())
+    var monkey = new Entity()
     var spatialComp = new SpatialComponent()
 
     monkey.addComponent(spatialComp)
@@ -172,7 +172,7 @@ object Factory {
   }
 
   def createLevel() = {
-    var monkey = new Entity(Vector())
+    var monkey = new Entity()
     var spatialComp = new SpatialComponent()
 
     monkey.addComponent(spatialComp)
@@ -184,7 +184,7 @@ object Factory {
   }
 
   def createFloor() = {
-    var floor = new Entity(Vector())
+    var floor = new Entity()
     var spatialComp = new SpatialComponent()
 
     floor.addComponent(spatialComp)
@@ -218,7 +218,7 @@ object Factory {
     val loc = Vec2((node \ "@x").text.toFloat, (node \ "@y").text.toFloat)
     val size = (node \ "@width").text.toFloat
 
-    val entity = new Entity(Vector(EventType.E_COLLISION))
+    val entity = new Entity()
 
     val spatialComp = new SpatialComponent()
     spatialComp.position = Vec3((loc.x * 2) / 16, 0.5f, loc.y * 2 / 16)
@@ -255,7 +255,7 @@ object Factory {
     val loc = Vec2((node \ "@x").text.toFloat, (node \ "@y").text.toFloat)
     val size = (node \ "@width").text.toFloat
 
-    val entity = new Entity(Vector(EventType.E_COLLISION))
+    val entity = new Entity()
     
     entity.eventHandlers = scala.collection.immutable.Map(
       (EventType.E_COLLISION, (event, delta) => {
@@ -297,7 +297,7 @@ object Factory {
     val loc = Vec2((node \ "@x").text.toFloat, (node \ "@y").text.toFloat)
     val size = (node \ "@width").text.toFloat
 
-    val entity = new Entity(Vector())
+    val entity = new Entity()
 
     entity.description = "Monkey"
 
@@ -336,7 +336,7 @@ object Factory {
     val w = (node \ "@width").text.toFloat / 8
     val h = (node \ "@height").text.toFloat / 8
 
-    val entity = new Entity(Vector())
+    val entity = new Entity()
 
     val spatialComp = new SpatialComponent()
     spatialComp.position = Vec3(loc.x * 2 / 16, 0.0f, loc.y * 2 / 16)
@@ -360,7 +360,7 @@ object Factory {
     val loc = Vec2((node \ "@x").text.toFloat, (node \ "@y").text.toFloat)
     val size = (node \ "@width").text.toFloat
 
-    val entity: Entity = new Entity(Vector(EventType.E_COLLISION))
+    val entity: Entity = new Entity()
     
     entity.eventHandlers = scala.collection.immutable.Map(
       (EventType.E_COLLISION, (event, delta) => {
@@ -411,7 +411,7 @@ object Factory {
     val loc = Vec2((node \ "@x").text.toFloat, (node \ "@y").text.toFloat)
     val size = (node \ "@width").text.toFloat
 
-    val entity = new Entity(Vector(EventType.E_COLLISION))
+    val entity = new Entity()
 
     val renderComp = new RenderComponent("rupee")
     entity.addComponent(renderComp)
@@ -452,7 +452,7 @@ object Factory {
     val loc = Vec2((node \ "@x").text.toFloat, (node \ "@y").text.toFloat)
     val size = (node \ "@width").text.toFloat
 
-    val player = new Entity(Vector())
+    val player = new Entity()
 
     val spatialComp = new SpatialComponent()
     spatialComp.position = Vec3(loc.x * 2 / 16, 1.2f, loc.y * 2 / 16)
