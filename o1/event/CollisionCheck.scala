@@ -232,6 +232,21 @@ object CollisionCheck {
       val spatial = entity.getComponent(SpatialComponent.id).get;
       spatial.position.x += intersection.x
       spatial.position.z += intersection.y
+      
+      val physComp = entity.getComponent(PhysicsComponent.id)
+      if (physComp.isDefined) {
+        val velocity = physComp.get.velocity
+        if (intersection.x != 0) {
+          if (velocity.x * intersection.x < 0) {
+            velocity.x = 0.0f
+          }
+        }
+        if (intersection.y != 0) {
+          if (velocity.z * intersection.y < 0) {
+            velocity.z = 0.0f
+          }
+        }
+      }
     }
 
     val invComp = other.getComponent(InventoryItemComponent.id)
