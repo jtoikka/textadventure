@@ -428,6 +428,8 @@ object Factory {
           entity.destroy = true
         }
     }))
+    val invComponent = new InventoryItemComponent(Coffee())
+    entity.addComponent(invComponent)
     
     val spatialComp = new SpatialComponent()
     spatialComp.position = Vec3(loc.x * 2 / 16, 0.3f, loc.y * 2 / 16)
@@ -435,6 +437,7 @@ object Factory {
     entity.addComponent(spatialComp)
 
     val collisionComponent = new CollisionComponent(0.1f, CollisionComponent.CIRCLE)
+    collisionComponent.isActive = false
     entity.addComponent(collisionComponent)
 
     val rotateComponent = new RotateComponent(-0.2f)
@@ -454,7 +457,7 @@ object Factory {
     val spatialComp = new SpatialComponent()
     spatialComp.position = Vec3(loc.x * 2 / 16, 1.2f, loc.y * 2 / 16)
     player.addComponent(spatialComp)
-
+    
     player.addComponent(new InventoryComponent())
 
     val collisionComponent = new CollisionComponent(0.3f, CollisionComponent.CIRCLE)
