@@ -50,7 +50,8 @@ class GameScreen(parent: Adventure, rend: Renderer)
       val destroyedEntities = Buffer[Entity]()
       
       for (entity <- scene.entities) {
-        if (entity.getComponent(SpatialComponent.id).isDefined) {
+        val spatial = entity.getComponent(SpatialComponent.id)
+        if (spatial.isDefined) {
           if (entity.getComponent(InputComponent.id).isDefined) {
             handleMovement(entity)
           }
@@ -66,6 +67,12 @@ class GameScreen(parent: Adventure, rend: Renderer)
           CollisionCheck.checkCollisions(entity, entitiesAsVector, scene.world)
           if (entity.getComponent(SpatialComponent.id).get.position.y < 0) {
             entity.destroy = true
+          }
+          val rotateComponent = entity.getComponent(RotateComponent.id)
+          if (rotateComponent.isDefined) {
+            spatial.get.forward = (
+                Utility.rotateY(rotateComponent.get.rate * delta.toFloat) * 
+                Vec4(spatial.get.forward, 0.0f)).xyz.normalize()
           }
         }
         entity.handleEvents(delta.toFloat)

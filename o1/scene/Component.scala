@@ -20,7 +20,8 @@ abstract class Component {}
 case class SpatialComponent(
     var position: Vec3 = Vec3(0.0f, 0.0f, 0.0f),
     var forward: Vec3 = Vec3(0.0f, 0.0f, 1.0f), // The direction the entity is facing
-    var up: Vec3 = Vec3(0.0f, 1.0f, 0.0f)) extends Component {
+    var up: Vec3 = Vec3(0.0f, 1.0f, 0.0f),
+    var scale: Vec3 = Vec3(1.0f, 1.0f, 1.0f)) extends Component {
 }
 object SpatialComponent {
   val id = classOf[SpatialComponent]
@@ -143,5 +144,13 @@ object HealthComponent {
 }
 
 case class HealthComponent(var hp: Int) extends Component {
+  
+}
+
+object RotateComponent {
+  val id = classOf[RotateComponent]
+}
+
+case class RotateComponent(val rate: Float) extends Component {
   
 }
