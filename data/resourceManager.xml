@@ -1,9 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <resources>
+	<debug value="true"></debug>
 	<meshes>
 		<item name="sphere" path="data/meshes/sphere.obj"></item>
-		<item name="monkey" path="data/meshes/monkey.obj"></item>
+		<item name="monkey" path="data/meshes/monkey.obj">
+			<luminosity>0.6</luminosity>
+		</item>	
 		<item name="cube" path="data/meshes/cube.obj"></item>
 		<item name="verticaldoor" path="data/meshes/verticaldoor.obj"></item>
 		<item name="uv_cube" path="data/meshes/uv_cube.obj"></item>

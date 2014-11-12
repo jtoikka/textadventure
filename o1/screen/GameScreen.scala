@@ -1,5 +1,11 @@
 package o1.screen
 
+import scala.concurrent.impl.Future
+import scala.concurrent._
+import ExecutionContext.Implicits.global
+import scala.util.Success
+import scala.util.Failure
+
 import scala.swing.event.Key
 import scala.collection.mutable.Map
 import o1.adventure._
@@ -23,13 +29,13 @@ import scala.collection.mutable.Buffer
  * @param parent parent Adventure class
  */
 class GameScreen(parent: Adventure, rend: Renderer)
-    extends Screen(parent, rend){
-    def this(parent: Adventure, x: Int, y: Int) = this(parent, new Renderer3D(x, y))
+    extends Screen(parent, rend) {
+  def this(parent: Adventure, x: Int, y: Int) = this(parent, new Renderer3D(x, y))
 
   var scene = new Scene()
-  
+
   var paused = true
-  
+
   val FORWARD = 0
   val RIGHT = 1
   val ROTATERIGHT = 2
@@ -47,7 +53,7 @@ class GameScreen(parent: Adventure, rend: Renderer)
       handleEvents(delta.toFloat)
       val entitiesAsVector = scene.entities.toVector
       val destroyedEntities = Buffer[Entity]()
-      
+
       for (entity <- scene.entities) {
         val spatial = entity.getComponent(SpatialComponent.id)
         if (spatial.isDefined) {
@@ -72,68 +78,68 @@ class GameScreen(parent: Adventure, rend: Renderer)
             val rotY = Utility.rotateY(rotateComponent.get.rateForward * delta.toFloat)
             val rotZ = Utility.rotateZ(rotateComponent.get.rateUp * delta.toFloat)
             spatial.get.forward = (
-                rotY * 
-                Vec4(spatial.get.forward, 0.0f)).xyz.normalize()
-                
+              rotY *
+              Vec4(spatial.get.forward, 0.0f)).xyz.normalize()
+
             spatial.get.up = (
-                rotY * 
-                Vec4(spatial.get.up, 0.0f)).xyz.normalize()
-                
+              rotY *
+              Vec4(spatial.get.up, 0.0f)).xyz.normalize()
+
             spatial.get.up = (
-                rotZ *
-                Vec4(spatial.get.up, 0.0f)).xyz.normalize()
-                
+              rotZ *
+              Vec4(spatial.get.up, 0.0f)).xyz.normalize()
+
             spatial.get.forward = (
-                rotZ *
-                Vec4(spatial.get.forward, 0.0f)).xyz.normalize()
+              rotZ *
+              Vec4(spatial.get.forward, 0.0f)).xyz.normalize()
           }
         }
         entity.handleEvents(delta.toFloat)
-        
+
         if (entity.destroy) {
-            destroyedEntities += entity
+          destroyedEntities += entity
         }
       }
-      
-      for(e <- destroyedEntities){
+
+      for (e <- destroyedEntities) {
         scene.removeEntity(e)
       }
-      
+
       traceFront()
-      
+
       updateCamera()
       movementMap.clear()
     } else {
       events.clear()
     }
   }
-    
+
   def traceFront() = {
     val camSpatial = scene.camera.get.getComponent(SpatialComponent.id).get
     val forward = camSpatial.forward.neg
-//    forward.x *=  -1
+    //    forward.x *=  -1
     val inFront = RayTrace.trace(
-        camSpatial.position.neg, 
-        forward.normalize(), 
-        scene, 2.0f, 40, 
-        (entity) => entity.getComponent(InputComponent.id).isEmpty)
+      camSpatial.position.neg,
+      forward.normalize(),
+      scene, 2.0f, 40,
+      (entity) => entity.getComponent(InputComponent.id).isEmpty)
     if (inFront.isDefined) {
       println(inFront.get)
     }
   }
-  
+
   def handleAI(entity: Entity, delta: Double) = {
     val aiComponent = entity.getComponent(AIComponent.id).get
     AI.functionMap(aiComponent.botType)(entity, delta)
   }
-  
+
   def faceCamera(entity: Entity, camera: Entity) = {
     val spatial = entity.getComponent(SpatialComponent.id)
     val cameraPos = camera.getComponent(SpatialComponent.id).get.position
     spatial.get.forward = (spatial.get.position + cameraPos).normalize.neg
     spatial.get.forward.x *= -1
   }
-  
+
   def handleMovement(entity: Entity) = {
     val spatial = entity.getComponent(SpatialComponent.id).get
     var flippedForward = Vec3()
@@ -167,7 +173,7 @@ class GameScreen(parent: Adventure, rend: Renderer)
     camSpatial.forward.z = -followSpatial.get.forward.z
 
   }
-  
+
   eventHandlers = scala.collection.immutable.Map(
     (E_INPUT, (event, delta) => {
       val eventKey =
@@ -176,18 +182,19 @@ class GameScreen(parent: Adventure, rend: Renderer)
         inputMap(eventKey)(delta)
       }
     }),
-    (E_DIALOG, (event, delta) => {
-      if (event.args(0) == this) {
-        println("dialog says: \"" + event.args(1) + "\"")
-      }
-  }))
-  
+    (E_ANSWER_DIALOG, (event, delta) => {
+//      if (event.args(0) == this) {
+        println("HashCode match: " + event.args(1) +":"+this.hashCode())
+        println("dialog says: \"" + event.args(0) + "\"")
+//      }
+    }))
+
   val SPEED = 0.30f
 
   val inputMap =
     Map[Tuple2[scala.swing.event.Key.Value, Int], (Float) => Unit](
       ((Key.Q, Input.KEYRELEASED), (delta) => {
-        
+
       }),
       ((Key.Escape, Input.KEYRELEASED), (delta) => {
         EventManager.addEvent(new Event(Vector("menuScreen"), E_CHANGE_SCREEN))
@@ -196,11 +203,21 @@ class GameScreen(parent: Adventure, rend: Renderer)
         EventManager.addEvent(new Event(Vector("inventoryScreen"), E_CHANGE_SCREEN))
       }),
       ((Key.N, Input.KEYRELEASED), (delta) => {
-//        EventManager.addEvent(new Event(Vector("helpMenuScreen"), E_CHANGE_SCREEN))
+        //        EventManager.addEvent(new Event(Vector("helpMenuScreen"), E_CHANGE_SCREEN))
         EventManager.addEvent(new Event(Vector("helpMenuScreen"), E_TEST))
       }),
       ((Key.M, Input.KEYRELEASED), (delta) => {
-        EventManager.addEvent(new Event(Vector("mapScreen"), E_CHANGE_SCREEN))
+        var dialogOptions: Array[Tuple2[String, Event]] = Array[Tuple2[String, Event]](
+          ("First Choice", new Event(Vector("EkaValinta", this.hashCode()), E_ANSWER_DIALOG)),
+          ("Second Choice", new Event(Vector("TokaValinta", this.hashCode()), E_ANSWER_DIALOG)))
+
+        var dialog = new Dialog(this,
+          new Rectangle2D(26, 10, true),
+          "-" * 10 + "\nTest Dialog\n" + "-" * 10,
+          dialogOptions)
+        val e = new Event(Vector(dialog,this.hashCode()),E_THROW_DIALOG)
+        EventManager.addEvent(e)
+        
       }),
       ((Key.W, Input.KEYDOWN), (delta) => {
         movementMap(FORWARD) = SPEED * delta
@@ -224,9 +241,9 @@ class GameScreen(parent: Adventure, rend: Renderer)
         println("Toss coffee")
         val cameraSpatial = scene.camera.get.getComponent(SpatialComponent.id).get
         val coffee = Factory.createCoffeeBullet(
-            cameraSpatial.position.neg() + 
-            cameraSpatial.forward.neg * 0.5f, 
-            cameraSpatial.forward.neg * 0.8f)
+          cameraSpatial.position.neg() +
+            cameraSpatial.forward.neg * 0.5f,
+          cameraSpatial.forward.neg * 0.8f)
         val spatial = coffee.getComponent(SpatialComponent.id).get
         spatial.forward = cameraSpatial.forward
         spatial.forward.x *= -1
@@ -242,12 +259,12 @@ class GameScreen(parent: Adventure, rend: Renderer)
 
     rend.clear()
     rend.renderScene(scene)
-    
+
     tmpDisplay = rend.display
-    
+
     parent.screens("hudScreen").draw()
     parent.screens("hudScreen").rend.displayOverlay(tmpDisplay)
-    
+
   }
 
   def init(): Unit = {

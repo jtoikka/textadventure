@@ -14,6 +14,8 @@ object EventType extends Enumeration {
       E_CHANGE_HUD_INFO,
       E_TEST,
       E_PLAYER_CREATION,
+      E_THROW_DIALOG,
+      E_ANSWER_DIALOG,
       E_SYSTEM_EXIT = Value
 }
 import o1.event.EventType._

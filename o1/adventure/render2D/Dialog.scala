@@ -21,7 +21,7 @@ class Dialog(
   val indent = "\u2001"
   val indentCount: Int = 0
   var activeOption: Int = 0
-  
+  var active = true
   updateText()
   
   def updateOption(next: Boolean) = {
@@ -87,11 +87,13 @@ class Dialog(
 
       }),
       ((Key.Enter, Input.KEYRELEASED), (delta) => {
+        println("Enter in dialog")
+        active = false
         EventManager.addEvent(options(activeOption)._2)
-        
+        dispose()
       }),
       ((Key.M, Input.KEYRELEASED), (delta) => {
-        
+        println("Dialog MMM")
       }))
       
   val optionsMap = 
