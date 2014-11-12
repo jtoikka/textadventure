@@ -206,7 +206,7 @@ class Renderer3D(w: Int, h: Int) extends Renderer(w,h) {
                 cameraSpatial.position.xz, 
                 cameraSpatial.forward.xz, 
                 spatialComp.get.position.xz, 
-                0.7)) {
+                cos((fov + 30)/ 360 * 2 * Math.PI))) {
               var translation = Utility.translate(Vec4(spatialComp.get.position, 1.0f))
               var rotation = Camera.getLookMatrix(
                 Vec3(0.0f, 0.0f, 0.0f), 

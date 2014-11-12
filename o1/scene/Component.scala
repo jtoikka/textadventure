@@ -71,8 +71,8 @@ object CollisionComponent {
 }
 
 class CollisionComponent(
-    val radius: Float, val shape: Int,
-    val attributes: Buffer[Int]) extends Component {
+    val radius: Float, val shape: Int, 
+    val halfWidth: Float = 0.0f, val halfHeight: Float = 0.0f) extends Component {
   var isActive = true
 }
 

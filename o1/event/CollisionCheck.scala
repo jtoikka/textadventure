@@ -49,20 +49,22 @@ object CollisionCheck {
               
         } else if (collisionComponent.get.shape == CollisionComponent.CIRCLE &&
                    otherCollisionComponent.get.shape == CollisionComponent.SQUARE) {
-          intersection = checkSquareIntersection(
-              posOther.xz, 
-              otherCollisionComponent.get.radius, 
-              posEntity.xz, 
+          intersection = checkRectangleIntersection(
+              posOther, 
+              otherCollisionComponent.get.halfWidth,
+              otherCollisionComponent.get.halfHeight,
+              posEntity, 
               collisionComponent.get.radius).neg()
           if (intersection.x != 0 || intersection.z != 0) {
             handleCollision(entity, otherEntity, intersection.xz)
           }
         } else if (otherCollisionComponent.get.shape == CollisionComponent.CIRCLE &&
                    collisionComponent.get.shape == CollisionComponent.SQUARE) {
-          intersection = checkSquareIntersection(
-              posEntity.xz, 
-              collisionComponent.get.radius, 
-              posOther.xz, 
+          intersection = checkRectangleIntersection(
+              posEntity, 
+              collisionComponent.get.halfWidth,
+              collisionComponent.get.halfHeight,
+              posOther, 
               otherCollisionComponent.get.radius).neg()
           if (intersection.x != 0 || intersection.z != 0) {
             handleCollision(otherEntity, entity, intersection.xz)
@@ -132,6 +134,48 @@ object CollisionCheck {
     
     if (intersection.x.abs > intersection.y.abs) {
       new Vec3(0.0f, 0.0f, intersection.y)
+    } else {
+      new Vec3(intersection.x, 0.0f, 0.0f)
+    }
+  }
+  
+  def checkRectangleIntersection(
+      rectanglePos: Vec3, 
+      halfWidth: Float, halfHeight: Float, 
+      circlePos: Vec3, radius: Float): Vec3 = {
+    var intersection = Vec3(0.0f, 0.0f, 0.0f)
+    
+    val relativePosition = circlePos - rectanglePos
+    
+    val sumWidth = halfWidth + radius
+    val sumHeight = halfHeight + radius
+    
+    val intersectionX = relativePosition.x.abs - sumWidth
+    val intersectionY = relativePosition.z.abs - sumHeight
+    
+    
+    if (intersectionX < 0.0 && intersectionY < 0.0) {
+      if ((relativePosition.x < sumWidth && relativePosition.x > -sumWidth) ||
+          (relativePosition.z < sumHeight && relativePosition.z > -sumHeight)) {
+        intersection = Vec3(
+            (intersectionX * relativePosition.x.signum).toFloat, 
+            0.0f, 
+            (intersectionY * relativePosition.z.signum).toFloat)
+      } else {
+        val cornerX = relativePosition.x.signum * halfWidth
+        val cornerY = relativePosition.z.signum * halfHeight
+        
+        val colliderToCorner = circlePos - Vec3(cornerX.toFloat, 0.0f, cornerY.toFloat)
+        
+        val colliderToConerLength = colliderToCorner.length
+        
+        if (colliderToConerLength < radius) {
+          intersection = colliderToCorner * (radius - colliderToConerLength)
+        }
+      }
+    }
+    if (intersection.x.abs > intersection.z.abs) {
+      new Vec3(0.0f, 0.0f, intersection.z)
     } else {
       new Vec3(intersection.x, 0.0f, 0.0f)
     }
