@@ -25,7 +25,6 @@ import scala.collection.mutable.Buffer
 class GameScreen(parent: Adventure, rend: Renderer)
     extends Screen(parent, rend){
     def this(parent: Adventure, x: Int, y: Int) = this(parent, new Renderer3D(x, y))
-  eventTypes = Vector[EventType](E_INPUT, E_DIALOG)
 
   var scene = new Scene()
   
@@ -138,19 +137,20 @@ class GameScreen(parent: Adventure, rend: Renderer)
     camSpatial.forward.z = -followSpatial.get.forward.z
 
   }
-
-  def handleEvent(event: Event, delta: Float) {
-    if (event.eventType == EventType.E_INPUT) {
+  
+  eventHandlers = scala.collection.immutable.Map(
+    (E_INPUT, (event, delta) => {
       val eventKey =
         event.args(0).asInstanceOf[Tuple2[scala.swing.event.Key.Value, Int]]
       if (inputMap.contains(eventKey)) {
         inputMap(eventKey)(delta)
       }
-    }
-    if (event.eventType == EventType.E_DIALOG && event.args(0) == this) {
-      println("dialog says: \"" + event.args(1) + "\"")
-    }
-  }
+    }),
+    (E_DIALOG, (event, delta) => {
+      if (event.args(0) == this) {
+        println("dialog says: \"" + event.args(1) + "\"")
+      }
+  }))
   
   val SPEED = 0.30f
 

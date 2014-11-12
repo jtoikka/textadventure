@@ -18,8 +18,6 @@ import scala.Vector
 
 class HelpMenuScreen(parent: Adventure, rend: Renderer)
     extends Screen(parent, rend) {
-  eventTypes = Vector[EventType](E_INPUT, E_DIALOG)
-
   def this(parent: Adventure, x: Int, y: Int) = this(parent, new Renderer2D(x, y))
 
   var paused = false
@@ -75,15 +73,14 @@ class HelpMenuScreen(parent: Adventure, rend: Renderer)
   def pause() {
 
   }
-
-  def handleEvent(event: Event, delta: Float) = {
-    if (event.eventType == E_INPUT) {
+  
+  eventHandlers = scala.collection.immutable.Map(
+    (E_INPUT, (event, delta) => {
       val eventKey = event.args(0).asInstanceOf[Tuple2[scala.swing.event.Key.Value, Int]]
       if (inputMap.contains(eventKey)) {
         inputMap(eventKey)(delta)
       }
-    }
-  }
+    }))
 
   val inputMap =
     Map[Tuple2[scala.swing.event.Key.Value, Int], (Float) => Unit](

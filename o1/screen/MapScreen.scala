@@ -23,7 +23,6 @@ import o1.event.EmptyTile
 
 class MapScreen(parent: Adventure, rend: Renderer)
     extends Screen(parent, rend) {
-  eventTypes = Vector[EventType](E_INPUT, E_DIALOG, E_CHANGE_MAP)
 
   val iconBoxSize = Vec2(19, 11)
   val scene = new Scene()
@@ -141,18 +140,19 @@ class MapScreen(parent: Adventure, rend: Renderer)
     scene.addEntity(text)
 
   }
-  def handleEvent(event: Event, delta: Float) = {
-    if (event.eventType == E_INPUT) {
+  
+  eventHandlers = scala.collection.immutable.Map(
+    (E_INPUT, (event, delta) => {
       val eventKey =
-        event.args(0).asInstanceOf[Tuple2[scala.swing.event.Key.Value, Int]]
-      if (inputMap.contains(eventKey)) {
-        inputMap(eventKey)(delta)
-      }
-    } else if (event.eventType == E_CHANGE_MAP) {
+          event.args(0).asInstanceOf[Tuple2[scala.swing.event.Key.Value, Int]]
+        if (inputMap.contains(eventKey)) {
+          inputMap(eventKey)(delta)
+        }
+    }),
+    (E_CHANGE_MAP, (event, delta) => {
       world = event.args(0).asInstanceOf[Option[World]]
-
-    }
-  }
+  }))
+  
 
   def dispose() = {
 

@@ -13,9 +13,7 @@ class Dialog(
     val dialogText: String, 
     val options: Array[Tuple2[String, Event]])
   extends TextRect2D(rect) with Listener {
-  
-  eventTypes = Vector[EventType](E_INPUT, E_DIALOG)
-  
+    
   this.centerText = true
   var seperatorRows = 0
   val marker = "---> "
@@ -66,14 +64,13 @@ class Dialog(
     text = t
   }
   
-  def handleEvent(event: Event, delta: Float) = {
-    if (event.eventType == E_INPUT) {
+  eventHandlers = scala.collection.immutable.Map(
+    (E_INPUT, (event, delta) => {
       val eventKey = event.args(0).asInstanceOf[Tuple2[scala.swing.event.Key.Value, Int]]
       if (inputMap.contains(eventKey)) {
         inputMap(eventKey)(delta)
       }
-    }
-  }
+    }))
 
   val inputMap =
     Map[Tuple2[scala.swing.event.Key.Value, Int], (Float) => Unit](

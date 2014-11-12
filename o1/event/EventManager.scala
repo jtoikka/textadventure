@@ -20,9 +20,10 @@ import o1.event.EventType._
 class Event(val args: Vector[Any], val eventType: EventType) {}
 
 trait Listener {
-  var eventTypes = Vector[EventType]()
+//  var eventTypes = Vector[EventType]()
   val events = Buffer[Event]()
   var childListeners = Buffer[Listener]()
+  var eventHandlers = Map[EventType, (Event, Float) => Unit]()
 
   EventManager.addListener(this)
 
@@ -39,14 +40,18 @@ trait Listener {
     }
   }
   
-  def handleEvent(event: Event, delta: Float)
+  def handleEvent(event: Event, delta: Float) {
+    if (containsEventType(event.eventType)) {
+      eventHandlers(event.eventType)(event, delta)
+    }
+  }
 
   def addEvent(event: Event) = {
     events += event
   }
 
   def containsEventType(eventType: EventType) = {
-    eventTypes.contains(eventType)
+    eventHandlers.contains(eventType)
   }
   def dispose()
 }

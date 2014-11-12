@@ -33,8 +33,6 @@ import java.io.File
  * @see [[AdventureTextUI]]
  */
 object AdventureGUI extends SimpleSwingApplication with Listener {
-  eventTypes = Vector(E_SYSTEM_EXIT)
-
   UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName)
   var keyMap = Map[scala.swing.event.Key.Value, Boolean](
     (Key.W, false), (Key.S, false),
@@ -189,12 +187,11 @@ object AdventureGUI extends SimpleSwingApplication with Listener {
       this.renderArea.text = game.display
     }
   }
-
-  def handleEvent(event: o1.event.Event, delta: Float) = {
-    if (event.eventType == E_SYSTEM_EXIT) {
+  
+  eventHandlers = scala.collection.immutable.Map(
+    (E_SYSTEM_EXIT, (event, delta) => {
       dispose()
-    }
-  }
+    }))
 
   def dispose(): Unit = {
     println("Application Exit!")
