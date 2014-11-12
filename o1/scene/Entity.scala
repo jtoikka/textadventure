@@ -26,6 +26,8 @@ class Entity(listenerEventTypes: Vector[EventType.EventType]) extends Listener {
   
   val children =  MutableList[Entity]()
   
+  var description = ""
+  
   def addComponent[T <: Component](component: T) = {
     components(component.getClass()) = component
   }
@@ -47,5 +49,9 @@ class Entity(listenerEventTypes: Vector[EventType.EventType]) extends Listener {
   
   def dispose = {
     EventManager.removeListener(this)
+  }
+  
+  override def toString() = {
+    description
   }
 }
