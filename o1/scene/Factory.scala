@@ -23,7 +23,7 @@ object Factory {
     var spatialComp = new SpatialComponent()
     player.addComponent(spatialComp)
 
-    var collisionComponent = new CollisionComponent(0.6f, CollisionComponent.CIRCLE, Buffer[Int]())
+    var collisionComponent = new CollisionComponent(0.6f, CollisionComponent.CIRCLE)
     player.addComponent(collisionComponent)
 
     var inputComponent = new InputComponent()
@@ -75,7 +75,7 @@ object Factory {
 
     var renderComp = new RenderComponent("monkey")
 
-    var collisionComponent = new CollisionComponent(1.0f, CollisionComponent.CIRCLE, Buffer[Int]())
+    var collisionComponent = new CollisionComponent(1.0f, CollisionComponent.CIRCLE)
     monkey.addComponent(collisionComponent)
 
     monkey.addComponent(renderComp)
@@ -90,7 +90,7 @@ object Factory {
 
     var renderComp = new RenderComponent("coffee")
 
-    var collisionComponent = new CollisionComponent(1.0f, CollisionComponent.CIRCLE, Buffer[Int]())
+    var collisionComponent = new CollisionComponent(1.0f, CollisionComponent.CIRCLE)
     collisionComponent.isActive = false
     cof.addComponent(collisionComponent)
 
@@ -130,7 +130,7 @@ object Factory {
 
     var renderComp = new RenderComponent("coffee")
 
-    var collisionComponent = new CollisionComponent(0.1f, CollisionComponent.CIRCLE, Buffer[Int]())
+    var collisionComponent = new CollisionComponent(0.1f, CollisionComponent.CIRCLE)
     collisionComponent.isActive = false
     cof.addComponent(collisionComponent)
     
@@ -189,7 +189,7 @@ object Factory {
       case "monkey" => Some(createMonkey(node))
       case "enemy" => Some(createTestEnemy(node))
       case "player" => Some(createPlayer(node))
-      case "door" => Some(createDoor(node))
+      case "door" => Some(createVerticalDoor(node))
       case _ => None
     }
     ent
@@ -214,7 +214,7 @@ object Factory {
     var renderComp = new RenderComponent("coffee")
     entity.addComponent(renderComp)
 
-    var collisionComponent = new CollisionComponent(size / 16, CollisionComponent.CIRCLE, Buffer[Int]())
+    var collisionComponent = new CollisionComponent(size / 16, CollisionComponent.CIRCLE)
     collisionComponent.isActive = false
     entity.addComponent(collisionComponent)
     entity
@@ -243,7 +243,7 @@ object Factory {
     entity.addComponent(faceCameraComp)
     
     // TODO: Fix magic size conversion
-    var collisionComponent = new CollisionComponent(size / 16, CollisionComponent.CIRCLE, Buffer[Int]())
+    var collisionComponent = new CollisionComponent(size / 16, CollisionComponent.CIRCLE)
     collisionComponent.isActive = false
     entity.addComponent(collisionComponent)
     entity
@@ -269,12 +269,14 @@ object Factory {
     entity.addComponent(faceCameraComp)
     
 
-    var collisionComponent = new CollisionComponent(size / 16, CollisionComponent.SQUARE, Buffer[Int]())
+    var collisionComponent = new CollisionComponent(
+        size / 16, CollisionComponent.SQUARE, 
+        halfWidth = 1.0f, halfHeight = 3.0f)
     entity.addComponent(collisionComponent)
     entity
   }
   
-  def createDoor(node: Node) = {
+  def createVerticalDoor(node: Node) = {
     // TODO: Fix magic size and location conversion
     val name = (node \ "@name").text
     val typeName = (node \ "@name").text
@@ -284,13 +286,15 @@ object Factory {
     val entity = new Entity(Vector())
 
     val spatialComp = new SpatialComponent()
-    spatialComp.position = Vec3(loc.x * 2 / 16, 1.0f, loc.y * 2 / 16)
+    spatialComp.position = Vec3(loc.x * 2 / 16, 0.0f, loc.y * 2 / 16)
     entity.addComponent(spatialComp)
 
-    var renderComp = new RenderComponent("cube")
+    var renderComp = new RenderComponent("verticaldoor")
     entity.addComponent(renderComp)
     
-    var collisionComponent = new CollisionComponent(size / 16, CollisionComponent.SQUARE, Buffer[Int]())
+    var collisionComponent = new CollisionComponent(
+        size / 16, CollisionComponent.SQUARE, 
+        halfWidth = 0.25f, halfHeight = 1.0f)
     entity.addComponent(collisionComponent)
     entity
   }
@@ -341,7 +345,7 @@ object Factory {
     val healthComp = new HealthComponent(4)
     entity.addComponent(healthComp)
 
-    var collisionComponent = new CollisionComponent(size / 16, CollisionComponent.CIRCLE, Buffer[Int]())
+    var collisionComponent = new CollisionComponent(size / 16, CollisionComponent.CIRCLE)
     entity.addComponent(collisionComponent)
     entity
   }
@@ -358,7 +362,7 @@ object Factory {
     spatialComp.position = Vec3(loc.x * 2 / 16, 1.2f, loc.y * 2 / 16)
     player.addComponent(spatialComp)
 
-    val collisionComponent = new CollisionComponent(0.3f, CollisionComponent.CIRCLE, Buffer[Int]())
+    val collisionComponent = new CollisionComponent(0.3f, CollisionComponent.CIRCLE)
     player.addComponent(collisionComponent)
 
     val inputComponent = new InputComponent()
