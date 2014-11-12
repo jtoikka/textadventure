@@ -15,7 +15,7 @@ import o1.event.EventManager
  * game-world, and information about its physical characteristics; the game's
  * renderer can use these to create a visual representation of the entity.
  */
-class Entity(listenerEventTypes: Vector[EventType.EventType]) extends Listener {  
+class Entity() extends Listener {  
     val components = Map[Class[_ <: Component], Component]()
   var destroy = false
   
