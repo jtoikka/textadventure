@@ -69,8 +69,22 @@ class GameScreen(parent: Adventure, rend: Renderer)
           }
           val rotateComponent = entity.getComponent(RotateComponent.id)
           if (rotateComponent.isDefined) {
+            val rotY = Utility.rotateY(rotateComponent.get.rateForward * delta.toFloat)
+            val rotZ = Utility.rotateZ(rotateComponent.get.rateUp * delta.toFloat)
             spatial.get.forward = (
-                Utility.rotateY(rotateComponent.get.rate * delta.toFloat) * 
+                rotY * 
+                Vec4(spatial.get.forward, 0.0f)).xyz.normalize()
+                
+            spatial.get.up = (
+                rotY * 
+                Vec4(spatial.get.up, 0.0f)).xyz.normalize()
+                
+            spatial.get.up = (
+                rotZ *
+                Vec4(spatial.get.up, 0.0f)).xyz.normalize()
+                
+            spatial.get.forward = (
+                rotZ *
                 Vec4(spatial.get.forward, 0.0f)).xyz.normalize()
           }
         }
@@ -192,7 +206,14 @@ class GameScreen(parent: Adventure, rend: Renderer)
       ((Key.Space, Input.KEYPRESSED), (delta) => {
         println("Toss coffee")
         val cameraSpatial = scene.camera.get.getComponent(SpatialComponent.id).get
-        scene.addEntity(Factory.createCoffeeBullet(cameraSpatial.position.neg() + cameraSpatial.forward.neg * 0.5f, cameraSpatial.forward.neg * 0.8f))
+        val coffee = Factory.createCoffeeBullet(
+            cameraSpatial.position.neg() + 
+            cameraSpatial.forward.neg * 0.5f, 
+            cameraSpatial.forward.neg * 0.8f)
+        val spatial = coffee.getComponent(SpatialComponent.id).get
+        spatial.forward = cameraSpatial.forward
+        spatial.forward.x *= -1
+        scene.addEntity(coffee)
       }))
 
   /**

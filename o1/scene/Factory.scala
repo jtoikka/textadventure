@@ -131,8 +131,11 @@ object Factory {
           }
         }
     }))
-    var faceCamComp = new FaceCameraComponent()
-    cof.addComponent(faceCamComp)
+//    var faceCamComp = new FaceCameraComponent()
+//    cof.addComponent(faceCamComp)
+    
+    val rotateComp = new RotateComponent(rateUp = 0.1f)
+    cof.addComponent(rotateComp)
 
     var spatialComp = new SpatialComponent()
     spatialComp.position = position
@@ -145,7 +148,7 @@ object Factory {
 
     var renderComp = new RenderComponent("coffee")
 
-    var collisionComponent = new CollisionComponent(0.1f, CollisionComponent.CIRCLE)
+    var collisionComponent = new CollisionComponent(0.15f, CollisionComponent.CIRCLE)
     collisionComponent.isActive = true
     cof.addComponent(collisionComponent)
 
@@ -222,6 +225,7 @@ object Factory {
 
     val spatialComp = new SpatialComponent()
     spatialComp.position = Vec3((loc.x * 2) / 16, 0.5f, loc.y * 2 / 16)
+    spatialComp.scale = Vec3(2.0f, 2.0f, 2.0f)
     entity.addComponent(spatialComp)
     
     entity.eventHandlers = scala.collection.immutable.Map(
@@ -241,6 +245,9 @@ object Factory {
 
     var renderComp = new RenderComponent("coffee")
     entity.addComponent(renderComp)
+    
+    val rotateComp = new RotateComponent(-0.2f)
+    entity.addComponent(rotateComp)
 
     var collisionComponent = new CollisionComponent(size / 16, CollisionComponent.CIRCLE)
     collisionComponent.isActive = false
@@ -428,7 +435,8 @@ object Factory {
     }))
 
     val spatialComp = new SpatialComponent()
-    spatialComp.position = Vec3(loc.x * 2 / 16, 0.0f, loc.y * 2 / 16)
+    spatialComp.position = Vec3(loc.x * 2 / 16, 0.5f, loc.y * 2 / 16)
+    spatialComp.scale = Vec3(0.5f, 0.5f, 0.5f)
     entity.addComponent(spatialComp)
 
     val invComponent = new InventoryItemComponent(Page())
