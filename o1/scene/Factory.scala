@@ -281,8 +281,9 @@ object Factory {
     val name = (node \ "@name").text
     val typeName = (node \ "@name").text
     val loc = Vec2((node \ "@x").text.toFloat, (node \ "@y").text.toFloat)
-    val size = (node \ "@width").text.toFloat
-
+    val w = (node \ "@width").text.toFloat/8
+    val h = (node \ "@height").text.toFloat/8
+    
     val entity = new Entity(Vector())
 
     val spatialComp = new SpatialComponent()
@@ -293,8 +294,9 @@ object Factory {
     entity.addComponent(renderComp)
     
     var collisionComponent = new CollisionComponent(
-        size / 16, CollisionComponent.SQUARE, 
-        halfWidth = 0.25f, halfHeight = 1.0f)
+        w / 16, CollisionComponent.SQUARE, 
+        halfWidth = w/2, halfHeight = h/2)
+    println(w/2 + ", " + h/2)
     entity.addComponent(collisionComponent)
     entity
   }

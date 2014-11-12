@@ -863,7 +863,9 @@
   <object name="TestEnemy" type="enemy" x="77.375" y="56.7083" width="13.25" height="13.25">
    <ellipse/>
   </object>
-  <object name="TestDoor" type="door" x="160" y="224" width="16" height="16"/>
+  <object name="TestDoor" type="door" x="164" y="224" width="8" height="16"/>
+  <object name="TestDoor" type="door" x="196" y="176" width="8" height="16"/>
+  <object name="TestDoor" type="door" x="64" y="144" width="28" height="16"/>
  </objectgroup>
  <objectgroup name="player">
   <object name="Player" type="player" x="176.875" y="272.375" width="13.25" height="13.25">
