@@ -22,12 +22,14 @@ import o1.inventory.ItemContainer
 
 class InventoryScreen(parent: Adventure, rend: Renderer)
     extends Screen(parent, rend) {
-  eventTypes = Vector[EventType](E_INPUT, E_DIALOG)
+  eventTypes = Vector[EventType](E_INPUT, E_DIALOG, E_PLAYER_CREATION)
 
   val iconBoxSize = Vec2(19, 11)
   val itemsPerRow = Inventory.MAX_INVENTORY_ITEM_COUNT / 2
   val sHeight = rend.h
   val sWidth = rend.w
+
+  var player: Option[Entity] = None
 
   val topRow = Array.tabulate(itemsPerRow)(x =>
     Vec2((sWidth / itemsPerRow) * x + (sWidth / itemsPerRow - iconBoxSize.x) / 2,
@@ -54,10 +56,10 @@ class InventoryScreen(parent: Adventure, rend: Renderer)
         EventManager.addEvent(new Event(Vector("gameScreen"), E_CHANGE_SCREEN))
       }),
       ((Key.N, Input.KEYRELEASED), (delta) => {
-        if (Inventory.addItem(Page())) println("Added Page to inventory")
+        //        if (Inventory.addItem(Page())) println("Added Page to inventory")
       }),
       ((Key.M, Input.KEYRELEASED), (delta) => {
-        if (Inventory.addItem(Coffee())) println("Added Coffee to inventory")
+        //        if (Inventory.addItem(Coffee())) println("Added Coffee to inventory")
       }),
       ((Key.W, Input.KEYDOWN), (delta) => {
       }),
@@ -141,40 +143,43 @@ class InventoryScreen(parent: Adventure, rend: Renderer)
   }
 
   def updateInventory() = {
-    val invArray = Inventory.containers.toArray
-    clearScene()
+    if (player.isDefined) {
+      val invArray = player.get.getComponent(InventoryComponent.id).get.inv.containers.toArray
+      //val invArray = Inventory.containers.toArray
+      clearScene()
 
-    // Add evety item to invArray
-    for (i <- invArray.indices) {
-      if (!invArray(i)._2.hiddenContainer) {
-        // Not hidden. Add to the list
-        val icon = invArray(i)._2.icon.get
-        val count = invArray(i)._2.size
-        val name = invArray(i)._2.name.get
+      // Add evety item to invArray
+      for (i <- invArray.indices) {
+        if (!invArray(i)._2.hiddenContainer) {
+          // Not hidden. Add to the list
+          val icon = invArray(i)._2.icon.get
+          val count = invArray(i)._2.size
+          val name = invArray(i)._2.name.get
 
-        var img = Factory2D.createImage(ResourceManager.images(icon))
-        var imgSpat = img.getComponent(SpatialComponent.id)
-        imgSpat.get.position = Vec3(iconCoords(i).x + iconPlaceFix.x,
-          iconCoords(i).y + iconPlaceFix.y, 0.0f)
+          var img = Factory2D.createImage(ResourceManager.images(icon))
+          var imgSpat = img.getComponent(SpatialComponent.id)
+          imgSpat.get.position = Vec3(iconCoords(i).x + iconPlaceFix.x,
+            iconCoords(i).y + iconPlaceFix.y, 0.0f)
 
-        var textRect = new TextRect2D(new Rectangle2D(17, 2, true), name + ": " + count)
-        textRect.offX = 1
-        textRect.offY = 1
-        textRect.offMinusX = 1
-        textRect.offMinusY = 0
-        textRect.textWrap = true
-        textRect.centerText = true
+          var textRect = new TextRect2D(new Rectangle2D(17, 2, true), name + ": " + count)
+          textRect.offX = 1
+          textRect.offY = 1
+          textRect.offMinusX = 1
+          textRect.offMinusY = 0
+          textRect.textWrap = true
+          textRect.centerText = true
 
-        var text = Factory2D.createTextRectangle(textRect)
-        var textSpat = text.getComponent(SpatialComponent.id)
-        textSpat.get.position = Vec3(iconCoords(i).x + textPlaceFix.x,
-          iconCoords(i).y + textPlaceFix.y, 0.0f)
-        scene.addEntity(img)
-        scene.addEntity(text)
+          var text = Factory2D.createTextRectangle(textRect)
+          var textSpat = text.getComponent(SpatialComponent.id)
+          textSpat.get.position = Vec3(iconCoords(i).x + textPlaceFix.x,
+            iconCoords(i).y + textPlaceFix.y, 0.0f)
+          scene.addEntity(img)
+          scene.addEntity(text)
+        }
       }
-    }
 
-    textRect.text = Inventory.toString()
+      textRect.text = Inventory.toString()
+    }
   }
 
   def resume(): Unit = {
@@ -195,6 +200,9 @@ class InventoryScreen(parent: Adventure, rend: Renderer)
       if (inputMap.contains(eventKey)) {
         inputMap(eventKey)(delta)
       }
+    }
+    if (event.eventType == E_PLAYER_CREATION) {
+      player = Some(event.args(0).asInstanceOf[Entity])
     }
   }
 

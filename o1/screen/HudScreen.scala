@@ -25,7 +25,7 @@ class HudScreen(parent: Adventure, rend: Renderer)
   eventTypes = Vector[EventType](E_INPUT, E_PLAYER_CREATION)
 
   var paused = false
-  var hudInfoPlayer: Option[Entity] = None
+  var player: Option[Entity] = None
 
   val inputMap =
     Map[Tuple2[scala.swing.event.Key.Value, Int], (Float) => Unit](
@@ -88,10 +88,10 @@ class HudScreen(parent: Adventure, rend: Renderer)
 
   def update(delta: Double): Unit = {
     // update invetory icons
-    if (!paused && hudInfoPlayer.isDefined) {
+    if (!paused && player.isDefined) {
       EventManager.addEvent(new Event(Vector(69, 420,
-        hudInfoPlayer.get.getComponent(SpatialComponent.id).get.position,
-        hudInfoPlayer.get.getComponent(SpatialComponent.id).get.forward),
+        player.get.getComponent(SpatialComponent.id).get.position,
+        player.get.getComponent(SpatialComponent.id).get.forward),
         E_CHANGE_HUD_INFO))
     }
     handleEvents(delta.toFloat)
@@ -130,7 +130,7 @@ class HudScreen(parent: Adventure, rend: Renderer)
       }
     }
     if (event.eventType == E_PLAYER_CREATION) {
-      hudInfoPlayer = Some(event.args(0).asInstanceOf[Entity])
+      player = Some(event.args(0).asInstanceOf[Entity])
     }
   }
 
