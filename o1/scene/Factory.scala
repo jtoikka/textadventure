@@ -83,7 +83,7 @@ object Factory {
   }
 
   def createCoffee() = {
-    var cof = new Entity(Vector())
+    var cof = new Entity(Vector(EventType.E_COLLISION))
     var spatialComp = new SpatialComponent()
 
     cof.addComponent(spatialComp)
@@ -93,7 +93,19 @@ object Factory {
     var collisionComponent = new CollisionComponent(1.0f, CollisionComponent.CIRCLE)
     collisionComponent.isActive = false
     cof.addComponent(collisionComponent)
-
+    
+    cof.eventHandlers = scala.collection.immutable.Map(
+      (EventType.E_COLLISION, (event, delta) => {
+        val entityA = event.args(0).asInstanceOf[Entity]
+        val entityB = event.args(1).asInstanceOf[Entity]
+        val entBinventory = entityB.getComponent(InventoryComponent.id)
+  
+        if (entityA == cof && entBinventory.isDefined) {
+          println("page pickup")
+          entBinventory.get.inv.addItem(cof.getComponent(InventoryItemComponent.id).get.invItem)
+          cof.destroy = true
+        }
+    }))
     val invComponent = new InventoryItemComponent(Coffee())
 
     cof.addComponent(invComponent)
@@ -101,10 +113,10 @@ object Factory {
     cof.addComponent(renderComp)
     cof
   }
-  
+
   def createCoffeeBullet(position: Vec3, direction: Vec3) = {
     var cof = new Entity(Vector(EventType.E_COLLISION))
-    
+
     cof.description = "Coffee bullet"
     
     
@@ -119,16 +131,15 @@ object Factory {
           }
         }
     }))
-    
     var faceCamComp = new FaceCameraComponent()
     cof.addComponent(faceCamComp)
-    
+
     var spatialComp = new SpatialComponent()
     spatialComp.position = position
     spatialComp.position.y = 0.8f
 
     cof.addComponent(spatialComp)
-    
+
     val physicsComp = new PhysicsComponent(Vec3(direction.x, 0.2f, direction.z), Vec3(0.0f, -0.0981f, 0.0f))
     cof.addComponent(physicsComp)
 
@@ -137,10 +148,10 @@ object Factory {
     var collisionComponent = new CollisionComponent(0.1f, CollisionComponent.CIRCLE)
     collisionComponent.isActive = true
     cof.addComponent(collisionComponent)
-    
+
     var damageComp = new DamageComponent(1, DamageComponent.ENEMY)
     cof.addComponent(damageComp)
-    
+
     var breakableComp = new BreakableComponent()
     cof.addComponent(breakableComp)
 
@@ -183,7 +194,7 @@ object Factory {
     floor.addComponent(renderComp)
     floor
   }
-  
+
   // Switch for entity creation , mapSize: Vec2, blockSize: Int
   def createEntity(node: Node): Option[Entity] = {
     val typeName = (node \ "@type").text
@@ -207,12 +218,24 @@ object Factory {
     val loc = Vec2((node \ "@x").text.toFloat, (node \ "@y").text.toFloat)
     val size = (node \ "@width").text.toFloat
 
-    val entity = new Entity(Vector())
+    val entity = new Entity(Vector(EventType.E_COLLISION))
 
     val spatialComp = new SpatialComponent()
     spatialComp.position = Vec3((loc.x * 2) / 16, 0.5f, loc.y * 2 / 16)
     entity.addComponent(spatialComp)
-
+    
+    entity.eventHandlers = scala.collection.immutable.Map(
+      (EventType.E_COLLISION, (event, delta) => {
+        val entityA = event.args(0).asInstanceOf[Entity]
+        val entityB = event.args(1).asInstanceOf[Entity]
+        val entBinventory = entityB.getComponent(InventoryComponent.id)
+  
+        if (entityA == entity && entBinventory.isDefined) {
+          println("page pickup")
+          entBinventory.get.inv.addItem(entity.getComponent(InventoryItemComponent.id).get.invItem)
+          entity.destroy = true
+        }
+    }))
     val invComponent = new InventoryItemComponent(Coffee())
     entity.addComponent(invComponent)
 
@@ -227,12 +250,25 @@ object Factory {
 
   def createPage(node: Node) = {
     // TODO: Fix magic size and location conversion
-    val name = "Pages"//(node \ "@name").text
+    val name = "Pages" //(node \ "@name").text
     val typeName = (node \ "@name").text
     val loc = Vec2((node \ "@x").text.toFloat, (node \ "@y").text.toFloat)
     val size = (node \ "@width").text.toFloat
 
-    val entity = new Entity(Vector())
+    val entity = new Entity(Vector(EventType.E_COLLISION))
+    
+    entity.eventHandlers = scala.collection.immutable.Map(
+      (EventType.E_COLLISION, (event, delta) => {
+        val entityA = event.args(0).asInstanceOf[Entity]
+        val entityB = event.args(1).asInstanceOf[Entity]
+        val entBinventory = entityB.getComponent(InventoryComponent.id)
+  
+        if (entityA == entity && entBinventory.isDefined) {
+          println("page pickup")
+          entBinventory.get.inv.addItem(entity.getComponent(InventoryItemComponent.id).get.invItem)
+          entity.destroy = true
+        }
+    }))
 
     val spatialComp = new SpatialComponent()
     spatialComp.position = Vec3(loc.x * 2 / 16, 0.5f, loc.y * 2 / 16)
@@ -243,10 +279,10 @@ object Factory {
 
     var renderComp = new RenderComponent("page")
     entity.addComponent(renderComp)
-    
+
     var faceCameraComp = new FaceCameraComponent()
     entity.addComponent(faceCameraComp)
-    
+
     // TODO: Fix magic size conversion
     var collisionComponent = new CollisionComponent(size / 16, CollisionComponent.CIRCLE)
     collisionComponent.isActive = false
@@ -262,18 +298,18 @@ object Factory {
     val size = (node \ "@width").text.toFloat
 
     val entity = new Entity(Vector())
-    
+
     entity.description = "Monkey"
-    
-//    entity.eventHandle = (event, delta) => {
-//      val entityA = event.args(0).asInstanceOf[Entity]
-//      val entityB = event.args(1).asInstanceOf[Entity]
-//      if (entityA == entity && !entityB.destroy) {
-//        if (entityB.getComponent(BreakableComponent.id).isDefined) {
-//          entityB.destroy = true
-//        }
-//      }
-//    }
+
+    //    entity.eventHandle = (event, delta) => {
+    //      val entityA = event.args(0).asInstanceOf[Entity]
+    //      val entityB = event.args(1).asInstanceOf[Entity]
+    //      if (entityA == entity && !entityB.destroy) {
+    //        if (entityB.getComponent(BreakableComponent.id).isDefined) {
+    //          entityB.destroy = true
+    //        }
+    //      }
+    //    }
 
     val spatialComp = new SpatialComponent()
     spatialComp.position = Vec3(loc.x * 2 / 16, 0.5f, loc.y * 2 / 16)
@@ -281,25 +317,25 @@ object Factory {
 
     var renderComp = new RenderComponent("monkey")
     entity.addComponent(renderComp)
-    
+
     var faceCameraComp = new FaceCameraComponent()
-    entity.addComponent(faceCameraComp)  
+    entity.addComponent(faceCameraComp)
 
     var collisionComponent = new CollisionComponent(
-        size / 16, CollisionComponent.SQUARE, 
-        halfWidth = 1.0f, halfHeight = 3.0f)
+      size / 16, CollisionComponent.SQUARE,
+      halfWidth = 1.0f, halfHeight = 3.0f)
     entity.addComponent(collisionComponent)
     entity
   }
-  
+
   def createVerticalDoor(node: Node) = {
     // TODO: Fix magic size and location conversion
     val name = (node \ "@name").text
     val typeName = (node \ "@name").text
     val loc = Vec2((node \ "@x").text.toFloat, (node \ "@y").text.toFloat)
-    val w = (node \ "@width").text.toFloat/8
-    val h = (node \ "@height").text.toFloat/8
-    
+    val w = (node \ "@width").text.toFloat / 8
+    val h = (node \ "@height").text.toFloat / 8
+
     val entity = new Entity(Vector())
 
     val spatialComp = new SpatialComponent()
@@ -308,15 +344,15 @@ object Factory {
 
     var renderComp = new RenderComponent("verticaldoor")
     entity.addComponent(renderComp)
-    
+
     var collisionComponent = new CollisionComponent(
-        w / 16, CollisionComponent.SQUARE, 
-        halfWidth = w/2, halfHeight = h/2)
-    println(w/2 + ", " + h/2)
+      w / 16, CollisionComponent.SQUARE,
+      halfWidth = w / 2, halfHeight = h / 2)
+    println(w / 2 + ", " + h / 2)
     entity.addComponent(collisionComponent)
     entity
   }
-  
+
   def createTestEnemy(node: Node) = {
     // TODO: Fix magic size and location conversion
     val name = (node \ "@name").text
@@ -351,16 +387,16 @@ object Factory {
 
     val renderComp = new RenderComponent("test_enemy", Some("test_enemy_tex"))
     entity.addComponent(renderComp)
-    
+
     val faceCameraComp = new FaceCameraComponent()
     entity.addComponent(faceCameraComp)
-    
+
     val AIComponent = new AIComponent("lovebot")
     entity.addComponent(AIComponent)
-    
+
     val damageComp = new DamageComponent(2, DamageComponent.PLAYER)
     entity.addComponent(damageComp)
-    
+
     val healthComp = new HealthComponent(4)
     entity.addComponent(healthComp)
 
@@ -368,43 +404,58 @@ object Factory {
     entity.addComponent(collisionComponent)
     entity
   }
-  
+
   def createRupee(node: Node) = {
     val name = (node \ "@name").text
     val typeName = (node \ "@name").text
     val loc = Vec2((node \ "@x").text.toFloat, (node \ "@y").text.toFloat)
     val size = (node \ "@width").text.toFloat
-    
-    val entity = new Entity(Vector())
-    
+
+    val entity = new Entity(Vector(EventType.E_COLLISION))
+
     val renderComp = new RenderComponent("rupee")
     entity.addComponent(renderComp)
-
+    
+    entity.eventHandlers = scala.collection.immutable.Map(
+      (EventType.E_COLLISION, (event, delta) => {
+        val entityA = event.args(0).asInstanceOf[Entity]
+        val entityB = event.args(1).asInstanceOf[Entity]
+        val entBinventory = entityB.getComponent(InventoryComponent.id)
+  
+        if (entityA == entity && entBinventory.isDefined) {
+          println("page pickup")
+          entBinventory.get.inv.addItem(entity.getComponent(InventoryItemComponent.id).get.invItem)
+          entity.destroy = true
+        }
+    }))
+    
     val spatialComp = new SpatialComponent()
     spatialComp.position = Vec3(loc.x * 2 / 16, 0.3f, loc.y * 2 / 16)
     spatialComp.scale = Vec3(0.5f, 0.5f, 0.5f)
     entity.addComponent(spatialComp)
-    
+
     val collisionComponent = new CollisionComponent(0.1f, CollisionComponent.CIRCLE)
     entity.addComponent(collisionComponent)
-    
+
     val rotateComponent = new RotateComponent(-0.2f)
     entity.addComponent(rotateComponent)
-    
+
     entity
   }
-  
+
   def createPlayer(node: Node) = {
     val name = (node \ "@name").text
     val typeName = (node \ "@name").text
     val loc = Vec2((node \ "@x").text.toFloat, (node \ "@y").text.toFloat)
     val size = (node \ "@width").text.toFloat
-    
+
     val player = new Entity(Vector())
 
     val spatialComp = new SpatialComponent()
     spatialComp.position = Vec3(loc.x * 2 / 16, 1.2f, loc.y * 2 / 16)
     player.addComponent(spatialComp)
+
+    player.addComponent(new InventoryComponent())
 
     val collisionComponent = new CollisionComponent(0.3f, CollisionComponent.CIRCLE)
     player.addComponent(collisionComponent)
