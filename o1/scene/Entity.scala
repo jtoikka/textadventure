@@ -15,13 +15,8 @@ import o1.event.EventManager
  * game-world, and information about its physical characteristics; the game's
  * renderer can use these to create a visual representation of the entity.
  */
-class Entity(listenerEventTypes: Vector[EventType.EventType]) extends Listener {
-  
-  eventTypes = listenerEventTypes
-  
-  var eventHandle: (Event, Float) => Unit = (event, delta) => Unit
-  
-  val components = Map[Class[_ <: Component], Component]()
+class Entity(listenerEventTypes: Vector[EventType.EventType]) extends Listener {  
+    val components = Map[Class[_ <: Component], Component]()
   var destroy = false
   
   val children =  MutableList[Entity]()
@@ -41,10 +36,6 @@ class Entity(listenerEventTypes: Vector[EventType.EventType]) extends Listener {
   
   def addChild(entity: Entity) = {
     children += entity
-  }
-  
-  def handleEvent(event: Event, delta: Float) = {
-    eventHandle(event, delta)
   }
   
   def dispose = {

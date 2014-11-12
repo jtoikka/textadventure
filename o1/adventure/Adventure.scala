@@ -26,7 +26,6 @@ import o1.screen.menu.HelpMenuScreen
  * games, you will need to modify or replace the source code of this class.
  */
 class Adventure() extends Listener {
-  eventTypes = Vector(E_INPUT, E_CHANGE_SCREEN)
   /** The title of the adventure game. */
   var title = "A Forest Adventure"
 
@@ -125,20 +124,19 @@ class Adventure() extends Listener {
       ((Key.N, Input.KEYRELEASED), (delta) => {
         changeScreen(screens("testScreen2D"))
       }))
-
-  /** Handles [event]. Takes time since last update as parameter [delta]. */
-  def handleEvent(event: Event, delta: Float) {
-    if (event.eventType == EventType.E_INPUT) {
+  
+  eventHandlers = scala.collection.immutable.Map(
+    (E_INPUT, (event, delta) => {
       val eventKey =
         event.args(0).asInstanceOf[Tuple2[scala.swing.event.Key.Value, Int]]
       if (inputMap.contains(eventKey)) {
         inputMap(eventKey)(delta)
       }
-    } else if (event.eventType == EventType.E_CHANGE_SCREEN) {
+    }),
+    (E_CHANGE_SCREEN, (event, delta) => {
       val a = event.args(0).asInstanceOf[String]
       changeScreen(a)
-    }
-  }
+  }))
 
   /**
    * Used to change current screen

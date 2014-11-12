@@ -107,16 +107,18 @@ object Factory {
     
     cof.description = "Coffee bullet"
     
-    cof.eventHandle = (event, delta) => {
-      val entityA = event.args(0).asInstanceOf[Entity]
-      val entityB = event.args(1).asInstanceOf[Entity]
-      
-      if (entityA == cof) {
-        if (entityB.getComponent(DamageComponent.id).isDefined) {
-          cof.destroy = true
+    
+    cof.eventHandlers = scala.collection.immutable.Map(
+      (EventType.E_COLLISION, (event, delta) => {
+        val entityA = event.args(0).asInstanceOf[Entity]
+        val entityB = event.args(1).asInstanceOf[Entity]
+        
+        if (entityA == cof) {
+          if (entityB.getComponent(DamageComponent.id).isDefined) {
+            cof.destroy = true
+          }
         }
-      }
-    } 
+    }))
     
     var faceCamComp = new FaceCameraComponent()
     cof.addComponent(faceCamComp)
@@ -324,23 +326,24 @@ object Factory {
 
     val entity: Entity = new Entity(Vector(EventType.E_COLLISION))
     
-    entity.eventHandle = (event, delta) => {
-      val entityA = event.args(0).asInstanceOf[Entity]
-      val entityB = event.args(1).asInstanceOf[Entity]
-      if (entityA == entity && !entityB.destroy) {
-        val damageComponent = entityB.getComponent(DamageComponent.id)
-        if (damageComponent.isDefined && damageComponent.get.canDamage == DamageComponent.ENEMY) {
-          val healthComp = entity.getComponent(HealthComponent.id).get
-          healthComp.hp -= 1
-          if (healthComp.hp <= 0) {
-            entity.destroy = true
-          }
-          if (entityB.getComponent(BreakableComponent.id).isDefined) {
-            entityB.destroy = true
+    entity.eventHandlers = scala.collection.immutable.Map(
+      (EventType.E_COLLISION, (event, delta) => {
+        val entityA = event.args(0).asInstanceOf[Entity]
+        val entityB = event.args(1).asInstanceOf[Entity]
+        if (entityA == entity && !entityB.destroy) {
+          val damageComponent = entityB.getComponent(DamageComponent.id)
+          if (damageComponent.isDefined && damageComponent.get.canDamage == DamageComponent.ENEMY) {
+            val healthComp = entity.getComponent(HealthComponent.id).get
+            healthComp.hp -= 1
+            if (healthComp.hp <= 0) {
+              entity.destroy = true
+            }
+            if (entityB.getComponent(BreakableComponent.id).isDefined) {
+              entityB.destroy = true
+            }
           }
         }
-      }
-    } 
+    }))
 
     val spatialComp = new SpatialComponent()
     spatialComp.position = Vec3(loc.x * 2 / 16, 1.0f, loc.y * 2 / 16)
@@ -405,7 +408,7 @@ object Factory {
 
     val collisionComponent = new CollisionComponent(0.3f, CollisionComponent.CIRCLE)
     player.addComponent(collisionComponent)
-
+    
     val inputComponent = new InputComponent()
     player.addComponent(inputComponent)
     EventManager.addEvent(new Event(Vector(player), EventType.E_PLAYER_CREATION))

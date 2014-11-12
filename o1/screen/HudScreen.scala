@@ -22,7 +22,6 @@ import o1.inventory.ItemContainer
 
 class HudScreen(parent: Adventure, rend: Renderer)
     extends Screen(parent, rend) {
-  eventTypes = Vector[EventType](E_INPUT, E_PLAYER_CREATION)
 
   var paused = false
   var hudInfoPlayer: Option[Entity] = None
@@ -67,8 +66,9 @@ class HudScreen(parent: Adventure, rend: Renderer)
         new Rectangle2D(50, 3, true)))
     var infoSpatial = mainInfoBox.getComponent(SpatialComponent.id)
     infoSpatial.get.position = Vec3(0f, 0f, 0f)
-    mainInfoBox.eventTypes = Vector(E_CHANGE_HUD_INFO)
-    mainInfoBox.eventHandle = (event, delta) => {
+    
+    mainInfoBox.eventHandlers = scala.collection.immutable.Map(
+    (E_CHANGE_HUD_INFO, (event, delta) => {
       val playerHP = event.args(0).asInstanceOf[Int]
       val playerMana = event.args(1).asInstanceOf[Int]
       val playerLoc = event.args(2).asInstanceOf[Vec3]
@@ -76,7 +76,7 @@ class HudScreen(parent: Adventure, rend: Renderer)
       val box = ResourceManager.shapes(mainInfoBox.getComponent(RenderComponent2D.id).get.shape)
       box.asInstanceOf[TextRect2D].text = "Location: " + playerLoc +
         "\nHeading: " + playerHeading
-    }
+    }))
 
     scene.addEntity(mainInfoBox)
   }
@@ -120,19 +120,18 @@ class HudScreen(parent: Adventure, rend: Renderer)
   def pause() {
     paused = true
   }
-
-  def handleEvent(event: Event, delta: Float) = {
-    if (event.eventType == E_INPUT) {
+  
+  eventHandlers = scala.collection.immutable.Map(
+    (E_INPUT, (event, delta) => {
       val eventKey =
         event.args(0).asInstanceOf[Tuple2[scala.swing.event.Key.Value, Int]]
       if (inputMap.contains(eventKey)) {
         inputMap(eventKey)(delta)
       }
-    }
-    if (event.eventType == E_PLAYER_CREATION) {
+    }),
+    (E_PLAYER_CREATION, (event, delta) => {
       hudInfoPlayer = Some(event.args(0).asInstanceOf[Entity])
-    }
-  }
+  }))
 
   def dispose() = {
 

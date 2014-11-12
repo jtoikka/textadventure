@@ -18,8 +18,6 @@ import scala.Vector
 
 class MainMenuScreen(parent: Adventure, rend: Renderer)
     extends Screen(parent, rend) {
-  eventTypes = Vector[EventType](E_INPUT, E_DIALOG, E_CHANGE_SCENE)
-
   def this(parent: Adventure, x: Int, y: Int) = this(parent, new Renderer2D(x, y))
 
   var scenes = Map[String, SceneUI]()
@@ -140,24 +138,20 @@ class MainMenuScreen(parent: Adventure, rend: Renderer)
   def pause() {
 
   }
-
-  def handleEvent(event: Event, delta: Float) = {
-    if (event.eventType == E_INPUT) {
+  
+  eventHandlers = scala.collection.immutable.Map(
+    (E_INPUT, (event, delta) => {
       val eventKey = event.args(0).asInstanceOf[Tuple2[scala.swing.event.Key.Value, Int]]
       if (inputMap.contains(eventKey)) {
         inputMap(eventKey)(delta)
       }
-    }
-    if (event.eventType == E_DIALOG) {
-      //parent.changeScreen(parent.screens("gameScreen"))
-    }
-    if (event.eventType == E_CHANGE_SCENE) {
+    }),
+    (E_CHANGE_SCENE, (event, delta) => {
       val e0 = event.args(0)
       if (e0.isInstanceOf[String] && scenes.contains(e0.asInstanceOf[String])) {
         changeScene(scenes(e0.asInstanceOf[String]))
       }
-    }
-  }
+  }))
 
   def changeScene(scene: SceneUI) = {
     activeScene = Some(scene)
