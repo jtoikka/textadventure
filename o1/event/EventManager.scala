@@ -1,7 +1,7 @@
 package o1.event
 import scala.collection.mutable.Buffer
 
-object EventType extends Enumeration{
+object EventType extends Enumeration {
   type EventType = Value
   val E_COLLISION,
       E_INPUT,
@@ -12,6 +12,7 @@ object EventType extends Enumeration{
       E_GAME_UPDATE, 
       E_CHANGE_MAP,
       E_CHANGE_HUD_INFO,
+      E_TEST,
       E_PLAYER_CREATION,
       E_SYSTEM_EXIT = Value
 }
