@@ -1,10 +1,10 @@
 package o1.scene
 
 import o1.math._
-
 import scala.collection.mutable.Buffer
 import o1.inventory.Item
 import o1.event._
+import o1.inventory.Inventory
 
 /**
  * Components make up the data of an entity.
@@ -153,4 +153,12 @@ object RotateComponent {
 
 case class RotateComponent(val rate: Float) extends Component {
   
+}
+
+object InventoryComponent {
+  val id = classOf[InventoryComponent]
+}
+
+case class InventoryComponent() extends Component {
+  val inv = new Inventory()
 }

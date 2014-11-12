@@ -248,15 +248,5 @@ object CollisionCheck {
         }
       }
     }
-
-    val invComp = other.getComponent(InventoryItemComponent.id)
-    if (invComp.isDefined) {
-      if (!other.destroy) {
-        val picked = Inventory.addItem(invComp.get.invItem)
-        if (picked) {
-          other.destroy = true
-        }
-      }
-    }
   }
 }
