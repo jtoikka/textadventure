@@ -97,7 +97,6 @@ class DialogScreen(parent: Adventure, rend: Renderer)
         new Rectangle2D(50, 3, true)))
     var infoSpatial = mainInfoBox.getComponent(SpatialComponent.id)
     infoSpatial.get.position = Vec3(10f, 10f, 0f)
-
     //    scene.addEntity(mainInfoBox)
   }
   init()
