@@ -183,10 +183,10 @@ class GameScreen(parent: Adventure, rend: Renderer)
       }
     }),
     (E_ANSWER_DIALOG, (event, delta) => {
-//      if (event.args(0) == this) {
-        println("HashCode match: " + event.args(1) +":"+this.hashCode())
-        println("dialog says: \"" + event.args(0) + "\"")
-//      }
+      //      if (event.args(0) == this) {
+      println("HashCode match: " + event.args(1) + ":" + this.hashCode())
+      println("dialog says: \"" + event.args(0) + "\"")
+      //      }
     }))
 
   val SPEED = 0.30f
@@ -198,6 +198,11 @@ class GameScreen(parent: Adventure, rend: Renderer)
       }),
       ((Key.Escape, Input.KEYRELEASED), (delta) => {
         EventManager.addEvent(new Event(Vector("menuScreen"), E_CHANGE_SCREEN))
+        val d = Factory.createDialog(Vector(
+          ("Yes", new Event(Vector("mainMenuScreen"), E_CHANGE_SCREEN)),
+          ("No", new Event(Vector("TokaValinta", this.hashCode()), E_ANSWER_DIALOG))),
+          "sdsdfsdf", this, 30, 10)
+        EventManager.addEvent(new Event(Vector(d, this.hashCode()), E_THROW_DIALOG))
       }),
       ((Key.I, Input.KEYRELEASED), (delta) => {
         EventManager.addEvent(new Event(Vector("inventoryScreen"), E_CHANGE_SCREEN))
@@ -207,17 +212,12 @@ class GameScreen(parent: Adventure, rend: Renderer)
         EventManager.addEvent(new Event(Vector("helpMenuScreen"), E_TEST))
       }),
       ((Key.M, Input.KEYRELEASED), (delta) => {
-        var dialogOptions: Array[Tuple2[String, Event]] = Array[Tuple2[String, Event]](
+        val d = Factory.createDialog(Vector(
           ("First Choice", new Event(Vector("EkaValinta", this.hashCode()), E_ANSWER_DIALOG)),
-          ("Second Choice", new Event(Vector("TokaValinta", this.hashCode()), E_ANSWER_DIALOG)))
+          ("Second Choice", new Event(Vector("TokaValinta", this.hashCode()), E_ANSWER_DIALOG))),
+          "sdsdfsdf", this, 20, 10)
+        EventManager.addEvent(new Event(Vector(d, this.hashCode()), E_THROW_DIALOG))
 
-        var dialog = new Dialog(this,
-          new Rectangle2D(26, 10, true),
-          "-" * 10 + "\nTest Dialog\n" + "-" * 10,
-          dialogOptions)
-        val e = new Event(Vector(dialog,this.hashCode()),E_THROW_DIALOG)
-        EventManager.addEvent(e)
-        
       }),
       ((Key.W, Input.KEYDOWN), (delta) => {
         movementMap(FORWARD) = SPEED * delta
