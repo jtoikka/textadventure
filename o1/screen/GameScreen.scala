@@ -117,7 +117,6 @@ class GameScreen(parent: Adventure, rend: Renderer)
   def traceFront() = {
     val camSpatial = scene.camera.get.getComponent(SpatialComponent.id).get
     val forward = camSpatial.forward.neg
-    //    forward.x *=  -1
     val inFront = RayTrace.trace(
       camSpatial.position.neg,
       forward.normalize(),

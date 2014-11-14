@@ -13,6 +13,7 @@ object EventType extends Enumeration {
       E_CHANGE_MAP,
       E_CHANGE_HUD_INFO,
       E_TEST,
+      E_LOOKING_AT,
       E_PLAYER_CREATION,
       E_THROW_DIALOG,
       E_ANSWER_DIALOG,
