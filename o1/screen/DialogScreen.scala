@@ -41,7 +41,7 @@ class DialogScreen(parent: Adventure, rend: Renderer)
       val dialog = event.args(0).asInstanceOf[Dialog]
       var rectEnt = Factory2D.createTextRectangle(dialog)
       var testRectSpatial = rectEnt.getComponent(SpatialComponent.id)
-      testRectSpatial.get.position = Vec3(rend.w / 2 - dialog.w / 2, 25, 0.0f)
+      testRectSpatial.get.position = Vec3(rend.w / 2 - dialog.w / 2, rend.h / 2 - dialog.h / 2, 0.0f)
       scene.addEntity(rectEnt)
 
       currentDialog = Some(dialog)
