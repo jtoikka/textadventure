@@ -114,17 +114,25 @@ class GameScreen(parent: Adventure, rend: Renderer)
     }
   }
 
+  var prevFrontEntity: Option[Entity] = None
+  
   def traceFront() = {
     val camSpatial = scene.camera.get.getComponent(SpatialComponent.id).get
     val forward = camSpatial.forward.neg
-    val inFront = RayTrace.trace(
+    val traced = RayTrace.trace(
       camSpatial.position.neg,
       forward.normalize(),
       scene, 2.0f, 40,
       (entity) => entity.getComponent(InputComponent.id).isEmpty)
-    if (inFront.isDefined) {
-      println(inFront.get)
-    }
+    val inFront = traced._1
+//    if (inFront.isDefined) {
+      if (inFront != prevFrontEntity) {
+        prevFrontEntity = inFront
+        EventManager.addEvent(new Event(Vector(inFront, traced._2), E_LOOKING_AT))
+      }
+//    } else {
+//      if 
+//    }
   }
 
   def handleAI(entity: Entity, delta: Double) = {

@@ -23,7 +23,7 @@ object RayTrace {
   def trace(
       start: Vec3, direction: Vec3,
       scene: Scene, 
-      distance: Float, maxSteps: Int, filter: (Entity) => Boolean): Option[Entity] = {
+      distance: Float, maxSteps: Int, filter: (Entity) => Boolean): (Option[Entity], Float) = {
     val step = distance / maxSteps
     val bullet = createBullet(start)
     val spatial = bullet.getComponent(SpatialComponent.id).get
@@ -31,15 +31,15 @@ object RayTrace {
     var steps = 0
     while (steps < maxSteps) {
       if (CollisionCheck.findWorldCollision(bullet, 0.15f, scene.world.get)) {
-        return None
+        return (None, (start - spatial.position).length())
       }
       val entity = CollisionCheck.findEntityCollision(bullet, scene.entities.toVector, filter)
       if (entity.isDefined) {
-        return entity
+        return (entity, (start - spatial.position).length())
       }
       spatial.position += direction * step
       steps += 1
     }
-    None
+    (None, 0)
   }
 }

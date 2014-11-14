@@ -76,6 +76,7 @@ object EventManager {
   }
 
   def addEvent(event: Event) = {
+    if (event.eventType == E_LOOKING_AT) println(event.args(0) + " dist: " + event.args(1))
     events += event
   }
   def setActiveInputListener(listener: Listener) {
