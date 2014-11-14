@@ -204,11 +204,11 @@ class GameScreen(parent: Adventure, rend: Renderer)
 
       }),
       ((Key.Escape, Input.KEYRELEASED), (delta) => {
-        EventManager.addEvent(new Event(Vector("menuScreen"), E_CHANGE_SCREEN))
+//        EventManager.addEvent(new Event(Vector("menuScreen"), E_CHANGE_SCREEN))
         val d = Factory.createDialog(Vector(
-          ("Yes", new Event(Vector("mainMenuScreen"), E_CHANGE_SCREEN)),
+          ("Yes", new Event(Vector("menuScreen"), E_CHANGE_SCREEN)),
           ("No", new Event(Vector("TokaValinta", this.hashCode()), E_ANSWER_DIALOG))),
-          "sdsdfsdf", this, 30, 10)
+          "Are you sure?", this, 30, 10)
         EventManager.addEvent(new Event(Vector(d, this.hashCode()), E_THROW_DIALOG))
       }),
       ((Key.I, Input.KEYRELEASED), (delta) => {
