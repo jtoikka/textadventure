@@ -11,7 +11,7 @@ class Dialog(
     parent: Listener, 
     rect: Rectangle2D, 
     val dialogText: String, 
-    val options: Array[Tuple2[String, Event]])
+    val options: Vector[Tuple2[String, Event]])
   extends TextRect2D(rect) with Listener {
     
   this.centerText = true
