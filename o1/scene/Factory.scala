@@ -493,7 +493,7 @@ object Factory {
 
     var dialog = new Dialog(parent,
       new Rectangle2D(w, h, true),text,
-      dialogOptions)
+      options)
     dialog
   }
 }
