@@ -342,7 +342,7 @@ object Factory {
     val h = (node \ "@height").text.toFloat / 8
 
     val entity = new Entity()
-
+    
     entity.description = "door"
 
     val spatialComp = new SpatialComponent()
@@ -357,6 +357,7 @@ object Factory {
       halfWidth = w / 2, halfHeight = h / 2)
     println(w / 2 + ", " + h / 2)
     entity.addComponent(collisionComponent)
+    
     entity
   }
 
