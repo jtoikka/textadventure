@@ -23,7 +23,7 @@ class MainMenuScreen(parent: Adventure, rend: Renderer)
   var scenes = Map[String, SceneUI]()
   var activeScene: Option[SceneUI] = None
 
-  var dialogOptions: Array[Tuple2[String, Event]] = Array[Tuple2[String, Event]](
+  var dialogOptions: Vector[Tuple2[String, Event]] = Vector[Tuple2[String, Event]](
     ("Play Game", new Event(Vector("gameScreen"), E_CHANGE_SCREEN)),
     ("Help", new Event(Vector("helpMenuScreen"), E_CHANGE_SCREEN)),
     ("Options", new Event(Vector("optionsMenu", this), E_CHANGE_SCENE)),

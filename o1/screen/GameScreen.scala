@@ -215,7 +215,7 @@ class GameScreen(parent: Adventure, rend: Renderer)
         val d = Factory.createDialog(Vector(
           ("First Choice", new Event(Vector("EkaValinta", this.hashCode()), E_ANSWER_DIALOG)),
           ("Second Choice", new Event(Vector("TokaValinta", this.hashCode()), E_ANSWER_DIALOG))),
-          "sdsdfsdf", this, 20, 10)
+          "sdsdfsdf", this, 40, 10)
         EventManager.addEvent(new Event(Vector(d, this.hashCode()), E_THROW_DIALOG))
 
       }),
