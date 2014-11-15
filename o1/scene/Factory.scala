@@ -21,19 +21,19 @@ import o1.inventory.Rupee
 
 object Factory {
 
-  def createPlayer() = {
-    var player = new Entity()
-
-    var spatialComp = new SpatialComponent()
-    player.addComponent(spatialComp)
-
-    var collisionComponent = new CollisionComponent(0.6f, CollisionComponent.CIRCLE)
-    player.addComponent(collisionComponent)
-
-    var inputComponent = new InputComponent()
-    player.addComponent(inputComponent)
-    player
-  }
+//  def createPlayer() = {
+//    var player = new Entity()
+//
+//    var spatialComp = new SpatialComponent()
+//    player.addComponent(spatialComp)
+//
+//    var collisionComponent = new CollisionComponent(0.6f, CollisionComponent.CIRCLE)
+//    player.addComponent(collisionComponent)
+//
+//    var inputComponent = new InputComponent()
+//    player.addComponent(inputComponent)
+//    player
+//  }
 
   def createCamera(followEntity: Entity) = {
     var camera = new Entity()
@@ -46,46 +46,79 @@ object Factory {
 
     camera
   }
+//  def createSphere() = {
+//    var sphere = new Entity()
+//    var spatialComp = new SpatialComponent()
+//
+//    sphere.addComponent(spatialComp)
+//
+//    var renderComp = new RenderComponent("sphere")
+//
+//    sphere.addComponent(renderComp)
+//    sphere
+//  }
 
-  def createSphere() = {
-    var sphere = new Entity()
+//  def createCube() = {
+//    var sphere = new Entity()
+//    var spatialComp = new SpatialComponent()
+//
+//    sphere.addComponent(spatialComp)
+//
+//    var renderComp = new RenderComponent("cube")
+//
+//    sphere.addComponent(renderComp)
+//    sphere
+//  }
+
+//  def createMonkey() = {
+//    var monkey = new Entity()
+//    var spatialComp = new SpatialComponent()
+//
+//    monkey.addComponent(spatialComp)
+//
+//    var renderComp = new RenderComponent("monkey")
+//
+//    var collisionComponent = new CollisionComponent(1.0f, CollisionComponent.CIRCLE)
+//    monkey.addComponent(collisionComponent)
+//
+//    monkey.addComponent(renderComp)
+//    monkey
+//  }
+
+  def createCoffee() = {
+    var cof = new Entity()
     var spatialComp = new SpatialComponent()
 
-    sphere.addComponent(spatialComp)
+    cof.description = "Coffee"
 
-    var renderComp = new RenderComponent("sphere")
+    cof.addComponent(spatialComp)
 
-    sphere.addComponent(renderComp)
-    sphere
-  }
-
-  def createCube() = {
-    var sphere = new Entity()
-    var spatialComp = new SpatialComponent()
-
-    sphere.addComponent(spatialComp)
-
-    var renderComp = new RenderComponent("cube")
-
-    sphere.addComponent(renderComp)
-    sphere
-  }
-
-  def createMonkey() = {
-    var monkey = new Entity()
-    var spatialComp = new SpatialComponent()
-
-    monkey.addComponent(spatialComp)
-
-    var renderComp = new RenderComponent("monkey")
+    var renderComp = new RenderComponent("coffee")
 
     var collisionComponent = new CollisionComponent(1.0f, CollisionComponent.CIRCLE)
-    monkey.addComponent(collisionComponent)
+    collisionComponent.isActive = false
+    cof.addComponent(collisionComponent)
 
-    monkey.addComponent(renderComp)
-    monkey
+    cof.eventHandlers = scala.collection.immutable.Map(
+      (EventType.E_COLLISION, (event, delta) => {
+        val entityA = event.args(0).asInstanceOf[Entity]
+        val entityB = event.args(1).asInstanceOf[Entity]
+        val entBinventory = entityB.getComponent(InventoryComponent.id)
+
+        if (entityA == cof && entBinventory.isDefined) {
+          println("page pickup")
+          entBinventory.get.inv.addItem(cof.getComponent(InventoryItemComponent.id).get.invItem)
+          cof.destroy = true
+        }
+      }))
+    val invComponent = new InventoryItemComponent(Coffee())
+
+    cof.addComponent(invComponent)
+
+    cof.addComponent(renderComp)
+    cof
   }
-  
+
   def createCoffeeBullet(position: Vec3, direction: Vec3) = {
     var cof = new Entity()
 
@@ -133,29 +166,29 @@ object Factory {
     cof
   }
 
-  def createPlate() = {
-    var monkey = new Entity()
-    var spatialComp = new SpatialComponent()
+//  def createPlate() = {
+//    var monkey = new Entity()
+//    var spatialComp = new SpatialComponent()
+//
+//    monkey.addComponent(spatialComp)
+//
+//    var renderComp = new RenderComponent("plate")
+//
+//    monkey.addComponent(renderComp)
+//    monkey
+//  }
 
-    monkey.addComponent(spatialComp)
-
-    var renderComp = new RenderComponent("plate")
-
-    monkey.addComponent(renderComp)
-    monkey
-  }
-
-  def createLevel() = {
-    var monkey = new Entity()
-    var spatialComp = new SpatialComponent()
-
-    monkey.addComponent(spatialComp)
-
-    var renderComp = new RenderComponent("testMap")
-
-    monkey.addComponent(renderComp)
-    monkey
-  }
+//  def createLevel() = {
+//    var monkey = new Entity()
+//    var spatialComp = new SpatialComponent()
+//
+//    monkey.addComponent(spatialComp)
+//
+//    var renderComp = new RenderComponent("testMap")
+//
+//    monkey.addComponent(renderComp)
+//    monkey
+//  }
 
   def createFloor() = {
     var floor = new Entity()
@@ -308,8 +341,7 @@ object Factory {
     entity.addComponent(faceCameraComp)
 
     var collisionComponent = new CollisionComponent(
-      size / 16, CollisionComponent.SQUARE,
-      halfWidth = 1.0f, halfHeight = 3.0f)
+      size / 16, CollisionComponent.CIRCLE)
     entity.addComponent(collisionComponent)
     entity
   }
@@ -394,7 +426,7 @@ object Factory {
     val faceCameraComp = new FaceCameraComponent()
     entity.addComponent(faceCameraComp)
 
-    val AIComponent = new AIComponent("lovebot")
+    val AIComponent = new AIComponent("psychobot")
     entity.addComponent(AIComponent)
 
     val damageComp = new DamageComponent(2, DamageComponent.PLAYER)
@@ -469,11 +501,9 @@ object Factory {
     val size = (node \ "@width").text.toFloat
 
     val player = new Entity()
-    player.eventHandlers = scala.collection.immutable.Map(
-      (EventType.E_INTERACTION, (event, delta) => {
-//        val entityA = event.args(0).asInstanceOf[Option[Entity]]
-//        val entityB = event.args(1).asInstanceOf[Option[Entity]]
-      }))
+   
+    player.description = "player"
+
     val spatialComp = new SpatialComponent()
     spatialComp.position = Vec3(loc.x * 2 / 16, 1.2f, loc.y * 2 / 16)
     player.addComponent(spatialComp)
@@ -486,6 +516,9 @@ object Factory {
     val inputComponent = new InputComponent()
     player.addComponent(inputComponent)
     EventManager.addEvent(new Event(Vector(player), EventType.E_PLAYER_CREATION))
+
+    val playerComponent = new PlayerComponent()
+    player.addComponent(playerComponent)
 
     player
   }
