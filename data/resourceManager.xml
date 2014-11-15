@@ -4,6 +4,7 @@
 	<debug value="true"></debug>
 	<meshes>
 		<item name="sphere" path="data/meshes/sphere.obj"></item>
+		<item name="key" path="data/meshes/key.obj"></item>
 		<item name="monkey" path="data/meshes/monkey.obj">
 			<luminosity>0.6</luminosity>
 		</item>	
@@ -41,6 +42,7 @@
 		<item name="icon_scull" path="data/icons/icon_scull.png"></item>
 		<item name="icon_smile" path="data/icons/icon_smile.png"></item>
 		<item name="icon_cross" path="data/icons/icon_cross.png"></item>
+		<item name="icon_key" path="data/icons/icon_key.png"></item>
 	</images>
 	<textures>
 	    <item name="testTex" path="data/textures/W3d_protograywallshade1.png"></item>

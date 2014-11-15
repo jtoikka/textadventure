@@ -13,6 +13,7 @@ import o1.adventure.render2D.Dialog
 import o1.adventure.render2D.Rectangle2D
 import o1.event.Listener
 import o1.inventory.Rupee
+import o1.inventory.Key
 
 /**
  * The Factory object is a collection of functions that can be used to create
@@ -21,19 +22,19 @@ import o1.inventory.Rupee
 
 object Factory {
 
-//  def createPlayer() = {
-//    var player = new Entity()
-//
-//    var spatialComp = new SpatialComponent()
-//    player.addComponent(spatialComp)
-//
-//    var collisionComponent = new CollisionComponent(0.6f, CollisionComponent.CIRCLE)
-//    player.addComponent(collisionComponent)
-//
-//    var inputComponent = new InputComponent()
-//    player.addComponent(inputComponent)
-//    player
-//  }
+  //  def createPlayer() = {
+  //    var player = new Entity()
+  //
+  //    var spatialComp = new SpatialComponent()
+  //    player.addComponent(spatialComp)
+  //
+  //    var collisionComponent = new CollisionComponent(0.6f, CollisionComponent.CIRCLE)
+  //    player.addComponent(collisionComponent)
+  //
+  //    var inputComponent = new InputComponent()
+  //    player.addComponent(inputComponent)
+  //    player
+  //  }
 
   def createCamera(followEntity: Entity) = {
     var camera = new Entity()
@@ -46,44 +47,44 @@ object Factory {
 
     camera
   }
-//  def createSphere() = {
-//    var sphere = new Entity()
-//    var spatialComp = new SpatialComponent()
-//
-//    sphere.addComponent(spatialComp)
-//
-//    var renderComp = new RenderComponent("sphere")
-//
-//    sphere.addComponent(renderComp)
-//    sphere
-//  }
+  //  def createSphere() = {
+  //    var sphere = new Entity()
+  //    var spatialComp = new SpatialComponent()
+  //
+  //    sphere.addComponent(spatialComp)
+  //
+  //    var renderComp = new RenderComponent("sphere")
+  //
+  //    sphere.addComponent(renderComp)
+  //    sphere
+  //  }
 
-//  def createCube() = {
-//    var sphere = new Entity()
-//    var spatialComp = new SpatialComponent()
-//
-//    sphere.addComponent(spatialComp)
-//
-//    var renderComp = new RenderComponent("cube")
-//
-//    sphere.addComponent(renderComp)
-//    sphere
-//  }
+  //  def createCube() = {
+  //    var sphere = new Entity()
+  //    var spatialComp = new SpatialComponent()
+  //
+  //    sphere.addComponent(spatialComp)
+  //
+  //    var renderComp = new RenderComponent("cube")
+  //
+  //    sphere.addComponent(renderComp)
+  //    sphere
+  //  }
 
-//  def createMonkey() = {
-//    var monkey = new Entity()
-//    var spatialComp = new SpatialComponent()
-//
-//    monkey.addComponent(spatialComp)
-//
-//    var renderComp = new RenderComponent("monkey")
-//
-//    var collisionComponent = new CollisionComponent(1.0f, CollisionComponent.CIRCLE)
-//    monkey.addComponent(collisionComponent)
-//
-//    monkey.addComponent(renderComp)
-//    monkey
-//  }
+  //  def createMonkey() = {
+  //    var monkey = new Entity()
+  //    var spatialComp = new SpatialComponent()
+  //
+  //    monkey.addComponent(spatialComp)
+  //
+  //    var renderComp = new RenderComponent("monkey")
+  //
+  //    var collisionComponent = new CollisionComponent(1.0f, CollisionComponent.CIRCLE)
+  //    monkey.addComponent(collisionComponent)
+  //
+  //    monkey.addComponent(renderComp)
+  //    monkey
+  //  }
 
   def createCoffee() = {
     var cof = new Entity()
@@ -166,29 +167,29 @@ object Factory {
     cof
   }
 
-//  def createPlate() = {
-//    var monkey = new Entity()
-//    var spatialComp = new SpatialComponent()
-//
-//    monkey.addComponent(spatialComp)
-//
-//    var renderComp = new RenderComponent("plate")
-//
-//    monkey.addComponent(renderComp)
-//    monkey
-//  }
+  //  def createPlate() = {
+  //    var monkey = new Entity()
+  //    var spatialComp = new SpatialComponent()
+  //
+  //    monkey.addComponent(spatialComp)
+  //
+  //    var renderComp = new RenderComponent("plate")
+  //
+  //    monkey.addComponent(renderComp)
+  //    monkey
+  //  }
 
-//  def createLevel() = {
-//    var monkey = new Entity()
-//    var spatialComp = new SpatialComponent()
-//
-//    monkey.addComponent(spatialComp)
-//
-//    var renderComp = new RenderComponent("testMap")
-//
-//    monkey.addComponent(renderComp)
-//    monkey
-//  }
+  //  def createLevel() = {
+  //    var monkey = new Entity()
+  //    var spatialComp = new SpatialComponent()
+  //
+  //    monkey.addComponent(spatialComp)
+  //
+  //    var renderComp = new RenderComponent("testMap")
+  //
+  //    monkey.addComponent(renderComp)
+  //    monkey
+  //  }
 
   def createFloor() = {
     var floor = new Entity()
@@ -213,6 +214,7 @@ object Factory {
       case "player" => Some(createPlayer(node))
       case "door" => Some(createVerticalDoor(node))
       case "rupee" => Some(createRupee(node))
+      case "key" => Some(createKey(node))
       case _ => None
     }
     ent
@@ -245,11 +247,11 @@ object Factory {
           entBinventory.get.inv.addItem(entity.getComponent(InventoryItemComponent.id).get.invItem)
           entity.destroy = true
         }
-      }),(EventType.E_INTERACTION, (event, delta) => {
+      }), (EventType.E_INTERACTION, (event, delta) => {
         val entityA = event.args(0).asInstanceOf[Option[Entity]]
         val entityB = event.args(1).asInstanceOf[Option[Entity]]
-        
-        if(entityB.isDefined && entityB.get == entity){
+
+        if (entityB.isDefined && entityB.get == entity) {
           println("Coffee Interaction")
         }
       }))
@@ -267,7 +269,55 @@ object Factory {
     entity.addComponent(collisionComponent)
     entity
   }
+  def createKey(node: Node) = {
+    // TODO: Fix magic size and location conversion
+    val name = (node \ "@name").text
+    val typeName = (node \ "@name").text
+    val loc = Vec2((node \ "@x").text.toFloat, (node \ "@y").text.toFloat)
+    val size = (node \ "@width").text.toFloat
 
+    val entity = new Entity()
+
+    entity.description = "key"
+
+    val spatialComp = new SpatialComponent()
+    spatialComp.position = Vec3((loc.x * 2) / 16, 0.25f, loc.y * 2 / 16)
+    spatialComp.scale = Vec3(1.0f, 1.0f, 1.0f)
+    entity.addComponent(spatialComp)
+
+    entity.eventHandlers = scala.collection.immutable.Map(
+      (EventType.E_COLLISION, (event, delta) => {
+        val entityA = event.args(0).asInstanceOf[Entity]
+        val entityB = event.args(1).asInstanceOf[Entity]
+        val entBinventory = entityB.getComponent(InventoryComponent.id)
+
+        if (entityA == entity && entBinventory.isDefined) {
+          println("key pickup")
+          entBinventory.get.inv.addItem(entity.getComponent(InventoryItemComponent.id).get.invItem)
+          entity.destroy = true
+        }
+      }), (EventType.E_INTERACTION, (event, delta) => {
+        val entityA = event.args(0).asInstanceOf[Option[Entity]]
+        val entityB = event.args(1).asInstanceOf[Option[Entity]]
+
+        if (entityB.isDefined && entityB.get == entity) {
+          println("key Interaction")
+        }
+      }))
+    val invComponent = new InventoryItemComponent(Key())
+    entity.addComponent(invComponent)
+
+    var renderComp = new RenderComponent("key", Some("door_tex"))
+    entity.addComponent(renderComp)
+
+    val rotateComp = new RotateComponent(-0.2f)
+    entity.addComponent(rotateComp)
+
+    var collisionComponent = new CollisionComponent(size / 16, CollisionComponent.CIRCLE)
+    collisionComponent.isActive = false
+    entity.addComponent(collisionComponent)
+    entity
+  }
   def createPage(node: Node) = {
     // TODO: Fix magic size and location conversion
     val name = "Pages" //(node \ "@name").text
@@ -290,11 +340,11 @@ object Factory {
           entBinventory.get.inv.addItem(entity.getComponent(InventoryItemComponent.id).get.invItem)
           entity.destroy = true
         }
-      }),(EventType.E_INTERACTION, (event, delta) => {
+      }), (EventType.E_INTERACTION, (event, delta) => {
         val entityA = event.args(0).asInstanceOf[Option[Entity]]
         val entityB = event.args(1).asInstanceOf[Option[Entity]]
-        
-        if(entityB.isDefined && entityB.get == entity){
+
+        if (entityB.isDefined && entityB.get == entity) {
           println("page Interaction")
         }
       }))
@@ -359,23 +409,23 @@ object Factory {
       (EventType.E_INTERACTION, (event, delta) => {
         val entityA = event.args(0).asInstanceOf[Option[Entity]]
         val entityB = event.args(1).asInstanceOf[Option[Entity]]
-        
-        if(entityB.isDefined && entityB.get == entity){
+
+        if (entityB.isDefined && entityB.get == entity) {
           println("Door Interaction")
           val d = Factory.createDialog(Vector(
-          ("Yes", new Event(Vector("EkaValinta", this.hashCode()), EventType.E_ANSWER_DIALOG)),
-          ("No", new Event(Vector("TokaValinta", this.hashCode()), EventType.E_ANSWER_DIALOG))),
-          "Do you want to open the door?", None, 40, 6)
-        EventManager.addEvent(new Event(Vector(d, this.hashCode()), EventType.E_THROW_DIALOG))
+            ("Yes", new Event(Vector("EkaValinta", this.hashCode()), EventType.E_ANSWER_DIALOG)),
+            ("No", new Event(Vector("TokaValinta", this.hashCode()), EventType.E_ANSWER_DIALOG))),
+            "Do you want to open the door?", None, 40, 6)
+          EventManager.addEvent(new Event(Vector(d, this.hashCode()), EventType.E_THROW_DIALOG))
         }
       }))
     entity.description = "door"
-    
+
     val spatialComp = new SpatialComponent()
     spatialComp.position = Vec3(loc.x * 2 / 16, 0.0f, loc.y * 2 / 16)
     entity.addComponent(spatialComp)
 
-    var renderComp = new RenderComponent("verticaldoor",Some("door_tex"))
+    var renderComp = new RenderComponent("verticaldoor", Some("door_tex"))
     entity.addComponent(renderComp)
 
     var collisionComponent = new CollisionComponent(
@@ -462,11 +512,11 @@ object Factory {
           entBinventory.get.inv.addItem(entity.getComponent(InventoryItemComponent.id).get.invItem)
           entity.destroy = true
         }
-      }),(EventType.E_INTERACTION, (event, delta) => {
+      }), (EventType.E_INTERACTION, (event, delta) => {
         val entityA = event.args(0).asInstanceOf[Option[Entity]]
         val entityB = event.args(1).asInstanceOf[Option[Entity]]
-        
-        if(entityB.isDefined && entityB.get == entity){
+
+        if (entityB.isDefined && entityB.get == entity) {
           println("Rupee Interaction")
         }
       }))
@@ -501,7 +551,7 @@ object Factory {
     val size = (node \ "@width").text.toFloat
 
     val player = new Entity()
-   
+
     player.description = "player"
 
     val spatialComp = new SpatialComponent()
