@@ -35,7 +35,7 @@ import java.io.File
 object AdventureGUI extends SimpleSwingApplication with Listener {
   UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName)
   var keyMap = Map[scala.swing.event.Key.Value, Boolean](
-    (Key.W, false), (Key.S, false),
+    (Key.E, false), (Key.W, false), (Key.S, false),
     (Key.A, false), (Key.D, false),
     (Key.Up, false), (Key.Down, false),
     (Key.Right, false), (Key.Left, false),
@@ -61,8 +61,8 @@ object AdventureGUI extends SimpleSwingApplication with Listener {
 
       font = Font.createFont(Font.TRUETYPE_FONT, new File("data/font/unifont-7.0.06.ttf"))
       font = font.deriveFont(12f)
-      
-//      font = new Font(Font.MONOSPACED, 0, 12)
+
+      //      font = new Font(Font.MONOSPACED, 0, 12)
 
       listenTo(keys)
     }
@@ -84,6 +84,10 @@ object AdventureGUI extends SimpleSwingApplication with Listener {
         keyMap(Key.Q) = true
       case KeyReleased(_, Key.Q, _, _) =>
         keyMap(Key.Q) = false
+      case KeyPressed(_, Key.E, _, _) =>
+        keyMap(Key.E) = true
+      case KeyReleased(_, Key.E, _, _) =>
+        keyMap(Key.E) = false
       case KeyPressed(_, Key.W, _, _) =>
         keyMap(Key.W) = true
       case KeyReleased(_, Key.W, _, _) =>
@@ -143,7 +147,7 @@ object AdventureGUI extends SimpleSwingApplication with Listener {
       def actionPerformed(e: java.awt.event.ActionEvent) = {
         var newTime = System.currentTimeMillis()
         var delta = newTime - time + timeExtra
-//        println(1.0 / (newTime - time) * 1000) //fps
+        //        println(1.0 / (newTime - time) * 1000) //fps
         var numUpdates = (delta / updatePeriod).toInt
         timeExtra = delta - numUpdates * updatePeriod
         time = newTime
@@ -187,7 +191,7 @@ object AdventureGUI extends SimpleSwingApplication with Listener {
       this.renderArea.text = game.display
     }
   }
-  
+
   eventHandlers = scala.collection.immutable.Map(
     (E_SYSTEM_EXIT, (event, delta) => {
       dispose()

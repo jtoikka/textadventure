@@ -15,6 +15,7 @@ object EventType extends Enumeration {
       E_TEST,
       E_LOOKING_AT,
       E_PLAYER_CREATION,
+      E_INTERACTION,
       E_THROW_DIALOG,
       E_ANSWER_DIALOG,
       E_SYSTEM_EXIT = Value
@@ -64,7 +65,8 @@ object EventManager {
   val listeners = Buffer[Listener]()
   val events = Buffer[Event]()
   var activeInputListener: Option[Listener] = None
-
+  var lastActiveInputListener: Option[Listener] = None
+  
   def addListener(listener: Listener) = {
     listeners += listener
   }
@@ -79,10 +81,17 @@ object EventManager {
     if (event.eventType == E_LOOKING_AT) println(event.args(0) + " dist: " + event.args(1))
     events += event
   }
+  
   def setActiveInputListener(listener: Listener) {
+    println("changeInputListener")
+    lastActiveInputListener = activeInputListener
     activeInputListener = Some(listener)
   }
-
+  
+  def returnToLastInputListener() {
+    activeInputListener = lastActiveInputListener
+  }
+  
   def delegateEvents() = {
     for (event <- events) {
       if (event.eventType == EventType.E_INPUT) {

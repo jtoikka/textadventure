@@ -25,6 +25,7 @@ class HudScreen(parent: Adventure, rend: Renderer)
 
   var paused = false
   var player: Option[Entity] = None
+  var infoItem: Option[Entity] = None
 
   val inputMap =
     Map[Tuple2[scala.swing.event.Key.Value, Int], (Float) => Unit](
@@ -66,17 +67,17 @@ class HudScreen(parent: Adventure, rend: Renderer)
         new Rectangle2D(50, 3, true)))
     var infoSpatial = mainInfoBox.getComponent(SpatialComponent.id)
     infoSpatial.get.position = Vec3(0f, 0f, 0f)
-    
+
     mainInfoBox.eventHandlers = scala.collection.immutable.Map(
-    (E_CHANGE_HUD_INFO, (event, delta) => {
-      val playerHP = event.args(0).asInstanceOf[Int]
-      val playerMana = event.args(1).asInstanceOf[Int]
-      val playerLoc = event.args(2).asInstanceOf[Vec3]
-      val playerHeading = event.args(3).asInstanceOf[Vec3]
-      val box = ResourceManager.shapes(mainInfoBox.getComponent(RenderComponent2D.id).get.shape)
-      box.asInstanceOf[TextRect2D].text = "Location: " + playerLoc +
-        "\nHeading: " + playerHeading
-    }))
+      (E_CHANGE_HUD_INFO, (event, delta) => {
+        val playerHP = event.args(0).asInstanceOf[Int]
+        val playerMana = event.args(1).asInstanceOf[Int]
+        val playerLoc = event.args(2).asInstanceOf[Vec3]
+        val playerHeading = event.args(3).asInstanceOf[Vec3]
+        val box = ResourceManager.shapes(mainInfoBox.getComponent(RenderComponent2D.id).get.shape)
+        box.asInstanceOf[TextRect2D].text = "Location: " + playerLoc +
+          "\nHeading: " + playerHeading
+      }))
 
     scene.addEntity(mainInfoBox)
   }
@@ -120,7 +121,7 @@ class HudScreen(parent: Adventure, rend: Renderer)
   def pause() {
     paused = true
   }
-  
+
   eventHandlers = scala.collection.immutable.Map(
     (E_INPUT, (event, delta) => {
       val eventKey =
@@ -131,7 +132,7 @@ class HudScreen(parent: Adventure, rend: Renderer)
     }),
     (E_PLAYER_CREATION, (event, delta) => {
       player = Some(event.args(0).asInstanceOf[Entity])
-  }))
+    }))
 
   def dispose() = {
 

@@ -8,12 +8,14 @@
 			<luminosity>0.6</luminosity>
 		</item>	
 		<item name="cube" path="data/meshes/cube.obj"></item>
-		<item name="verticaldoor" path="data/meshes/verticaldoor.obj"></item>
+		<item name="verticaldoor" path="data/meshes/verticaldoor.obj">
+		    <texture>door_tex</texture>
+		  	<luminosity>0.9</luminosity>
+		</item>
 		<item name="uv_cube" path="data/meshes/uv_cube.obj"></item>
 		<item name="coffee" path="data/meshes/coffee.obj"></item>
 		<item name="page" path="data/meshes/page.obj"></item>
 		<item name="rupee" path="data/meshes/rupee.obj"></item>
-		<item name="door" path="data/meshes/cube.obj"></item>
 		<item name="plate" path="data/meshes/4x4_plate_floor.obj"></item>
 		<item name="solidTile" path="data/meshes/solid_tile.obj"></item>
 		<item name="floor" path="data/meshes/floor.obj">
@@ -43,6 +45,7 @@
 	<textures>
 	    <item name="testTex" path="data/textures/W3d_protograywallshade1.png"></item>
 	    <item name="test_enemy_tex" path="data/textures/psychobot.png"></item>
+	    <item name="door_tex" path="data/textures/door.png"></item>
 	</textures>
 	<strings>
 		<item name="helpMenu">
