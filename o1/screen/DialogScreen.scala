@@ -46,7 +46,8 @@ class DialogScreen(parent: Adventure, rend: Renderer)
 
       currentDialog = Some(dialog)
 
-      EventManager.activeInputListener = Some(dialog)
+//      EventManager.activeInputListener = Some(dialog)
+      EventManager.setActiveInputListener(dialog)
 
     }), (E_ANSWER_DIALOG, (event, delta) => {
       clearScene()

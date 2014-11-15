@@ -12,6 +12,7 @@ import o1.event.Event
 import o1.adventure.render2D.Dialog
 import o1.adventure.render2D.Rectangle2D
 import o1.event.Listener
+import o1.inventory.Rupee
 
 /**
  * The Factory object is a collection of functions that can be used to create
@@ -84,41 +85,7 @@ object Factory {
     monkey.addComponent(renderComp)
     monkey
   }
-
-  def createCoffee() = {
-    var cof = new Entity()
-    var spatialComp = new SpatialComponent()
-
-    cof.description = "Coffee"
-
-    cof.addComponent(spatialComp)
-
-    var renderComp = new RenderComponent("coffee")
-
-    var collisionComponent = new CollisionComponent(1.0f, CollisionComponent.CIRCLE)
-    collisionComponent.isActive = false
-    cof.addComponent(collisionComponent)
-
-    cof.eventHandlers = scala.collection.immutable.Map(
-      (EventType.E_COLLISION, (event, delta) => {
-        val entityA = event.args(0).asInstanceOf[Entity]
-        val entityB = event.args(1).asInstanceOf[Entity]
-        val entBinventory = entityB.getComponent(InventoryComponent.id)
-
-        if (entityA == cof && entBinventory.isDefined) {
-          println("page pickup")
-          entBinventory.get.inv.addItem(cof.getComponent(InventoryItemComponent.id).get.invItem)
-          cof.destroy = true
-        }
-      }))
-    val invComponent = new InventoryItemComponent(Coffee())
-
-    cof.addComponent(invComponent)
-
-    cof.addComponent(renderComp)
-    cof
-  }
-
+  
   def createCoffeeBullet(position: Vec3, direction: Vec3) = {
     var cof = new Entity()
 
@@ -241,9 +208,16 @@ object Factory {
         val entBinventory = entityB.getComponent(InventoryComponent.id)
 
         if (entityA == entity && entBinventory.isDefined) {
-          println("page pickup")
+          println("cofeee pickup")
           entBinventory.get.inv.addItem(entity.getComponent(InventoryItemComponent.id).get.invItem)
           entity.destroy = true
+        }
+      }),(EventType.E_INTERACTION, (event, delta) => {
+        val entityA = event.args(0).asInstanceOf[Option[Entity]]
+        val entityB = event.args(1).asInstanceOf[Option[Entity]]
+        
+        if(entityB.isDefined && entityB.get == entity){
+          println("Coffee Interaction")
         }
       }))
     val invComponent = new InventoryItemComponent(Coffee())
@@ -282,6 +256,13 @@ object Factory {
           println("page pickup")
           entBinventory.get.inv.addItem(entity.getComponent(InventoryItemComponent.id).get.invItem)
           entity.destroy = true
+        }
+      }),(EventType.E_INTERACTION, (event, delta) => {
+        val entityA = event.args(0).asInstanceOf[Option[Entity]]
+        val entityB = event.args(1).asInstanceOf[Option[Entity]]
+        
+        if(entityB.isDefined && entityB.get == entity){
+          println("page Interaction")
         }
       }))
 
@@ -342,14 +323,27 @@ object Factory {
     val h = (node \ "@height").text.toFloat / 8
 
     val entity = new Entity()
-    
+    entity.eventHandlers = scala.collection.immutable.Map(
+      (EventType.E_INTERACTION, (event, delta) => {
+        val entityA = event.args(0).asInstanceOf[Option[Entity]]
+        val entityB = event.args(1).asInstanceOf[Option[Entity]]
+        
+        if(entityB.isDefined && entityB.get == entity){
+          println("Door Interaction")
+          val d = Factory.createDialog(Vector(
+          ("Yes", new Event(Vector("EkaValinta", this.hashCode()), EventType.E_ANSWER_DIALOG)),
+          ("No", new Event(Vector("TokaValinta", this.hashCode()), EventType.E_ANSWER_DIALOG))),
+          "Do you want to open the door?", None, 40, 6)
+        EventManager.addEvent(new Event(Vector(d, this.hashCode()), EventType.E_THROW_DIALOG))
+        }
+      }))
     entity.description = "door"
-
+    
     val spatialComp = new SpatialComponent()
     spatialComp.position = Vec3(loc.x * 2 / 16, 0.0f, loc.y * 2 / 16)
     entity.addComponent(spatialComp)
 
-    var renderComp = new RenderComponent("verticaldoor")
+    var renderComp = new RenderComponent("verticaldoor",Some("door_tex"))
     entity.addComponent(renderComp)
 
     var collisionComponent = new CollisionComponent(
@@ -357,7 +351,7 @@ object Factory {
       halfWidth = w / 2, halfHeight = h / 2)
     println(w / 2 + ", " + h / 2)
     entity.addComponent(collisionComponent)
-    
+
     entity
   }
 
@@ -367,7 +361,6 @@ object Factory {
     val typeName = (node \ "@name").text
     val loc = Vec2((node \ "@x").text.toFloat, (node \ "@y").text.toFloat)
     val size = (node \ "@width").text.toFloat
-
     val entity: Entity = new Entity()
 
     entity.description = "test enemy"
@@ -433,9 +426,16 @@ object Factory {
         val entBinventory = entityB.getComponent(InventoryComponent.id)
 
         if (entityA == entity && entBinventory.isDefined) {
-          println("page pickup")
+          println("Rupee pickup")
           entBinventory.get.inv.addItem(entity.getComponent(InventoryItemComponent.id).get.invItem)
           entity.destroy = true
+        }
+      }),(EventType.E_INTERACTION, (event, delta) => {
+        val entityA = event.args(0).asInstanceOf[Option[Entity]]
+        val entityB = event.args(1).asInstanceOf[Option[Entity]]
+        
+        if(entityB.isDefined && entityB.get == entity){
+          println("Rupee Interaction")
         }
       }))
 
@@ -444,7 +444,7 @@ object Factory {
     spatialComp.scale = Vec3(0.5f, 0.5f, 0.5f)
     entity.addComponent(spatialComp)
 
-    val invComponent = new InventoryItemComponent(Page())
+    val invComponent = new InventoryItemComponent(Rupee())
     entity.addComponent(invComponent)
 
     var renderComp = new RenderComponent("rupee")
@@ -469,7 +469,11 @@ object Factory {
     val size = (node \ "@width").text.toFloat
 
     val player = new Entity()
-
+    player.eventHandlers = scala.collection.immutable.Map(
+      (EventType.E_INTERACTION, (event, delta) => {
+//        val entityA = event.args(0).asInstanceOf[Option[Entity]]
+//        val entityB = event.args(1).asInstanceOf[Option[Entity]]
+      }))
     val spatialComp = new SpatialComponent()
     spatialComp.position = Vec3(loc.x * 2 / 16, 1.2f, loc.y * 2 / 16)
     player.addComponent(spatialComp)
@@ -482,18 +486,19 @@ object Factory {
     val inputComponent = new InputComponent()
     player.addComponent(inputComponent)
     EventManager.addEvent(new Event(Vector(player), EventType.E_PLAYER_CREATION))
+
     player
   }
 
-  def createDialog(options: Vector[(String, Event)], 
-      text: String,parent:Listener,
-      w:Int,h:Int):Dialog = {
+  def createDialog(options: Vector[(String, Event)],
+                   text: String, parent: Option[Listener],
+                   w: Int, h: Int): Dialog = {
     var dialogOptions: Array[Tuple2[String, Event]] = Array[Tuple2[String, Event]](
       ("First Choice", new Event(Vector("EkaValinta", parent.hashCode()), EventType.E_ANSWER_DIALOG)),
       ("Second Choice", new Event(Vector("TokaValinta", parent.hashCode()), EventType.E_ANSWER_DIALOG)))
 
     var dialog = new Dialog(parent,
-      new Rectangle2D(w, h, true),text,
+      new Rectangle2D(w, h, true), text,
       options)
     dialog
   }

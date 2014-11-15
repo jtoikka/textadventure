@@ -8,7 +8,7 @@ import o1.event.Input
 import o1.event.EventManager
 
 class Dialog(
-    parent: Listener, 
+    parent: Option[Listener], 
     rect: Rectangle2D, 
     val dialogText: String, 
     val options: Vector[Tuple2[String, Event]])
@@ -102,7 +102,10 @@ class Dialog(
     )
   
   def dispose() = {
-    EventManager.setActiveInputListener(parent)
+    if(parent.isDefined)
+      EventManager.setActiveInputListener(parent.get)
+    else
+      EventManager.returnToLastInputListener()
   }
   
   def setActive() = {

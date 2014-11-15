@@ -30,7 +30,7 @@ class MainMenuScreen(parent: Adventure, rend: Renderer)
     ("Credits", new Event(Vector("creditsMenu", this), E_CHANGE_SCENE)),
     ("Exit Game", new Event(null, E_SYSTEM_EXIT)))
 
-  var dialog = new Dialog(this,
+  var dialog = new Dialog(Some(this),
     new Rectangle2D(26, 10, true),
     "-" * 10 + "\nMain Menu\n" + "-" * 10,
     dialogOptions)

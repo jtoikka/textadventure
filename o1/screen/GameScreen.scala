@@ -41,7 +41,9 @@ class GameScreen(parent: Adventure, rend: Renderer)
   val ROTATERIGHT = 2
   // Grabs movement inputs
   val movementMap = Map[Int, Float]()
-
+  
+  var player: Option[Entity] = None
+  
   init()
 
   /**
@@ -188,7 +190,9 @@ class GameScreen(parent: Adventure, rend: Renderer)
       if (inputMap.contains(eventKey)) {
         inputMap(eventKey)(delta)
       }
-    }),
+    }),    
+    (E_PLAYER_CREATION, (event, delta) => {
+      player = Some(event.args(0).asInstanceOf[Entity])}),
     (E_ANSWER_DIALOG, (event, delta) => {
       //      if (event.args(0) == this) {
       println("HashCode match: " + event.args(1) + ":" + this.hashCode())
@@ -208,7 +212,7 @@ class GameScreen(parent: Adventure, rend: Renderer)
         val d = Factory.createDialog(Vector(
           ("Yes", new Event(Vector("menuScreen"), E_CHANGE_SCREEN)),
           ("No", new Event(Vector("TokaValinta", this.hashCode()), E_ANSWER_DIALOG))),
-          "Are you sure?", this, 30, 10)
+          "Are you sure?", None, 30, 10)
         EventManager.addEvent(new Event(Vector(d, this.hashCode()), E_THROW_DIALOG))
       }),
       ((Key.I, Input.KEYRELEASED), (delta) => {
@@ -222,7 +226,7 @@ class GameScreen(parent: Adventure, rend: Renderer)
         val d = Factory.createDialog(Vector(
           ("First Choice", new Event(Vector("EkaValinta", this.hashCode()), E_ANSWER_DIALOG)),
           ("Second Choice", new Event(Vector("TokaValinta", this.hashCode()), E_ANSWER_DIALOG))),
-          "sdsdfsdf", this, 40, 10)
+          "sdsdfsdf", None, 40, 10)
         EventManager.addEvent(new Event(Vector(d, this.hashCode()), E_THROW_DIALOG))
 
       }),
@@ -231,6 +235,9 @@ class GameScreen(parent: Adventure, rend: Renderer)
       }),
       ((Key.S, Input.KEYDOWN), (delta) => {
         movementMap(FORWARD) = -SPEED * delta
+      }),
+      ((Key.E, Input.KEYPRESSED), (delta) => {
+        EventManager.addEvent(new Event(Vector(player, prevFrontEntity), E_INTERACTION))
       }),
       ((Key.A, Input.KEYDOWN), (delta) => {
         movementMap(RIGHT) = -SPEED * delta
