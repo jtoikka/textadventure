@@ -162,3 +162,15 @@ object InventoryComponent {
 case class InventoryComponent() extends Component {
   val inv = new Inventory()
 }
+
+object PlayerComponent {
+  val id = classOf[PlayerComponent]
+}
+
+case class PlayerComponent() extends Component {}
+
+object LootComponent {
+  val id = classOf[LootComponent]
+}
+
+case class LootComponent(loot: Entity) extends Component {}
