@@ -238,12 +238,14 @@ object CollisionCheck {
         val velocity = physComp.get.velocity
         if (greatest.x != 0) {
           if (velocity.x * greatest.x > 0) {
-            velocity.x = 0.0f
+            velocity.x = -0.0f
+            velocity.z *= 0.8f
           }
         }
         if (greatest.y != 0) {
           if (velocity.z * greatest.y > 0) {
-            velocity.z = 0.0f
+            velocity.z = -0.0f
+            velocity.x *= 0.8f
           }
         }
       }
@@ -266,14 +268,12 @@ object CollisionCheck {
       if (physComp.isDefined) {
         val velocity = physComp.get.velocity
         if (intersection.x != 0) {
-          if (velocity.x * intersection.x < 0) {
-            velocity.x = 0.0f
-          }
+          velocity.x = 0.0f
+          velocity.z *= 0.8f
         }
         if (intersection.y != 0) {
-          if (velocity.z * intersection.y < 0) {
-            velocity.z = 0.0f
-          }
+          velocity.z = -0.0f
+          velocity.x *= 0.8f
         }
       }
     }
