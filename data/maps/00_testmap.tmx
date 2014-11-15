@@ -867,6 +867,27 @@
   <object name="TestRupee" type="rupee" x="246.742" y="284.237" width="13.9095" height="13.9095">
    <ellipse/>
   </object>
+  <object name="TestPage" type="key" x="276" y="260" width="13.25" height="13.25">
+   <ellipse/>
+  </object>
+  <object name="TestPage" type="key" x="96" y="280" width="13.25" height="13.25">
+   <ellipse/>
+  </object>
+  <object name="TestRupee" type="rupee" x="286.742" y="212.237" width="13.9095" height="13.9095">
+   <ellipse/>
+  </object>
+  <object name="TestRupee" type="rupee" x="174.742" y="68.237" width="13.9095" height="13.9095">
+   <ellipse/>
+  </object>
+  <object name="TestRupee" type="rupee" x="14.742" y="96.237" width="13.9095" height="13.9095">
+   <ellipse/>
+  </object>
+  <object name="TestPage" type="key" x="80" y="144" width="13.25" height="13.25">
+   <ellipse/>
+  </object>
+  <object name="TestPage" type="key" x="112" y="84" width="13.25" height="13.25">
+   <ellipse/>
+  </object>
  </objectgroup>
  <objectgroup name="player">
   <object name="Player" type="player" x="176.875" y="272.375" width="13.25" height="13.25">
