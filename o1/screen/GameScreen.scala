@@ -125,19 +125,15 @@ class GameScreen(parent: Adventure, rend: Renderer)
       scene, 2.0f, 40,
       (entity) => entity.getComponent(InputComponent.id).isEmpty)
     val inFront = traced._1
-//    if (inFront.isDefined) {
-      if (inFront != prevFrontEntity) {
-        prevFrontEntity = inFront
-        EventManager.addEvent(new Event(Vector(inFront, traced._2), E_LOOKING_AT))
-      }
-//    } else {
-//      if 
-//    }
+    if (inFront != prevFrontEntity) {
+      prevFrontEntity = inFront
+      EventManager.addEvent(new Event(Vector(inFront, traced._2), E_LOOKING_AT))
+    }
   }
 
   def handleAI(entity: Entity, delta: Double) = {
     val aiComponent = entity.getComponent(AIComponent.id).get
-    AI.functionMap(aiComponent.botType)(entity, delta)
+    AI.functionMap(aiComponent.botType)(entity, delta, scene)
   }
 
   def faceCamera(entity: Entity, camera: Entity) = {
