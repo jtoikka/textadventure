@@ -238,13 +238,13 @@ object CollisionCheck {
         val velocity = physComp.get.velocity
         if (greatest.x != 0) {
           if (velocity.x * greatest.x > 0) {
-            velocity.x = -0.0f
+            velocity.x = 0.0f
             velocity.z *= 0.8f
           }
         }
         if (greatest.y != 0) {
           if (velocity.z * greatest.y > 0) {
-            velocity.z = -0.0f
+            velocity.z = 0.0f
             velocity.x *= 0.8f
           }
         }
@@ -266,14 +266,13 @@ object CollisionCheck {
       
       val physComp = entity.getComponent(PhysicsComponent.id)
       if (physComp.isDefined) {
-        val velocity = physComp.get.velocity
-        if (intersection.x != 0) {
-          velocity.x = 0.0f
-          velocity.z *= 0.8f
-        }
-        if (intersection.y != 0) {
-          velocity.z = -0.0f
-          velocity.x *= 0.8f
+        if (intersection.x != 0 || intersection.z != 0) {
+          var velocity = physComp.get.velocity
+          val reflected = velocity - (intersection.normalize() * 2) * velocity.dot(intersection.normalize())
+          physComp.get.velocity = reflected
+          physComp.get.velocity.x *= 0.25f
+          physComp.get.velocity.z *= 0.25f
+          println("Yaaa")
         }
       }
     }
