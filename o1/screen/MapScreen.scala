@@ -34,14 +34,15 @@ class MapScreen(parent: Adventure, rend: Renderer)
       ((Key.Q, Input.KEYRELEASED), (delta) => {
       }),
       ((Key.Escape, Input.KEYRELEASED), (delta) => {
-        EventManager.addEvent(new Event(Vector("gameScreen"), E_CHANGE_SCREEN))
+        parent.changeToPreviousScreen()
       }),
       ((Key.I, Input.KEYRELEASED), (delta) => {
-        EventManager.addEvent(new Event(Vector("gameScreen"), E_CHANGE_SCREEN))
+        
       }),
       ((Key.N, Input.KEYRELEASED), (delta) => {
       }),
       ((Key.M, Input.KEYRELEASED), (delta) => {
+        parent.changeToPreviousScreen()
       }),
       ((Key.W, Input.KEYDOWN), (delta) => {
       }),
@@ -91,7 +92,7 @@ class MapScreen(parent: Adventure, rend: Renderer)
   }
 
   def resume(): Unit = {
-    println("mapscreen resume!")
+//    println("mapscreen resume!")
     EventManager.setActiveInputListener(this)
     updateMap()
   }
@@ -103,7 +104,7 @@ class MapScreen(parent: Adventure, rend: Renderer)
   def updateMap() = {
     if (world.isDefined) {
       val tileMap = world.get.tileMap
-      println("UpdateMap")
+//      println("UpdateMap")
       val bImg = new BufferedImage(tileMap.width, tileMap.height, BufferedImage.TYPE_BYTE_GRAY)
       for (x <- 0 until tileMap.width; y <- 0 until tileMap.height) {
         bImg.setRGB(x, y, tileMap.getCollisionTile(x, y).color)

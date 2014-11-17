@@ -13,7 +13,7 @@ class Dialog(
     val dialogText: String, 
     val options: Vector[Tuple2[String, Event]])
   extends TextRect2D(rect) with Listener {
-    
+  
   this.centerText = true
   var seperatorRows = 0
   val marker = "---> "
@@ -37,6 +37,7 @@ class Dialog(
       activeOption = newOption % options.length
     }
     updateText()
+    println(activeOption)
   }
 
   // Changes current option
@@ -87,13 +88,11 @@ class Dialog(
 
       }),
       ((Key.Enter, Input.KEYRELEASED), (delta) => {
-        println("Enter in dialog")
         active = false
         EventManager.addEvent(options(activeOption)._2)
         dispose()
       }),
       ((Key.M, Input.KEYRELEASED), (delta) => {
-        println("Dialog MMM")
       }))
       
   val optionsMap = 

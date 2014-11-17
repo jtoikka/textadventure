@@ -26,10 +26,10 @@ object AI {
     val trace = RayTrace.trace(spatial.position, forward, scene, 20.0f, 100, (entity) => entity.getComponent(PlayerComponent.id).isDefined)
     if (trace._1.isDefined) {
       val entityInFront = trace._1.get
-      println("PSYCHO: " + entityInFront)
+//      println("PSYCHO: " + entityInFront)
       if (entityInFront.getComponent(PlayerComponent.id).isDefined) {
         spatial.position += Vec3(forward.x, 0.0f, forward.z) * 0.3f * delta.toFloat
-        println(spatial.position)
+//        println(spatial.position)
       }
     }
   }

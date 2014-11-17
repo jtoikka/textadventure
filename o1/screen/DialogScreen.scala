@@ -36,7 +36,7 @@ class DialogScreen(parent: Adventure, rend: Renderer)
       }
     }),
     (E_THROW_DIALOG, (event, delta) => {
-      println("Threw Dialog with hash " + event.args(1).toString)
+//      println("Threw Dialog with hash " + event.args(1).toString)
 
       val dialog = event.args(0).asInstanceOf[Dialog]
       var rectEnt = Factory2D.createTextRectangle(dialog)

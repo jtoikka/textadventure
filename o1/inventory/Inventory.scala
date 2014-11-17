@@ -42,6 +42,9 @@ class Inventory {
   def removeOneOfType(item: Item): Boolean = {
     if (containers.contains(item.getClass())) {
       containers(item.getClass()).removeOne
+      if (containers(item.getClass()).size <= 0) {
+        containers.remove(item.getClass()) 
+      }
       true
     } else false
   }

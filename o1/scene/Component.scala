@@ -167,7 +167,9 @@ object PlayerComponent {
   val id = classOf[PlayerComponent]
 }
 
-case class PlayerComponent() extends Component {}
+case class PlayerComponent() extends Component {
+  
+}
 
 object LootComponent {
   val id = classOf[LootComponent]

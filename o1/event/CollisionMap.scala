@@ -20,7 +20,7 @@ abstract class CollisionTile() {
 }
 
 class EmptyTile extends CollisionTile {
-  color = 0xFFFFFF
+  color = 0xFFFFF0
   id = 0
   
   val halfWidth = 1.0
