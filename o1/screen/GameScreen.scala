@@ -41,18 +41,27 @@ class GameScreen(parent: Adventure, rend: Renderer)
   val ROTATERIGHT = 2
   // Grabs movement inputs
   val movementMap = Map[Int, Float]()
-  
-  var player: Option[Entity] = None
-  
-  init()
 
+  var player: Option[Entity] = None
+
+  eventHandlers = scala.collection.immutable.Map(
+    (E_INPUT, (event, delta) => {
+      val eventKey =
+        event.args(0).asInstanceOf[Tuple2[scala.swing.event.Key.Value, Int]]
+      if (inputMap.contains(eventKey)) {
+        inputMap(eventKey)(delta)
+      }
+    }),
+    (E_PLAYER_CREATION, (event, delta) => {
+      player = Some(event.args(0).asInstanceOf[Entity])
+    }))
   /**
    * Update method. Used to update game's state
    */
 
   def update(delta: Double): Unit = {
+    handleEvents(delta.toFloat)
     if (!paused) {
-      handleEvents(delta.toFloat)
       val entitiesAsVector = scene.entities.toVector
       val destroyedEntities = Buffer[Entity]()
 
@@ -117,7 +126,7 @@ class GameScreen(parent: Adventure, rend: Renderer)
   }
 
   var prevFrontEntity: Option[Entity] = None
-  
+
   def traceFront() = {
     val camSpatial = scene.camera.get.getComponent(SpatialComponent.id).get
     val forward = camSpatial.forward.neg
@@ -179,23 +188,6 @@ class GameScreen(parent: Adventure, rend: Renderer)
 
   }
 
-  eventHandlers = scala.collection.immutable.Map(
-    (E_INPUT, (event, delta) => {
-      val eventKey =
-        event.args(0).asInstanceOf[Tuple2[scala.swing.event.Key.Value, Int]]
-      if (inputMap.contains(eventKey)) {
-        inputMap(eventKey)(delta)
-      }
-    }),    
-    (E_PLAYER_CREATION, (event, delta) => {
-      player = Some(event.args(0).asInstanceOf[Entity])}),
-    (E_ANSWER_DIALOG, (event, delta) => {
-      //      if (event.args(0) == this) {
-      println("HashCode match: " + event.args(1) + ":" + this.hashCode())
-      println("dialog says: \"" + event.args(0) + "\"")
-      //      }
-    }))
-
   val SPEED = 0.30f
 
   val inputMap =
@@ -204,7 +196,7 @@ class GameScreen(parent: Adventure, rend: Renderer)
 
       }),
       ((Key.Escape, Input.KEYRELEASED), (delta) => {
-//        EventManager.addEvent(new Event(Vector("menuScreen"), E_CHANGE_SCREEN))
+        //        EventManager.addEvent(new Event(Vector("menuScreen"), E_CHANGE_SCREEN))
         val d = Factory.createDialog(Vector(
           ("Yes", new Event(Vector("menuScreen"), E_CHANGE_SCREEN)),
           ("No", new Event(Vector("TokaValinta", this.hashCode()), E_ANSWER_DIALOG))),
@@ -219,11 +211,12 @@ class GameScreen(parent: Adventure, rend: Renderer)
         EventManager.addEvent(new Event(Vector("helpMenuScreen"), E_TEST))
       }),
       ((Key.M, Input.KEYRELEASED), (delta) => {
-        val d = Factory.createDialog(Vector(
-          ("First Choice", new Event(Vector("EkaValinta", this.hashCode()), E_ANSWER_DIALOG)),
-          ("Second Choice", new Event(Vector("TokaValinta", this.hashCode()), E_ANSWER_DIALOG))),
-          "sdsdfsdf", None, 40, 10)
-        EventManager.addEvent(new Event(Vector(d, this.hashCode()), E_THROW_DIALOG))
+        //        val d = Factory.createDialog(Vector(
+        //          ("First Choice", new Event(Vector("EkaValinta", this.hashCode()), E_ANSWER_DIALOG)),
+        //          ("Second Choice", new Event(Vector("TokaValinta", this.hashCode()), E_ANSWER_DIALOG))),
+        //          "sdsdfsdf", None, 40, 10)
+        //        EventManager.addEvent(new Event(Vector(d, this.hashCode()), E_THROW_DIALOG))
+        EventManager.addEvent(new Event(Vector("mapScreen"), E_CHANGE_SCREEN))
 
       }),
       ((Key.W, Input.KEYDOWN), (delta) => {
@@ -248,7 +241,7 @@ class GameScreen(parent: Adventure, rend: Renderer)
         movementMap(ROTATERIGHT) = 0.2f * delta
       }),
       ((Key.Space, Input.KEYPRESSED), (delta) => {
-        println("Toss coffee")
+        //        println("Toss coffee")
         val cameraSpatial = scene.camera.get.getComponent(SpatialComponent.id).get
         val coffee = Factory.createCoffeeBullet(
           cameraSpatial.position.neg() +
@@ -276,16 +269,17 @@ class GameScreen(parent: Adventure, rend: Renderer)
     parent.screens("hudScreen").rend.displayOverlay(tmpDisplay)
 
   }
-
+  init()
   def init(): Unit = {
-    scene.loadMap("00_testmap")
+    //    scene.loadMap("00_testmap")
+    scene.loadMap("01_firstfloor")
     EventManager.addEvent(new Event(Vector(scene.world), E_CHANGE_MAP))
   }
 
   def resume() {
     paused = false
   }
-
+  
   def pause() {
     paused = true
   }

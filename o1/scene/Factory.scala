@@ -212,7 +212,7 @@ object Factory {
       case "monkey" => Some(createMonkey(node))
       case "enemy" => Some(createTestEnemy(node))
       case "player" => Some(createPlayer(node))
-      case "door" => Some(createVerticalDoor(node))
+      case "door" => Some(createDoor(node))
       case "rupee" => Some(createRupee(node))
       case "key" => Some(createKey(node))
       case _ => None
@@ -396,42 +396,60 @@ object Factory {
     entity
   }
 
-  def createVerticalDoor(node: Node) = {
+  def createDoor(node: Node) = {
     // TODO: Fix magic size and location conversion
     val name = (node \ "@name").text
     val typeName = (node \ "@name").text
     val loc = Vec2((node \ "@x").text.toFloat, (node \ "@y").text.toFloat)
+    //    val rotation = (node \ "@name").text
     val w = (node \ "@width").text.toFloat / 8
     val h = (node \ "@height").text.toFloat / 8
 
     val entity = new Entity()
     entity.eventHandlers = scala.collection.immutable.Map(
       (EventType.E_INTERACTION, (event, delta) => {
-        val entityA = event.args(0).asInstanceOf[Option[Entity]]
+        val player = event.args(0).asInstanceOf[Option[Entity]]
         val entityB = event.args(1).asInstanceOf[Option[Entity]]
 
         if (entityB.isDefined && entityB.get == entity) {
           println("Door Interaction")
           val d = Factory.createDialog(Vector(
-            ("Yes", new Event(Vector("EkaValinta", this.hashCode()), EventType.E_ANSWER_DIALOG)),
-            ("No", new Event(Vector("TokaValinta", this.hashCode()), EventType.E_ANSWER_DIALOG))),
+            ("Yes", new Event(Vector(player, entityB), EventType.E_OPEN_DOOR)),
+            ("No", new Event(Vector(false, entity.hashCode()), EventType.E_NONE))),
             "Do you want to open the door?", None, 40, 6)
-          EventManager.addEvent(new Event(Vector(d, this.hashCode()), EventType.E_THROW_DIALOG))
+          EventManager.addEvent(new Event(Vector(d, entity.hashCode()), EventType.E_THROW_DIALOG))
+        }
+      }), (EventType.E_OPEN_DOOR, (event, delta) => {
+        val player = event.args(0).asInstanceOf[Option[Entity]]
+        val entityB = event.args(1).asInstanceOf[Option[Entity]]
+        
+        if (player.isDefined && entityB.isDefined && entityB.get == entity &&
+          player.get.getComponent(InventoryComponent.id).isDefined) {
+          if (player.get.getComponent(InventoryComponent.id).get.inv.removeOneOfType(Key())) {
+            entity.dispose()
+            entity.destroy = true
+          } else {
+            val d = Factory.createDialog(Vector(
+            ("Ok.. :(", new Event(Vector(), EventType.E_NONE))),
+            "You need key to open door", None, 40, 6)
+            EventManager.addEvent(new Event(Vector(d, entity.hashCode()), EventType.E_THROW_DIALOG))
+          }
         }
       }))
     entity.description = "door"
 
     val spatialComp = new SpatialComponent()
     spatialComp.position = Vec3(loc.x * 2 / 16, 0.0f, loc.y * 2 / 16)
+    spatialComp.forward = Vec3(1.0f, 0, 0)
     entity.addComponent(spatialComp)
 
-    var renderComp = new RenderComponent("verticaldoor", Some("door_tex"))
+    var renderComp = new RenderComponent("door", Some("door_tex"))
     entity.addComponent(renderComp)
 
     var collisionComponent = new CollisionComponent(
       w / 16, CollisionComponent.SQUARE,
       halfWidth = w / 2, halfHeight = h / 2)
-    println(w / 2 + ", " + h / 2)
+//    println(w / 2 + ", " + h / 2)
     entity.addComponent(collisionComponent)
 
     entity
@@ -558,18 +576,20 @@ object Factory {
     spatialComp.position = Vec3(loc.x * 2 / 16, 1.2f, loc.y * 2 / 16)
     player.addComponent(spatialComp)
 
-    player.addComponent(new InventoryComponent())
+    val inventoryComponent = new InventoryComponent()
+    player.addComponent(inventoryComponent)
 
     val collisionComponent = new CollisionComponent(0.3f, CollisionComponent.CIRCLE)
     player.addComponent(collisionComponent)
 
     val inputComponent = new InputComponent()
     player.addComponent(inputComponent)
-    EventManager.addEvent(new Event(Vector(player), EventType.E_PLAYER_CREATION))
-
+    
     val playerComponent = new PlayerComponent()
     player.addComponent(playerComponent)
-
+    
+    EventManager.addEvent(new Event(Vector(player), EventType.E_PLAYER_CREATION))
+    
     player
   }
 

@@ -32,7 +32,6 @@ class Scene {
       val name = layer \ "@name"
       objectGroups(name.text) = layer
     }
-
     // main object layer. 
     val objects = objectGroups("objects") \ "object"
     for (obj <- objects) {

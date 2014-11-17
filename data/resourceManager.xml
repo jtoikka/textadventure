@@ -9,7 +9,7 @@
 			<luminosity>0.6</luminosity>
 		</item>	
 		<item name="cube" path="data/meshes/cube.obj"></item>
-		<item name="verticaldoor" path="data/meshes/verticaldoor.obj">
+		<item name="door" path="data/meshes/door.obj">
 		    <texture>door_tex</texture>
 		  	<luminosity>0.9</luminosity>
 		</item>
@@ -60,5 +60,6 @@
 	</strings>
 	<maps>
 		<item name="00_testmap" path="data/maps/00_testmap.tmx"></item>
+		<item name="01_firstfloor" path="data/maps/01_firstfloor.tmx"></item>
 	</maps>
 </resources>

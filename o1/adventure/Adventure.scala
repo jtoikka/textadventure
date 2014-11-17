@@ -34,17 +34,18 @@ class Adventure() extends Listener {
 
   private val renderer = new Renderer3D(screenWidth, screenHeight) // We draw the world here!
   var display = renderer.display // A String displaying the world
-  
+
   private val dialogOverlay = new DialogScreen(this, screenWidth, screenHeight)
 
   // Screen stuff
   val screens = Map[String, Screen](
     "menuScreen" -> new MainMenuScreen(this, screenWidth, screenHeight),
-    "gameScreen" -> new GameScreen(this, screenWidth, screenHeight),
+
     "mapScreen" -> new MapScreen(this, screenWidth, screenHeight),
     "inventoryScreen" -> new InventoryScreen(this, screenWidth, screenHeight),
     "helpMenuScreen" -> new HelpMenuScreen(this, screenWidth, screenHeight),
-    "hudScreen" -> new HudScreen(this, screenWidth, screenHeight))
+    "hudScreen" -> new HudScreen(this, screenWidth, screenHeight),
+    "gameScreen" -> new GameScreen(this, screenWidth, screenHeight))
 
   var previousScreen: Option[Screen] = None
   var currentScreen: Option[Screen] = None
@@ -62,6 +63,10 @@ class Adventure() extends Listener {
    * @param keyMap A map of pressed/released keys
    */
   def update(delta: Double, keyMap: Map[scala.swing.event.Key.Value, Boolean]) = {
+    handleInput(keyMap, delta)
+    handleEvents(delta.toFloat)
+    EventManager.delegateEvents()
+
     TweenEngine.update(delta)
     for (screen <- screens.values) {
       screen.update(delta)
@@ -75,10 +80,9 @@ class Adventure() extends Listener {
 
     if (display.isEmpty())
       println("WTF!")
-
-    handleInput(keyMap, delta)
-    handleEvents(delta.toFloat)
+      
     EventManager.delegateEvents()
+
   }
 
   /**

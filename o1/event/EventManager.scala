@@ -1,31 +1,35 @@
 package o1.event
 import scala.collection.mutable.Buffer
+import o1.screen.Screen
 
 object EventType extends Enumeration {
   type EventType = Value
-  val E_COLLISION,
-      E_INPUT,
-      E_DIALOG,
-      E_CHANGE_SCREEN,
-      E_CHANGE_SCENE,
-      E_GAME_EVENT,
+  val E_COLLISION, 
+      E_INPUT, 
+      E_DIALOG, 
+      E_CHANGE_SCREEN, 
+      E_CHANGE_SCENE, 
+      E_GAME_EVENT, 
       E_GAME_UPDATE, 
-      E_CHANGE_MAP,
-      E_CHANGE_HUD_INFO,
-      E_TEST,
-      E_LOOKING_AT,
-      E_PLAYER_CREATION,
-      E_INTERACTION,
+      E_CHANGE_MAP, 
+      E_CHANGE_HUD_INFO, 
+      E_TEST, 
+      E_LOOKING_AT, 
+      E_PLAYER_CREATION, 
+      E_INTERACTION, 
       E_THROW_DIALOG,
-      E_ANSWER_DIALOG,
+      E_ANSWER_DIALOG, 
+      E_OPEN_DOOR, 
+      E_NONE, 
       E_SYSTEM_EXIT = Value
 }
+
 import o1.event.EventType._
 
 class Event(val args: Vector[Any], val eventType: EventType) {}
 
 trait Listener {
-//  var eventTypes = Vector[EventType]()
+  //  var eventTypes = Vector[EventType]()
   val events = Buffer[Event]()
   var childListeners = Buffer[Listener]()
   var eventHandlers = Map[EventType, (Event, Float) => Unit]()
@@ -37,14 +41,14 @@ trait Listener {
       handleEvent(event, delta)
     }
     events.clear()
-    
-    if(!childListeners.isEmpty){
-      for(i <-childListeners){
+
+    if (!childListeners.isEmpty) {
+      for (i <- childListeners) {
         i.handleEvents(delta)
       }
     }
   }
-  
+
   def handleEvent(event: Event, delta: Float) {
     if (containsEventType(event.eventType)) {
       eventHandlers(event.eventType)(event, delta)
@@ -64,9 +68,9 @@ trait Listener {
 object EventManager {
   val listeners = Buffer[Listener]()
   val events = Buffer[Event]()
-  var activeInputListener: Option[Listener] = None
-  var lastActiveInputListener: Option[Listener] = None
-  
+  private var activeInputListener: Option[Listener] = None
+  private var lastActiveInputListener: Option[Listener] = None
+
   def addListener(listener: Listener) = {
     listeners += listener
   }
@@ -81,17 +85,20 @@ object EventManager {
     if (event.eventType == E_LOOKING_AT) println(event.args(0) + " dist: " + event.args(1))
     events += event
   }
-  
+
   def setActiveInputListener(listener: Listener) {
-    println("changeInputListener")
-    lastActiveInputListener = activeInputListener
+    //    println("changeInputListener")
+    if(activeInputListener.isDefined && 
+        activeInputListener.get.isInstanceOf[Screen])
+      lastActiveInputListener = activeInputListener
+      
     activeInputListener = Some(listener)
   }
-  
+
   def returnToLastInputListener() {
     activeInputListener = lastActiveInputListener
   }
-  
+
   def delegateEvents() = {
     for (event <- events) {
       if (event.eventType == EventType.E_INPUT) {
