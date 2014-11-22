@@ -133,11 +133,11 @@ class GameScreen(parent: Adventure, rend: Renderer)
 
       updateCamera()
       movementMap.clear()
+      // Toss coffee
+      tossCoffee()
     } else {
       events.clear()
     }
-    // Toss coffee
-    tossCoffee()
   }
 
   var prevFrontEntity: Option[Entity] = None
