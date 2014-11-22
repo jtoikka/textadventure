@@ -2221,7 +2221,7 @@
   <object name="TestDoor" type="door" x="404" y="336" width="4" height="16"/>
   <object name="TestDoor" type="door" x="404" y="240" width="4" height="16"/>
   <object name="TestDoor" type="door" x="84" y="32" width="4" height="16"/>
-  <object name="TestPage" type="key" x="356" y="368" width="13.25" height="13.25">
+  <object name="TestPage" type="key" x="368" y="384" width="13.25" height="13.25">
    <ellipse/>
   </object>
   <object name="TestPage" type="key" x="320" y="80" width="13.25" height="13.25">
@@ -2230,10 +2230,67 @@
   <object name="TestPage" type="key" x="48" y="112" width="13.25" height="13.25">
    <ellipse/>
   </object>
-  <object name="TestShop" type="shop" x="416" y="352" width="13.25" height="13.25">
+  <object name="TestShop" type="shop" x="424" y="352" width="13.25" height="13.25">
    <ellipse/>
   </object>
-  <object name="TestChest" type="chest" x="384" y="372" width="13.25" height="13.25">
+  <object name="TestChest" type="chest" x="352" y="368" width="13.25" height="13.25">
+   <ellipse/>
+  </object>
+  <object name="TestRupee" type="rupee" x="416" y="228" width="13.9095" height="13.9095">
+   <ellipse/>
+  </object>
+  <object name="TestRupee" type="rupee" x="416" y="200" width="13.9095" height="13.9095">
+   <ellipse/>
+  </object>
+  <object name="TestRupee" type="rupee" x="416" y="172" width="13.9095" height="13.9095">
+   <ellipse/>
+  </object>
+  <object name="TestRupee" type="rupee" x="416" y="152" width="13.9095" height="13.9095">
+   <ellipse/>
+  </object>
+  <object name="TestRupee" type="rupee" x="416" y="128" width="13.9095" height="13.9095">
+   <ellipse/>
+  </object>
+  <object name="TestRupee" type="rupee" x="416" y="104" width="13.9095" height="13.9095">
+   <ellipse/>
+  </object>
+  <object name="TestRupee" type="rupee" x="396" y="96" width="13.9095" height="13.9095">
+   <ellipse/>
+  </object>
+  <object name="TestRupee" type="rupee" x="376" y="96" width="13.9095" height="13.9095">
+   <ellipse/>
+  </object>
+  <object name="TestRupee" type="rupee" x="356" y="96" width="13.9095" height="13.9095">
+   <ellipse/>
+  </object>
+  <object name="TestRupee" type="rupee" x="336" y="96" width="13.9095" height="13.9095">
+   <ellipse/>
+  </object>
+  <object name="TestRupee" type="rupee" x="340" y="116" width="13.9095" height="13.9095">
+   <ellipse/>
+  </object>
+  <object name="TestRupee" type="rupee" x="364" y="116" width="13.9095" height="13.9095">
+   <ellipse/>
+  </object>
+  <object name="TestRupee" type="rupee" x="380" y="116" width="13.9095" height="13.9095">
+   <ellipse/>
+  </object>
+  <object name="TestRupee" type="rupee" x="400" y="120" width="13.9095" height="13.9095">
+   <ellipse/>
+  </object>
+  <object name="TestRupee" type="rupee" x="396" y="140" width="13.9095" height="13.9095">
+   <ellipse/>
+  </object>
+  <object name="TestRupee" type="rupee" x="388" y="156" width="13.9095" height="13.9095">
+   <ellipse/>
+  </object>
+  <object name="TestRupee" type="rupee" x="380" y="176" width="13.9095" height="13.9095">
+   <ellipse/>
+  </object>
+  <object name="TestRupee" type="rupee" x="368" y="208" width="13.9095" height="13.9095">
+   <ellipse/>
+  </object>
+  <object name="TestRupee" type="rupee" x="388" y="216" width="13.9095" height="13.9095">
    <ellipse/>
   </object>
  </objectgroup>

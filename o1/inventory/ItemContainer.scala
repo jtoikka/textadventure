@@ -9,12 +9,12 @@ object ItemContainer {
 
 class ItemContainer[T <: Item] {
   private val items = Buffer[T]()
-  
+
   var hiddenContainer = false // if true doesn't show in inventory
-  
-  var icon:Option[String] = None
-  var name:Option[String] = None
-    
+
+  var icon: Option[String] = None
+  var name: Option[String] = None
+
   def addItem(item: AnyRef): Boolean = {
     if (items.size < ItemContainer.MAX_ITEM_COUNT) {
       val it: T = item.asInstanceOf[T]
@@ -22,7 +22,7 @@ class ItemContainer[T <: Item] {
       true
     } else false
   }
-  
+
   def removeItem(item: AnyRef): Boolean = {
     if (items.size > 0) {
       val i = items.indexOf(item)
@@ -32,7 +32,15 @@ class ItemContainer[T <: Item] {
       } else false
     } else false
   }
-
+  
+  def remove(count:Int): Boolean = {
+    if (items.size >= count) {
+      for(i <- 0 until count)
+        removeOne
+      true
+    }
+    false
+  }
   def removeOne: Boolean = {
     if (items.size > 0) {
       items.remove(items.size - 1)
