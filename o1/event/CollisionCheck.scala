@@ -272,7 +272,6 @@ object CollisionCheck {
           physComp.get.velocity = reflected
           physComp.get.velocity.x *= 0.25f
           physComp.get.velocity.z *= 0.25f
-          println("Yaaa")
         }
       }
     }

@@ -271,7 +271,7 @@ class GameScreen(parent: Adventure, rend: Renderer)
   }
   init()
   def init(): Unit = {
-    //    scene.loadMap("00_testmap")
+//    scene.loadMap("00_testmap")
     scene.loadMap("01_firstfloor")
     EventManager.addEvent(new Event(Vector(scene.world), E_CHANGE_MAP))
   }
