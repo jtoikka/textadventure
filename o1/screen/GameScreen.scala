@@ -86,8 +86,6 @@ class GameScreen(parent: Adventure, rend: Renderer)
         val spatial = entity.getComponent(SpatialComponent.id)
         if (spatial.isDefined) {
           if (entity.getComponent(InputComponent.id).isDefined) {
-            movementMap(ROTATERIGHT) = (rng.nextFloat() - 0.5f)
-            movementMap(FORWARD) = 0.1f
             handleMovement(entity)
           }
           if (entity.getComponent(FaceCameraComponent.id).isDefined) {
@@ -139,8 +137,6 @@ class GameScreen(parent: Adventure, rend: Renderer)
 
       updateCamera()
       movementMap.clear()
-      // Toss coffee
-      tossCoffee()
     } else {
       events.clear()
     }
