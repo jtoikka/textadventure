@@ -14,6 +14,7 @@ import o1.event.Listener
 import o1.event.EventType._
 import java.awt.Font
 import java.io.File
+import o1.adventure.render.ResourceManager
 
 ////////////////// NOTE TO STUDENTS //////////////////////////
 // For the purposes of our course, it's not necessary    
@@ -70,6 +71,15 @@ object AdventureGUI extends SimpleSwingApplication with Listener {
     val turnCounter = new Label
 
     // Events: 
+    
+//    for (key <- this.keyMap.keys) {
+//      renderArea.reactions += {
+//        case KeyPressed(_, key, _, _) =>
+//          keyMap(key) = true
+//        case KeyReleased(_, key, _, _) =>
+//          keyMap(key) = false
+//      }
+//    }
 
     renderArea.reactions += {
       case KeyPressed(_, Key.Escape, _, _) =>
@@ -136,22 +146,22 @@ object AdventureGUI extends SimpleSwingApplication with Listener {
         keyMap(Key.Space) = true
       case KeyReleased(_, Key.Space, _, _) =>
         keyMap(Key.Space) = false
-
     }
+    
     var time = System.currentTimeMillis()
     var timeExtra = 0.0
 
     val updatePeriod = 33 //33
-    val runtime = Runtime.getRuntime()
+    
+    var countUpdates = 0
+
     var timer = new Timer(updatePeriod, new java.awt.event.ActionListener {
       def actionPerformed(e: java.awt.event.ActionEvent) = {
         var newTime = System.currentTimeMillis()
         var delta = newTime - time + timeExtra
-        //        println(1.0 / (newTime - time) * 1000) //fps
         var numUpdates = (delta / updatePeriod).toInt
         timeExtra = delta - numUpdates * updatePeriod
         time = newTime
-//        println("Memory free: " + runtime.freeMemory())
         for (i <- 0 until numUpdates)
           update(updatePeriod / 100.0f)
       }

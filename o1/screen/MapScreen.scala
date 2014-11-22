@@ -1,7 +1,7 @@
 package o1.screen
 
 import scala.swing.event.Key
-import scala.collection.mutable.Map
+//import scala.collection.mutable.Map
 import o1.adventure._
 import o1.adventure.render.Renderer
 import o1.adventure.render.ResourceManager
@@ -14,7 +14,7 @@ import o1.event.Event
 import o1.event.EventType._
 import o1.event.EventManager
 import o1.event.Input
-import scala.collection.mutable.Buffer
+//import scala.collection.mutable.Buffer
 import o1.inventory.Inventory
 import o1.inventory.Page
 import o1.inventory.Coffee
@@ -93,7 +93,6 @@ class MapScreen(parent: Adventure, rend: Renderer)
   }
 
   def resume(): Unit = {
-//    println("mapscreen resume!")
     EventManager.setActiveInputListener(this)
     updateMap()
   }
@@ -105,7 +104,6 @@ class MapScreen(parent: Adventure, rend: Renderer)
   def updateMap() = {
     if (world.isDefined) {
       val tileMap = world.get.tileMap
-//      println("UpdateMap")
       val bImg = new BufferedImage(tileMap.width, tileMap.height, BufferedImage.TYPE_BYTE_GRAY)
       for (x <- 0 until tileMap.width; y <- 0 until tileMap.height) {
         bImg.setRGB(x, y, tileMap.getCollisionTile(x, y).color)

@@ -113,6 +113,12 @@ object EventManager {
         }
       }
     }
+//    for (listener <- listeners) {
+//      val count = listener.events.size
+//      if (count > 1) {
+//        println("Too many events: " + listener)
+//      }
+//    }
     events.clear()
   }
 }
