@@ -3,7 +3,6 @@ package o1.screen
 import scala.concurrent._
 import ExecutionContext.Implicits.global
 import scala.swing.event.Key
-import scala.collection.mutable.Map
 import o1.adventure._
 import o1.adventure.render.Renderer
 import o1.adventure.render.ResourceManager
@@ -16,7 +15,6 @@ import o1.event.Event
 import o1.event.EventType._
 import o1.event.EventManager
 import o1.event.Input
-import scala.collection.mutable.Buffer
 import o1.inventory.Inventory
 import o1.inventory.Page
 import o1.inventory.Coffee
