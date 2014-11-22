@@ -48,6 +48,16 @@ class Inventory {
       true
     } else false
   }
+  def removeOfType(item: Item,count:Int): Boolean = {
+    if (containers.contains(item.getClass()) && containers(item.getClass()).size >= count) {
+      containers(item.getClass()).remove(count)
+      if (containers(item.getClass()).size <= 0) {
+        containers.remove(item.getClass()) 
+      }
+      true
+    } else false
+  }
+  
   
   override def toString: String = {
     var contString = ""
