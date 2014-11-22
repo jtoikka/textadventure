@@ -61,6 +61,8 @@ class GameScreen(parent: Adventure, rend: Renderer)
 
   def update(delta: Double): Unit = {
     handleEvents(delta.toFloat)
+    scene.entities.foreach(_.handleEvents(delta.toFloat))
+    
     if (!paused) {
       val entitiesAsVector = scene.entities.toVector
       val destroyedEntities = Buffer[Entity]()
@@ -105,7 +107,7 @@ class GameScreen(parent: Adventure, rend: Renderer)
               Vec4(spatial.get.forward, 0.0f)).xyz.normalize()
           }
         }
-        entity.handleEvents(delta.toFloat)
+//        entity.handleEvents(delta.toFloat)
 
         if (entity.destroy) {
           destroyedEntities += entity

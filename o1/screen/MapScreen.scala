@@ -73,6 +73,7 @@ class MapScreen(parent: Adventure, rend: Renderer)
 
     }
     handleEvents(delta.toFloat)
+    scene.entities.foreach(_.handleEvents(delta.toFloat))
   }
 
   /**
