@@ -153,8 +153,14 @@ object Factory {
 
     var renderComp = new RenderComponent("coffee")
 
-    var collisionComponent = new CollisionComponent(0.15f, CollisionComponent.CIRCLE)
+    var collisionComponent = 
+      new CollisionComponent(
+          0.15f, 
+          CollisionComponent.CIRCLE, 
+          collisionType = CollisionComponent.COFFEE)
     collisionComponent.isActive = true
+    collisionComponent.collidesWith.clear()
+    collisionComponent.collidesWith += CollisionComponent.DEFAULT
     cof.addComponent(collisionComponent)
 
     var damageComp = new DamageComponent(1, DamageComponent.ENEMY)

@@ -5,6 +5,7 @@ import scala.collection.mutable.Buffer
 import o1.inventory.Item
 import o1.event._
 import o1.inventory.Inventory
+import scala.collection.mutable.ArrayBuffer
 
 /**
  * Components make up the data of an entity.
@@ -69,12 +70,19 @@ object CollisionComponent {
   
   val CIRCLE = 1
   val SQUARE = 2
+  
+  val ALL = 3
+  val DEFAULT = 4
+  val COFFEE = 5
 }
 
 class CollisionComponent(
     val radius: Float, val shape: Int, 
-    val halfWidth: Float = 0.0f, val halfHeight: Float = 0.0f) extends Component {
+    val halfWidth: Float = 0.0f, val halfHeight: Float = 0.0f, 
+    val collisionType: Int = CollisionComponent.DEFAULT) extends Component {
   var isActive = true
+  
+  val collidesWith = ArrayBuffer[Int](CollisionComponent.ALL)
 }
 
 object InputComponent {
