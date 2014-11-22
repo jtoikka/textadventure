@@ -142,7 +142,7 @@ object AdventureGUI extends SimpleSwingApplication with Listener {
     var timeExtra = 0.0
 
     val updatePeriod = 33 //33
-
+    val runtime = Runtime.getRuntime()
     var timer = new Timer(updatePeriod, new java.awt.event.ActionListener {
       def actionPerformed(e: java.awt.event.ActionEvent) = {
         var newTime = System.currentTimeMillis()
@@ -151,6 +151,7 @@ object AdventureGUI extends SimpleSwingApplication with Listener {
         var numUpdates = (delta / updatePeriod).toInt
         timeExtra = delta - numUpdates * updatePeriod
         time = newTime
+//        println("Memory free: " + runtime.freeMemory())
         for (i <- 0 until numUpdates)
           update(updatePeriod / 100.0f)
       }
