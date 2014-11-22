@@ -5,7 +5,6 @@ import scala.concurrent._
 import ExecutionContext.Implicits.global
 import scala.util.Success
 import scala.util.Failure
-
 import scala.swing.event.Key
 import scala.collection.mutable.Map
 import o1.adventure._
@@ -21,6 +20,7 @@ import o1.inventory.Inventory
 import o1.inventory.Page
 import o1.inventory.Coffee
 import scala.collection.mutable.Buffer
+import scala.util.Random
 
 /**
  * GameScreen class.
@@ -71,9 +71,13 @@ class GameScreen(parent: Adventure, rend: Renderer)
   /**
    * Update method. Used to update game's state
    */
+    
+  val rng = new Random()
 
   def update(delta: Double): Unit = {
     handleEvents(delta.toFloat)
+    scene.entities.foreach(_.handleEvents(delta.toFloat))
+
     if (!paused) {
       val entitiesAsVector = scene.entities.toVector
       val destroyedEntities = Buffer[Entity]()
@@ -82,6 +86,8 @@ class GameScreen(parent: Adventure, rend: Renderer)
         val spatial = entity.getComponent(SpatialComponent.id)
         if (spatial.isDefined) {
           if (entity.getComponent(InputComponent.id).isDefined) {
+            movementMap(ROTATERIGHT) = (rng.nextFloat() - 0.5f)
+            movementMap(FORWARD) = 0.1f
             handleMovement(entity)
           }
           if (entity.getComponent(FaceCameraComponent.id).isDefined) {
@@ -118,7 +124,7 @@ class GameScreen(parent: Adventure, rend: Renderer)
               Vec4(spatial.get.forward, 0.0f)).xyz.normalize()
           }
         }
-        entity.handleEvents(delta.toFloat)
+//        entity.handleEvents(delta.toFloat)
 
         if (entity.destroy) {
           destroyedEntities += entity
@@ -279,7 +285,7 @@ class GameScreen(parent: Adventure, rend: Renderer)
   init()
   def init(): Unit = {
 //    scene.loadMap("00_testmap")
-    scene.loadMap("01_firstfloor")
+    scene.loadMap("01_firstfloor_b")
     EventManager.addEvent(new Event(Vector(scene.world), E_CHANGE_MAP))
   }
 

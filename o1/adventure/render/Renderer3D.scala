@@ -1,6 +1,5 @@
 package o1.adventure.render
 
-import scala.collection.mutable.Map
 import scala.swing.event.Key
 import scala.math._
 import o1.math._

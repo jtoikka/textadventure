@@ -73,10 +73,6 @@ object Mesh {
         vertA = new Vertex(indexBuffer(i), uvA)
         vertB = new Vertex(indexBuffer(i + 1), uvB)
         vertC = new Vertex(indexBuffer(i + 2), uvC)
-        
-//        println("A: " + posA + " UV: " + uvA)
-//        println("B: " + posB + " UV: " + uvB)
-//        println("C: " + posC + " UV: " + uvC)
       }
       
       val face = new Face(Vector[Vertex](vertA, vertB, vertC))
