@@ -5,6 +5,7 @@ import o1.screen.Screen
 object EventType extends Enumeration {
   type EventType = Value
   val E_COLLISION, 
+      E_BUY,
       E_INPUT, 
       E_DIALOG, 
       E_CHANGE_SCREEN, 

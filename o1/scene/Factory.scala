@@ -14,6 +14,7 @@ import o1.adventure.render2D.Rectangle2D
 import o1.event.Listener
 import o1.inventory.Rupee
 import o1.inventory.Key
+import o1.inventory.Item
 
 /**
  * The Factory object is a collection of functions that can be used to create
@@ -408,7 +409,38 @@ object Factory {
     val h = (node \ "@height").text.toFloat / 8
 
     val entity = new Entity()
-    entity.eventHandlers = scala.collection.immutable.Map()
+    entity.eventHandlers = scala.collection.immutable.Map(
+      (EventType.E_INTERACTION, (event, delta) => {
+        val player = event.args(0).asInstanceOf[Option[Entity]]
+        val entityB = event.args(1).asInstanceOf[Option[Entity]]
+
+        if (entityB.isDefined && entityB.get == entity) {
+          println("Shop Interaction")
+          val d = Factory.createDialog(Vector(
+            ("Coffee, 1 rupees", new Event(Vector(player, Coffee(), 1, 1), EventType.E_BUY)),
+            ("Key, 5 rupees", new Event(Vector(player, Key(), 1, 5), EventType.E_BUY))),
+            "Do you want to buy something?", None, 40, 6)
+          EventManager.addEvent(new Event(Vector(d, entity.hashCode()), EventType.E_THROW_DIALOG))
+        }
+      }), (EventType.E_BUY, (event, delta) => {
+        val player = event.args(0).asInstanceOf[Some[Entity]]
+        val item = event.args(1).asInstanceOf[Item]
+        val count = event.args(2).asInstanceOf[Int]
+        val pricePerItem = event.args(3).asInstanceOf[Int]
+        if (!player.get.getComponent(InventoryComponent.id).get.inv.removeOfType(Rupee(), pricePerItem)) {
+          val d = Factory.createDialog(Vector(
+            ("Ok.. :(", new Event(Vector(), EventType.E_NONE))),
+            "You dont have enough munny", None, 40, 6)
+          EventManager.addEvent(new Event(Vector(d, entity.hashCode()), EventType.E_THROW_DIALOG))
+        } else {
+          player.get.getComponent(InventoryComponent.id).get.inv.addItem(item)
+          val d = Factory.createDialog(Vector(
+            ("Ok", new Event(Vector(), EventType.E_NONE))),
+            "You got one " + item.desc, None, 40, 6)
+          EventManager.addEvent(new Event(Vector(d, entity.hashCode()), EventType.E_THROW_DIALOG))
+        }
+
+      }))
     entity.description = "shop"
 
     val spatialComp = new SpatialComponent()
@@ -437,7 +469,7 @@ object Factory {
 
     val entity = new Entity()
     entity.eventHandlers = scala.collection.immutable.Map()
-    entity.description = "shop"
+    entity.description = "chest"
 
     val spatialComp = new SpatialComponent()
     spatialComp.position = Vec3(loc.x * 2 / 16, 0.0f, loc.y * 2 / 16)
