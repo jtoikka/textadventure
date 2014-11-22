@@ -55,6 +55,19 @@ class GameScreen(parent: Adventure, rend: Renderer)
     (E_PLAYER_CREATION, (event, delta) => {
       player = Some(event.args(0).asInstanceOf[Entity])
     }))
+    
+  def tossCoffee() = {
+    val cameraSpatial = scene.camera.get.getComponent(SpatialComponent.id).get
+    val coffee = Factory.createCoffeeBullet(
+      cameraSpatial.position.neg() +
+        cameraSpatial.forward.neg * 0.5f,
+      cameraSpatial.forward.neg * 0.8f)
+    val spatial = coffee.getComponent(SpatialComponent.id).get
+    spatial.forward = cameraSpatial.forward.neg.neg
+    spatial.forward.x *= -1
+    scene.addEntity(coffee)
+  }
+    
   /**
    * Update method. Used to update game's state
    */
@@ -123,6 +136,8 @@ class GameScreen(parent: Adventure, rend: Renderer)
     } else {
       events.clear()
     }
+    // Toss coffee
+    tossCoffee()
   }
 
   var prevFrontEntity: Option[Entity] = None
@@ -242,15 +257,7 @@ class GameScreen(parent: Adventure, rend: Renderer)
       }),
       ((Key.Space, Input.KEYPRESSED), (delta) => {
         //        println("Toss coffee")
-        val cameraSpatial = scene.camera.get.getComponent(SpatialComponent.id).get
-        val coffee = Factory.createCoffeeBullet(
-          cameraSpatial.position.neg() +
-            cameraSpatial.forward.neg * 0.5f,
-          cameraSpatial.forward.neg * 0.8f)
-        val spatial = coffee.getComponent(SpatialComponent.id).get
-        spatial.forward = cameraSpatial.forward
-        spatial.forward.x *= -1
-        scene.addEntity(coffee)
+        tossCoffee
       }))
 
   /**

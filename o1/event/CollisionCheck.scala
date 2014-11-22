@@ -139,14 +139,14 @@ object CollisionCheck {
           }
         }
         if (intersection.x != 0 || intersection.z != 0) {
-            def sendIntersectionEvent(entityA: Entity, entityB: Entity) = {
-              val event = new Event(
-                Vector(entityA, entityB, intersection),
-                EventType.E_COLLISION)
-              EventManager.addEvent(event)
-            }
-            sendIntersectionEvent(entity, otherEntity)
-            sendIntersectionEvent(otherEntity, entity)
+//            def sendIntersectionEvent(entityA: Entity, entityB: Entity) = {
+//              val event = new Event(
+//                Vector(entityA, entityB, intersection),
+//                EventType.E_COLLISION)
+//              EventManager.addEvent(event)
+//            }
+//            sendIntersectionEvent(entity, otherEntity)
+//            sendIntersectionEvent(otherEntity, entity)
           }
       }
       checkWorldCollisions(entity, collisionComponent.get.radius, world.get)
@@ -255,24 +255,43 @@ object CollisionCheck {
       i += 1
     }
   }
+  
+  
 
   def handleCollision(entity: Entity, other: Entity, intersection: Vec3) = {
-    if (entity.getComponent(CollisionComponent.id).get.isActive &&
-      other.getComponent(CollisionComponent.id).get.isActive) {
-      
-      
-      val spatial = entity.getComponent(SpatialComponent.id).get;
-      spatial.position += intersection
-      
-      val physComp = entity.getComponent(PhysicsComponent.id)
-      if (physComp.isDefined) {
-        if (intersection.x != 0 || intersection.z != 0) {
-          var velocity = physComp.get.velocity
-          val reflected = velocity - (intersection.normalize() * 2) * velocity.dot(intersection.normalize())
-          physComp.get.velocity = reflected
-          physComp.get.velocity.x *= 0.25f
-          physComp.get.velocity.z *= 0.25f
+    val collisionEntity = entity.getComponent(CollisionComponent.id).get
+    val collisionOther = other.getComponent(CollisionComponent.id).get
+    
+    def sendIntersectionEvent(entityA: Entity, entityB: Entity) = {
+      val event = new Event(
+        Vector(entityA, entityB, intersection),
+        EventType.E_COLLISION)
+      EventManager.addEvent(event)
+    }
+    if (collisionEntity.isActive && collisionOther.isActive) {
+      if (collisionEntity.collidesWith.contains(CollisionComponent.ALL) ||
+          collisionEntity.collidesWith.contains(collisionOther.collisionType)) {
+        val spatial = entity.getComponent(SpatialComponent.id).get;
+        spatial.position += intersection
+        
+        val physComp = entity.getComponent(PhysicsComponent.id)
+        if (physComp.isDefined) {
+          if (intersection.x != 0 || intersection.z != 0) {
+            var velocity = physComp.get.velocity
+            val reflected = velocity - (intersection.normalize() * 2) * velocity.dot(intersection.normalize())
+            physComp.get.velocity = reflected
+            physComp.get.velocity.x *= 0.25f
+            physComp.get.velocity.z *= 0.25f
+          }
         }
+        sendIntersectionEvent(entity, other)
+        sendIntersectionEvent(other, entity)
+      }
+    } else {
+      if (collisionEntity.collidesWith.contains(CollisionComponent.ALL) ||
+          collisionEntity.collidesWith.contains(collisionOther.collisionType)) {
+        sendIntersectionEvent(entity, other)
+        sendIntersectionEvent(other, entity)
       }
     }
   }
