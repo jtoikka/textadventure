@@ -90,6 +90,7 @@ class Dialog(
       ((Key.Enter, Input.KEYRELEASED), (delta) => {
         active = false
         EventManager.addEvent(options(activeOption)._2)
+        EventManager.addEvent(new Event(Vector(),E_ANSWER_DIALOG))
         dispose()
       }),
       ((Key.M, Input.KEYRELEASED), (delta) => {
