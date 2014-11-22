@@ -36,6 +36,7 @@ class DialogScreen(parent: Adventure, rend: Renderer)
       }
     }),
     (E_THROW_DIALOG, (event, delta) => {
+      currentDialog = None
 //      println("Threw Dialog with hash " + event.args(1).toString)
 
       val dialog = event.args(0).asInstanceOf[Dialog]
@@ -50,6 +51,7 @@ class DialogScreen(parent: Adventure, rend: Renderer)
       EventManager.setActiveInputListener(dialog)
 
     }), (E_ANSWER_DIALOG, (event, delta) => {
+      currentDialog = None
       clearScene()
     }))
 
