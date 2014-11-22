@@ -454,7 +454,6 @@ object Factory {
     var collisionComponent = new CollisionComponent(
       w / 16, CollisionComponent.SQUARE,
       halfWidth = w / 2, halfHeight = h / 2)
-    //    println(w / 2 + ", " + h / 2)
     entity.addComponent(collisionComponent)
 
     entity
@@ -483,7 +482,6 @@ object Factory {
     var collisionComponent = new CollisionComponent(
       w / 16, CollisionComponent.SQUARE,
       halfWidth = w / 2, halfHeight = h / 2)
-    //    println(w / 2 + ", " + h / 2)
     entity.addComponent(collisionComponent)
 
     entity
@@ -542,7 +540,6 @@ object Factory {
     var collisionComponent = new CollisionComponent(
       w / 16, CollisionComponent.SQUARE,
       halfWidth = w / 2, halfHeight = h / 2)
-    //    println(w / 2 + ", " + h / 2)
     entity.addComponent(collisionComponent)
 
     entity

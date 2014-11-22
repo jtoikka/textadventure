@@ -1,7 +1,6 @@
 package o1.scene
 
 import o1.math._
-import scala.collection.mutable.Buffer
 import o1.inventory.Item
 import o1.event._
 import o1.inventory.Inventory
