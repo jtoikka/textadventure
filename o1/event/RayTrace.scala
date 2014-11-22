@@ -31,15 +31,18 @@ object RayTrace {
     var steps = 0
     while (steps < maxSteps) {
       if (CollisionCheck.findWorldCollision(bullet, 0.15f, scene.world.get)) {
+        bullet.dispose()
         return (None, (start - spatial.position).length())
       }
       val entity = CollisionCheck.findEntityCollision(bullet, scene.entities.toVector, filter)
       if (entity.isDefined) {
+        bullet.dispose()
         return (entity, (start - spatial.position).length())
       }
       spatial.position += direction * step
       steps += 1
     }
+    bullet.dispose()
     (None, 0)
   }
 }
