@@ -472,7 +472,8 @@ object Factory {
     // TODO: Fix magic size and location conversion
     val name = (node \ "@name").text
     val typeName = (node \ "@name").text
-    val level = ((node \ "properties" \ "property").filter(a => (a \ "@name").text == "level") \ "@value")
+    val level = ((node \ "properties" \ "property").filter(a => (a \ "@name").text == "level") \ "@value").text
+    val spawn = ((node \ "properties" \ "property").filter(a => (a \ "@name").text == "spawn") \ "@value").text
     val loc = Vec2((node \ "@x").text.toFloat, (node \ "@y").text.toFloat)
     //    val rotation = (node \ "@name").text
     val w = (node \ "@width").text.toFloat / 8
@@ -485,7 +486,7 @@ object Factory {
         val entityB = event.args(1).asInstanceOf[Entity]
 
         if (entityA == entity && entityB.getComponent(PlayerComponent.id).isDefined) {
-//          EventManager.addEvent()
+          EventManager.addEvent(new Event(Vector(level,spawn),EventType.E_LOAD_NEW_MAP))
         }
       }))
     entity.description = "levelTrigger"
