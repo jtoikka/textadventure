@@ -52,6 +52,12 @@
 		<item name="icon_key" path="data/icons/icon_key.png"></item>
 	</images>
 	<textures>
+	    <item name="exp0" path="data/textures/exp0.png"></item>
+	    <item name="exp1" path="data/textures/exp1.png"></item>
+        <item name="exp2" path="data/textures/exp2.png"></item>
+        <item name="exp3" path="data/textures/exp3.png"></item>
+        <item name="exp4" path="data/textures/exp4.png"></item>
+        <item name="exp5" path="data/textures/exp5.png"></item>
 	    <item name="testTex" path="data/textures/W3d_protograywallshade1.png"></item>
 	    <item name="test_enemy_tex" path="data/textures/psychobot.png"></item>
 	    <item name="door_tex" path="data/textures/door.png"></item>
