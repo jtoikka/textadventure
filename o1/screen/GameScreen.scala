@@ -334,7 +334,7 @@ class GameScreen(parent: Adventure, rend: Renderer)
   
   init()
   def init(): Unit = {
-    loadLevel("00_testmap","startSpawn")
+    loadLevel("00_startlevel","startSpawn")
   }
   
   def loadLevel(level: String, spawn:String) = {
@@ -357,11 +357,8 @@ class GameScreen(parent: Adventure, rend: Renderer)
     paused = false
     if (firstTime) {
       val d = Factory.createDialog(Vector(
-          ("OK", new Event(Vector("TokaValinta", this.hashCode()), E_ANSWER_DIALOG))),
-          "The year is 20XX. A deadline is fast approaching, and it is your \n" +
-          "task to hand in a document on time. But a series of alcoholic drinks \n" +
-          "has caused the pages to scatter! Gather them all up, stay awake, \n" +
-          "and hand in your work before 06:00 AM.\n\n", None, 80, 10)
+          ("OK", new Event(Vector("", this.hashCode()), E_ANSWER_DIALOG))),
+          ResourceManager.strings("introDialog"), Some(this), 80, 10)
       EventManager.addEvent(new Event(Vector(d, this.hashCode()), E_THROW_DIALOG))
       firstTime = false
     }
