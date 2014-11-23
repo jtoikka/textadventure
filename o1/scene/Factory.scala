@@ -448,8 +448,61 @@ object Factory {
     val w = (node \ "@width").text.toFloat / 8
     val h = (node \ "@height").text.toFloat / 8
 
+    val pagesString = ((node \ "properties" \ "property").filter(a => (a \ "@name").text == "pages") \ "@value").text
+    val keysString = ((node \ "properties" \ "property").filter(a => (a \ "@name").text == "keys") \ "@value").text
+    val rupeesString = ((node \ "properties" \ "property").filter(a => (a \ "@name").text == "rupees") \ "@value").text
+
+    val pages = if (!pagesString.isEmpty()) pagesString.toInt else 0
+    val keys = if (!keysString.isEmpty()) keysString.toInt else 0
+    val rupees = if (!rupeesString.isEmpty()) rupeesString.toInt else 0
+
     val entity = new Entity()
-    entity.eventHandlers = scala.collection.immutable.Map()
+    entity.eventHandlers = scala.collection.immutable.Map(
+      (EventType.E_INTERACTION, (event, delta) => {
+        val player = event.args(0).asInstanceOf[Option[Entity]]
+        val entityB = event.args(1).asInstanceOf[Option[Entity]]
+
+        if (entityB.isDefined && entityB.get == entity) {
+          println("Door Interaction")
+          val d = Factory.createDialog(Vector(
+            ("Yes", new Event(Vector(player, entityB), EventType.E_OPEN_CHEST)),
+            ("No", new Event(Vector(false, entity.hashCode()), EventType.E_NONE))),
+            "Do you want to open the chest with a key?", None, 40, 6)
+          EventManager.addEvent(new Event(Vector(d, entity.hashCode()), EventType.E_THROW_DIALOG))
+        }
+      }), (EventType.E_OPEN_CHEST, (event, delta) => {
+        val player = event.args(0).asInstanceOf[Option[Entity]]
+        val entityB = event.args(1).asInstanceOf[Option[Entity]]
+
+        if (player.isDefined && entityB.isDefined && entityB.get == entity &&
+          player.get.getComponent(InventoryComponent.id).isDefined) {
+          if (player.get.getComponent(InventoryComponent.id).get.inv.removeOneOfType(Key())) {
+            entity.dispose()
+            entity.destroy = true
+            val chestItems = entityB.get.getComponent(InventoryComponent.id).get.inv.getAllItems()
+
+            var dialogString = "You got some new items!\n"
+            if (chestItems.count(i => i.isInstanceOf[Page]) > 0)
+              dialogString += "Pages " + chestItems.count(i => i.isInstanceOf[Page]) + "\n"
+            if (chestItems.count(i => i.isInstanceOf[Rupee]) > 0)
+              dialogString += "Rupees " + chestItems.count(i => i.isInstanceOf[Rupee]) + "\n"
+            if (chestItems.count(i => i.isInstanceOf[Key]) > 0)
+              dialogString += "Keys " + chestItems.count(i => i.isInstanceOf[Key]) + "\n"
+
+            val d = Factory.createDialog(Vector(
+              ("Ok", new Event(Vector(), EventType.E_NONE))),
+              dialogString, None, 40, 6)
+            EventManager.addEvent(new Event(Vector(d, entity.hashCode()), EventType.E_THROW_DIALOG))
+
+            chestItems.foreach(f => player.get.getComponent(InventoryComponent.id).get.inv.addItem(f))
+          } else {
+            val d = Factory.createDialog(Vector(
+              ("Ok.. :(", new Event(Vector(), EventType.E_NONE))),
+              "You need key to open the chest", None, 40, 6)
+            EventManager.addEvent(new Event(Vector(d, entity.hashCode()), EventType.E_THROW_DIALOG))
+          }
+        }
+      }))
     entity.description = "chest"
 
     val spatialComp = new SpatialComponent()
@@ -457,6 +510,18 @@ object Factory {
     spatialComp.forward = Vec3(1.0f, 0, 0)
     entity.addComponent(spatialComp)
 
+    val inventoryComponent = new InventoryComponent()
+    entity.addComponent(inventoryComponent)
+
+    for (i <- 0 until pages) {
+      inventoryComponent.inv.addItem(Page())
+    }
+    for (i <- 0 until keys) {
+      inventoryComponent.inv.addItem(Key())
+    }
+    for (i <- 0 until rupees) {
+      inventoryComponent.inv.addItem(Rupee())
+    }
     var renderComp = new RenderComponent("chest", Some("chest"))
     entity.addComponent(renderComp)
 
@@ -486,7 +551,7 @@ object Factory {
         val entityB = event.args(1).asInstanceOf[Entity]
 
         if (entityA == entity && entityB.getComponent(PlayerComponent.id).isDefined) {
-          EventManager.addEvent(new Event(Vector(level,spawn),EventType.E_LOAD_NEW_MAP))
+          EventManager.addEvent(new Event(Vector(level, spawn), EventType.E_LOAD_NEW_MAP))
         }
       }))
     entity.description = "levelTrigger"
@@ -499,6 +564,8 @@ object Factory {
     var collisionComponent = new CollisionComponent(
       w / 16, CollisionComponent.SQUARE,
       halfWidth = w / 2, halfHeight = h / 2)
+    collisionComponent.isActive = false
+
     entity.addComponent(collisionComponent)
 
     entity
@@ -656,7 +723,6 @@ object Factory {
 
     var renderComp = new RenderComponent("rupee")
     entity.addComponent(renderComp)
-
 
     val rotateComp = new RotateComponent(-0.2f)
     entity.addComponent(rotateComp)
