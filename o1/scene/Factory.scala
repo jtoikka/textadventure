@@ -576,14 +576,6 @@ object Factory {
       w / 16, CollisionComponent.SQUARE,
       halfWidth = w / 2, halfHeight = h / 2)
     entity.addComponent(collisionComponent)
-    
-    val doorTop = new Entity()
-    val renderDoorTop = new RenderComponent("doorTop", Some("testTex"))
-    doorTop.addComponent(renderDoorTop)
-    
-    doorTop.addComponent(spatialComp)
-    
-    entity.addChild(doorTop)
 
     entity
   }
