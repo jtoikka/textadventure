@@ -76,18 +76,6 @@ object Factory {
 
     cof.description = "Coffee bullet"
 
-    cof.eventHandlers = scala.collection.immutable.Map(
-      (EventType.E_COLLISION, (event, delta) => {
-        val entityA = event.args(0).asInstanceOf[Entity]
-        val entityB = event.args(1).asInstanceOf[Entity]
-
-        if (entityA == cof) {
-          if (entityB.getComponent(DamageComponent.id).isDefined) {
-            cof.destroy = true
-          }
-        }
-      }))
-
     val rotateComp = new RotateComponent(rateUp = 0.1f)
     cof.addComponent(rotateComp)
 
@@ -96,6 +84,21 @@ object Factory {
     spatialComp.position.y = 0.8f
 
     cof.addComponent(spatialComp)
+    
+    cof.eventHandlers = scala.collection.immutable.Map(
+      (EventType.E_COLLISION, (event, delta) => {
+        val entityA = event.args(0).asInstanceOf[Entity]
+        val entityB = event.args(1).asInstanceOf[Entity]
+
+        if (entityA == cof) {
+          if (entityB.getComponent(DamageComponent.id).isDefined) {
+            cof.destroy = true
+            EventManager.addEvent(
+                new Event(Vector(spatialComp.position), 
+                EventType.E_EXPLOSION))
+          }
+        }
+      }))
 
     val physicsComp = new PhysicsComponent(Vec3(direction.x, 0.3f, direction.z), Vec3(0.0f, -0.0981f, 0.0f))
     cof.addComponent(physicsComp)
@@ -150,6 +153,7 @@ object Factory {
       case "shop" => Some(createShop(node))
       case "chest" => Some(createChest(node))
       case "levelTrigger" => Some(createLevelTrigger(node))
+      case "breakableWall" => Some(createBreakableWall(node))
       case _ => None
     }
     ent
@@ -771,6 +775,70 @@ object Factory {
     EventManager.addEvent(new Event(Vector(player), EventType.E_PLAYER_CREATION))
 
     player
+  }
+  
+  def createBreakableWall(node: Node) = {
+    // TODO: Fix magic size and location conversion
+    val loc = Vec2((node \ "@x").text.toFloat, (node \ "@y").text.toFloat)
+    val entity: Entity = new Entity()
+        
+    val spatialComp = new SpatialComponent()
+    spatialComp.position = Vec3(loc.x * 2 / 16, 0.0f, loc.y * 2 / 16)
+    entity.addComponent(spatialComp)
+    
+    entity.eventHandlers = scala.collection.immutable.Map(
+      (EventType.E_COLLISION, (event, delta) => {
+        val entityA = event.args(0).asInstanceOf[Entity]
+        val entityB = event.args(1).asInstanceOf[Entity]
+        if (entityA == entity && !entityB.destroy) {
+          val damageComponent = entityB.getComponent(DamageComponent.id)
+          if (damageComponent.isDefined && damageComponent.get.canDamage == DamageComponent.ENEMY) {
+            entity.destroy = true
+            if (entityB.getComponent(BreakableComponent.id).isDefined) {
+              entityB.destroy = true
+            }
+            EventManager.addEvent(new Event(Vector(spatialComp.position), 
+                  EventType.E_EXPLOSION))
+          }
+        }
+      }))
+
+    val renderComp = new RenderComponent("uv_cube", Some("testTex"))
+    entity.addComponent(renderComp)
+
+    var collisionComponent = new CollisionComponent(
+      1.0f, CollisionComponent.SQUARE,
+      halfWidth = 1.0f, halfHeight = 1.0f)
+    collisionComponent.isStatic = true
+    
+    entity.addComponent(collisionComponent)
+    entity
+  }
+  
+  def createExplosion(position: Vec3) = {
+    var entity = new Entity()
+
+    entity.description = "Explosion"
+
+    var spatialComp = new SpatialComponent()
+    spatialComp.position = position
+    spatialComp.position.y += 1.0f
+
+    entity.addComponent(spatialComp)
+    
+    var faceCameraComp = new FaceCameraComponent()
+    entity.addComponent(faceCameraComp)
+
+    var renderComp = new RenderComponent("test_enemy", Some("exp1"))
+    entity.addComponent(renderComp)
+
+    var animationComp = new AnimationComponent(Vector("exp1", "exp2", "exp3", "exp4", "exp5"), 0.8)
+    entity.addComponent(animationComp)
+    
+    var deathTimerComp = new DeathTimerComponent(0.8 * 5)
+    entity.addComponent(deathTimerComp)
+    
+    entity
   }
 
   def createDialog(options: Vector[(String, Event)],
