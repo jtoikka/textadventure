@@ -189,7 +189,7 @@ class Renderer3D(w: Int, h: Int) extends Renderer(w,h) {
                     ResourceManager.meshes("uv_cube"), 
                     matrix, 
 //                    None)
-                    Some(ResourceManager.textures("testTex")))
+                    Some(ResourceManager.textures("brick")))
               }
             }
           }
@@ -386,7 +386,7 @@ class Renderer3D(w: Int, h: Int) extends Renderer(w,h) {
           uv = Vec2(uv.x / w, uv.y / w)
           val index = calcDoubleIndex(x, y)
           if (depth < _depthBuffer(index) && depth > 0.0) {
-            val colour = texture.getPixel(uv.x, uv.y)
+            val colour = texture.getPixel(uv.x - uv.x.toInt, uv.y - uv.y.toInt)
             val a = colour >> 24 & 0xFF
             val aNormalized = a / 255.0f
             val r = colour >> 16 & 0xFF
