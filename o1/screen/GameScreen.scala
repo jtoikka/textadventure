@@ -39,6 +39,7 @@ class GameScreen(parent: Adventure, rend: Renderer)
   val FORWARD = 0
   val RIGHT = 1
   val ROTATERIGHT = 2
+  val ROTATEUP = 3
   // Grabs movement inputs
   val movementMap = Map[Int, Float]()
 
@@ -176,7 +177,8 @@ class GameScreen(parent: Adventure, rend: Renderer)
     var flippedForward = Vec3()
     flippedForward.x = -spatial.forward.x
     flippedForward.z = spatial.forward.z
-    var right = spatial.up.cross(flippedForward)
+    var right = Vec3(0.0f, 1.0f, 0.0f).cross(flippedForward).normalize()
+    var up = flippedForward.cross(right).normalize
     if (movementMap.contains(FORWARD)) {
       spatial.position += flippedForward * movementMap(FORWARD)
     }
@@ -185,23 +187,31 @@ class GameScreen(parent: Adventure, rend: Renderer)
     }
     if (movementMap.contains(ROTATERIGHT)) {
       spatial.forward = (
-        Utility.rotateY(movementMap(ROTATERIGHT)) *
-        Vec4(spatial.forward, 0.0f)).xyz
+        Utility.rotateAxis(movementMap(ROTATERIGHT), up) *
+        Vec4(spatial.forward, 0.0f)).xyz.normalize()
+//      spatial.up = (
+//        Utility.rotateY(movementMap(ROTATERIGHT)) *
+//        Vec4(spatial.up, 0.0f)).xyz
+    }
+    if (movementMap.contains(ROTATEUP)) {
+      val matrix = Utility.rotateAxis(-movementMap(ROTATEUP), Vec3(-right.x, right.y, right.z))
+      val newForward = (matrix * Vec4(spatial.forward, 0.0f)).xyz.normalize()
+      if (newForward.y.abs < 0.5f)
+        spatial.forward = newForward
     }
   }
 
   private def updateCamera() = {
     var camSpatial = scene.camera.get.getComponent(SpatialComponent.id).get
-    val camRight = camSpatial.up.cross(camSpatial.forward)
-
+    
     val camFollow = scene.camera.get.getComponent(FollowComponent.id).get
     val followSpatial = camFollow.entity.getComponent(SpatialComponent.id)
-
-    camSpatial.position = followSpatial.get.position.neg()
-
+    
     camSpatial.forward.x = followSpatial.get.forward.x
     camSpatial.forward.y = followSpatial.get.forward.y
     camSpatial.forward.z = -followSpatial.get.forward.z
+
+    camSpatial.position = followSpatial.get.position.neg()
 
   }
 
@@ -228,11 +238,6 @@ class GameScreen(parent: Adventure, rend: Renderer)
         EventManager.addEvent(new Event(Vector("helpMenuScreen"), E_TEST))
       }),
       ((Key.M, Input.KEYRELEASED), (delta) => {
-        //        val d = Factory.createDialog(Vector(
-        //          ("First Choice", new Event(Vector("EkaValinta", this.hashCode()), E_ANSWER_DIALOG)),
-        //          ("Second Choice", new Event(Vector("TokaValinta", this.hashCode()), E_ANSWER_DIALOG))),
-        //          "sdsdfsdf", None, 40, 10)
-        //        EventManager.addEvent(new Event(Vector(d, this.hashCode()), E_THROW_DIALOG))
         EventManager.addEvent(new Event(Vector("mapScreen"), E_CHANGE_SCREEN))
 
       }),
@@ -257,8 +262,13 @@ class GameScreen(parent: Adventure, rend: Renderer)
       ((Key.Right, Input.KEYDOWN), (delta) => {
         movementMap(ROTATERIGHT) = 0.2f * delta
       }),
+      ((Key.Up, Input.KEYDOWN), (delta) => {
+        movementMap(ROTATEUP) = 0.2f * delta
+      }),
+      ((Key.Down, Input.KEYDOWN), (delta) => {
+        movementMap(ROTATEUP) = -0.2f * delta
+      }),
       ((Key.Space, Input.KEYPRESSED), (delta) => {
-        //        println("Toss coffee")
         tossCoffee
       }))
 
@@ -281,7 +291,7 @@ class GameScreen(parent: Adventure, rend: Renderer)
   init()
   def init(): Unit = {
 //    scene.loadMap("00_testmap")
-    scene.loadMap("01_firstfloor_b")
+    scene.loadMap("01_firstfloor")
     EventManager.addEvent(new Event(Vector(scene.world), E_CHANGE_MAP))
   }
 

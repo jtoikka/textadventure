@@ -636,7 +636,7 @@ object Factory {
       }))
 
     val spatialComp = new SpatialComponent()
-    spatialComp.position = Vec3(loc.x * 2 / 16, 0.5f, loc.y * 2 / 16)
+    spatialComp.position = Vec3(loc.x * 2 / 16, 0.0f, loc.y * 2 / 16)
     spatialComp.scale = Vec3(0.5f, 0.5f, 0.5f)
     entity.addComponent(spatialComp)
 
