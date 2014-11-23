@@ -68,8 +68,10 @@
 	</textures>
 	<strings>
 		<item name="helpMenu">
-			<string>This text should wrap nicely. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi placerat dui nec cursus bibendum. Integer auctor, dui gravida semper maximus, arcu massa semper libero, vitae laoreet nulla nulla non leo.\nThis should be alone on this line.
-			</string>
+			<string>This text should wrap nicely. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi placerat dui nec cursus bibendum. Integer auctor, dui gravida semper maximus, arcu massa semper libero, vitae laoreet nulla nulla non leo.&#xA;This should be alone on this line.</string>
+		</item>
+		<item name="introDialog">
+			<string>The year is 20XX. A deadline is fast approaching, and it is your &#xA;task to hand in a document on time. But a series of alcoholic drinks &#xA;has caused the pages to scatter! Gather them all up, stay awake, &#xA;and hand in your work before 06:00 AM.&#xA;</string>
 		</item>
 		<item name="inventoryTitle"><string>Inventory</string></item>
 		<item name="mainMenuTitle"><string>Main Menu</string></item>

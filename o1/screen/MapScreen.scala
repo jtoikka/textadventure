@@ -104,7 +104,7 @@ class MapScreen(parent: Adventure, rend: Renderer)
 
   def updateMap() = {
     if (world.isDefined) {
-      scene.clear()
+//      scene.clear()
       val tileMap = world.get.tileMap
       val bImg = new BufferedImage(tileMap.width, tileMap.height, BufferedImage.TYPE_BYTE_GRAY)
       for (x <- 0 until tileMap.width; y <- 0 until tileMap.height) {
