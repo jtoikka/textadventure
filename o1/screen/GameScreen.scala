@@ -53,6 +53,12 @@ class GameScreen(parent: Adventure, rend: Renderer)
         inputMap(eventKey)(delta)
       }
     }),
+    (E_LOAD_NEW_MAP, (event, delta) => {
+      val newMapName = event.args(0).asInstanceOf[String]
+      val newSpawnName = event.args(1).asInstanceOf[String]
+      loadLevel(newMapName,newSpawnName)
+      
+    }),
     (E_PLAYER_CREATION, (event, delta) => {
       player = Some(event.args(0).asInstanceOf[Entity])
     }))
@@ -244,7 +250,7 @@ class GameScreen(parent: Adventure, rend: Renderer)
         EventManager.addEvent(new Event(Vector("mapScreen"), E_CHANGE_SCREEN))
       }),
       ((Key.L, Input.KEYRELEASED), (delta) => {
-        loadLevel("00_testmap")
+        loadLevel("00_testmap","startSpawn")
       }),
       ((Key.W, Input.KEYDOWN), (delta) => {
         movementMap(FORWARD) = SPEED * delta
@@ -295,13 +301,14 @@ class GameScreen(parent: Adventure, rend: Renderer)
   }
   init()
   def init(): Unit = {
-    loadLevel("01_firstfloor")
+    loadLevel("02_supermap","startSpawn")
   }
   
-  def loadLevel(level: String) = {
+  def loadLevel(level: String, spawn:String) = {
+    println("Change map to " + level + " with spawn " + spawn)
     val player = scene.entities.find(_.getComponent(PlayerComponent.id).isDefined)
     scene.clear()
-    Level.loadMap(scene, level)
+    Level.loadMap(scene, level,spawn)
     val newPlayer = scene.entities.find(_.getComponent(PlayerComponent.id).isDefined)
     if (newPlayer.isDefined && player.isDefined) {
       newPlayer.get.addComponent(player.get.getComponent(InventoryComponent.id).get)

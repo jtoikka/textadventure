@@ -13,6 +13,7 @@ object EventType extends Enumeration {
       E_GAME_EVENT, 
       E_GAME_UPDATE, 
       E_CHANGE_MAP, 
+      E_LOAD_NEW_MAP, 
       E_CHANGE_HUD_INFO, 
       E_TEST, 
       E_LOOKING_AT, 

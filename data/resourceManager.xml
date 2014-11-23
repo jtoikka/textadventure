@@ -70,5 +70,7 @@
 		<item name="00_testmap" path="data/maps/00_testmap.tmx"></item>
 		<item name="01_firstfloor" path="data/maps/01_firstfloor.tmx"></item>
 		<item name="01_firstfloor_b" path="data/maps/01_firstfloor_b.tmx"></item>
+		<item name="02_supermap" path="data/maps/02_supermap.tmx"></item>
+		<item name="03_supermap2" path="data/maps/03_supermap2.tmx"></item>
 	</maps>
 </resources>

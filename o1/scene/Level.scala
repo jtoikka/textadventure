@@ -9,7 +9,7 @@ object Level {
    * @param scene The scene to load the level into.
    * @param map The resource name of a "Tiled" map (see ResourceManager).
    */
-  def loadMap(scene: Scene, map: String): Unit = {
+  def loadMap(scene: Scene, map: String,spawn: String): Unit = {
     scene.world = Some(new World(map))
 
     // entities
@@ -28,9 +28,14 @@ object Level {
         scene.addEntity(ent.get)
     }
 
-    // player
-    val player = (objectGroups("player") \ "object")(0)
-    val playerEnt = Factory.createEntity(player)
+    // playerSpawn
+    
+    val player = (objectGroups("player") \ "object")
+//    println(player)
+    // ((node \ "properties" \ "property").filter(a => (a \ "@name").text == "spawn") \ "@value").text
+    val location = player.find(a => ((a \ "properties" \ "property").find(q => (q \ "@name").text == "name").get \ "@value").text == spawn)
+//    println(location)
+    val playerEnt = Factory.createEntity(location.get)
     scene.addEntity(playerEnt.get)
     scene.camera = Some(Factory.createCamera(playerEnt.get))
   }
