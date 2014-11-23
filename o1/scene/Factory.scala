@@ -145,7 +145,7 @@ object Factory {
       case "page" => Some(createPage(node))
       case "monkey" => Some(createMonkey(node))
       case "enemy" => Some(createTestEnemy(node))
-      case "player" => Some(createPlayer(node))
+//      case "player" => Some(createPlayer(node))
       case "door" => Some(createDoor(node))
       case "openDoor" => Some(createOpenDoor(node))
       case "rupee" => Some(createRupee(node))
@@ -154,6 +154,7 @@ object Factory {
       case "chest" => Some(createChest(node))
       case "levelTrigger" => Some(createLevelTrigger(node))
       case "breakableWall" => Some(createBreakableWall(node))
+      case "unbreakableWall" => Some(createUnbreakableWall(node))
       case _ => None
     }
     ent
@@ -531,8 +532,8 @@ object Factory {
     val name = (node \ "@name").text
     val typeName = (node \ "@name").text
     val loc = Vec2((node \ "@x").text.toFloat, (node \ "@y").text.toFloat)
-    val rotation = if(!(node \ "@rotation").text.isEmpty()) (node \ "@rotation").text.toInt else 0
-    
+    val rotation = if (!(node \ "@rotation").text.isEmpty()) (node \ "@rotation").text.toInt else 0
+//    println("Door rotation: " + rotation)
     val w = (node \ "@width").text.toFloat / 8 + 0.1f
     val h = (node \ "@height").text.toFloat / 8 + 0.1f
 
@@ -572,23 +573,28 @@ object Factory {
     entity.description = "door"
 
     val spatialComp = new SpatialComponent()
-    spatialComp.forward = (Utility.rotateY((rotation/360 * 2*Math.PI).toFloat) * Vec4(spatialComp.forward,0f)).xyz
-    
+    spatialComp.forward = (Utility.rotateY(((rotation / 360f) * 2 * Math.PI).toFloat) * Vec4(0, 0, 1, 0)).xyz
+
     spatialComp.position = Vec3(loc.x * 2 / 16, 0.0f, loc.y * 2 / 16)
-//    spatialComp.forward = Vec3(1.0f, 0, 0)
+    //    spatialComp.forward = Vec3(1.0f, 0, 0)
     entity.addComponent(spatialComp)
 
     var renderComp = new RenderComponent("door", Some("door_tex"))
     entity.addComponent(renderComp)
-
-    var collisionComponent = new CollisionComponent(
-      w / 16, CollisionComponent.SQUARE,
-      halfWidth = w / 2, halfHeight = h / 2)
-    entity.addComponent(collisionComponent)
-
+    if (rotation == 0) {
+      var collisionComponent = new CollisionComponent(
+        w / 16, CollisionComponent.SQUARE,
+        halfWidth = w / 2, halfHeight = h / 2)
+      entity.addComponent(collisionComponent)
+    } else {
+      var collisionComponent = new CollisionComponent(
+        h / 16, CollisionComponent.SQUARE,
+        halfWidth = h / 2, halfHeight = w / 2)
+      entity.addComponent(collisionComponent)
+    }
     entity
   }
-  
+
   def createOpenDoor(node: Node) = {
     // TODO: Fix magic size and location conversion
     val name = (node \ "@name").text
@@ -599,7 +605,7 @@ object Factory {
     val h = (node \ "@height").text.toFloat / 8 + 0.1f
 
     val entity = new Entity()
-    
+
     entity.description = "open door"
 
     val spatialComp = new SpatialComponent()
@@ -608,7 +614,6 @@ object Factory {
 
     var renderComp = new RenderComponent("doorTop", Some("testTex"))
     entity.addComponent(renderComp)
-
 
     entity
   }
@@ -726,15 +731,15 @@ object Factory {
     val size = (node \ "@width").text.toFloat
 
     val player = new Entity()
-    
+
     val healthComponent = new HealthComponent(3)
     player.addComponent(healthComponent)
-    
+
     player.eventHandlers = scala.collection.immutable.Map(
       (EventType.E_COLLISION, (event, delta) => {
         val entityA = event.args(0).asInstanceOf[Entity]
         val entityB = event.args(1).asInstanceOf[Entity]
-        
+
         val damageComponent = entityB.getComponent(DamageComponent.id)
 
         if (entityA == player && damageComponent.isDefined) {
@@ -763,7 +768,10 @@ object Factory {
 
     val collisionComponent = new CollisionComponent(0.3f, CollisionComponent.CIRCLE)
     player.addComponent(collisionComponent)
-
+    
+//    var renderComp = new RenderComponent("chest", Some("chest"))
+//    player.addComponent(renderComp)
+    
     val inputComponent = new InputComponent()
     player.addComponent(inputComponent)
 
@@ -778,6 +786,8 @@ object Factory {
   def createBreakableWall(node: Node) = {
     // TODO: Fix magic size and location conversion
     val loc = Vec2((node \ "@x").text.toFloat, (node \ "@y").text.toFloat)
+    val w = (node \ "@width").text.toFloat / 8
+    val h = (node \ "@height").text.toFloat / 8
     val entity: Entity = new Entity()
         
     val spatialComp = new SpatialComponent()
@@ -800,13 +810,40 @@ object Factory {
           }
         }
       }))
+      
+    spatialComp.scale = Vec3(w / 2, 1.0f, h / 2)
 
     val renderComp = new RenderComponent("uv_cube", Some("testTex"))
     entity.addComponent(renderComp)
 
     var collisionComponent = new CollisionComponent(
-      1.0f, CollisionComponent.SQUARE,
-      halfWidth = 1.0f, halfHeight = 1.0f)
+        h / 16, CollisionComponent.SQUARE,
+        halfWidth = h / 2, halfHeight = w / 2)
+    collisionComponent.isStatic = true
+    
+    entity.addComponent(collisionComponent)
+    entity
+  }
+  
+  def createUnbreakableWall(node: Node) = {
+    // TODO: Fix magic size and location conversion
+    val loc = Vec2((node \ "@x").text.toFloat, (node \ "@y").text.toFloat)
+    val w = (node \ "@width").text.toFloat / 8
+    val h = (node \ "@height").text.toFloat / 8
+    val entity: Entity = new Entity()
+        
+    val spatialComp = new SpatialComponent()
+    spatialComp.position = Vec3(loc.x * 2 / 16, 0.0f, loc.y * 2 / 16)
+    entity.addComponent(spatialComp)
+      
+    spatialComp.scale = Vec3(w / 2, 1.0f, h / 2)
+
+    val renderComp = new RenderComponent("uv_cube", Some("testTex"))
+    entity.addComponent(renderComp)
+
+    var collisionComponent = new CollisionComponent(
+        h / 16, CollisionComponent.SQUARE,
+        halfWidth = h / 2, halfHeight = w / 2)
     collisionComponent.isStatic = true
     
     entity.addComponent(collisionComponent)
