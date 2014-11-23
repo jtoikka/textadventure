@@ -63,6 +63,7 @@
 	    <item name="door_tex" path="data/textures/door.png"></item>
    	    <item name="coffee_machine" path="data/textures/coffee_machine.png"></item>
    	    <item name="chest" path="data/textures/chest.png"></item>
+   	    <item name="brick" path="data/textures/W3d_protograywallshade1.png"></item>
    	    <item name="wall" path="data/textures/walltex.png"></item>
 	</textures>
 	<strings>

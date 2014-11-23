@@ -15,6 +15,8 @@ import o1.event.Listener
 import o1.inventory.Rupee
 import o1.inventory.Key
 import o1.inventory.Item
+import o1.math.Utility
+import o1.math.Vec4
 
 /**
  * The Factory object is a collection of functions that can be used to create
@@ -528,7 +530,8 @@ object Factory {
     val name = (node \ "@name").text
     val typeName = (node \ "@name").text
     val loc = Vec2((node \ "@x").text.toFloat, (node \ "@y").text.toFloat)
-    //    val rotation = (node \ "@name").text
+    val rotation = if(!(node \ "@rotation").text.isEmpty()) (node \ "@rotation").text.toInt else 0
+    
     val w = (node \ "@width").text.toFloat / 8 + 0.1f
     val h = (node \ "@height").text.toFloat / 8 + 0.1f
 
@@ -568,8 +571,10 @@ object Factory {
     entity.description = "door"
 
     val spatialComp = new SpatialComponent()
+    spatialComp.forward = (Utility.rotateY((rotation/360 * 2*Math.PI).toFloat) * Vec4(spatialComp.forward,0f)).xyz
+    
     spatialComp.position = Vec3(loc.x * 2 / 16, 0.0f, loc.y * 2 / 16)
-    spatialComp.forward = Vec3(1.0f, 0, 0)
+//    spatialComp.forward = Vec3(1.0f, 0, 0)
     entity.addComponent(spatialComp)
 
     var renderComp = new RenderComponent("door", Some("door_tex"))
