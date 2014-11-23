@@ -168,7 +168,10 @@ class GameScreen(parent: Adventure, rend: Renderer)
   def faceCamera(entity: Entity, camera: Entity) = {
     val spatial = entity.getComponent(SpatialComponent.id)
     val cameraPos = camera.getComponent(SpatialComponent.id).get.position
-    spatial.get.forward = (spatial.get.position + cameraPos).normalize.neg
+    val setY = spatial.get.forward.y != 0
+    spatial.get.forward = (spatial.get.position + cameraPos)
+    spatial.get.forward.y = 0
+    spatial.get.forward = spatial.get.forward.neg.normalize
     spatial.get.forward.x *= -1
   }
 
@@ -239,7 +242,9 @@ class GameScreen(parent: Adventure, rend: Renderer)
       }),
       ((Key.M, Input.KEYRELEASED), (delta) => {
         EventManager.addEvent(new Event(Vector("mapScreen"), E_CHANGE_SCREEN))
-
+      }),
+      ((Key.L, Input.KEYRELEASED), (delta) => {
+        loadLevel("00_testmap")
       }),
       ((Key.W, Input.KEYDOWN), (delta) => {
         movementMap(FORWARD) = SPEED * delta
@@ -290,8 +295,19 @@ class GameScreen(parent: Adventure, rend: Renderer)
   }
   init()
   def init(): Unit = {
-//    scene.loadMap("00_testmap")
-    scene.loadMap("01_firstfloor")
+    loadLevel("01_firstfloor")
+  }
+  
+  def loadLevel(level: String) = {
+    val player = scene.entities.find(_.getComponent(PlayerComponent.id).isDefined)
+    scene.clear()
+    Level.loadMap(scene, level)
+    val newPlayer = scene.entities.find(_.getComponent(PlayerComponent.id).isDefined)
+    if (newPlayer.isDefined && player.isDefined) {
+      newPlayer.get.addComponent(player.get.getComponent(InventoryComponent.id).get)
+      newPlayer.get.getComponent(SpatialComponent.id).get.forward = 
+        player.get.getComponent(SpatialComponent.id).get.forward
+    }
     EventManager.addEvent(new Event(Vector(scene.world), E_CHANGE_MAP))
   }
 
