@@ -2,12 +2,19 @@ package o1.inventory
 import scala.collection.mutable.Map
 import o1.adventure.render.ResourceManager
 import scala.reflect.ClassTag
+import scala.collection.mutable.Buffer
 
 object Inventory {
     val MAX_INVENTORY_ITEM_COUNT = 6
 }
 class Inventory {
   val containers = Map[Class[_], ItemContainer[_]]()
+  
+  def getAllItems() : Vector[Item] = {
+    val buf = Buffer[Item]()
+    containers.values.foreach(f => f.getAllItems().foreach(a => buf += a))
+    buf.toVector
+  }
   
   def addItem(item: Item): Boolean = {
     if (containers.contains(item.getClass())) {

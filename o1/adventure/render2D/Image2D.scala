@@ -11,7 +11,7 @@ class Image2D(var img: BufferedImage, var defFill: Boolean, var fixWidth: Boolea
   else img.getWidth() * img.getHeight()
 
   var grayArray: Array[Int] = new Array[Int](arrLenght)
-
+  
   makeArray()
 
   def makeArray() = {
@@ -46,6 +46,7 @@ class Image2D(var img: BufferedImage, var defFill: Boolean, var fixWidth: Boolea
   }
 
   def getWidth(): Int = if (fixWidth) img.getWidth() * 2 else img.getWidth()
+  
   def getHeight(): Int = img.getHeight()
 
   def getArray(img: BufferedImage): Array[Int] = grayArray
