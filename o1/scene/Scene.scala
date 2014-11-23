@@ -20,33 +20,6 @@ class Scene {
 
   var world: Option[World] = None
 
-  def loadMap(map: String) {
-    // world
-    world = Some(new World(map))
-
-    // entities
-    val xml = ResourceManager.maps(map)
-    val objectGroups = Map[String, scala.xml.Node]()
-
-    for (layer <- xml \ "objectgroup") {
-      val name = layer \ "@name"
-      objectGroups(name.text) = layer
-    }
-    // main object layer. 
-    val objects = objectGroups("objects") \ "object"
-    for (obj <- objects) {
-      val ent = Factory.createEntity(obj)
-      if (ent.isDefined)
-        addEntity(ent.get)
-    }
-
-    // player
-    val player = (objectGroups("player") \ "object")(0)
-    val playerEnt = Factory.createEntity(player)
-    addEntity(playerEnt.get)
-    this.camera = Some(Factory.createCamera(playerEnt.get))
-  }
-
   def addEntity(entity: Entity) {
     entities += entity
   }
@@ -58,7 +31,9 @@ class Scene {
     }
     entity.dispose()
   }
+  
   def clear() {
+    entities.foreach(_.dispose())
     entities.clear()
   }
 }

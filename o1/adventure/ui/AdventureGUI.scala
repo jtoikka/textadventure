@@ -43,7 +43,7 @@ object AdventureGUI extends SimpleSwingApplication with Listener {
     (Key.M, false), (Key.N, false),
     (Key.Enter, false), (Key.Escape, false),
     (Key.I, false), (Key.Q, false),
-    (Key.Space, false))
+    (Key.Space, false), (Key.L, false))
 
   def top = new MainFrame {
 
@@ -146,6 +146,10 @@ object AdventureGUI extends SimpleSwingApplication with Listener {
         keyMap(Key.Space) = true
       case KeyReleased(_, Key.Space, _, _) =>
         keyMap(Key.Space) = false
+      case KeyPressed(_, Key.L, _, _) =>
+        keyMap(Key.L) = true
+      case KeyReleased(_, Key.L, _, _) =>
+        keyMap(Key.L) = false
     }
     
     var time = System.currentTimeMillis()
