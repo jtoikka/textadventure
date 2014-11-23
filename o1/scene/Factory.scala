@@ -153,6 +153,7 @@ object Factory {
       case "shop" => Some(createShop(node))
       case "chest" => Some(createChest(node))
       case "levelTrigger" => Some(createLevelTrigger(node))
+      case "breakableWall" => Some(createBreakableWall(node))
       case _ => None
     }
     ent
@@ -769,6 +770,44 @@ object Factory {
     player
   }
   
+  def createBreakableWall(node: Node) = {
+    // TODO: Fix magic size and location conversion
+    val loc = Vec2((node \ "@x").text.toFloat, (node \ "@y").text.toFloat)
+    val entity: Entity = new Entity()
+        
+    val spatialComp = new SpatialComponent()
+    spatialComp.position = Vec3(loc.x * 2 / 16, 0.0f, loc.y * 2 / 16)
+    entity.addComponent(spatialComp)
+    
+    entity.eventHandlers = scala.collection.immutable.Map(
+      (EventType.E_COLLISION, (event, delta) => {
+        val entityA = event.args(0).asInstanceOf[Entity]
+        val entityB = event.args(1).asInstanceOf[Entity]
+        if (entityA == entity && !entityB.destroy) {
+          val damageComponent = entityB.getComponent(DamageComponent.id)
+          if (damageComponent.isDefined && damageComponent.get.canDamage == DamageComponent.ENEMY) {
+            entity.destroy = true
+            if (entityB.getComponent(BreakableComponent.id).isDefined) {
+              entityB.destroy = true
+            }
+            EventManager.addEvent(new Event(Vector(spatialComp.position), 
+                  EventType.E_EXPLOSION))
+          }
+        }
+      }))
+
+    val renderComp = new RenderComponent("uv_cube", Some("testTex"))
+    entity.addComponent(renderComp)
+
+    var collisionComponent = new CollisionComponent(
+      1.0f, CollisionComponent.SQUARE,
+      halfWidth = 1.0f, halfHeight = 1.0f)
+    collisionComponent.isStatic = true
+    
+    entity.addComponent(collisionComponent)
+    entity
+  }
+  
   def createExplosion(position: Vec3) = {
     var entity = new Entity()
 
@@ -782,7 +821,6 @@ object Factory {
     
     var faceCameraComp = new FaceCameraComponent()
     entity.addComponent(faceCameraComp)
-
 
     var renderComp = new RenderComponent("test_enemy", Some("exp1"))
     entity.addComponent(renderComp)

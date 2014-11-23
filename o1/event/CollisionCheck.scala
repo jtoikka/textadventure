@@ -135,7 +135,11 @@ object CollisionCheck {
               posOther, 
               otherCollisionComponent.get.radius).neg()
           if (intersection.x != 0 || intersection.z != 0) {
-            handleCollision(otherEntity, entity, intersection)
+            if (otherCollisionComponent.get.isStatic) {
+              handleCollision(entity, otherEntity, intersection)
+            } else {
+              handleCollision(otherEntity, entity, intersection)
+            }
           }
         }
         if (intersection.x != 0 || intersection.z != 0) {
