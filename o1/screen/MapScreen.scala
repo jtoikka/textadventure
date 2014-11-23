@@ -28,6 +28,8 @@ class MapScreen(parent: Adventure, rend: Renderer)
   val scene = new Scene()
   val paused = true
   var world: Option[World] = None
+  var playerLoc: Option[Vec3] = None
+  var playerHeading: Option[Vec3] = None
 
   val inputMap =
     Map[Tuple2[scala.swing.event.Key.Value, Int], (Float) => Unit](
@@ -37,7 +39,7 @@ class MapScreen(parent: Adventure, rend: Renderer)
         parent.changeToPreviousScreen()
       }),
       ((Key.I, Input.KEYRELEASED), (delta) => {
-        
+
       }),
       ((Key.N, Input.KEYRELEASED), (delta) => {
       }),
@@ -86,10 +88,9 @@ class MapScreen(parent: Adventure, rend: Renderer)
 
     parent.screens("gameScreen").draw()
     var tmpDisplay: String = parent.screens("gameScreen").rend.display
-    
+
     rend.displayOverlay(tmpDisplay)
-    
-    
+
   }
 
   def resume(): Unit = {
@@ -103,17 +104,39 @@ class MapScreen(parent: Adventure, rend: Renderer)
 
   def updateMap() = {
     if (world.isDefined) {
+      scene.clear()
       val tileMap = world.get.tileMap
       val bImg = new BufferedImage(tileMap.width, tileMap.height, BufferedImage.TYPE_BYTE_GRAY)
       for (x <- 0 until tileMap.width; y <- 0 until tileMap.height) {
         bImg.setRGB(x, y, tileMap.getCollisionTile(x, y).color)
       }
-      var mapImage = new Image2D(bImg, false, true)
 
+      var mapImage = new Image2D(bImg, false, true)
       var mapEnt = Factory2D.createImage(mapImage)
       var mapImageSpat = mapEnt.getComponent(SpatialComponent.id)
       mapImageSpat.get.position = Vec3(rend.w / 2 - bImg.getWidth(), rend.h / 2 - bImg.getHeight() / 2, 0.0f)
       scene.addEntity(mapEnt)
+      
+      if(playerLoc.isDefined){
+      var playerMark = Factory2D.createTextRectangle(
+        new TextRect2D(
+          new Rectangle2D(0, 0, false, 0, 0), "@") {
+          this.offMinusX = 0
+          this.offMinusY = 0
+          this.offX = 0
+          this.offY = 0
+          this.centerText = false
+          this.textWrap = false
+          this.defFill = false
+        })
+        
+      var infoSpatial = playerMark.getComponent(SpatialComponent.id)
+      infoSpatial.get.position = Vec3(
+          (mapImageSpat.get.position.x).round + ((playerLoc.get.x+0.50f)*2).round/2,
+          (mapImageSpat.get.position.y).round + ((playerLoc.get.z+0.50f)*2).round/4,
+          0.0f)
+      scene.addEntity(playerMark)
+      }
     }
   }
 
@@ -140,19 +163,23 @@ class MapScreen(parent: Adventure, rend: Renderer)
     scene.addEntity(text)
 
   }
-  
+
   eventHandlers = scala.collection.immutable.Map(
     (E_INPUT, (event, delta) => {
       val eventKey =
-          event.args(0).asInstanceOf[Tuple2[scala.swing.event.Key.Value, Int]]
-        if (inputMap.contains(eventKey)) {
-          inputMap(eventKey)(delta)
-        }
+        event.args(0).asInstanceOf[Tuple2[scala.swing.event.Key.Value, Int]]
+      if (inputMap.contains(eventKey)) {
+        inputMap(eventKey)(delta)
+      }
     }),
     (E_CHANGE_MAP, (event, delta) => {
       world = event.args(0).asInstanceOf[Option[World]]
-  }))
-  
+    }),
+    (E_CHANGE_HUD_INFO, (event, delta) => {
+      playerLoc = Some(event.args(2).asInstanceOf[Vec3])
+      playerHeading = Some(event.args(3).asInstanceOf[Vec3])
+
+    }))
 
   def dispose() = {
 

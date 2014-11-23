@@ -14,7 +14,11 @@ class ItemContainer[T <: Item] {
 
   var icon: Option[String] = None
   var name: Option[String] = None
-
+  
+  def getAllItems(): Vector[Item] = {
+    items.toVector
+  }
+  
   def addItem(item: AnyRef): Boolean = {
     if (items.size < ItemContainer.MAX_ITEM_COUNT) {
       val it: T = item.asInstanceOf[T]
