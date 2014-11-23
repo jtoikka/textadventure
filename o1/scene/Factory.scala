@@ -485,7 +485,7 @@ object Factory {
         val entityB = event.args(1).asInstanceOf[Entity]
 
         if (entityA == entity && entityB.getComponent(PlayerComponent.id).isDefined) {
-          EventManager.addEvent()
+//          EventManager.addEvent()
         }
       }))
     entity.description = "levelTrigger"
