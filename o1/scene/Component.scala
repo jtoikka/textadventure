@@ -80,7 +80,7 @@ class CollisionComponent(
     val halfWidth: Float = 0.0f, val halfHeight: Float = 0.0f, 
     val collisionType: Int = CollisionComponent.DEFAULT) extends Component {
   var isActive = true
-  
+  var isStatic = false
   val collidesWith = ArrayBuffer[Int](CollisionComponent.ALL)
 }
 
