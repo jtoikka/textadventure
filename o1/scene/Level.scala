@@ -31,12 +31,12 @@ object Level {
     // playerSpawn
     
     val player = (objectGroups("player") \ "object")
-    println(player)
+//    println(player)
     // ((node \ "properties" \ "property").filter(a => (a \ "@name").text == "spawn") \ "@value").text
     val location = player.find(a => ((a \ "properties" \ "property").find(q => (q \ "@name").text == "name").get \ "@value").text == spawn)
-    println(location)
-    val playerEnt = Factory.createEntity(location.get)
-    scene.addEntity(playerEnt.get)
-    scene.camera = Some(Factory.createCamera(playerEnt.get))
+//    println(location)
+    val playerEnt = Factory.createPlayer(location.get)
+    scene.addEntity(playerEnt)
+    scene.camera = Some(Factory.createCamera(playerEnt))
   }
 }

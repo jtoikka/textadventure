@@ -145,7 +145,7 @@ object Factory {
       case "page" => Some(createPage(node))
       case "monkey" => Some(createMonkey(node))
       case "enemy" => Some(createTestEnemy(node))
-      case "player" => Some(createPlayer(node))
+//      case "player" => Some(createPlayer(node))
       case "door" => Some(createDoor(node))
       case "openDoor" => Some(createOpenDoor(node))
       case "rupee" => Some(createRupee(node))
@@ -532,7 +532,7 @@ object Factory {
     val typeName = (node \ "@name").text
     val loc = Vec2((node \ "@x").text.toFloat, (node \ "@y").text.toFloat)
     val rotation = if (!(node \ "@rotation").text.isEmpty()) (node \ "@rotation").text.toInt else 0
-    println("Door rotation: " + rotation)
+//    println("Door rotation: " + rotation)
     val w = (node \ "@width").text.toFloat / 8 + 0.1f
     val h = (node \ "@height").text.toFloat / 8 + 0.1f
 
