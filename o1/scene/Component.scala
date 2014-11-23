@@ -36,7 +36,7 @@ object RenderComponent {
 
 case class RenderComponent(
     val mesh: String, 
-    val texture: Option[String] = None) extends Component {
+    var texture: Option[String] = None) extends Component {
 }
 
 object RenderComponent2D {
@@ -80,7 +80,7 @@ class CollisionComponent(
     val halfWidth: Float = 0.0f, val halfHeight: Float = 0.0f, 
     val collisionType: Int = CollisionComponent.DEFAULT) extends Component {
   var isActive = true
-  
+  var isStatic = false
   val collidesWith = ArrayBuffer[Int](CollisionComponent.ALL)
 }
 
@@ -182,3 +182,20 @@ object LootComponent {
 }
 
 case class LootComponent(loot: Entity) extends Component {}
+
+object AnimationComponent {
+  val id = classOf[AnimationComponent]
+}
+
+case class AnimationComponent(val frames: Vector[String], val step: Double = 1.0) extends Component {
+  var timer = 0.0
+  def frame = frames((timer / step).toInt % frames.size)
+}
+
+object DeathTimerComponent {
+  val id = classOf[DeathTimerComponent]
+}
+
+case class DeathTimerComponent(var timer: Double) extends Component {
+  
+}
