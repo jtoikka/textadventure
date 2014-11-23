@@ -137,8 +137,6 @@ object Factory {
           }
         }
       }))
-    //    var faceCamComp = new FaceCameraComponent()
-    //    cof.addComponent(faceCamComp)
 
     val rotateComp = new RotateComponent(rateUp = 0.1f)
     cof.addComponent(rotateComp)
@@ -173,30 +171,6 @@ object Factory {
     cof.addComponent(renderComp)
     cof
   }
-
-  //  def createPlate() = {
-  //    var monkey = new Entity()
-  //    var spatialComp = new SpatialComponent()
-  //
-  //    monkey.addComponent(spatialComp)
-  //
-  //    var renderComp = new RenderComponent("plate")
-  //
-  //    monkey.addComponent(renderComp)
-  //    monkey
-  //  }
-
-  //  def createLevel() = {
-  //    var monkey = new Entity()
-  //    var spatialComp = new SpatialComponent()
-  //
-  //    monkey.addComponent(spatialComp)
-  //
-  //    var renderComp = new RenderComponent("testMap")
-  //
-  //    monkey.addComponent(renderComp)
-  //    monkey
-  //  }
 
   def createFloor() = {
     var floor = new Entity()
@@ -390,7 +364,7 @@ object Factory {
     entity.description = "monkey"
 
     val spatialComp = new SpatialComponent()
-    spatialComp.position = Vec3(loc.x * 2 / 16, 0.5f, loc.y * 2 / 16)
+    spatialComp.position = Vec3(loc.x * 2 / 16, 0.8f, loc.y * 2 / 16)
     entity.addComponent(spatialComp)
 
     var renderComp = new RenderComponent("monkey")
@@ -646,8 +620,6 @@ object Factory {
     var renderComp = new RenderComponent("rupee")
     entity.addComponent(renderComp)
 
-    //    var faceCameraComp = new FaceCameraComponent()
-    //    entity.addComponent(faceCameraComp)
 
     val rotateComp = new RotateComponent(-0.2f)
     entity.addComponent(rotateComp)
@@ -669,7 +641,7 @@ object Factory {
     player.description = "player"
 
     val spatialComp = new SpatialComponent()
-    spatialComp.position = Vec3(loc.x * 2 / 16, 1.2f, loc.y * 2 / 16)
+    spatialComp.position = Vec3(loc.x * 2 / 16 + 0.0001f, 1.2f, loc.y * 2 / 16)
     player.addComponent(spatialComp)
 
     val inventoryComponent = new InventoryComponent()

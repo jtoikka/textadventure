@@ -57,4 +57,22 @@ object Camera {
     
     flipX * matrix * translation
   }
+  
+  def getTransposeLookMatrix(position: Vec3, forward: Vec3, up: Vec3): Mat4 = {
+    var xAxis = forward.cross(up).normalize()
+    var yAxis = xAxis.cross(forward).normalize()
+    var matrix = Mat4.identity()
+    
+    matrix(0) = Vec4(xAxis, 0.0f)
+    matrix(1) = Vec4(yAxis, 0.0f)
+    matrix(2) = Vec4(forward, 0.0f)
+    
+    var translation = Mat4.identity()
+    translation(3) = Vec4(position, 1.0f)
+    
+    var flipX = Mat4.identity()
+    flipX(0)(0) = -1
+    
+    flipX * matrix * translation
+  }
 }
