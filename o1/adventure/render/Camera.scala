@@ -29,12 +29,25 @@ object Camera {
   }
   
   def getLookMatrix(position: Vec3, forward: Vec3, up: Vec3): Mat4 = {
-    var xAxis = forward.cross(up)
+    var xAxis = forward.cross(up).normalize()
+    var yAxis = xAxis.cross(forward).normalize()
     var matrix = Mat4.identity()
     
-    matrix(0) = Vec4(xAxis, 0.0f)
-    matrix(1) = Vec4(up, 0.0f)
-    matrix(2) = Vec4(forward, 0.0f)
+    matrix(0)(0) = xAxis.x
+    matrix(1)(0) = xAxis.y
+    matrix(2)(0) = xAxis.z
+    
+    matrix(0)(1) = yAxis.x
+    matrix(1)(1) = yAxis.y
+    matrix(2)(1) = yAxis.z
+    
+    matrix(0)(2) = forward.x
+    matrix(1)(2) = forward.y
+    matrix(2)(2) = forward.z
+    
+//    matrix(0) = Vec4(xAxis, 0.0f)
+//    matrix(1) = Vec4(yAxis, 0.0f)
+//    matrix(2) = Vec4(forward, 0.0f)
     
     var translation = Mat4.identity()
     translation(3) = Vec4(position, 1.0f)
