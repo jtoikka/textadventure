@@ -622,6 +622,10 @@ object Factory {
     val entity: Entity = new Entity()
 
     entity.description = "test enemy"
+    
+    val spatialComp = new SpatialComponent()
+    spatialComp.position = Vec3(loc.x * 2 / 16, 1.0f, loc.y * 2 / 16)
+    entity.addComponent(spatialComp)
 
     entity.eventHandlers = scala.collection.immutable.Map(
       (EventType.E_COLLISION, (event, delta) => {
@@ -634,6 +638,8 @@ object Factory {
             healthComp.hp -= 1
             if (healthComp.hp <= 0) {
               entity.destroy = true
+              EventManager.addEvent(new Event(Vector(spatialComp.position), 
+                  EventType.E_EXPLOSION))
             }
             if (entityB.getComponent(BreakableComponent.id).isDefined) {
               entityB.destroy = true
@@ -641,10 +647,6 @@ object Factory {
           }
         }
       }))
-
-    val spatialComp = new SpatialComponent()
-    spatialComp.position = Vec3(loc.x * 2 / 16, 1.0f, loc.y * 2 / 16)
-    entity.addComponent(spatialComp)
 
     val renderComp = new RenderComponent("test_enemy", Some("test_enemy_tex"))
     entity.addComponent(renderComp)
@@ -741,6 +743,9 @@ object Factory {
               healthComponent.hp -= 1
               EventManager.addEvent(new Event(Vector(), EventType.E_PLAYER_DAMAGE))
               healthComponent.invulnerabilityTimer = 5.0f
+              if (healthComponent.hp <= 0) {
+                println("You're dead")
+              }
             }
           }
         }

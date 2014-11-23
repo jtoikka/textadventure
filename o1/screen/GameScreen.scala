@@ -282,7 +282,7 @@ class GameScreen(parent: Adventure, rend: Renderer)
         EventManager.addEvent(new Event(Vector("mapScreen"), E_CHANGE_SCREEN))
       }),
       ((Key.L, Input.KEYRELEASED), (delta) => {
-        loadLevel("00_testmap","startSpawn")
+//        loadLevel("00_testmap","startSpawn")
       }),
       ((Key.W, Input.KEYDOWN), (delta) => {
         movementMap(FORWARD) = SPEED * delta
@@ -334,7 +334,7 @@ class GameScreen(parent: Adventure, rend: Renderer)
   
   init()
   def init(): Unit = {
-    loadLevel("02_supermap","startSpawn")
+    loadLevel("00_testmap","startSpawn")
   }
   
   def loadLevel(level: String, spawn:String) = {

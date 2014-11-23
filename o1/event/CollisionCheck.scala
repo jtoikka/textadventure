@@ -276,7 +276,8 @@ object CollisionCheck {
       if (collisionEntity.collidesWith.contains(CollisionComponent.ALL) ||
           collisionEntity.collidesWith.contains(collisionOther.collisionType)) {
         val spatial = entity.getComponent(SpatialComponent.id).get;
-        spatial.position += intersection
+        spatial.position.x += intersection.x
+        spatial.position.z += intersection.z
         
         val physComp = entity.getComponent(PhysicsComponent.id)
         if (physComp.isDefined) {
