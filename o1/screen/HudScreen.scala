@@ -64,7 +64,7 @@ class HudScreen(parent: Adventure, rend: Renderer)
 
     var mainInfoBox = Factory2D.createTextRectangle(
       new TextRect2D(
-        new Rectangle2D(50, 3, true)))
+        new Rectangle2D(23, 3, true)))
     var infoSpatial = mainInfoBox.getComponent(SpatialComponent.id)
     infoSpatial.get.position = Vec3(0f, 0f, 0f)
 
@@ -74,8 +74,12 @@ class HudScreen(parent: Adventure, rend: Renderer)
         val playerMana = event.args(1).asInstanceOf[Int]
         val playerLoc = event.args(2).asInstanceOf[Vec3]
         val playerHeading = event.args(3).asInstanceOf[Vec3]
+        val time = event.args(4).asInstanceOf[String]
         val box = ResourceManager.shapes(mainInfoBox.getComponent(RenderComponent2D.id).get.shape)
-        box.asInstanceOf[TextRect2D].text = "Location: " + playerLoc +
+        box.asInstanceOf[TextRect2D].text = 
+          "Location: x: " + "%1.0f".format(playerLoc.x) + 
+          " y: " + "%1.0f".format(playerLoc.z) +
+          "\nTime: " + time + " AM"
           "\nHeading: " + playerHeading
       }))
 
@@ -86,13 +90,22 @@ class HudScreen(parent: Adventure, rend: Renderer)
   /**
    * Update method. Used to update game's state
    */
+  
+  def gameTime(realTime: Double) = {
+    val gTime = (6 - exp(10/pow(realTime/60000 + 10, 0.7468))) * 1000
+    "%02d".format((gTime).toInt / 60) + ":" + "%02d".format((gTime).toInt % 60)
+  }
+  
+  var realTime = 0.0
 
   def update(delta: Double): Unit = {
     // update invetory icons
     if (!paused && player.isDefined) {
+      realTime += delta
       EventManager.addEvent(new Event(Vector(69, 420,
         player.get.getComponent(SpatialComponent.id).get.position,
-        player.get.getComponent(SpatialComponent.id).get.forward),
+        player.get.getComponent(SpatialComponent.id).get.forward,
+        gameTime(realTime)),
         E_CHANGE_HUD_INFO))
     }
     handleEvents(delta.toFloat)

@@ -74,6 +74,8 @@ class GameScreen(parent: Adventure, rend: Renderer)
    */
     
   val rng = new Random()
+  
+  
 
   def update(delta: Double): Unit = {
     handleEvents(delta.toFloat)
@@ -123,8 +125,6 @@ class GameScreen(parent: Adventure, rend: Renderer)
               Vec4(spatial.get.forward, 0.0f)).xyz.normalize()
           }
         }
-//        entity.handleEvents(delta.toFloat)
-
         if (entity.destroy) {
           destroyedEntities += entity
         }
@@ -291,8 +291,9 @@ class GameScreen(parent: Adventure, rend: Renderer)
 
     parent.screens("hudScreen").draw()
     parent.screens("hudScreen").rend.displayOverlay(tmpDisplay)
-
+    
   }
+  
   init()
   def init(): Unit = {
     loadLevel("01_firstfloor")
@@ -311,8 +312,20 @@ class GameScreen(parent: Adventure, rend: Renderer)
     EventManager.addEvent(new Event(Vector(scene.world), E_CHANGE_MAP))
   }
 
+  var firstTime = true
+  
   def resume() {
     paused = false
+    if (firstTime) {
+      val d = Factory.createDialog(Vector(
+          ("OK", new Event(Vector("TokaValinta", this.hashCode()), E_ANSWER_DIALOG))),
+          "The year is 20XX. A deadline is fast approaching, and it is your \n" +
+          "task to hand in a document on time. But a series of alcoholic drinks \n" +
+          "has caused the pages to scatter! Gather them all up, stay awake, \n" +
+          "and hand in your work before 06:00 AM.\n\n", None, 80, 10)
+      EventManager.addEvent(new Event(Vector(d, this.hashCode()), E_THROW_DIALOG))
+      firstTime = false
+    }
   }
   
   def pause() {
