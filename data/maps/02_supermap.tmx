@@ -2121,6 +2121,7 @@
   <object type="coffee" x="320" y="160" width="16" height="16" rotation="1">
    <ellipse/>
   </object>
+  <object type="openDoor" x="80" y="144" width="16" height="16"/>
  </objectgroup>
  <objectgroup name="player">
   <object type="player" x="448" y="48" width="16" height="16">

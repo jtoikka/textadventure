@@ -71,18 +71,18 @@ class Inventory {
   }
 
   def nonHiddenCount: Int = {
-    var c = 0
+    var count = 0
     for (i <- containers) {
       if (!i._2.hiddenContainer)
-        c += 1
+        count += 1
     }
-    c
+    count
   }
   def totalItemCount: Int = {
-    var c = 0
+    var count = 0
     for (i <- containers) {
-      c += i._2.size
+      count += i._2.size
     }
-    c
+    count
   }
 }

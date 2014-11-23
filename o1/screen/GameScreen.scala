@@ -61,6 +61,9 @@ class GameScreen(parent: Adventure, rend: Renderer)
     }),
     (E_PLAYER_CREATION, (event, delta) => {
       player = Some(event.args(0).asInstanceOf[Entity])
+    }),
+    (E_PLAYER_DAMAGE, (event, delta) => {
+      println("Damage")
     }))
     
   def tossCoffee() = {
@@ -109,6 +112,12 @@ class GameScreen(parent: Adventure, rend: Renderer)
           CollisionCheck.checkCollisions(entity, entitiesAsVector, scene.world)
           if (entity.getComponent(SpatialComponent.id).get.position.y < 0) {
             entity.destroy = true
+          }
+          val healthComponent = entity.getComponent(HealthComponent.id)
+          if (healthComponent.isDefined) {
+            if (healthComponent.get.invulnerabilityTimer > 0.0) {
+              healthComponent.get.invulnerabilityTimer -= delta
+            }
           }
           val rotateComponent = entity.getComponent(RotateComponent.id)
           if (rotateComponent.isDefined) {

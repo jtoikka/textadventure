@@ -26,6 +26,10 @@ class Entity() extends Listener {
   def addComponent[T <: Component](component: T) = {
     components(component.getClass()) = component
   }
+    
+  def removeComponent[T <: Component](component: Class[T]) = {
+    components.remove(component)
+  }
   
   def getComponent[T <: Component](componentClass: Class[T]) = {
     if (components.contains(componentClass))
@@ -39,6 +43,7 @@ class Entity() extends Listener {
   }
   
   def dispose = {
+    children.foreach(_.dispose)
     EventManager.removeListener(this)
   }
   

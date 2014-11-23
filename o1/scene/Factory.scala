@@ -23,20 +23,6 @@ import o1.inventory.Item
 
 object Factory {
 
-  //  def createPlayer() = {
-  //    var player = new Entity()
-  //
-  //    var spatialComp = new SpatialComponent()
-  //    player.addComponent(spatialComp)
-  //
-  //    var collisionComponent = new CollisionComponent(0.6f, CollisionComponent.CIRCLE)
-  //    player.addComponent(collisionComponent)
-  //
-  //    var inputComponent = new InputComponent()
-  //    player.addComponent(inputComponent)
-  //    player
-  //  }
-
   def createCamera(followEntity: Entity) = {
     var camera = new Entity()
 
@@ -48,44 +34,6 @@ object Factory {
 
     camera
   }
-  //  def createSphere() = {
-  //    var sphere = new Entity()
-  //    var spatialComp = new SpatialComponent()
-  //
-  //    sphere.addComponent(spatialComp)
-  //
-  //    var renderComp = new RenderComponent("sphere")
-  //
-  //    sphere.addComponent(renderComp)
-  //    sphere
-  //  }
-
-  //  def createCube() = {
-  //    var sphere = new Entity()
-  //    var spatialComp = new SpatialComponent()
-  //
-  //    sphere.addComponent(spatialComp)
-  //
-  //    var renderComp = new RenderComponent("cube")
-  //
-  //    sphere.addComponent(renderComp)
-  //    sphere
-  //  }
-
-  //  def createMonkey() = {
-  //    var monkey = new Entity()
-  //    var spatialComp = new SpatialComponent()
-  //
-  //    monkey.addComponent(spatialComp)
-  //
-  //    var renderComp = new RenderComponent("monkey")
-  //
-  //    var collisionComponent = new CollisionComponent(1.0f, CollisionComponent.CIRCLE)
-  //    monkey.addComponent(collisionComponent)
-  //
-  //    monkey.addComponent(renderComp)
-  //    monkey
-  //  }
 
   def createCoffee() = {
     var cof = new Entity()
@@ -147,7 +95,7 @@ object Factory {
 
     cof.addComponent(spatialComp)
 
-    val physicsComp = new PhysicsComponent(Vec3(direction.x, 0.2f, direction.z), Vec3(0.0f, -0.0981f, 0.0f))
+    val physicsComp = new PhysicsComponent(Vec3(direction.x, 0.3f, direction.z), Vec3(0.0f, -0.0981f, 0.0f))
     cof.addComponent(physicsComp)
 
     var renderComp = new RenderComponent("coffee")
@@ -194,6 +142,7 @@ object Factory {
       case "enemy" => Some(createTestEnemy(node))
       case "player" => Some(createPlayer(node))
       case "door" => Some(createDoor(node))
+      case "openDoor" => Some(createOpenDoor(node))
       case "rupee" => Some(createRupee(node))
       case "key" => Some(createKey(node))
       case "shop" => Some(createShop(node))
@@ -510,8 +459,8 @@ object Factory {
     val typeName = (node \ "@name").text
     val loc = Vec2((node \ "@x").text.toFloat, (node \ "@y").text.toFloat)
     //    val rotation = (node \ "@name").text
-    val w = (node \ "@width").text.toFloat / 8
-    val h = (node \ "@height").text.toFloat / 8
+    val w = (node \ "@width").text.toFloat / 8 + 0.1f
+    val h = (node \ "@height").text.toFloat / 8 + 0.1f
 
     val entity = new Entity()
     entity.eventHandlers = scala.collection.immutable.Map(
@@ -534,8 +483,10 @@ object Factory {
         if (player.isDefined && entityB.isDefined && entityB.get == entity &&
           player.get.getComponent(InventoryComponent.id).isDefined) {
           if (player.get.getComponent(InventoryComponent.id).get.inv.removeOneOfType(Key())) {
-            entity.dispose()
-            entity.destroy = true
+            // entity.dispose()
+            // entity.destroy = true
+            entity.removeComponent(RenderComponent.id)
+            entity.removeComponent(CollisionComponent.id)
           } else {
             val d = Factory.createDialog(Vector(
               ("Ok.. :(", new Event(Vector(), EventType.E_NONE))),
@@ -558,6 +509,38 @@ object Factory {
       w / 16, CollisionComponent.SQUARE,
       halfWidth = w / 2, halfHeight = h / 2)
     entity.addComponent(collisionComponent)
+    
+    val doorTop = new Entity()
+    val renderDoorTop = new RenderComponent("doorTop", Some("testTex"))
+    doorTop.addComponent(renderDoorTop)
+    
+    doorTop.addComponent(spatialComp)
+    
+    entity.addChild(doorTop)
+
+    entity
+  }
+  
+  def createOpenDoor(node: Node) = {
+    // TODO: Fix magic size and location conversion
+    val name = (node \ "@name").text
+    val typeName = (node \ "@name").text
+    val loc = Vec2((node \ "@x").text.toFloat, (node \ "@y").text.toFloat)
+    //    val rotation = (node \ "@name").text
+    val w = (node \ "@width").text.toFloat / 8 + 0.1f
+    val h = (node \ "@height").text.toFloat / 8 + 0.1f
+
+    val entity = new Entity()
+    
+    entity.description = "open door"
+
+    val spatialComp = new SpatialComponent()
+    spatialComp.position = Vec3(loc.x * 2 / 16, 0.0f, loc.y * 2 / 16)
+    entity.addComponent(spatialComp)
+
+    var renderComp = new RenderComponent("doorTop", Some("testTex"))
+    entity.addComponent(renderComp)
+
 
     entity
   }
@@ -674,11 +657,33 @@ object Factory {
     val size = (node \ "@width").text.toFloat
 
     val player = new Entity()
+    
+    val healthComponent = new HealthComponent(3)
+    player.addComponent(healthComponent)
+    
+    player.eventHandlers = scala.collection.immutable.Map(
+      (EventType.E_COLLISION, (event, delta) => {
+        val entityA = event.args(0).asInstanceOf[Entity]
+        val entityB = event.args(1).asInstanceOf[Entity]
+        
+        val damageComponent = entityB.getComponent(DamageComponent.id)
+
+        if (entityA == player && damageComponent.isDefined) {
+          if (damageComponent.get.canDamage == DamageComponent.PLAYER) {
+            if (healthComponent.invulnerabilityTimer <= 0) {
+              healthComponent.hp -= 1
+              EventManager.addEvent(new Event(Vector(), EventType.E_PLAYER_DAMAGE))
+              healthComponent.invulnerabilityTimer = 5.0f
+            }
+          }
+        }
+      }))
 
     player.description = "player"
 
     val spatialComp = new SpatialComponent()
-    spatialComp.position = Vec3(loc.x * 2 / 16 + 0.0001f, 1.2f, loc.y * 2 / 16)
+    spatialComp.position =
+      Vec3(loc.x * 2 / 16 + 0.0001f, 1.4f, loc.y * 2 / 16 + 0.0001f)
     player.addComponent(spatialComp)
 
     val inventoryComponent = new InventoryComponent()

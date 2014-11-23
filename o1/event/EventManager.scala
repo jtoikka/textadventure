@@ -23,6 +23,7 @@ object EventType extends Enumeration {
       E_ANSWER_DIALOG, 
       E_OPEN_DOOR, 
       E_NONE, 
+      E_PLAYER_DAMAGE,
       E_SYSTEM_EXIT = Value
 }
 
