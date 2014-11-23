@@ -311,7 +311,7 @@ class GameScreen(parent: Adventure, rend: Renderer)
   
   init()
   def init(): Unit = {
-    loadLevel("02_supermap","startSpawn")
+    loadLevel("00_startlevel","startSpawn")
   }
   
   def loadLevel(level: String, spawn:String) = {

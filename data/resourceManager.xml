@@ -70,10 +70,18 @@
 		<item name="mapTitle"><string>Map</string></item>
 	</strings>
 	<maps>
-		<item name="00_testmap" path="data/maps/00_testmap.tmx"></item>
-		<item name="01_firstfloor" path="data/maps/01_firstfloor.tmx"></item>
-		<item name="01_firstfloor_b" path="data/maps/01_firstfloor_b.tmx"></item>
-		<item name="02_supermap" path="data/maps/02_supermap.tmx"></item>
-		<item name="03_supermap2" path="data/maps/03_supermap2.tmx"></item>
+		<item name="XX_testmap" path="data/maps/XX_testmap.tmx"></item>
+		<item name="XX_firstfloor" path="data/maps/XX_firstfloor.tmx"></item>
+		<item name="XX_firstfloor_b" path="data/maps/XX_firstfloor_b.tmx"></item>
+		<item name="XX_supermap" path="data/maps/XX_supermap.tmx"></item>
+		<item name="XX_supermap2" path="data/maps/XX_supermap2.tmx"></item>
+		<item name="00_startlevel" path="data/maps/00_startlevel.tmx"></item>
+		<item name="01_superhub" path="data/maps/01_superhub.tmx"></item>
+		<item name="02_library" path="data/maps/02_library.tmx"></item>
+		<item name="03_tf" path="data/maps/03_tf.tmx"></item>
+		<item name="04_lab" path="data/maps/04_lab.tmx"></item>
+		<item name="05_scabin" path="data/maps/05_scabin.tmx"></item>
+		<item name="06_panic" path="data/maps/06_panic.tmx"></item>
+		
 	</maps>
 </resources>
