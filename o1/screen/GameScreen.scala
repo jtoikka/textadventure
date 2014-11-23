@@ -64,6 +64,11 @@ class GameScreen(parent: Adventure, rend: Renderer)
     }),
     (E_PLAYER_DAMAGE, (event, delta) => {
       println("Damage")
+    }),
+    (E_EXPLOSION, (event, delta) => {
+      val position = event.args(0).asInstanceOf[Vec3]
+      val explosion = Factory.createExplosion(position)
+      scene.addEntity(explosion)
     }))
     
   def tossCoffee() = {
@@ -112,11 +117,22 @@ class GameScreen(parent: Adventure, rend: Renderer)
           CollisionCheck.checkCollisions(entity, entitiesAsVector, scene.world)
           if (entity.getComponent(SpatialComponent.id).get.position.y < 0) {
             entity.destroy = true
+            EventManager.addEvent(
+                new Event(Vector(spatial.get.position), 
+                EventType.E_EXPLOSION))
           }
           val healthComponent = entity.getComponent(HealthComponent.id)
           if (healthComponent.isDefined) {
             if (healthComponent.get.invulnerabilityTimer > 0.0) {
               healthComponent.get.invulnerabilityTimer -= delta
+            }
+          }
+          val animationComponent = entity.getComponent(AnimationComponent.id)
+          if (animationComponent.isDefined) {
+            val renderComponent = entity.getComponent(RenderComponent.id)
+            if (renderComponent.isDefined) {
+              renderComponent.get.texture = Some(animationComponent.get.frame)
+              animationComponent.get.timer += delta
             }
           }
           val rotateComponent = entity.getComponent(RotateComponent.id)
@@ -138,6 +154,13 @@ class GameScreen(parent: Adventure, rend: Renderer)
             spatial.get.forward = (
               rotZ *
               Vec4(spatial.get.forward, 0.0f)).xyz.normalize()
+          }
+          val deathTimerComponent = entity.getComponent(DeathTimerComponent.id)
+          if (deathTimerComponent.isDefined) {
+            if (deathTimerComponent.get.timer <= 0) {
+              entity.destroy = true
+            }
+            deathTimerComponent.get.timer -= delta
           }
         }
         if (entity.destroy) {

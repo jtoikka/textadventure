@@ -74,18 +74,6 @@ object Factory {
 
     cof.description = "Coffee bullet"
 
-    cof.eventHandlers = scala.collection.immutable.Map(
-      (EventType.E_COLLISION, (event, delta) => {
-        val entityA = event.args(0).asInstanceOf[Entity]
-        val entityB = event.args(1).asInstanceOf[Entity]
-
-        if (entityA == cof) {
-          if (entityB.getComponent(DamageComponent.id).isDefined) {
-            cof.destroy = true
-          }
-        }
-      }))
-
     val rotateComp = new RotateComponent(rateUp = 0.1f)
     cof.addComponent(rotateComp)
 
@@ -94,6 +82,21 @@ object Factory {
     spatialComp.position.y = 0.8f
 
     cof.addComponent(spatialComp)
+    
+    cof.eventHandlers = scala.collection.immutable.Map(
+      (EventType.E_COLLISION, (event, delta) => {
+        val entityA = event.args(0).asInstanceOf[Entity]
+        val entityB = event.args(1).asInstanceOf[Entity]
+
+        if (entityA == cof) {
+          if (entityB.getComponent(DamageComponent.id).isDefined) {
+            cof.destroy = true
+            EventManager.addEvent(
+                new Event(Vector(spatialComp.position), 
+                EventType.E_EXPLOSION))
+          }
+        }
+      }))
 
     val physicsComp = new PhysicsComponent(Vec3(direction.x, 0.3f, direction.z), Vec3(0.0f, -0.0981f, 0.0f))
     cof.addComponent(physicsComp)
@@ -759,6 +762,33 @@ object Factory {
     EventManager.addEvent(new Event(Vector(player), EventType.E_PLAYER_CREATION))
 
     player
+  }
+  
+  def createExplosion(position: Vec3) = {
+    var entity = new Entity()
+
+    entity.description = "Explosion"
+
+    var spatialComp = new SpatialComponent()
+    spatialComp.position = position
+    spatialComp.position.y += 1.0f
+
+    entity.addComponent(spatialComp)
+    
+    var faceCameraComp = new FaceCameraComponent()
+    entity.addComponent(faceCameraComp)
+
+
+    var renderComp = new RenderComponent("test_enemy", Some("exp1"))
+    entity.addComponent(renderComp)
+
+    var animationComp = new AnimationComponent(Vector("exp1", "exp2", "exp3", "exp4", "exp5"), 0.8)
+    entity.addComponent(animationComp)
+    
+    var deathTimerComp = new DeathTimerComponent(0.8 * 5)
+    entity.addComponent(deathTimerComp)
+    
+    entity
   }
 
   def createDialog(options: Vector[(String, Event)],
