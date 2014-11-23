@@ -24,6 +24,7 @@ class Renderer3D(w: Int, h: Int) extends Renderer(w,h) {
   val zNear = 0.1f  // Near clipping plane
   val zFar = 30.0f // Far clipping plane
   val fov = 60.0f
+  val exposure = 1.8f
   
   val _ramp = "MEIi!:,. "
   
@@ -189,7 +190,7 @@ class Renderer3D(w: Int, h: Int) extends Renderer(w,h) {
                     ResourceManager.meshes("uv_cube"), 
                     matrix, 
 //                    None)
-                    Some(ResourceManager.textures("brick")))
+                    Some(ResourceManager.textures("wall")))
               }
             }
           }
@@ -251,7 +252,7 @@ class Renderer3D(w: Int, h: Int) extends Renderer(w,h) {
           }
           val diffuseLight = depth * 0.4f * attenuation * diffuse
           var lighting = specular * 0.4f + diffuseLight * 1.0f
-          lighting = 1.0f - Math.exp(2.2 * -lighting).toFloat
+          lighting = 1.0f - Math.exp(exposure * -lighting).toFloat
           if (depth >= 1.0) lighting = 0.0f
           val bayer = bayerMatrix(8 * bayesRow + bayesCollumn)
           var v = (lighting + (bayer * ditherStrength)) * _ramp.size
