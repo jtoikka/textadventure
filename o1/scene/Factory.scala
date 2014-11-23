@@ -152,11 +152,11 @@ object Factory {
 
     var renderComp = new RenderComponent("coffee")
 
-    var collisionComponent = 
+    var collisionComponent =
       new CollisionComponent(
-          0.15f, 
-          CollisionComponent.CIRCLE, 
-          collisionType = CollisionComponent.COFFEE)
+        0.15f,
+        CollisionComponent.CIRCLE,
+        collisionType = CollisionComponent.COFFEE)
     collisionComponent.isActive = true
     collisionComponent.collidesWith.clear()
     collisionComponent.collidesWith += CollisionComponent.DEFAULT
@@ -198,6 +198,7 @@ object Factory {
       case "key" => Some(createKey(node))
       case "shop" => Some(createShop(node))
       case "chest" => Some(createChest(node))
+      case "levelTrigger" => Some(createLevelTrigger(node))
       case _ => None
     }
     ent
@@ -458,6 +459,41 @@ object Factory {
 
     var renderComp = new RenderComponent("chest", Some("chest"))
     entity.addComponent(renderComp)
+
+    var collisionComponent = new CollisionComponent(
+      w / 16, CollisionComponent.SQUARE,
+      halfWidth = w / 2, halfHeight = h / 2)
+    entity.addComponent(collisionComponent)
+
+    entity
+  }
+
+  def createLevelTrigger(node: Node) = {
+    // TODO: Fix magic size and location conversion
+    val name = (node \ "@name").text
+    val typeName = (node \ "@name").text
+    val level = ((node \ "properties" \ "property").filter(a => (a \ "@name").text == "level") \ "@value")
+    val loc = Vec2((node \ "@x").text.toFloat, (node \ "@y").text.toFloat)
+    //    val rotation = (node \ "@name").text
+    val w = (node \ "@width").text.toFloat / 8
+    val h = (node \ "@height").text.toFloat / 8
+
+    val entity = new Entity()
+    entity.eventHandlers = scala.collection.immutable.Map(
+      (EventType.E_COLLISION, (event, delta) => {
+        val entityA = event.args(0).asInstanceOf[Entity]
+        val entityB = event.args(1).asInstanceOf[Entity]
+
+        if (entityA == entity && entityB.getComponent(PlayerComponent.id).isDefined) {
+//          EventManager.addEvent()
+        }
+      }))
+    entity.description = "levelTrigger"
+
+    val spatialComp = new SpatialComponent()
+    spatialComp.position = Vec3(loc.x * 2 / 16, 0.0f, loc.y * 2 / 16)
+    spatialComp.forward = Vec3(1.0f, 0, 0)
+    entity.addComponent(spatialComp)
 
     var collisionComponent = new CollisionComponent(
       w / 16, CollisionComponent.SQUARE,
