@@ -127,7 +127,6 @@ object DamageComponent {
 }
 
 case class DamageComponent(val amount: Int, val canDamage: Int) extends Component {
-  
 }
 
 object BreakableComponent {
@@ -151,7 +150,7 @@ object HealthComponent {
 }
 
 case class HealthComponent(var hp: Int) extends Component {
-  
+  var invulnerabilityTimer = 0.0
 }
 
 object RotateComponent {

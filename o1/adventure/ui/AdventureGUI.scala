@@ -44,29 +44,32 @@ object AdventureGUI extends SimpleSwingApplication with Listener {
     (Key.Enter, false), (Key.Escape, false),
     (Key.I, false), (Key.Q, false),
     (Key.Space, false), (Key.L, false))
+  
+  // Access to the internal logic of the application: 
+  val game = new Adventure()
+  
+  val renderArea = new TextArea(game.screenHeight, game.screenWidth) {
+    editable = false
+    wordWrap = false
+    lineWrap = false
+
+    background = Color.BLACK
+    foreground = Color.WHITE
+
+    font = Font.createFont(Font.TRUETYPE_FONT, new File("data/font/unifont-7.0.06.ttf"))
+    font = font.deriveFont(12f)
+
+    //      font = new Font(Font.MONOSPACED, 0, 12)
+
+    listenTo(keys)
+  }
+  
+  var damageTimer = 0
 
   def top = new MainFrame {
 
-    // Access to the internal logic of the application: 
-    val game = new Adventure()
-
     // Components: 
 
-    val renderArea = new TextArea(game.screenHeight, game.screenWidth) {
-      editable = false
-      wordWrap = false
-      lineWrap = false
-
-      background = Color.BLACK
-      foreground = Color.WHITE
-
-      font = Font.createFont(Font.TRUETYPE_FONT, new File("data/font/unifont-7.0.06.ttf"))
-      font = font.deriveFont(12f)
-
-      //      font = new Font(Font.MONOSPACED, 0, 12)
-
-      listenTo(keys)
-    }
     this.listenTo(renderArea.keys)
     val turnCounter = new Label
 
@@ -166,8 +169,15 @@ object AdventureGUI extends SimpleSwingApplication with Listener {
         var numUpdates = (delta / updatePeriod).toInt
         timeExtra = delta - numUpdates * updatePeriod
         time = newTime
-        for (i <- 0 until numUpdates)
+        for (i <- 0 until numUpdates) {
           update(updatePeriod / 100.0f)
+        }
+        if (damageTimer > 0) {
+          damageTimer -= delta.toInt
+          if (damageTimer < 0) damageTimer = 0
+        }
+        renderArea.background = new Color((Math.min(damageTimer, 255) * 0.8).toInt, 0, 0)
+        renderArea.foreground = new Color(255, Math.max(255 - damageTimer, 255), Math.max(255 - damageTimer, 255))
       }
     })
 
@@ -193,23 +203,26 @@ object AdventureGUI extends SimpleSwingApplication with Listener {
     //    this.updateInfo(this.game.welcomeMessage)
     this.location = new Point(50, 50)
     this.pack()
-    this.renderArea.requestFocusInWindow()
+    renderArea.requestFocusInWindow()
 
     def update(time: Double) = {
-      this.game.update(time, keyMap)
+      game.update(time, keyMap)
       updateInfo("update")
       handleEvents(time.toFloat)
     }
 
     def updateInfo(info: String) = {
       this.title = game.title
-      this.renderArea.text = game.display
+      renderArea.text = game.display
     }
   }
 
   eventHandlers = scala.collection.immutable.Map(
     (E_SYSTEM_EXIT, (event, delta) => {
       dispose()
+    }),
+    (E_PLAYER_DAMAGE, (event, delta) => {
+      damageTimer += 400
     }))
 
   def dispose(): Unit = {

@@ -5,6 +5,7 @@
 	<meshes>
 		<item name="sphere" path="data/meshes/sphere.obj"></item>
 		<item name="key" path="data/meshes/key.obj"></item>
+		<item name="doorTop" path="data/meshes/doorTop.obj"></item>
 		<item name="monkey" path="data/meshes/monkey.obj">
 			<luminosity>0.6</luminosity>
 		</item>	
