@@ -26,6 +26,7 @@ object EventType extends Enumeration {
       E_NONE, 
       E_EXPLOSION,
       E_PLAYER_DAMAGE,
+      E_OPEN_BOSS_DOOR,
       E_SYSTEM_EXIT = Value
 }
 
