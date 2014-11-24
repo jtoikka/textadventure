@@ -42,6 +42,7 @@
 		</item>
 		<item name="uv_cube" path="data/meshes/uv_cube.obj"></item>
 		<item name="coffee" path="data/meshes/coffee.obj"></item>
+		<item name="pellet" path="data/meshes/pellet.obj"></item>
 		<item name="page" path="data/meshes/page.obj"></item>
 		<item name="rupee" path="data/meshes/rupee.obj"></item>
 		<item name="plate" path="data/meshes/4x4_plate_floor.obj"></item>
@@ -74,6 +75,7 @@
 		<item name="icon_smile" path="data/icons/icon_smile.png"></item>
 		<item name="icon_cross" path="data/icons/icon_cross.png"></item>
 		<item name="icon_key" path="data/icons/icon_key.png"></item>
+		<item name="icon_pellet" path="data/icons/icon_pellet.png"></item>
 	</images>
 	<textures>
 	    <item name="exp0" path="data/textures/exp0.png"></item>

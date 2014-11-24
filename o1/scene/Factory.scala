@@ -1,21 +1,23 @@
 package o1.scene
 
 import scala.collection.mutable.Buffer
-import o1.inventory.Coffee
 import scala.xml.Node
-import o1.math.Vec2
-import o1.math.Vec3
-import o1.inventory.Page
-import o1.event.EventType
-import o1.event.EventManager
-import o1.event.Event
+
 import o1.adventure.render2D.Dialog
 import o1.adventure.render2D.Rectangle2D
+import o1.event.Event
+import o1.event.EventManager
+import o1.event.EventType
 import o1.event.Listener
-import o1.inventory.Rupee
-import o1.inventory.Key
+import o1.inventory.Coffee
 import o1.inventory.Item
+import o1.inventory.Key
+import o1.inventory.Page
+import o1.inventory.Rupee
+import o1.inventory.Pellet
 import o1.math.Utility
+import o1.math.Vec2
+import o1.math.Vec3
 import o1.math.Vec4
 
 /**
@@ -126,6 +128,62 @@ object Factory {
     cof.addComponent(renderComp)
     cof
   }
+  
+  def createPelletBullet(position: Vec3, direction: Vec3) = {
+    var pellet = new Entity()
+
+    pellet.description = "Pellet shot"
+
+    val rotateComp = new RotateComponent(rateUp = 0.1f)
+    pellet.addComponent(rotateComp)
+
+    var spatialComp = new SpatialComponent()
+    spatialComp.position = position
+    spatialComp.scale = Vec3(0.2f, 0.2f, 0.2f)
+    spatialComp.position.y = 0.8f
+
+    pellet.addComponent(spatialComp)
+
+    pellet.eventHandlers = scala.collection.immutable.Map(
+      (EventType.E_COLLISION, (event, delta) => {
+        val entityA = event.args(0).asInstanceOf[Entity]
+        val entityB = event.args(1).asInstanceOf[Entity]
+
+        if (entityA == pellet) {
+          if (entityB.getComponent(DamageComponent.id).isDefined) {
+            pellet.destroy = true
+            EventManager.addEvent(
+              new Event(Vector(spatialComp.position),
+                EventType.E_EXPLOSION))
+          }
+        }
+      }))
+
+    val physicsComp = new PhysicsComponent(Vec3(direction.x, 0.3f, direction.z), Vec3(0.0f, -0.0981f, 0.0f))
+    pellet.addComponent(physicsComp)
+
+    var renderComp = new RenderComponent("pellet")
+
+    var collisionComponent =
+      new CollisionComponent(
+        0.15f,
+        CollisionComponent.CIRCLE,
+        collisionType = CollisionComponent.COFFEE)
+    collisionComponent.isActive = true
+    collisionComponent.collidesWith.clear()
+    collisionComponent.collidesWith += CollisionComponent.DEFAULT
+    collisionComponent.collidesWith += CollisionComponent.GHOST
+    pellet.addComponent(collisionComponent)
+
+    var damageComp = new DamageComponent(1, DamageComponent.GHOST)
+    pellet.addComponent(damageComp)
+
+    var breakableComp = new BreakableComponent()
+    pellet.addComponent(breakableComp)
+
+    pellet.addComponent(renderComp)
+    pellet
+  }
 
   def createFloor() = {
     var floor = new Entity()
@@ -161,7 +219,7 @@ object Factory {
       case "unbreakableWall" => Some(createUnbreakableWall(node))
       case "table" => Some(createTable(node))
       case "ghost" => Some(createGhost(node))
-      case "coffeeSpawn" => Some(createCoffeeSpawn(node))
+      case "pelletSpawn" => Some(createPelletSpawn(node))
       case _ => None
     }
     ent
@@ -280,7 +338,51 @@ object Factory {
     entity
   }
   
-  def createCoffeeSpawn(node: Node) = {
+  def createPellet(location: Vec3) = {
+
+    val entity = new Entity()
+
+    entity.description = "pellet"
+
+    val spatialComp = new SpatialComponent()
+    spatialComp.position = location
+    spatialComp.scale = Vec3(0.4f, 0.4f, 0.4f)
+    entity.addComponent(spatialComp)
+
+    entity.eventHandlers = scala.collection.immutable.Map(
+      (EventType.E_COLLISION, (event, delta) => {
+        val entityA = event.args(0).asInstanceOf[Entity]
+        val entityB = event.args(1).asInstanceOf[Entity]
+        val entBinventory = entityB.getComponent(InventoryComponent.id)
+
+        if (entityA == entity && entBinventory.isDefined && !entity.destroy) {
+          entBinventory.get.inv.addItem(entity.getComponent(InventoryItemComponent.id).get.invItem)
+          entity.destroy = true
+        }
+      }), (EventType.E_INTERACTION, (event, delta) => {
+        val entityA = event.args(0).asInstanceOf[Option[Entity]]
+        val entityB = event.args(1).asInstanceOf[Option[Entity]]
+
+        if (entityB.isDefined && entityB.get == entity) {
+          println("Pellet Interaction")
+        }
+      }))
+    val invComponent = new InventoryItemComponent(Pellet())
+    entity.addComponent(invComponent)
+
+    var renderComp = new RenderComponent("pellet")
+    entity.addComponent(renderComp)
+
+    val rotateComp = new RotateComponent(-0.2f)
+    entity.addComponent(rotateComp)
+
+    var collisionComponent = new CollisionComponent(0.5f, CollisionComponent.CIRCLE)
+    collisionComponent.isActive = false
+    entity.addComponent(collisionComponent)
+    entity
+  }
+  
+  def createPelletSpawn(node: Node) = {
     // TODO: Fix magic size and location conversion
     val name = (node \ "@name").text
     val typeName = (node \ "@name").text
@@ -289,13 +391,13 @@ object Factory {
 
     val entity = new Entity()
 
-    entity.description = "coffee spawn"
+    entity.description = "pellet spawn"
 
     val spatialComp = new SpatialComponent()
-    spatialComp.position = Vec3((loc.x * 2) / 16, 0.5f, loc.y * 2 / 16)
+    spatialComp.position = Vec3((loc.x * 2) / 16, 1.0f, loc.y * 2 / 16)
     entity.addComponent(spatialComp)
     
-    val spawnComponent = new SpawnComponent(Factory.createCoffee(spatialComp.position), 20.0)
+    val spawnComponent = new SpawnComponent(None, 50.0)
     entity.addComponent(spawnComponent)
 
     entity
@@ -1179,7 +1281,7 @@ object Factory {
         val entityB = event.args(1).asInstanceOf[Entity]
         if (entityA == entity && !entityB.destroy) {
           val damageComponent = entityB.getComponent(DamageComponent.id)
-          if (damageComponent.isDefined && damageComponent.get.canDamage == DamageComponent.ENEMY) {
+          if (damageComponent.isDefined && damageComponent.get.canDamage == DamageComponent.GHOST) {
             val healthComp = entity.getComponent(HealthComponent.id).get
             healthComp.hp -= 1
             if (healthComp.hp <= 0) {
@@ -1215,7 +1317,7 @@ object Factory {
     var collisionComponent = 
       new CollisionComponent(
           size / 16, CollisionComponent.CIRCLE, 
-          collisionType = CollisionComponent.ENEMY)
+          collisionType = CollisionComponent.GHOST)
     collisionComponent.collidesWith.clear()
     collisionComponent.collidesWith += CollisionComponent.DEFAULT
     collisionComponent.collidesWith += CollisionComponent.COFFEE
