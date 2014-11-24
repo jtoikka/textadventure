@@ -75,10 +75,11 @@ class HudScreen(parent: Adventure, rend: Renderer)
         val playerLoc = event.args(2).asInstanceOf[Vec3]
         val playerHeading = event.args(3).asInstanceOf[Vec3]
         val time = event.args(4).asInstanceOf[String]
+        val hp = event.args(5).asInstanceOf[Int]
+        val maxHP = event.args(6).asInstanceOf[Int]
         val box = ResourceManager.shapes(mainInfoBox.getComponent(RenderComponent2D.id).get.shape)
-        box.asInstanceOf[TextRect2D].text = 
-          "Location: x: " + "%1.0f".format(playerLoc.x) + 
-          " y: " + "%1.0f".format(playerLoc.z) +
+        box.asInstanceOf[TextRect2D].text =
+          "Health: " + "\u2665" * hp + "\u2661" * (maxHP - hp) +
           "\nTime: " + time + " AM"
           "\nHeading: " + playerHeading
       }))
@@ -105,7 +106,9 @@ class HudScreen(parent: Adventure, rend: Renderer)
       EventManager.addEvent(new Event(Vector(69, 420,
         player.get.getComponent(SpatialComponent.id).get.position,
         player.get.getComponent(SpatialComponent.id).get.forward,
-        gameTime(realTime)),
+        gameTime(realTime),
+        player.get.getComponent(HealthComponent.id).get.hp,
+        player.get.getComponent(HealthComponent.id).get.maxHP),
         E_CHANGE_HUD_INFO))
     }
     handleEvents(delta.toFloat)
