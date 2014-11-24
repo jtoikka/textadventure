@@ -1,15 +1,62 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" orientation="orthogonal" renderorder="right-down" width="19" height="19" tilewidth="16" tileheight="16">
+<map version="1.0" orientation="orthogonal" renderorder="right-down" width="22" height="22" tilewidth="16" tileheight="16">
  <tileset firstgid="1" name="tile_collision" tilewidth="16" tileheight="16">
   <image source="../tilesets/tile_collision.png" width="128" height="128"/>
  </tileset>
  <tileset firstgid="65" name="tile_meshes" tilewidth="16" tileheight="16">
   <image source="../tilesets/tile_meshes.png" width="128" height="128"/>
  </tileset>
- <layer name="collision" width="19" height="19">
+ <layer name="collision" width="22" height="22">
   <data>
    <tile gid="0"/>
    <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
    <tile gid="1"/>
    <tile gid="0"/>
    <tile gid="1"/>
@@ -24,11 +71,14 @@
    <tile gid="1"/>
    <tile gid="0"/>
    <tile gid="1"/>
+   <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
    <tile gid="1"/>
    <tile gid="0"/>
    <tile gid="0"/>
@@ -43,11 +93,14 @@
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="1"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
+   <tile gid="0"/>
    <tile gid="1"/>
    <tile gid="1"/>
    <tile gid="1"/>
@@ -62,6 +115,9 @@
    <tile gid="1"/>
    <tile gid="1"/>
    <tile gid="1"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
@@ -85,6 +141,9 @@
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
    <tile gid="1"/>
    <tile gid="0"/>
    <tile gid="0"/>
@@ -101,9 +160,12 @@
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="1"/>
+   <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
    <tile gid="1"/>
    <tile gid="0"/>
    <tile gid="0"/>
@@ -120,6 +182,9 @@
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="1"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
@@ -141,12 +206,15 @@
    <tile gid="1"/>
    <tile gid="0"/>
    <tile gid="0"/>
-   <tile gid="0"/>
    <tile gid="1"/>
+   <tile gid="0"/>
    <tile gid="0"/>
+   <tile gid="1"/>
+   <tile gid="1"/>
    <tile gid="1"/>
    <tile gid="1"/>
    <tile gid="1"/>
+   <tile gid="1"/>
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
@@ -160,10 +228,11 @@
    <tile gid="1"/>
    <tile gid="0"/>
    <tile gid="0"/>
-   <tile gid="1"/>
    <tile gid="1"/>
+   <tile gid="0"/>
    <tile gid="1"/>
    <tile gid="1"/>
+   <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
@@ -174,11 +243,14 @@
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
    <tile gid="1"/>
    <tile gid="1"/>
    <tile gid="1"/>
    <tile gid="1"/>
    <tile gid="1"/>
+   <tile gid="1"/>
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
@@ -197,11 +269,14 @@
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
-   <tile gid="1"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
    <tile gid="1"/>
    <tile gid="1"/>
+   <tile gid="0"/>
    <tile gid="1"/>
    <tile gid="1"/>
+   <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
@@ -212,17 +287,22 @@
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
    <tile gid="1"/>
    <tile gid="1"/>
    <tile gid="1"/>
    <tile gid="0"/>
    <tile gid="1"/>
-   <tile gid="0"/>
    <tile gid="1"/>
+   <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="1"/>
    <tile gid="1"/>
    <tile gid="1"/>
+   <tile gid="1"/>
+   <tile gid="1"/>
+   <tile gid="1"/>
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
@@ -236,7 +316,10 @@
    <tile gid="1"/>
    <tile gid="0"/>
    <tile gid="1"/>
+   <tile gid="0"/>
    <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
    <tile gid="1"/>
    <tile gid="0"/>
    <tile gid="0"/>
@@ -253,9 +336,12 @@
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="1"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
+   <tile gid="0"/>
    <tile gid="1"/>
    <tile gid="0"/>
    <tile gid="0"/>
@@ -274,7 +360,10 @@
    <tile gid="1"/>
    <tile gid="1"/>
    <tile gid="1"/>
+   <tile gid="0"/>
    <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
    <tile gid="1"/>
    <tile gid="0"/>
    <tile gid="0"/>
@@ -291,9 +380,12 @@
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="1"/>
+   <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
    <tile gid="1"/>
    <tile gid="1"/>
    <tile gid="1"/>
@@ -310,10 +402,13 @@
    <tile gid="1"/>
    <tile gid="1"/>
    <tile gid="1"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
+   <tile gid="0"/>
    <tile gid="1"/>
    <tile gid="1"/>
    <tile gid="1"/>
@@ -328,6 +423,9 @@
    <tile gid="1"/>
    <tile gid="1"/>
    <tile gid="1"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
@@ -352,6 +450,9 @@
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
    <tile gid="1"/>
    <tile gid="0"/>
    <tile gid="1"/>
@@ -366,13 +467,91 @@
    <tile gid="1"/>
    <tile gid="0"/>
    <tile gid="1"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
   </data>
  </layer>
- <layer name="mesh" width="19" height="19" visible="0" opacity="0.75">
+ <layer name="mesh" width="22" height="22" visible="0" opacity="0.75">
   <data>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
@@ -451,17 +630,23 @@
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
-   <tile gid="83"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="83"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="83"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
@@ -481,6 +666,9 @@
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="83"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
@@ -508,6 +696,9 @@
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
    <tile gid="83"/>
    <tile gid="0"/>
    <tile gid="95"/>
@@ -523,6 +714,9 @@
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="83"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
@@ -546,6 +740,9 @@
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
    <tile gid="83"/>
    <tile gid="0"/>
    <tile gid="95"/>
@@ -558,6 +755,9 @@
    <tile gid="0"/>
    <tile gid="78"/>
    <tile gid="82"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
@@ -579,6 +779,9 @@
    <tile gid="0"/>
    <tile gid="106"/>
    <tile gid="93"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
@@ -603,6 +806,9 @@
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
    <tile gid="83"/>
    <tile gid="0"/>
    <tile gid="0"/>
@@ -618,6 +824,9 @@
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="95"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
@@ -641,6 +850,9 @@
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
    <tile gid="78"/>
    <tile gid="82"/>
    <tile gid="0"/>
@@ -660,6 +872,9 @@
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
    <tile gid="83"/>
    <tile gid="0"/>
    <tile gid="95"/>
@@ -679,6 +894,9 @@
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
    <tile gid="83"/>
    <tile gid="0"/>
    <tile gid="95"/>
@@ -692,6 +910,34 @@
    <tile gid="70"/>
    <tile gid="0"/>
    <tile gid="83"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
@@ -737,13 +983,27 @@
   </data>
  </layer>
  <objectgroup color="#9ba1a4" name="objects" opacity="0.91">
-  <object type="monkey" x="8" y="0" width="16" height="16">
+  <object type="monkey" x="56" y="32" width="16" height="16">
    <ellipse/>
   </object>
-  <object type="shop" x="136" y="184" width="16" height="16">
+  <object type="shop" x="184" y="216" width="16" height="16">
    <ellipse/>
   </object>
-  <object type="chest" x="48" y="80" width="16" height="16">
+  <object type="chest" x="96" y="112" width="16" height="16">
+   <properties>
+    <property name="keys" value="1"/>
+    <property name="pages" value="5"/>
+    <property name="rupees" value="10"/>
+   </properties>
+   <ellipse/>
+  </object>
+  <object type="rupee" x="112" y="96" width="16" height="16" rotation="1">
+   <ellipse/>
+  </object>
+  <object type="key" x="80" y="96" width="16" height="16">
+   <ellipse/>
+  </object>
+  <object type="chest" x="272" y="112" width="16" height="16">
    <properties>
     <property name="keys" value="1"/>
     <property name="pages" value="1"/>
@@ -751,17 +1011,7 @@
    </properties>
    <ellipse/>
   </object>
-  <object type="rupee" x="64" y="64" width="16" height="16" rotation="1">
-   <ellipse/>
-  </object>
-  <object type="coffee" x="32" y="112" width="16" height="16" rotation="1">
-   <ellipse/>
-  </object>
-  <object type="key" x="32" y="64" width="16" height="16">
-   <ellipse/>
-  </object>
-  <object type="openDoor" x="64" y="128" width="16" height="16"/>
-  <object type="chest" x="224" y="80" width="16" height="16">
+  <object type="chest" x="96" y="240" width="16" height="16">
    <properties>
     <property name="keys" value="1"/>
     <property name="pages" value="1"/>
@@ -769,7 +1019,7 @@
    </properties>
    <ellipse/>
   </object>
-  <object type="chest" x="48" y="208" width="16" height="16">
+  <object type="chest" x="272" y="240" width="16" height="16">
    <properties>
     <property name="keys" value="1"/>
     <property name="pages" value="1"/>
@@ -777,82 +1027,69 @@
    </properties>
    <ellipse/>
   </object>
-  <object type="chest" x="224" y="208" width="16" height="16">
-   <properties>
-    <property name="keys" value="1"/>
-    <property name="pages" value="1"/>
-    <property name="rupees" value="10"/>
-   </properties>
-   <ellipse/>
-  </object>
-  <object type="openDoor" x="64" y="144" width="16" height="16"/>
-  <object type="openDoor" x="64" y="160" width="16" height="16"/>
-  <object type="openDoor" x="80" y="208" width="16" height="16"/>
-  <object type="openDoor" x="192" y="208" width="16" height="16"/>
-  <object type="openDoor" x="144" y="224" width="16" height="16"/>
-  <object type="openDoor" x="128" y="224" width="16" height="16"/>
-  <object type="openDoor" x="96" y="176" width="16" height="16"/>
-  <object type="openDoor" x="112" y="176" width="16" height="16"/>
-  <object type="openDoor" x="160" y="176" width="16" height="16"/>
-  <object type="openDoor" x="176" y="176" width="16" height="16"/>
-  <object type="openDoor" x="208" y="128" width="16" height="16"/>
-  <object type="openDoor" x="208" y="144" width="16" height="16"/>
-  <object type="openDoor" x="208" y="160" width="16" height="16"/>
-  <object type="openDoor" x="176" y="112" width="16" height="16"/>
-  <object type="openDoor" x="160" y="112" width="16" height="16"/>
-  <object type="openDoor" x="112" y="112" width="16" height="16"/>
-  <object type="openDoor" x="96" y="112" width="16" height="16"/>
-  <object type="openDoor" x="128" y="64" width="16" height="16"/>
-  <object type="openDoor" x="144" y="64" width="16" height="16"/>
-  <object type="openDoor" x="192" y="80" width="16" height="16"/>
-  <object type="openDoor" x="80" y="80" width="16" height="16"/>
-  <object type="openDoor" x="176" y="240" width="16" height="16"/>
-  <object type="openDoor" x="96" y="240" width="16" height="16"/>
-  <object type="openDoor" x="96" y="48" width="16" height="16"/>
-  <object type="openDoor" x="176" y="48" width="16" height="16"/>
-  <object type="door" x="176" y="240" width="16" height="8"/>
-  <object type="openDoor" x="48" y="144" width="16" height="16"/>
-  <object type="openDoor" x="32" y="144" width="16" height="16"/>
-  <object type="openDoor" x="16" y="144" width="16" height="16"/>
-  <object type="openDoor" x="224" y="144" width="16" height="16"/>
-  <object type="door" x="48" y="144" width="16" height="8" rotation="450"/>
-  <object type="door" x="96" y="240" width="16" height="8"/>
-  <object type="door" x="96" y="48" width="16" height="8"/>
-  <object type="door" x="176" y="48" width="16" height="8"/>
-  <object type="openDoor" x="128" y="112" width="16" height="16"/>
-  <object type="openDoor" x="144" y="112" width="16" height="16"/>
-  <object type="openDoor" x="128" y="176" width="16" height="16"/>
-  <object type="openDoor" x="144" y="176" width="16" height="16"/>
-  <object type="openDoor" x="136" y="160" width="16" height="16"/>
-  <object type="openDoor" x="128" y="80" width="16" height="16"/>
-  <object type="openDoor" x="144" y="80" width="16" height="16"/>
-  <object type="openDoor" x="128" y="208" width="16" height="16"/>
+  <object type="openDoor" x="128" y="240" width="16" height="16"/>
+  <object type="openDoor" x="240" y="240" width="16" height="16"/>
+  <object type="openDoor" x="192" y="256" width="16" height="16"/>
+  <object type="openDoor" x="176" y="256" width="16" height="16"/>
   <object type="openDoor" x="144" y="208" width="16" height="16"/>
-  <object type="levelTrigger" x="0" y="144" width="16" height="16">
+  <object type="openDoor" x="160" y="208" width="16" height="16"/>
+  <object type="openDoor" x="208" y="208" width="16" height="16"/>
+  <object type="openDoor" x="224" y="208" width="16" height="16"/>
+  <object type="openDoor" x="256" y="160" width="16" height="16"/>
+  <object type="openDoor" x="256" y="176" width="16" height="16"/>
+  <object type="openDoor" x="256" y="192" width="16" height="16"/>
+  <object type="openDoor" x="224" y="144" width="16" height="16"/>
+  <object type="openDoor" x="208" y="144" width="16" height="16"/>
+  <object type="openDoor" x="160" y="144" width="16" height="16"/>
+  <object type="openDoor" x="144" y="144" width="16" height="16"/>
+  <object type="openDoor" x="176" y="96" width="16" height="16"/>
+  <object type="openDoor" x="192" y="96" width="16" height="16"/>
+  <object type="openDoor" x="240" y="112" width="16" height="16"/>
+  <object type="openDoor" x="128" y="112" width="16" height="16"/>
+  <object type="openDoor" x="224" y="272" width="16" height="16"/>
+  <object type="openDoor" x="144" y="272" width="16" height="16"/>
+  <object type="openDoor" x="144" y="80" width="16" height="16"/>
+  <object type="openDoor" x="224" y="80" width="16" height="16"/>
+  <object type="door" x="224" y="272" width="16" height="8"/>
+  <object type="openDoor" x="272" y="176" width="16" height="16"/>
+  <object type="bossDoor" x="96" y="168" width="16" height="8" rotation="450"/>
+  <object type="door" x="144" y="272" width="16" height="8"/>
+  <object type="door" x="144" y="80" width="16" height="8"/>
+  <object type="door" x="224" y="80" width="16" height="8"/>
+  <object type="openDoor" x="176" y="144" width="16" height="16"/>
+  <object type="openDoor" x="192" y="144" width="16" height="16"/>
+  <object type="openDoor" x="176" y="208" width="16" height="16"/>
+  <object type="openDoor" x="192" y="208" width="16" height="16"/>
+  <object type="openDoor" x="184" y="192" width="16" height="16"/>
+  <object type="openDoor" x="176" y="112" width="16" height="16"/>
+  <object type="openDoor" x="192" y="112" width="16" height="16"/>
+  <object type="openDoor" x="176" y="240" width="16" height="16"/>
+  <object type="openDoor" x="192" y="240" width="16" height="16"/>
+  <object type="levelTrigger" x="48" y="176" width="16" height="16">
    <properties>
     <property name="level" value="06_panic"/>
     <property name="spawn" value="01_entrance"/>
    </properties>
   </object>
-  <object type="rupee" x="64" y="96" width="16" height="16" rotation="1">
+  <object type="rupee" x="112" y="128" width="16" height="16" rotation="1">
    <ellipse/>
   </object>
-  <object type="rupee" x="64" y="192" width="16" height="16" rotation="1">
+  <object type="rupee" x="112" y="224" width="16" height="16" rotation="1">
    <ellipse/>
   </object>
-  <object type="rupee" x="64" y="224" width="16" height="16" rotation="1">
+  <object type="rupee" x="112" y="256" width="16" height="16" rotation="1">
    <ellipse/>
   </object>
-  <object type="rupee" x="208" y="224" width="16" height="16" rotation="1">
+  <object type="rupee" x="256" y="256" width="16" height="16" rotation="1">
    <ellipse/>
   </object>
-  <object type="rupee" x="208" y="192" width="16" height="16" rotation="1">
+  <object type="rupee" x="256" y="224" width="16" height="16" rotation="1">
    <ellipse/>
   </object>
-  <object type="rupee" x="208" y="96" width="16" height="16" rotation="1">
+  <object type="rupee" x="256" y="128" width="16" height="16" rotation="1">
    <ellipse/>
   </object>
-  <object type="static" x="112.25" y="56.25" width="16" height="16" rotation="1">
+  <object type="static" x="160.25" y="88.25" width="16" height="16" rotation="1">
    <properties>
     <property name="collision" value="false"/>
     <property name="height" value="1.5"/>
@@ -861,46 +1098,43 @@
    </properties>
    <ellipse/>
   </object>
-  <object type="coffee" x="32" y="176" width="16" height="16" rotation="1">
+  <object type="coffee" x="288" y="208" width="16" height="16" rotation="1">
    <ellipse/>
   </object>
-  <object type="coffee" x="240" y="176" width="16" height="16" rotation="1">
+  <object type="coffee" x="288" y="144" width="16" height="16" rotation="1">
    <ellipse/>
   </object>
-  <object type="coffee" x="240" y="112" width="16" height="16" rotation="1">
-   <ellipse/>
-  </object>
-  <object type="levelTrigger" x="208" y="16" width="16" height="16">
+  <object type="levelTrigger" x="256" y="48" width="16" height="16">
    <properties>
     <property name="level" value="05_scabin"/>
     <property name="spawn" value="01_entrance"/>
    </properties>
   </object>
-  <object type="levelTrigger" x="272" y="176" width="16" height="16">
+  <object type="levelTrigger" x="320" y="208" width="16" height="16">
    <properties>
     <property name="level" value="00_startlevel"/>
     <property name="spawn" value="01_entrance"/>
    </properties>
   </object>
-  <object type="levelTrigger" x="208" y="272" width="16" height="16">
+  <object type="levelTrigger" x="256" y="304" width="16" height="16">
    <properties>
     <property name="level" value="02_library"/>
     <property name="spawn" value="01_entrance"/>
    </properties>
   </object>
-  <object type="levelTrigger" x="64" y="272" width="16" height="16">
+  <object type="levelTrigger" x="112" y="304" width="16" height="16">
    <properties>
     <property name="level" value="03_tf"/>
     <property name="spawn" value="01_entrance"/>
    </properties>
   </object>
-  <object type="levelTrigger" x="64" y="16" width="16" height="16">
+  <object type="levelTrigger" x="112" y="48" width="16" height="16">
    <properties>
     <property name="level" value="04_lab"/>
     <property name="spawn" value="01_entrance"/>
    </properties>
   </object>
-  <object type="static" x="159.75" y="56.25" width="16" height="16" rotation="1">
+  <object type="static" x="207.75" y="88.25" width="16" height="16" rotation="1">
    <properties>
     <property name="collision" value="false"/>
     <property name="height" value="1.5"/>
@@ -909,7 +1143,7 @@
    </properties>
    <ellipse/>
   </object>
-  <object type="static" x="159.816" y="231.937" width="16" height="16" rotation="180">
+  <object type="static" x="207.816" y="263.937" width="16" height="16" rotation="180">
    <properties>
     <property name="collision" value="false"/>
     <property name="height" value="1.5"/>
@@ -918,7 +1152,7 @@
    </properties>
    <ellipse/>
   </object>
-  <object type="static" x="112.364" y="230.545" width="16" height="16" rotation="180">
+  <object type="static" x="160.364" y="262.545" width="16" height="16" rotation="180">
    <properties>
     <property name="collision" value="false"/>
     <property name="height" value="1.5"/>
@@ -927,60 +1161,71 @@
    </properties>
    <ellipse/>
   </object>
+  <object type="unbreakableWall" x="96" y="152" width="16" height="16"/>
+  <object type="unbreakableWall" x="96" y="200" width="16" height="16"/>
+  <object type="bossDoor" x="96" y="184" width="16" height="8" rotation="450"/>
+  <object type="openDoor" x="96" y="160" width="16" height="16"/>
+  <object type="openDoor" x="96" y="176" width="16" height="16"/>
+  <object type="openDoor" x="96" y="192" width="16" height="16"/>
+  <object name="pageCountCheckTrigger" type="breakableWall" x="128" y="160" width="128" height="48">
+   <properties>
+    <property name="count" value="5"/>
+   </properties>
+  </object>
  </objectgroup>
  <objectgroup name="player">
-  <object type="player" x="185.333" y="272" width="16" height="16">
+  <object type="player" x="233.333" y="304" width="16" height="16">
    <properties>
     <property name="name" value="02_entrance"/>
    </properties>
    <ellipse/>
   </object>
-  <object type="player" x="271.5" y="158.667" width="16" height="16">
+  <object type="player" x="319.5" y="190.667" width="16" height="16">
    <properties>
     <property name="name" value="00_entrance"/>
    </properties>
    <ellipse/>
   </object>
-  <object type="player" x="90.3333" y="16" width="16" height="16">
+  <object type="player" x="138.333" y="48" width="16" height="16">
    <properties>
     <property name="name" value="04_entrance"/>
    </properties>
    <ellipse/>
   </object>
-  <object type="player" x="183" y="16" width="16" height="16">
+  <object type="player" x="231" y="48" width="16" height="16">
    <properties>
     <property name="name" value="05_entrance"/>
    </properties>
    <ellipse/>
   </object>
-  <object type="player" x="86" y="272" width="16" height="16">
+  <object type="player" x="134" y="304" width="16" height="16">
    <properties>
     <property name="name" value="03_entrance"/>
    </properties>
    <ellipse/>
   </object>
-  <object type="player" x="21.3333" y="144" width="16" height="16">
+  <object type="player" x="69.3333" y="176" width="16" height="16">
    <properties>
     <property name="name" value="06_entrance"/>
    </properties>
    <ellipse/>
   </object>
-  <object type="player" x="176" y="144" width="16" height="16">
+  <object type="player" x="224" y="176" width="16" height="16">
    <properties>
     <property name="name" value="startSpawn"/>
    </properties>
    <ellipse/>
   </object>
-  <object type="key" x="32" y="224" width="16" height="16">
+  <object type="key" x="80" y="256" width="16" height="16">
    <ellipse/>
   </object>
-  <object type="key" x="240" y="224" width="16" height="16">
+  <object type="key" x="288" y="256" width="16" height="16">
    <ellipse/>
   </object>
-  <object type="key" x="240" y="64" width="16" height="16">
+  <object type="key" x="288" y="96" width="16" height="16">
    <ellipse/>
   </object>
-  <object type="player" x="163.333" y="204.667" width="16" height="16">
+  <object type="player" x="211.333" y="236.667" width="16" height="16">
    <properties>
     <property name="name" value="nullSpawn"/>
    </properties>
