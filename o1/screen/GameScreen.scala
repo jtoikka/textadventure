@@ -139,6 +139,9 @@ class GameScreen(parent: Adventure, rend: Renderer)
                 if (spatial.get.position.y > 0.2) {
                   spatial.get.position.y -= 0.05f * delta.toFloat
                 }
+                else {
+                  EventManager.addEvent(new Event(Vector("gameOverScreen"), EventType.E_CHANGE_SCREEN))
+                }
               }
             }
           }
