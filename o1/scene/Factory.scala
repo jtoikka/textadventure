@@ -220,13 +220,14 @@ object Factory {
     val typeName = (node \ "@name").text
     val loc = Vec2((node \ "@x").text.toFloat, (node \ "@y").text.toFloat)
     val size = (node \ "@width").text.toFloat
-
+    val heightText = ((node \ "properties" \ "property").filter(a => (a \ "@name").text == "height") \ "@value").text
+    val height = if(!heightText.isEmpty()) heightText.toFloat else 0.25f
     val entity = new Entity()
 
     entity.description = "key"
 
     val spatialComp = new SpatialComponent()
-    spatialComp.position = Vec3((loc.x * 2) / 16, 0.25f, loc.y * 2 / 16)
+    spatialComp.position = Vec3((loc.x * 2) / 16, height, loc.y * 2 / 16)
     spatialComp.scale = Vec3(1.0f, 1.0f, 1.0f)
     entity.addComponent(spatialComp)
 
@@ -269,7 +270,8 @@ object Factory {
     val typeName = (node \ "@name").text
     val loc = Vec2((node \ "@x").text.toFloat, (node \ "@y").text.toFloat)
     val size = (node \ "@width").text.toFloat
-
+    val heightText = ((node \ "properties" \ "property").filter(a => (a \ "@name").text == "height") \ "@value").text
+    val height = if(!heightText.isEmpty()) heightText.toFloat else 0.5f
     val entity = new Entity()
 
     entity.description = "page"
@@ -295,7 +297,7 @@ object Factory {
       }))
 
     val spatialComp = new SpatialComponent()
-    spatialComp.position = Vec3(loc.x * 2 / 16, 0.5f, loc.y * 2 / 16)
+    spatialComp.position = Vec3(loc.x * 2 / 16, height, loc.y * 2 / 16)
     entity.addComponent(spatialComp)
 
     val invComponent = new InventoryItemComponent(Page())
@@ -824,7 +826,8 @@ object Factory {
     val typeName = (node \ "@name").text
     val loc = Vec2((node \ "@x").text.toFloat, (node \ "@y").text.toFloat)
     val size = (node \ "@width").text.toFloat
-
+    val heightText = ((node \ "properties" \ "property").filter(a => (a \ "@name").text == "height") \ "@value").text
+    val height = if(!heightText.isEmpty()) heightText.toFloat else 0.0f
     val entity = new Entity()
 
     entity.description = "rupee"
@@ -850,7 +853,7 @@ object Factory {
       }))
 
     val spatialComp = new SpatialComponent()
-    spatialComp.position = Vec3(loc.x * 2 / 16 - 1, 0.0f, loc.y * 2 / 16 - 1)
+    spatialComp.position = Vec3(loc.x * 2 / 16, height, loc.y * 2 / 16)
     spatialComp.scale = Vec3(0.5f, 0.5f, 0.5f)
     entity.addComponent(spatialComp)
 
