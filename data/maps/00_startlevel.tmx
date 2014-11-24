@@ -737,21 +737,15 @@
   </data>
  </layer>
  <objectgroup color="#9ba1a4" name="objects" opacity="0.55">
-  <object type="monkey" x="232" y="-8" width="16" height="16">
-   <ellipse/>
-  </object>
-  <object type="shop" x="312" y="12" width="16" height="16">
-   <ellipse/>
-  </object>
   <object type="key" x="128" y="80" width="16" height="16">
    <ellipse/>
   </object>
   <object type="openDoor" x="144" y="144" width="16" height="16"/>
-  <object type="door" x="157" y="144" width="16" height="8" rotation="-270"/>
+  <object type="door" x="144" y="144" width="16" height="8" rotation="90"/>
   <object type="rupee" x="256" y="160" width="16" height="16" rotation="1">
    <ellipse/>
   </object>
-  <object type="coffee" x="256" y="128" width="16" height="16" rotation="1">
+  <object type="coffee" x="240" y="128" width="16" height="16" rotation="1">
    <ellipse/>
   </object>
   <object type="levelTrigger" x="16" y="112" width="16" height="4">
@@ -760,16 +754,22 @@
     <property name="spawn" value="00_entrance"/>
    </properties>
   </object>
-  <object type="page" x="224" y="80" width="16" height="16">
+  <object type="page" x="237.652" y="94.8695" width="16" height="16">
+   <properties>
+    <property name="height" value="1"/>
+   </properties>
    <ellipse/>
   </object>
   <object type="key" x="48" y="192" width="16" height="16">
    <ellipse/>
   </object>
-  <object type="rupee" x="80" y="184" width="16" height="16" rotation="1">
+  <object type="rupee" x="80" y="184" width="16" height="16">
    <ellipse/>
   </object>
-  <object type="rupee" x="160" y="224" width="16" height="16" rotation="1">
+  <object type="rupee" x="156" y="224" width="16" height="16" rotation="1">
+   <properties>
+    <property name="height" value="1"/>
+   </properties>
    <ellipse/>
   </object>
   <object type="openDoor" x="176" y="112" width="16" height="16"/>
@@ -782,7 +782,7 @@
   <object type="openDoor" x="240" y="176" width="16" height="16"/>
   <object type="openDoor" x="240" y="192" width="16" height="16"/>
   <object type="openDoor" x="240" y="208" width="16" height="16"/>
-  <object type="rupee" x="128" y="128" width="16" height="16" rotation="1">
+  <object type="rupee" x="112" y="160" width="16" height="16" rotation="1">
    <ellipse/>
   </object>
   <object type="levelTrigger" x="224" y="256" width="16" height="16">
@@ -791,6 +791,30 @@
     <property name="spawn" value="00_entrance"/>
    </properties>
   </object>
+  <object type="table" x="240" y="64" width="16" height="16"/>
+  <object type="table" x="240" y="96" width="16" height="16"/>
+  <object type="table" x="160" y="224" width="16" height="16"/>
+  <object type="table" x="160" y="240" width="16" height="16"/>
+  <object type="table" x="160" y="256" width="16" height="16"/>
+  <object type="table" x="32" y="176" width="16" height="16"/>
+  <object type="table" x="32" y="264" width="16" height="8"/>
+  <object type="table" x="112" y="192" width="16" height="16"/>
+  <object type="table" x="112" y="128" width="16" height="16"/>
+  <object type="table" x="128" y="128" width="16" height="16"/>
+  <object type="table" x="208" y="144" width="16" height="16"/>
+  <object type="table" x="256" y="224" width="16" height="8"/>
+  <object type="table" x="224" y="224" width="16" height="8"/>
+  <object type="table" x="160" y="128" width="8" height="16"/>
+  <object type="table" x="160" y="160" width="8" height="16"/>
+  <object type="table" x="264" y="128" width="8" height="48"/>
+  <object type="openDoor" x="48" y="160" width="16" height="16"/>
+  <object type="openDoor" x="48" y="144" width="16" height="16"/>
+  <object type="openDoor" x="32" y="144" width="16" height="16"/>
+  <object type="openDoor" x="16" y="144" width="16" height="16"/>
+  <object type="openDoor" x="16" y="128" width="16" height="16"/>
+  <object type="openDoor" x="16" y="112" width="16" height="16"/>
+  <object type="openDoor" x="16" y="96" width="16" height="16"/>
+  <object type="openDoor" x="0" y="96" width="16" height="16"/>
  </objectgroup>
  <objectgroup name="player">
   <object type="player" x="240" y="240" width="16" height="16">
