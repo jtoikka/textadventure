@@ -113,6 +113,8 @@ object Factory {
     collisionComponent.isActive = true
     collisionComponent.collidesWith.clear()
     collisionComponent.collidesWith += CollisionComponent.DEFAULT
+    collisionComponent.collidesWith.clear()
+    collisionComponent.collidesWith += CollisionComponent.DEFAULT
     cof.addComponent(collisionComponent)
 
     var damageComp = new DamageComponent(1, DamageComponent.ENEMY)
@@ -766,11 +768,14 @@ object Factory {
     val inventoryComponent = new InventoryComponent()
     player.addComponent(inventoryComponent)
 
-    val collisionComponent = new CollisionComponent(0.3f, CollisionComponent.CIRCLE)
+    val collisionComponent = 
+      new CollisionComponent(
+          0.3f, CollisionComponent.CIRCLE, 
+          collisionType = CollisionComponent.PLAYER)
     player.addComponent(collisionComponent)
     
-//    var renderComp = new RenderComponent("chest", Some("chest"))
-//    player.addComponent(renderComp)
+    var renderComp = new RenderComponent("chest", Some("chest"))
+    player.addComponent(renderComp)
     
     val inputComponent = new InputComponent()
     player.addComponent(inputComponent)

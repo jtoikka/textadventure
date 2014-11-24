@@ -153,7 +153,8 @@ object CollisionCheck {
 //            sendIntersectionEvent(otherEntity, entity)
           }
       }
-      checkWorldCollisions(entity, collisionComponent.get.radius, world.get)
+      if (collisionComponent.get.isActive)
+        checkWorldCollisions(entity, collisionComponent.get.radius, world.get)
     }
   }
   

@@ -32,6 +32,8 @@ class GameScreen(parent: Adventure, rend: Renderer)
     extends Screen(parent, rend) {
   def this(parent: Adventure, x: Int, y: Int) = this(parent, new Renderer3D(x, y))
 
+  val levels = ResourceManager.maps.map(x => (x._1, loadLevel(x._1))).toMap
+  
   var scene = new Scene()
 
   var paused = true
@@ -56,7 +58,7 @@ class GameScreen(parent: Adventure, rend: Renderer)
     (E_LOAD_NEW_MAP, (event, delta) => {
       val newMapName = event.args(0).asInstanceOf[String]
       val newSpawnName = event.args(1).asInstanceOf[String]
-      loadLevel(newMapName,newSpawnName)
+      changeLevel(newMapName, newSpawnName)
       
     }),
     (E_PLAYER_CREATION, (event, delta) => {
@@ -176,6 +178,7 @@ class GameScreen(parent: Adventure, rend: Renderer)
 
       updateCamera()
       movementMap.clear()
+      println(scene.entities.count(_.getComponent(PlayerComponent.id).isDefined))
     } else {
       events.clear()
     }
@@ -334,22 +337,65 @@ class GameScreen(parent: Adventure, rend: Renderer)
   
   init()
   def init(): Unit = {
-    loadLevel("00_startlevel","startSpawn")
+    changeLevel("00_startlevel", "startSpawn")
   }
   
-  def loadLevel(level: String, spawn:String) = {
-    println("Change map to " + level + " with spawn " + spawn)
+  def loadLevel(level: String): Scene = {
+    val newScene = new Scene()
+    Level.loadMap(newScene, level)
+    newScene
+  }
+  
+  def changeLevel(level: String, spawn: String) = {
     val player = scene.entities.find(_.getComponent(PlayerComponent.id).isDefined)
-    scene.clear()
-    Level.loadMap(scene, level,spawn)
-    val newPlayer = scene.entities.find(_.getComponent(PlayerComponent.id).isDefined)
-    if (newPlayer.isDefined && player.isDefined) {
-      newPlayer.get.addComponent(player.get.getComponent(InventoryComponent.id).get)
-      newPlayer.get.getComponent(SpatialComponent.id).get.forward = 
-        player.get.getComponent(SpatialComponent.id).get.forward
+    var inventoryComponent: Option[InventoryComponent] = None
+    var forward = Vec3(0, 0, 1)
+    if (player.isDefined) {
+      inventoryComponent = player.get.getComponent(InventoryComponent.id)
+      player.get.dispose()
+      scene.removeEntity(player.get)
+      forward = player.get.getComponent(SpatialComponent.id).get.forward
     }
+    scene = levels(level)
+    
+    scene.entities.filter(_.getComponent(PlayerComponent.id).isDefined).foreach(_.destroy = true)
+    val xml = ResourceManager.maps(level)
+    val objectGroups = collection.mutable.Map[String, scala.xml.Node]()
+    for (layer <- xml \ "objectgroup") {
+      val name = layer \ "@name"
+      objectGroups(name.text) = layer
+    }
+    val playerSpawn = (objectGroups("player") \ "object")
+    val location = playerSpawn.find(a => ((a \ "properties" \ "property").find(q => (q \ "@name").text == "name").get \ "@value").text == spawn)
+    
+    val playerEnt = Factory.createPlayer(location.get)
+      if (player.isDefined) {
+      playerEnt.addComponent(inventoryComponent.get)
+      playerEnt.getComponent(SpatialComponent.id).get.forward = forward
+    }
+    scene.addEntity(playerEnt)
+    
+    scene.camera = Some(Factory.createCamera(playerEnt))
+    scene.camera.get.getComponent(SpatialComponent.id).get.forward.x = forward.x
+    scene.camera.get.getComponent(SpatialComponent.id).get.forward.y = forward.y
+    scene.camera.get.getComponent(SpatialComponent.id).get.forward.z = -forward.z
     EventManager.addEvent(new Event(Vector(scene.world), E_CHANGE_MAP))
   }
+  
+  
+//  def loadLevel(level: String, spawn: String): Scene = {
+//    println("Change map to " + level + " with spawn " + spawn)
+//    val player = scene.entities.find(_.getComponent(PlayerComponent.id).isDefined)
+//    scene.clear()
+//    Level.loadMap(scene, level, spawn)
+//    val newPlayer = scene.entities.find(_.getComponent(PlayerComponent.id).isDefined)
+//    if (newPlayer.isDefined && player.isDefined) {
+//      newPlayer.get.addComponent(player.get.getComponent(InventoryComponent.id).get)
+//      newPlayer.get.getComponent(SpatialComponent.id).get.forward = 
+//        player.get.getComponent(SpatialComponent.id).get.forward
+//    }
+//    EventManager.addEvent(new Event(Vector(scene.world), E_CHANGE_MAP))
+//  }
 
   var firstTime = true
   

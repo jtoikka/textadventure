@@ -73,6 +73,7 @@ object CollisionComponent {
   val ALL = 3
   val DEFAULT = 4
   val COFFEE = 5
+  val PLAYER = 6
 }
 
 class CollisionComponent(
