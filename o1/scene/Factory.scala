@@ -159,6 +159,7 @@ object Factory {
       case "levelTrigger" => Some(createLevelTrigger(node))
       case "breakableWall" => Some(createBreakableWall(node))
       case "unbreakableWall" => Some(createUnbreakableWall(node))
+      case "table" => Some(createTable(node))
       case _ => None
     }
     ent
@@ -990,6 +991,31 @@ object Factory {
     spatialComp.scale = Vec3(w / 2, 1.0f, h / 2)
 
     val renderComp = new RenderComponent("uv_cube", Some("testTex"))
+    entity.addComponent(renderComp)
+
+    var collisionComponent = new CollisionComponent(
+      h / 16, CollisionComponent.SQUARE,
+      halfWidth = w / 2, halfHeight = h / 2)
+    collisionComponent.isStatic = true
+
+    entity.addComponent(collisionComponent)
+    entity
+  }
+
+  def createTable(node: Node) = {
+    // TODO: Fix magic size and location conversion
+    val loc = Vec2((node \ "@x").text.toFloat, (node \ "@y").text.toFloat)
+    val w = (node \ "@width").text.toFloat / 8
+    val h = (node \ "@height").text.toFloat / 8
+    val entity: Entity = new Entity()
+
+    val spatialComp = new SpatialComponent()
+    spatialComp.position = Vec3(loc.x * 2 / 16 + w / 2 - 1, 0.0f, loc.y * 2 / 16 + h / 2 - 1)
+    entity.addComponent(spatialComp)
+
+    spatialComp.scale = Vec3(w / 2, 1.0f, h / 2)
+
+    val renderComp = new RenderComponent("table")
     entity.addComponent(renderComp)
 
     var collisionComponent = new CollisionComponent(
