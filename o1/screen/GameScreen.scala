@@ -96,6 +96,8 @@ class GameScreen(parent: Adventure, rend: Renderer)
   def update(delta: Double): Unit = {
     handleEvents(delta.toFloat)
     scene.entities.foreach(_.handleEvents(delta.toFloat))
+    
+    levels.filter(_._2 != scene).foreach(_._2.destroyEvents())
 
     if (!paused) {
       val entitiesAsVector = scene.entities.toVector
@@ -178,7 +180,6 @@ class GameScreen(parent: Adventure, rend: Renderer)
 
       updateCamera()
       movementMap.clear()
-      println(scene.entities.count(_.getComponent(PlayerComponent.id).isDefined))
     } else {
       events.clear()
     }
@@ -346,19 +347,29 @@ class GameScreen(parent: Adventure, rend: Renderer)
     newScene
   }
   
+//  def changeLevel(level: String, spawn: String) = {
+//    val player = scene.entities.find(_.getComponent(PlayerComponent.id).isDefined)
+//    val inventoryComponent = 
+//      if (player.isDefined) 
+//        player.get.getComponent(InventoryComponent.id) 
+//      else 
+//        None
+//    val forward = 
+//  }
+  
   def changeLevel(level: String, spawn: String) = {
     val player = scene.entities.find(_.getComponent(PlayerComponent.id).isDefined)
     var inventoryComponent: Option[InventoryComponent] = None
     var forward = Vec3(0, 0, 1)
     if (player.isDefined) {
       inventoryComponent = player.get.getComponent(InventoryComponent.id)
-      player.get.dispose()
-      scene.removeEntity(player.get)
       forward = player.get.getComponent(SpatialComponent.id).get.forward
+      scene.removeEntity(player.get)
+      scene.entities.filter(_.getComponent(PlayerComponent.id).isDefined).foreach(scene.removeEntity(_))
     }
     scene = levels(level)
     
-    scene.entities.filter(_.getComponent(PlayerComponent.id).isDefined).foreach(_.destroy = true)
+    scene.entities.filter(_.getComponent(PlayerComponent.id).isDefined).foreach(scene.removeEntity(_))
     val xml = ResourceManager.maps(level)
     val objectGroups = collection.mutable.Map[String, scala.xml.Node]()
     for (layer <- xml \ "objectgroup") {
@@ -369,7 +380,7 @@ class GameScreen(parent: Adventure, rend: Renderer)
     val location = playerSpawn.find(a => ((a \ "properties" \ "property").find(q => (q \ "@name").text == "name").get \ "@value").text == spawn)
     
     val playerEnt = Factory.createPlayer(location.get)
-      if (player.isDefined) {
+    if (inventoryComponent.isDefined) {
       playerEnt.addComponent(inventoryComponent.get)
       playerEnt.getComponent(SpatialComponent.id).get.forward = forward
     }
