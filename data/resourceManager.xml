@@ -46,6 +46,7 @@
 		<item name="rupee" path="data/meshes/rupee.obj"></item>
 		<item name="plate" path="data/meshes/4x4_plate_floor.obj"></item>
 		<item name="solidTile" path="data/meshes/solid_tile.obj"></item>
+		<item name="table" path="data/meshes/table.obj"></item>
 		<item name="floor" path="data/meshes/floor.obj">
 			<luminosity>0.6</luminosity>
 		</item>	
