@@ -174,6 +174,7 @@ object Factory {
       case "static" => Some(createStatic(node))
       case "door" => Some(createDoor(node))
       case "bossDoor" => Some(createBossDoor(node))
+      case "lastDoor" => Some(createLastDoor(node))
       case "pageCountCheckTrigger" => Some(createPageCountCheckerArea(node))
       case "openDoor" => Some(createOpenDoor(node))
       case "rupee" => Some(createRupee(node))
@@ -1260,6 +1261,8 @@ object Factory {
               entity.destroy = true
               EventManager.addEvent(new Event(Vector(spatialComp.position),
                 EventType.E_EXPLOSION))
+              EventManager.addEvent(new Event(Vector(),
+                EventType.E_GHOST_KILLED))
             }
             if (entityB.getComponent(BreakableComponent.id).isDefined) {
               entityB.destroy = true
@@ -1345,4 +1348,63 @@ object Factory {
     entity.addComponent(collisionComponent)
     entity
   }
+  
+  def createLastDoor(node: Node) = {
+    // TODO: Fix magic size and location conversion
+    val name = (node \ "@name").text
+    val typeName = (node \ "@name").text
+    val loc = Vec2((node \ "@x").text.toFloat, (node \ "@y").text.toFloat)
+    val rotation = if (!(node \ "@rotation").text.isEmpty()) (node \ "@rotation").text.toInt else 0
+    //    println("Door rotation: " + rotation)
+    val w = (node \ "@width").text.toFloat / 8 + 0.1f
+    val h = (node \ "@height").text.toFloat / 8 + 0.1f
+
+    val entity = new Entity()
+    entity.eventHandlers = scala.collection.immutable.Map(
+      (EventType.E_INTERACTION, (event, delta) => {
+        val player = event.args(0).asInstanceOf[Option[Entity]]
+        val entityB = event.args(1).asInstanceOf[Option[Entity]]
+
+        if (entityB.isDefined && entityB.get == entity) {
+          val d = Factory.createDialog(Vector(
+            ("Okay... D:", new Event(Vector(), EventType.E_NONE))),
+            "Defeat all enemies to gain access! Search\n" + 
+            "the room for a way to defeat them.\n", None, 45, 8)
+          EventManager.addEvent(new Event(Vector(d, entity.hashCode()), EventType.E_THROW_DIALOG))
+        }
+      }),
+      (EventType.E_OPEN_LAST_DOOR, (event, delta) => {
+        entity.removeComponent(RenderComponent.id)
+        entity.removeComponent(CollisionComponent.id)
+        val d = Factory.createDialog(Vector(
+            ("(*´▽｀*)", new Event(Vector(), EventType.E_NONE))),
+            "All enemies defeated! Door open.\n", None, 40, 7)
+          EventManager.addEvent(new Event(Vector(d, entity.hashCode()), EventType.E_THROW_DIALOG))
+      }))
+
+    entity.description = "lastDoor"
+
+    val spatialComp = new SpatialComponent()
+    spatialComp.forward = (Utility.rotateY(((rotation / 360f) * 2 * Math.PI).toFloat) * Vec4(0, 0, 1, 0)).xyz
+
+    spatialComp.position = Vec3(loc.x * 2 / 16, 0.0f, loc.y * 2 / 16)
+    //    spatialComp.forward = Vec3(1.0f, 0, 0)
+    entity.addComponent(spatialComp)
+
+    var renderComp = new RenderComponent("door", Some("door_tex"))
+    entity.addComponent(renderComp)
+    if (rotation == 0) {
+      var collisionComponent = new CollisionComponent(
+        w / 16, CollisionComponent.SQUARE,
+        halfWidth = w / 2, halfHeight = h / 2)
+      entity.addComponent(collisionComponent)
+    } else {
+      var collisionComponent = new CollisionComponent(
+        h / 16, CollisionComponent.SQUARE,
+        halfWidth = h / 2, halfHeight = w / 2)
+      entity.addComponent(collisionComponent)
+    }
+    entity
+  }
 }
+

@@ -23,10 +23,12 @@ object EventType extends Enumeration {
       E_THROW_DIALOG,
       E_ANSWER_DIALOG, 
       E_OPEN_DOOR, 
+      E_GHOST_KILLED,
       E_NONE, 
       E_EXPLOSION,
       E_PLAYER_DAMAGE,
       E_OPEN_BOSS_DOOR,
+      E_OPEN_LAST_DOOR,
       E_PLAYER_DEAD,
       E_SYSTEM_EXIT = Value
 }

@@ -75,6 +75,14 @@ class GameScreen(parent: Adventure, rend: Renderer)
       val position = event.args(0).asInstanceOf[Vec3]
       val explosion = Factory.createExplosion(position)
       scene.addEntity(explosion)
+    }),
+    (E_GHOST_KILLED, (event, delta) => {
+      if (scene.entities.filter(e => {
+        val collision = e.getComponent(CollisionComponent.id)
+        collision.isDefined && collision.get.collisionType == CollisionComponent.GHOST
+      }).isEmpty) {
+        EventManager.addEvent(new Event(Vector(), EventType.E_OPEN_LAST_DOOR))
+      }
     }))
     
   def tossCoffee() = {
