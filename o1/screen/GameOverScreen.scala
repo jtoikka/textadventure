@@ -61,7 +61,7 @@ class GameOverScreen(parent: Adventure, rend: Renderer)
     var border = Factory2D.createRectangle(rend.w - 3, rend.h - 3, false)
     var bSpatial = border.getComponent(SpatialComponent.id)
     bSpatial.get.position = Vec3(1f, 1f, 0f)
-    scene.addEntity(border)
+//    scene.addEntity(border)
     
     var name = "logo_gameOver"
     var img = Factory2D.createImage(ResourceManager.images(name))
@@ -81,13 +81,11 @@ class GameOverScreen(parent: Adventure, rend: Renderer)
     textRect.offMinusY = 2
     textRect.textWrap = true
     textRect.centerText = true
-    textRect.color1 = Renderer.empty
-    textRect.color2 = Renderer.empty
     val helpEnt = Factory2D.createTextRectangle(textRect)
 
     var helpSpatial = helpEnt.getComponent(SpatialComponent.id)
     helpSpatial.get.position = Vec3(rend.w / 2 - textRect.w / 2, 20, 0.0f)
-    scene.addEntity(helpEnt)
+//    scene.addEntity(helpEnt)
   }
   init()
 
@@ -113,7 +111,7 @@ class GameOverScreen(parent: Adventure, rend: Renderer)
 
     parent.screens("gameScreen").draw()
     var tmpDisplay: String = parent.screens("gameScreen").rend.display
-
+    
     rend.displayOverlay(tmpDisplay)
 
   }
