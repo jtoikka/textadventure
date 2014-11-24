@@ -543,16 +543,6 @@
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="1"/>
    <tile gid="1"/>
    <tile gid="0"/>
    <tile gid="0"/>
@@ -572,7 +562,17 @@
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
+   <tile gid="1"/>
+   <tile gid="1"/>
    <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="1"/>
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
@@ -1716,7 +1716,6 @@
   <object type="table" x="304" y="288" width="32" height="16"/>
   <object type="table" x="96" y="256" width="32" height="16"/>
   <object type="table" x="96" y="288" width="32" height="16"/>
-  <object type="table" x="208" y="288" width="16" height="32"/>
   <object type="table" x="144" y="288" width="48" height="16"/>
   <object type="table" x="240" y="288" width="48" height="16"/>
   <object type="table" x="144" y="32" width="48" height="16"/>
