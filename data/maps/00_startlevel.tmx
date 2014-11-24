@@ -777,9 +777,6 @@
   <object type="openDoor" x="176" y="80" width="16" height="16"/>
   <object type="openDoor" x="160" y="80" width="16" height="16"/>
   <object type="openDoor" x="192" y="80" width="16" height="16"/>
-  <object type="openDoor" x="48" y="160" width="16" height="16"/>
-  <object type="openDoor" x="48" y="144" width="16" height="16"/>
-  <object type="openDoor" x="32" y="144" width="16" height="16"/>
   <object type="openDoor" x="80" y="176" width="16" height="16"/>
   <object type="openDoor" x="80" y="192" width="16" height="16"/>
   <object type="openDoor" x="240" y="176" width="16" height="16"/>
@@ -788,11 +785,6 @@
   <object type="rupee" x="128" y="128" width="16" height="16" rotation="1">
    <ellipse/>
   </object>
-  <object type="openDoor" x="16" y="144" width="16" height="16"/>
-  <object type="openDoor" x="16" y="128" width="16" height="16"/>
-  <object type="openDoor" x="0" y="112" width="16" height="16"/>
-  <object type="openDoor" x="16" y="96" width="16" height="16"/>
-  <object type="openDoor" x="0" y="96" width="16" height="16"/>
   <object type="levelTrigger" x="224" y="256" width="16" height="16">
    <properties>
     <property name="level" value="01_superhub"/>
@@ -807,7 +799,7 @@
    </properties>
    <ellipse/>
   </object>
-  <object type="player" x="16" y="128" width="16" height="16">
+  <object type="player" x="15.75" y="133.5" width="16" height="16">
    <properties>
     <property name="name" value="01_entrance"/>
    </properties>
