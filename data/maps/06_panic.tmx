@@ -1870,6 +1870,26 @@
     <property name="spawn" value="templeSpawn"/>
    </properties>
   </object>
+  <object type="lastDoor" x="208" y="192" width="16" height="8"/>
+  <object type="static" x="224" y="176" width="16" height="16">
+   <properties>
+    <property name="collision" value="true"/>
+    <property name="height" value="0"/>
+    <property name="mesh" value="pilar"/>
+    <property name="texture" value="wall"/>
+   </properties>
+   <ellipse/>
+  </object>
+  <object type="static" x="192" y="176" width="16" height="16">
+   <properties>
+    <property name="collision" value="true"/>
+    <property name="height" value="0"/>
+    <property name="mesh" value="pilar"/>
+    <property name="texture" value="wall"/>
+   </properties>
+   <ellipse/>
+  </object>
+  <object type="openDoor" x="208" y="192" width="16" height="16"/>
  </objectgroup>
  <objectgroup name="player">
   <object type="player" x="352" y="176" width="16" height="16">
