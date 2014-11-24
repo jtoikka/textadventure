@@ -134,6 +134,8 @@ class CreditsScreen(parent: Adventure, rend: Renderer)
   }
 
   def resume(): Unit = {
+    var textSpatial = helpEnt.getComponent(SpatialComponent.id)
+    textSpatial.get.position = Vec3(rend.w / 2 - textRect.w / 2, 40, 0.0f)
     timer = 0.0
     EventManager.setActiveInputListener(this)
     paused = false

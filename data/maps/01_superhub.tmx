@@ -187,11 +187,11 @@
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
-   <tile gid="0"/>
+   <tile gid="3"/>
+   <tile gid="2"/>
    <tile gid="1"/>
    <tile gid="0"/>
    <tile gid="0"/>
-   <tile gid="0"/>
    <tile gid="1"/>
    <tile gid="0"/>
    <tile gid="0"/>
@@ -209,8 +209,8 @@
    <tile gid="1"/>
    <tile gid="0"/>
    <tile gid="0"/>
-   <tile gid="1"/>
    <tile gid="1"/>
+   <tile gid="2"/>
    <tile gid="1"/>
    <tile gid="1"/>
    <tile gid="1"/>
@@ -296,13 +296,13 @@
    <tile gid="1"/>
    <tile gid="1"/>
    <tile gid="0"/>
-   <tile gid="0"/>
+   <tile gid="3"/>
    <tile gid="1"/>
+   <tile gid="2"/>
    <tile gid="1"/>
    <tile gid="1"/>
    <tile gid="1"/>
    <tile gid="1"/>
-   <tile gid="1"/>
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
@@ -316,14 +316,14 @@
    <tile gid="1"/>
    <tile gid="0"/>
    <tile gid="1"/>
-   <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
+   <tile gid="3"/>
    <tile gid="0"/>
+   <tile gid="2"/>
    <tile gid="1"/>
    <tile gid="0"/>
    <tile gid="0"/>
-   <tile gid="0"/>
    <tile gid="1"/>
    <tile gid="0"/>
    <tile gid="0"/>
@@ -340,8 +340,8 @@
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
+   <tile gid="3"/>
    <tile gid="0"/>
-   <tile gid="0"/>
    <tile gid="1"/>
    <tile gid="0"/>
    <tile gid="0"/>
@@ -360,9 +360,9 @@
    <tile gid="1"/>
    <tile gid="1"/>
    <tile gid="1"/>
-   <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
+   <tile gid="3"/>
    <tile gid="0"/>
    <tile gid="1"/>
    <tile gid="0"/>
@@ -380,11 +380,11 @@
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="1"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
+   <tile gid="3"/>
+   <tile gid="3"/>
+   <tile gid="3"/>
    <tile gid="0"/>
    <tile gid="1"/>
    <tile gid="1"/>
@@ -404,17 +404,17 @@
    <tile gid="1"/>
    <tile gid="0"/>
    <tile gid="0"/>
+   <tile gid="3"/>
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
-   <tile gid="0"/>
    <tile gid="1"/>
    <tile gid="1"/>
    <tile gid="1"/>
    <tile gid="1"/>
    <tile gid="0"/>
-   <tile gid="1"/>
+   <tile gid="2"/>
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="1"/>
@@ -423,10 +423,10 @@
    <tile gid="1"/>
    <tile gid="1"/>
    <tile gid="1"/>
-   <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
+   <tile gid="3"/>
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
@@ -445,14 +445,14 @@
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="1"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
+   <tile gid="3"/>
+   <tile gid="3"/>
+   <tile gid="3"/>
+   <tile gid="3"/>
+   <tile gid="3"/>
    <tile gid="1"/>
    <tile gid="0"/>
    <tile gid="1"/>
@@ -467,10 +467,6 @@
    <tile gid="1"/>
    <tile gid="0"/>
    <tile gid="1"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
@@ -484,6 +480,10 @@
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
+   <tile gid="3"/>
+   <tile gid="3"/>
+   <tile gid="3"/>
+   <tile gid="3"/>
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
@@ -1217,6 +1217,12 @@
    <ellipse/>
   </object>
   <object type="pelletSpawn" x="188" y="180" width="16" height="16" rotation="1">
+   <ellipse/>
+  </object>
+  <object type="breakableWall" x="160" y="288" width="16" height="16"/>
+  <object type="breakableWall" x="64" y="212" width="16" height="16"/>
+  <object type="breakableWall" x="64" y="148" width="16" height="8"/>
+  <object type="rupee" x="64" y="128" width="16" height="16" rotation="1">
    <ellipse/>
   </object>
  </objectgroup>
