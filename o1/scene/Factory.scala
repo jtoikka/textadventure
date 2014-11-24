@@ -160,6 +160,7 @@ object Factory {
       case "breakableWall" => Some(createBreakableWall(node))
       case "unbreakableWall" => Some(createUnbreakableWall(node))
       case "table" => Some(createTable(node))
+      case "ghost" => Some(createGhost(node))
       case _ => None
     }
     ent
@@ -853,6 +854,7 @@ object Factory {
       }))
 
     val spatialComp = new SpatialComponent()
+
     spatialComp.position = Vec3(loc.x * 2 / 16, height, loc.y * 2 / 16)
     spatialComp.scale = Vec3(0.5f, 0.5f, 0.5f)
     entity.addComponent(spatialComp)
@@ -1067,5 +1069,69 @@ object Factory {
       new Rectangle2D(w, h, true), text,
       options)
     dialog
+  }
+
+  def createGhost(node: Node) = {
+    // TODO: Fix magic size and location conversion
+    val name = (node \ "@name").text
+    val typeName = (node \ "@name").text
+    val loc = Vec2((node \ "@x").text.toFloat, (node \ "@y").text.toFloat)
+    val size = (node \ "@width").text.toFloat
+    val entity: Entity = new Entity()
+
+    entity.description = "ghost"
+
+    val spatialComp = new SpatialComponent()
+    spatialComp.position = Vec3(loc.x * 2 / 16, 1.0f, loc.y * 2 / 16)
+    entity.addComponent(spatialComp)
+
+    entity.eventHandlers = scala.collection.immutable.Map(
+      (EventType.E_COLLISION, (event, delta) => {
+        val entityA = event.args(0).asInstanceOf[Entity]
+        val entityB = event.args(1).asInstanceOf[Entity]
+        if (entityA == entity && !entityB.destroy) {
+          val damageComponent = entityB.getComponent(DamageComponent.id)
+          if (damageComponent.isDefined && damageComponent.get.canDamage == DamageComponent.ENEMY) {
+            val healthComp = entity.getComponent(HealthComponent.id).get
+            healthComp.hp -= 1
+            if (healthComp.hp <= 0) {
+              entity.destroy = true
+              EventManager.addEvent(new Event(Vector(spatialComp.position),
+                EventType.E_EXPLOSION))
+            }
+            if (entityB.getComponent(BreakableComponent.id).isDefined) {
+              entityB.destroy = true
+            }
+          }
+        }
+      }))
+
+    val renderComp = new RenderComponent("test_enemy", Some("ghost"))
+    entity.addComponent(renderComp)
+
+    val faceCameraComp = new FaceCameraComponent()
+    entity.addComponent(faceCameraComp)
+
+    val AIComponent = new AIComponent("ghost")
+    entity.addComponent(AIComponent)
+    
+    var animationComp = new AnimationComponent(Vector("ghost", "ghost2"), 1.5)
+    entity.addComponent(animationComp)
+
+    val damageComp = new DamageComponent(2, DamageComponent.PLAYER)
+    entity.addComponent(damageComp)
+
+    val healthComp = new HealthComponent(1)
+    entity.addComponent(healthComp)
+
+    var collisionComponent = 
+      new CollisionComponent(
+          size / 16, CollisionComponent.CIRCLE, 
+          collisionType = CollisionComponent.ENEMY)
+    collisionComponent.collidesWith.clear()
+    collisionComponent.collidesWith += CollisionComponent.DEFAULT
+    collisionComponent.collidesWith += CollisionComponent.COFFEE
+    entity.addComponent(collisionComponent)
+    entity
   }
 }

@@ -348,15 +348,6 @@ class GameScreen(parent: Adventure, rend: Renderer)
     newScene
   }
   
-//  def changeLevel(level: String, spawn: String) = {
-//    val player = scene.entities.find(_.getComponent(PlayerComponent.id).isDefined)
-//    val inventoryComponent = 
-//      if (player.isDefined) 
-//        player.get.getComponent(InventoryComponent.id) 
-//      else 
-//        None
-//    val forward = 
-//  }
   
   def changeLevel(level: String, spawn: String) = {
     val player = scene.entities.find(_.getComponent(PlayerComponent.id).isDefined)

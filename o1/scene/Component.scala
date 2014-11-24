@@ -74,6 +74,7 @@ object CollisionComponent {
   val DEFAULT = 4
   val COFFEE = 5
   val PLAYER = 6
+  val ENEMY = 7
 }
 
 class CollisionComponent(
@@ -105,10 +106,16 @@ case class InventoryItemComponent(
 
 object AIComponent {
   val id = classOf[AIComponent]
+
+  val NORTH = 0
+  val EAST = 1
+  val SOUTH = 2
+  val WEST = 3
 }
 
 case class AIComponent(val botType: String) extends Component {
-  
+  var direction = AIComponent.NORTH
+  var distance = 0.0
 }
 
 object PhysicsComponent {
