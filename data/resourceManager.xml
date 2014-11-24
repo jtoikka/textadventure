@@ -93,7 +93,10 @@
 	</textures>
 	<strings>
 		<item name="helpMenu">
-			<string>This text should wrap nicely. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi placerat dui nec cursus bibendum. Integer auctor, dui gravida semper maximus, arcu massa semper libero, vitae laoreet nulla nulla non leo.&#xA;This should be alone on this line.</string>
+			<string>   CONTROLS   &#xA;&#xA;Forward: W&#xA;Left: A&#xA;Down: S&#xA;Right: D&#xA;Throw: Space&#xA;Drink: R&#xA;Map: M&#xA;Inventory: I&#xA;&#xA;Look left: Left&#xA;Look right: Right&#xA;Look up: Up&#xA;Look down: Down&#xA;&#xA;Back to menu: ESC</string>
+		</item>
+		<item name="helpObjective">
+			<string>   OBJECTIVE   &#xA;&#xA;Explore the strange university, find five pages of your missing document, and get it handed in by 06:00 AM! Keep your senses honed, for there are many (heat sensitive) creatures about.&#xA;&#xA;-If you are hurting, or feel tired, try a magical elixir (coffee)!&#xA;&#xA;-Low on resources? Find a coffee machine, they dispense some unusual items!&#xA;&#xA;-Remember to check your map if you feel lost! (Press 'M' whilst in-game)</string>
 		</item>
 		<item name="introDialog">
 			<string>The year is 20XX. A deadline is fast approaching, and it is your &#xA;task to hand in a document on time. But a series of alcoholic drinks &#xA;has caused the pages to scatter! Gather them all up, stay awake, &#xA;and hand in your work before 06:00 AM.&#xA;</string>
