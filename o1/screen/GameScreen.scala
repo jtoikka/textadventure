@@ -399,7 +399,8 @@ class GameScreen(parent: Adventure, rend: Renderer)
   
   init()
   def init(): Unit = {
-    changeLevel("00_startlevel", "startSpawn")
+//    changeLevel("00_startlevel", "startSpawn")
+    changeLevel("07_temple", "templeSpawn")
 //    changeLevel("06_panic", "01_entrance")
   }
   
@@ -413,16 +414,6 @@ class GameScreen(parent: Adventure, rend: Renderer)
   def changeLevel(level: String, spawn: String) = {
     var player = scene.entities.find(_.getComponent(PlayerComponent.id).isDefined)
     var camera = scene.camera
-//    var inventoryComponent: Option[InventoryComponent] = None
-//    var healthComponent: Option[HealthComponent] = None
-//    var forward = Vec3(0, 0, 1)
-//    if (player.isDefined) {
-//      inventoryComponent = player.get.getComponent(InventoryComponent.id)
-//      healthComponent = player.get.getComponent(HealthComponent.id)
-//      forward = player.get.getComponent(SpatialComponent.id).get.forward
-//      scene.removeEntity(player.get)
-//      scene.entities.filter(_.getComponent(PlayerComponent.id).isDefined).foreach(scene.removeEntity(_))
-//    }
     scene = levels(level)
     
     scene.entities.filter(_.getComponent(PlayerComponent.id).isDefined).foreach(scene.removeEntity(_))
@@ -435,12 +426,6 @@ class GameScreen(parent: Adventure, rend: Renderer)
     val playerSpawn = (objectGroups("player") \ "object")
     val node = playerSpawn.find(a => ((a \ "properties" \ "property").find(q => (q \ "@name").text == "name").get \ "@value").text == spawn)
     
-//    val playerEnt = Factory.createPlayer(location.get)
-//    if (inventoryComponent.isDefined) {
-//      playerEnt.addComponent(inventoryComponent.get)
-//      playerEnt.addComponent(healthComponent.get)
-//      playerEnt.getComponent(SpatialComponent.id).get.forward = forward
-//    }
     if (player.isEmpty) {
       player = Some(Factory.createPlayer(node.get))
     }
@@ -454,28 +439,9 @@ class GameScreen(parent: Adventure, rend: Renderer)
     
     scene.addEntity(player.get)
     scene.camera = camera
-    
-//    scene.camera = Some(Factory.createCamera(player))
-//    scene.camera.get.getComponent(SpatialComponent.id).get.forward.x = forward.x
-//    scene.camera.get.getComponent(SpatialComponent.id).get.forward.y = forward.y
-//    scene.camera.get.getComponent(SpatialComponent.id).get.forward.z = -forward.z
+
     EventManager.addEvent(new Event(Vector(scene.world), E_CHANGE_MAP))
   }
-  
-  
-//  def loadLevel(level: String, spawn: String): Scene = {
-//    println("Change map to " + level + " with spawn " + spawn)
-//    val player = scene.entities.find(_.getComponent(PlayerComponent.id).isDefined)
-//    scene.clear()
-//    Level.loadMap(scene, level, spawn)
-//    val newPlayer = scene.entities.find(_.getComponent(PlayerComponent.id).isDefined)
-//    if (newPlayer.isDefined && player.isDefined) {
-//      newPlayer.get.addComponent(player.get.getComponent(InventoryComponent.id).get)
-//      newPlayer.get.getComponent(SpatialComponent.id).get.forward = 
-//        player.get.getComponent(SpatialComponent.id).get.forward
-//    }
-//    EventManager.addEvent(new Event(Vector(scene.world), E_CHANGE_MAP))
-//  }
 
   var firstTime = true
   

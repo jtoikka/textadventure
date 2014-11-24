@@ -2,7 +2,6 @@ package o1.scene
 
 import scala.collection.mutable.Buffer
 import scala.xml.Node
-
 import o1.adventure.render2D.Dialog
 import o1.adventure.render2D.Rectangle2D
 import o1.event.Event
@@ -19,6 +18,7 @@ import o1.math.Utility
 import o1.math.Vec2
 import o1.math.Vec3
 import o1.math.Vec4
+import o1.adventure.render.ResourceManager
 
 /**
  * The Factory object is a collection of functions that can be used to create
@@ -186,6 +186,7 @@ object Factory {
       case "table" => Some(createTable(node))
       case "ghost" => Some(createGhost(node))
       case "pelletSpawn" => Some(createPelletSpawn(node))
+      case "assari" => Some(createAssari(node))
       case _ => None
     }
     ent
@@ -1291,6 +1292,54 @@ object Factory {
     collisionComponent.collidesWith.clear()
     collisionComponent.collidesWith += CollisionComponent.DEFAULT
     collisionComponent.collidesWith += CollisionComponent.COFFEE
+    entity.addComponent(collisionComponent)
+    entity
+  }
+  
+  def createAssari(node: Node) = {
+    // TODO: Fix magic size and location conversion
+    val name = (node \ "@name").text
+    val typeName = (node \ "@name").text
+    val loc = Vec2((node \ "@x").text.toFloat, (node \ "@y").text.toFloat)
+    val size = (node \ "@width").text.toFloat
+    val entity: Entity = new Entity()
+
+    entity.description = "assari"
+
+    val spatialComp = new SpatialComponent()
+    spatialComp.position = Vec3(loc.x * 2 / 16, 1.0f, loc.y * 2 / 16)
+    entity.addComponent(spatialComp)
+
+    entity.eventHandlers = scala.collection.immutable.Map(
+      (EventType.E_INTERACTION, (event, delta) => {
+        val player = event.args(0).asInstanceOf[Option[Entity]]
+        val entityB = event.args(1).asInstanceOf[Option[Entity]]
+
+        if (entityB.isDefined && entityB.get == entity) {
+          println("Shop Interaction")
+          val d = Factory.createDialog(Vector(
+            ("Okay?", new Event(Vector(), EventType.E_NONE))),
+            ResourceManager.strings("assariDialog"), None, 50, 10)
+          EventManager.addEvent(new Event(Vector(d, entity.hashCode()), EventType.E_THROW_DIALOG))
+        }
+      }))
+
+    val renderComp = new RenderComponent("test_enemy", Some("assari1"))
+    entity.addComponent(renderComp)
+
+    val faceCameraComp = new FaceCameraComponent()
+    entity.addComponent(faceCameraComp)
+
+    var animationComp = new AnimationComponent(Vector("assari1", "assari2", "assari3", "assari4"), 1.8)
+    entity.addComponent(animationComp)
+
+    val healthComp = new HealthComponent(1)
+    entity.addComponent(healthComp)
+
+    var collisionComponent =
+      new CollisionComponent(
+        size / 16, CollisionComponent.CIRCLE, 
+        collisionType = CollisionComponent.DEFAULT)
     entity.addComponent(collisionComponent)
     entity
   }
