@@ -1216,6 +1216,9 @@
    </properties>
    <ellipse/>
   </object>
+  <object type="pelletSpawn" x="188" y="180" width="16" height="16" rotation="1">
+   <ellipse/>
+  </object>
  </objectgroup>
  <objectgroup name="player">
   <object type="player" x="240" y="304" width="16" height="16">

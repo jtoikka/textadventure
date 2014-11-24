@@ -1762,18 +1762,6 @@
   <object name="Ghost" type="ghost" x="272" y="272" width="16" height="16">
    <ellipse/>
   </object>
-  <object type="coffee" x="336" y="288" width="16" height="16" rotation="1">
-   <ellipse/>
-  </object>
-  <object type="coffee" x="80" y="288" width="16" height="16" rotation="1">
-   <ellipse/>
-  </object>
-  <object type="coffee" x="80" y="80" width="16" height="16" rotation="1">
-   <ellipse/>
-  </object>
-  <object type="coffee" x="336" y="80" width="16" height="16" rotation="1">
-   <ellipse/>
-  </object>
   <object name="Ghost" type="ghost" x="144" y="272" width="16" height="16">
    <ellipse/>
   </object>
@@ -1862,6 +1850,18 @@
    <ellipse/>
   </object>
   <object name="Ghost" type="ghost" x="80" y="240" width="16" height="16">
+   <ellipse/>
+  </object>
+  <object type="pelletSpawn" x="336" y="80" width="16" height="16" rotation="1">
+   <ellipse/>
+  </object>
+  <object type="pelletSpawn" x="80" y="80" width="16" height="16" rotation="1">
+   <ellipse/>
+  </object>
+  <object type="pelletSpawn" x="80" y="288" width="16" height="16" rotation="1">
+   <ellipse/>
+  </object>
+  <object type="pelletSpawn" x="336" y="288" width="16" height="16" rotation="1">
    <ellipse/>
   </object>
  </objectgroup>

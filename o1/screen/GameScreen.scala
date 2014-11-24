@@ -21,6 +21,7 @@ import o1.inventory.Page
 import o1.inventory.Coffee
 import scala.collection.mutable.Buffer
 import scala.util.Random
+import o1.inventory.Pellet
 
 /**
  * GameScreen class.
@@ -86,6 +87,18 @@ class GameScreen(parent: Adventure, rend: Renderer)
     spatial.forward = cameraSpatial.forward.neg.neg
     spatial.forward.x *= -1
     scene.addEntity(coffee)
+  }
+  
+  def tossPellet() = {
+    val cameraSpatial = scene.camera.get.getComponent(SpatialComponent.id).get
+    val pellet = Factory.createPelletBullet(
+      cameraSpatial.position.neg() +
+        cameraSpatial.forward.neg * 0.5f,
+      cameraSpatial.forward.neg * 0.8f)
+    val spatial = pellet.getComponent(SpatialComponent.id).get
+    spatial.forward = cameraSpatial.forward.neg.neg
+    spatial.forward.x *= -1
+    scene.addEntity(pellet)
   }
     
   /**
@@ -182,13 +195,14 @@ class GameScreen(parent: Adventure, rend: Renderer)
           }
           val spawnComponent = entity.getComponent(SpawnComponent.id)
           if (spawnComponent.isDefined) {
-            if (spawnComponent.get.entity.destroy) {
+            if (spawnComponent.get.entity.isEmpty || spawnComponent.get.entity.get.destroy) {
               spawnComponent.get.timer += delta
               if (spawnComponent.get.timer > spawnComponent.get.step) {
                 spawnComponent.get.timer = 0
-                val entity = Factory.createCoffee(spatial.get.position)
-                spawnComponent.get.entity = entity
-                scene.addEntity(entity)
+                val pelletSpawn = Factory.createPellet(spatial.get.position)
+                spawnComponent.get.entity = Some(pelletSpawn)
+                println("Spawned das coffee")
+                scene.addEntity(pelletSpawn)
               }
             }
           }
@@ -272,7 +286,9 @@ class GameScreen(parent: Adventure, rend: Renderer)
     }
     if (movementMap.contains(TOSSCOFFEE)) {
       val inventory = entity.getComponent(InventoryComponent.id).get
-      if (inventory.inv.removeOneOfType(new Coffee("", ""))) {
+      if (inventory.inv.removeOneOfType(new Pellet("",""))) {
+        tossPellet()
+      } else if (inventory.inv.removeOneOfType(new Coffee("", ""))) {
         tossCoffee()
       }
     }
@@ -383,7 +399,7 @@ class GameScreen(parent: Adventure, rend: Renderer)
   
   init()
   def init(): Unit = {
-    changeLevel("00_startlevel", "startSpawn")
+    changeLevel("01_superhub", "startSpawn")
 //    changeLevel("06_panic", "01_entrance")
   }
   

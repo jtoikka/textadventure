@@ -75,6 +75,7 @@ object CollisionComponent {
   val COFFEE = 5
   val PLAYER = 6
   val ENEMY = 7
+  val GHOST = 8
 }
 
 class CollisionComponent(
@@ -132,6 +133,7 @@ object DamageComponent {
   val NONE = 0
   val PLAYER = 1
   val ENEMY = 2
+  val GHOST = 3
 }
 
 case class DamageComponent(val amount: Int, val canDamage: Int) extends Component {
@@ -212,6 +214,6 @@ object SpawnComponent {
   val id = classOf[SpawnComponent]
 }
 
-case class SpawnComponent(var entity: Entity, val step: Double) extends Component {
-  var timer = 0.0
+case class SpawnComponent(var entity: Option[Entity], val step: Double) extends Component {
+  var timer = step + 1
 }
