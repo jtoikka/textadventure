@@ -85,6 +85,7 @@
    	    <item name="chest" path="data/textures/chest.png"></item>
    	    <item name="brick" path="data/textures/W3d_protograywallshade1.png"></item>
    	    <item name="wall" path="data/textures/walltex.png"></item>
+   	    <item name="bookshelf" path="data/textures/bookshelf.png"></item>
    	    <item name="map_names" path="data/textures/map_names.png"></item>
 	</textures>
 	<strings>

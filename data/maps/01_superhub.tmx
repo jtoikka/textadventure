@@ -927,6 +927,7 @@
    </properties>
    <ellipse/>
   </object>
+  <object type="breakableWall" x="80" y="128" width="128" height="48"/>
  </objectgroup>
  <objectgroup name="player">
   <object type="player" x="185.333" y="272" width="16" height="16">

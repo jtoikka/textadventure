@@ -31,4 +31,9 @@ object AI {
       }
     }
   }
+  
+  def updateBoss(boss: Entity, delta: Double, scene: Scene) = {
+    val spatial = boss.getComponent(SpatialComponent.id).get
+    val forward = spatial.forward
+  }
 }
