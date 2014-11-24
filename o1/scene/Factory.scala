@@ -94,7 +94,7 @@ object Factory {
     cof.addComponent(renderComp)
     cof
   }
-  
+
   def createPelletBullet(position: Vec3, direction: Vec3) = {
     var pellet = new Entity()
 
@@ -307,7 +307,7 @@ object Factory {
     entity.addComponent(collisionComponent)
     entity
   }
-  
+
   def createPellet(location: Vec3) = {
 
     val entity = new Entity()
@@ -351,7 +351,7 @@ object Factory {
     entity.addComponent(collisionComponent)
     entity
   }
-  
+
   def createPelletSpawn(node: Node) = {
     // TODO: Fix magic size and location conversion
     val name = (node \ "@name").text
@@ -366,7 +366,7 @@ object Factory {
     val spatialComp = new SpatialComponent()
     spatialComp.position = Vec3((loc.x * 2) / 16, 1.0f, loc.y * 2 / 16)
     entity.addComponent(spatialComp)
-    
+
     val spawnComponent = new SpawnComponent(None, 50.0)
     entity.addComponent(spawnComponent)
 
@@ -895,8 +895,8 @@ object Factory {
     val typeName = (node \ "@name").text
     val loc = Vec2((node \ "@x").text.toFloat, (node \ "@y").text.toFloat)
     val rotation = if (!(node \ "@rotation").text.isEmpty()) (node \ "@rotation").text.toInt else 0
-    val w = (node \ "@width").text.toFloat / 8 + 0.1f
-    val h = (node \ "@height").text.toFloat / 8 + 0.1f
+    val w = (node \ "@width").text.toFloat / 8
+    val h = (node \ "@height").text.toFloat / 8
 
     val renderName = ((node \ "properties" \ "property").filter(a => (a \ "@name").text == "mesh") \ "@value").text
     val textureName = ((node \ "properties" \ "property").filter(a => (a \ "@name").text == "texture") \ "@value").text
@@ -918,7 +918,8 @@ object Factory {
     entity.addComponent(renderComp)
 
     var collisionComponent = new CollisionComponent(
-      w / 16, CollisionComponent.CIRCLE)
+      h / 16, CollisionComponent.SQUARE,
+      halfWidth = w / 2, halfHeight = h / 2)
     collisionComponent.isActive = collision
     entity.addComponent(collisionComponent)
     entity
@@ -1287,7 +1288,7 @@ object Factory {
 
     var collisionComponent =
       new CollisionComponent(
-        size / 16, CollisionComponent.CIRCLE, 
+        size / 16, CollisionComponent.CIRCLE,
         collisionType = CollisionComponent.GHOST)
     collisionComponent.collidesWith.clear()
     collisionComponent.collidesWith += CollisionComponent.DEFAULT
@@ -1295,7 +1296,7 @@ object Factory {
     entity.addComponent(collisionComponent)
     entity
   }
-  
+
   def createAssari(node: Node) = {
     // TODO: Fix magic size and location conversion
     val name = (node \ "@name").text
@@ -1338,7 +1339,7 @@ object Factory {
 
     var collisionComponent =
       new CollisionComponent(
-        size / 16, CollisionComponent.CIRCLE, 
+        size / 16, CollisionComponent.CIRCLE,
         collisionType = CollisionComponent.DEFAULT)
     entity.addComponent(collisionComponent)
     entity
