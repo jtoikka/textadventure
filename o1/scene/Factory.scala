@@ -528,7 +528,7 @@ object Factory {
     entity.description = "levelTrigger"
 
     val spatialComp = new SpatialComponent()
-    spatialComp.position = Vec3(loc.x * 2 / 16, 0.0f, loc.y * 2 / 16)
+    spatialComp.position = Vec3(loc.x * 2 / 16 + w / 2, 0.0f, loc.y * 2 / 16 + h / 2)
     spatialComp.forward = Vec3(1.0f, 0, 0)
     entity.addComponent(spatialComp)
 
@@ -568,7 +568,7 @@ object Factory {
     entity.description = "levelTrigger"
 
     val spatialComp = new SpatialComponent()
-    spatialComp.position = Vec3(loc.x * 2 / 16 + w / 2, 0.0f, loc.y * 2 / 16 + h / 2)
+    spatialComp.position = Vec3(loc.x * 2 / 16, 0.0f, loc.y * 2 / 16)
     spatialComp.forward = Vec3(1.0f, 0, 0)
     entity.addComponent(spatialComp)
 
