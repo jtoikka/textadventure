@@ -382,9 +382,11 @@ class GameScreen(parent: Adventure, rend: Renderer)
   def changeLevel(level: String, spawn: String) = {
     val player = scene.entities.find(_.getComponent(PlayerComponent.id).isDefined)
     var inventoryComponent: Option[InventoryComponent] = None
+    var healthComponent: Option[HealthComponent] = None
     var forward = Vec3(0, 0, 1)
     if (player.isDefined) {
       inventoryComponent = player.get.getComponent(InventoryComponent.id)
+      healthComponent = player.get.getComponent(HealthComponent.id)
       forward = player.get.getComponent(SpatialComponent.id).get.forward
       scene.removeEntity(player.get)
       scene.entities.filter(_.getComponent(PlayerComponent.id).isDefined).foreach(scene.removeEntity(_))
@@ -404,6 +406,7 @@ class GameScreen(parent: Adventure, rend: Renderer)
     val playerEnt = Factory.createPlayer(location.get)
     if (inventoryComponent.isDefined) {
       playerEnt.addComponent(inventoryComponent.get)
+      playerEnt.addComponent(healthComponent.get)
       playerEnt.getComponent(SpatialComponent.id).get.forward = forward
     }
     scene.addEntity(playerEnt)
