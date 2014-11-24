@@ -1167,7 +1167,7 @@
   <object type="openDoor" x="96" y="160" width="16" height="16"/>
   <object type="openDoor" x="96" y="176" width="16" height="16"/>
   <object type="openDoor" x="96" y="192" width="16" height="16"/>
-  <object type="breakableWall" x="144" y="176" width="32" height="16">
+  <object type="breakableWall" x="144" y="176" width="96" height="32">
    <properties>
     <property name="count" value="5"/>
    </properties>

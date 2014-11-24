@@ -568,7 +568,7 @@ object Factory {
     entity.description = "levelTrigger"
 
     val spatialComp = new SpatialComponent()
-    spatialComp.position = Vec3(loc.x * 2 / 16, 0.0f, loc.y * 2 / 16)
+    spatialComp.position = Vec3(loc.x * 2 / 16 + w / 2, 0.0f, loc.y * 2 / 16 + h / 2)
     spatialComp.forward = Vec3(1.0f, 0, 0)
     entity.addComponent(spatialComp)
 
@@ -849,7 +849,7 @@ object Factory {
       }))
 
     val spatialComp = new SpatialComponent()
-    spatialComp.position = Vec3(loc.x * 2 / 16, 0.0f, loc.y * 2 / 16)
+    spatialComp.position = Vec3(loc.x * 2 / 16 - 1, 0.0f, loc.y * 2 / 16 - 1)
     spatialComp.scale = Vec3(0.5f, 0.5f, 0.5f)
     entity.addComponent(spatialComp)
 
@@ -941,7 +941,7 @@ object Factory {
     val entity: Entity = new Entity()
 
     val spatialComp = new SpatialComponent()
-    spatialComp.position = Vec3(loc.x * 2 / 16, 0.0f, loc.y * 2 / 16)
+    spatialComp.position = Vec3(loc.x * 2 / 16 + w / 2 - 1, 0.0f, loc.y * 2 / 16 + h / 2 - 1)
     entity.addComponent(spatialComp)
 
     entity.eventHandlers = scala.collection.immutable.Map(
@@ -984,7 +984,7 @@ object Factory {
     val entity: Entity = new Entity()
 
     val spatialComp = new SpatialComponent()
-    spatialComp.position = Vec3(loc.x * 2 / 16, 0.0f, loc.y * 2 / 16)
+    spatialComp.position = Vec3(loc.x * 2 / 16 + w / 2 - 1, 0.0f, loc.y * 2 / 16 + h / 2 - 1)
     entity.addComponent(spatialComp)
 
     spatialComp.scale = Vec3(w / 2, 1.0f, h / 2)
