@@ -1279,7 +1279,7 @@ object Factory {
     var animationComp = new AnimationComponent(Vector("ghost", "ghost2"), 1.5)
     entity.addComponent(animationComp)
 
-    val damageComp = new DamageComponent(2, DamageComponent.PLAYER)
+    val damageComp = new DamageComponent(1, DamageComponent.PLAYER)
     entity.addComponent(damageComp)
 
     val healthComp = new HealthComponent(1)
