@@ -1864,6 +1864,12 @@
   <object type="pelletSpawn" x="336" y="288" width="16" height="16" rotation="1">
    <ellipse/>
   </object>
+  <object type="levelTrigger" x="208" y="176" width="12" height="16">
+   <properties>
+    <property name="level" value="07_temple"/>
+    <property name="spawn" value="templeSpawn"/>
+   </properties>
+  </object>
  </objectgroup>
  <objectgroup name="player">
   <object type="player" x="352" y="176" width="16" height="16">

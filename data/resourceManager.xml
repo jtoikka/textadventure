@@ -95,6 +95,10 @@
    	    <item name="ghost2" path="data/textures/ghost2.png"></item>
    	    <item name="bookshelf" path="data/textures/bookshelf.png"></item>
    	    <item name="map_names" path="data/textures/map_names.png"></item>
+   	    <item name="assari1" path="data/textures/assari1.png"></item>
+   	    <item name="assari2" path="data/textures/assari2.png"></item>
+   	    <item name="assari3" path="data/textures/assari3.png"></item>
+   	    <item name="assari4" path="data/textures/assari4.png"></item>
 	</textures>
 	<strings>
 		<item name="helpMenu">
@@ -108,6 +112,10 @@
 		</item>
 		<item name="introDialog">
 			<string>The year is 20XX. A deadline is fast approaching, and it is your &#xA;task to hand in a document on time. But a series of alcoholic drinks &#xA;has caused the pages to scatter! Gather them all up, stay awake, &#xA;and hand in your work before 06:00 AM.&#xA;</string>
+		</item>
+		<item name="assariDialog">
+			<string>Welcome! I see you have come to turn&#xA;in your essay. Unfortunately the deadline for&#xA;this critical piece of work was yesterday. I&#xA;cannot give you a grade for it, but I could&#xA;let you write a new one. Why don't you come&#xA;hand it in tomorrow evening?
+			</string>
 		</item>
 		<item name="inventoryTitle"><string>Inventory</string></item>
 		<item name="mainMenuTitle"><string>Main Menu</string></item>
@@ -126,6 +134,7 @@
 		<item name="04_lab" path="data/maps/04_lab.tmx"></item>
 		<item name="05_scabin" path="data/maps/05_scabin.tmx"></item>
 		<item name="06_panic" path="data/maps/06_panic.tmx"></item>
+		<item name="07_temple" path="data/maps/07_temple.tmx"></item>
 		
 	</maps>
 </resources>
