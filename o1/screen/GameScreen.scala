@@ -42,6 +42,8 @@ class GameScreen(parent: Adventure, rend: Renderer)
   val RIGHT = 1
   val ROTATERIGHT = 2
   val ROTATEUP = 3
+  val TOSSCOFFEE = 4
+  val DRINKCOFFEE = 5
   // Grabs movement inputs
   val movementMap = Map[Int, Float]()
 
@@ -245,6 +247,22 @@ class GameScreen(parent: Adventure, rend: Renderer)
       if (newForward.y.abs < 0.5f)
         spatial.forward = newForward
     }
+    if (movementMap.contains(TOSSCOFFEE)) {
+      val inventory = entity.getComponent(InventoryComponent.id).get
+      if (inventory.inv.removeOneOfType(new Coffee("", ""))) {
+        tossCoffee()
+      }
+    }
+    if (movementMap.contains(DRINKCOFFEE)) {
+      val inventory = entity.getComponent(InventoryComponent.id).get
+      if (inventory.inv.removeOneOfType(new Coffee("", ""))) {
+        val health = entity.getComponent(HealthComponent.id).get
+        health.hp += 1
+        if (health.hp > health.maxHP) {
+          health.hp = health.maxHP
+        }
+      }
+    }
   }
 
   private def updateCamera() = {
@@ -317,7 +335,10 @@ class GameScreen(parent: Adventure, rend: Renderer)
         movementMap(ROTATEUP) = -0.2f * delta
       }),
       ((Key.Space, Input.KEYPRESSED), (delta) => {
-        tossCoffee
+        movementMap(TOSSCOFFEE) = 1
+      }),
+      ((Key.R, Input.KEYRELEASED), (delta) => {
+        movementMap(DRINKCOFFEE) = 1
       }))
 
   /**

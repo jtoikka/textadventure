@@ -157,7 +157,7 @@ object HealthComponent {
   val id = classOf[HealthComponent]
 }
 
-case class HealthComponent(var hp: Int) extends Component {
+case class HealthComponent(var hp: Int, val maxHP: Int = 5) extends Component {
   var invulnerabilityTimer = 0.0
 }
 

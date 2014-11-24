@@ -882,7 +882,7 @@ object Factory {
 
     val player = new Entity()
 
-    val healthComponent = new HealthComponent(3)
+    val healthComponent = new HealthComponent(1)
     player.addComponent(healthComponent)
 
     player.eventHandlers = scala.collection.immutable.Map(
@@ -899,7 +899,8 @@ object Factory {
               EventManager.addEvent(new Event(Vector(), EventType.E_PLAYER_DAMAGE))
               healthComponent.invulnerabilityTimer = 5.0f
               if (healthComponent.hp <= 0) {
-                println("You're dead")
+                healthComponent.hp = 0
+                EventManager.addEvent(new Event(Vector(), EventType.E_PLAYER_DEAD))
               }
             }
           }
