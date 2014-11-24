@@ -9,7 +9,7 @@ import o1.adventure.render._
 import o1.math._
 
 object Renderer2D {
-  //  val chars = "MWNQBHKR#EDFXOAPGUSVZYCLTJ$I*:."
+//  val chars = "MWNQBHKR#EDFXOAPGUSVZYCLTJ$I*:."
   val chars = "\u2001\u2591\u2592\u2593\u2588".reverse
   val empty = '\u0000'
 }
@@ -167,10 +167,18 @@ class Renderer2D(w: Int, h: Int) extends Renderer(w, h) {
     for (x <- 0 until image.getWidth) {
       for (y <- 0 until image.getHeight) {
         var value = image.grayArray(image.calcImageArrayIndex(x, y))
-        var char = getCharFrom8Bit(value)
-//        if (!(!fill && value != 0))
-        if (value != 255)
+        if(value < 0){
+          setPixel(locX + x, locY + y, Renderer.empty)
+        }
+        else{
+          var char = getCharFrom8Bit(value)
           setPixel(locX + x, locY + y, char)
+        }
+        
+        
+//        if (!(!fill && value != 0))
+//        if (value != 255)
+//          setPixel(locX + x, locY + y, char)
       }
     }
   }

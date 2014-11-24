@@ -26,8 +26,8 @@ class MainMenuScreen(parent: Adventure, rend: Renderer)
   var dialogOptions: Vector[Tuple2[String, Event]] = Vector[Tuple2[String, Event]](
     ("Play Game", new Event(Vector("gameScreen"), E_CHANGE_SCREEN)),
     ("Help", new Event(Vector("helpMenuScreen"), E_CHANGE_SCREEN)),
-    ("Options", new Event(Vector("optionsMenu", this), E_CHANGE_SCENE)),
-    ("Credits", new Event(Vector("creditsMenu", this), E_CHANGE_SCENE)),
+    ("Options", new Event(Vector("gameOverScreen"), E_CHANGE_SCREEN)),
+    ("Credits", new Event(Vector("creditsScreen", this), E_CHANGE_SCREEN)),
     ("Exit Game", new Event(null, E_SYSTEM_EXIT)))
 
   var dialog = new Dialog(Some(this),
@@ -62,7 +62,7 @@ class MainMenuScreen(parent: Adventure, rend: Renderer)
     val width = ResourceManager.shapes(imgName).getWidth
     val height = ResourceManager.shapes(imgName).getHeight
 
-    spat.get.position = Vec3(rend.w / 2 - width / 2 + 2, 4.0f, 0.0f)
+    spat.get.position = Vec3(rend.w / 2 - width / 2, 4.0f, 0.0f)
     mainMenuScene.addEntity(img)
 
     mainMenuScene.childListeners += dialog
@@ -122,10 +122,10 @@ class MainMenuScreen(parent: Adventure, rend: Renderer)
     if (activeScene.isDefined) {
       rend.renderScene(activeScene.get)
     }
-    parent.screens("gameScreen").draw()
-    var tmpDisplay: String = parent.screens("gameScreen").rend.display
-    rend.displayOverlay(tmpDisplay)
-//    rend.display
+//    parent.screens("gameScreen").draw()
+//    var tmpDisplay: String = parent.screens("gameScreen").rend.display
+//    rend.displayOverlay(tmpDisplay)
+    rend.display
   }
 
   def resume(): Unit = {
@@ -145,13 +145,7 @@ class MainMenuScreen(parent: Adventure, rend: Renderer)
       if (inputMap.contains(eventKey)) {
         inputMap(eventKey)(delta)
       }
-    }),
-    (E_CHANGE_SCENE, (event, delta) => {
-      val e0 = event.args(0)
-      if (e0.isInstanceOf[String] && scenes.contains(e0.asInstanceOf[String])) {
-        changeScene(scenes(e0.asInstanceOf[String]))
-      }
-  }))
+    }))
 
   def changeScene(scene: SceneUI) = {
     activeScene = Some(scene)
