@@ -26,7 +26,10 @@ class CreditsScreen(parent: Adventure, rend: Renderer)
 
   val scene = new Scene()
   var paused = true
-
+  
+  var textRect = new TextRect2D(new Rectangle2D(55, 100, false), ResourceManager.strings("credits")*100)
+  val helpEnt = Factory2D.createTextRectangle(textRect)
+  
   var timer = 0.0
 
   val inputMap =
@@ -61,7 +64,7 @@ class CreditsScreen(parent: Adventure, rend: Renderer)
     var border = Factory2D.createRectangle(rend.w - 3, rend.h - 3, false)
     var bSpatial = border.getComponent(SpatialComponent.id)
     bSpatial.get.position = Vec3(1f, 1f, 0f)
-    scene.addEntity(border)
+    
     
     var name = "logo_credits"
     var img = Factory2D.createImage(ResourceManager.images(name))
@@ -72,22 +75,24 @@ class CreditsScreen(parent: Adventure, rend: Renderer)
     val height = ResourceManager.shapes(imgName).getHeight
 
     spat.get.position = Vec3(rend.w / 2 - width / 2, 4.0f, 0.0f)
-    scene.addEntity(img)
+//    scene.addEntity(img)
     
-    var textRect = new TextRect2D(new Rectangle2D(55, 15, true), ResourceManager.strings("helpMenu")*100)
+//    textRect = new TextRect2D(new Rectangle2D(55, 15, true), ResourceManager.strings("credits")*100)
     textRect.offX = 3
     textRect.offY = 2
     textRect.offMinusX = 2
     textRect.offMinusY = 2
     textRect.textWrap = true
     textRect.centerText = true
-//    textRect.color1 = Renderer.empty
-//    textRect.color2 = Renderer.empty
-    val helpEnt = Factory2D.createTextRectangle(textRect)
+    textRect.color1 = Renderer.empty
+    textRect.color2 = Renderer.empty
+    
 
-    var helpSpatial = helpEnt.getComponent(SpatialComponent.id)
-    helpSpatial.get.position = Vec3(rend.w / 2 - textRect.w / 2, 20, 0.0f)
+    var textSpatial = helpEnt.getComponent(SpatialComponent.id)
+    textSpatial.get.position = Vec3(rend.w / 2 - textRect.w / 2, 40, 0.0f)
     scene.addEntity(helpEnt)
+    scene.addEntity(img)
+    scene.addEntity(border)
   }
   init()
 
@@ -97,6 +102,15 @@ class CreditsScreen(parent: Adventure, rend: Renderer)
 
   def update(delta: Double): Unit = {
     if (!paused) {
+      var textSpatial = helpEnt.getComponent(SpatialComponent.id)
+      if(timer > 2.5 && textSpatial.get.position.y > -textRect.getHeight){
+        println("move textbox")
+        timer = timer - 2.5
+        textSpatial.get.position.y = textSpatial.get.position.y - 1
+      }else if(!(textSpatial.get.position.y > -textRect.getHeight) && timer > 10){
+        EventManager.addEvent(new Event(Vector("menuScreen"), E_CHANGE_SCREEN))
+      }
+      
     }
     timer += delta
     handleEvents(delta.toFloat)
@@ -111,14 +125,16 @@ class CreditsScreen(parent: Adventure, rend: Renderer)
     rend.clear()
     rend.renderScene(scene)
 
-    parent.screens("gameScreen").draw()
-    var tmpDisplay: String = parent.screens("gameScreen").rend.display
-
-    rend.displayOverlay(tmpDisplay)
+//    parent.screens("gameScreen").draw()
+//    var tmpDisplay: String = parent.screens("gameScreen").rend.display
+//
+//    rend.displayOverlay(tmpDisplay)
+    rend.display
 
   }
 
   def resume(): Unit = {
+    timer = 0.0
     EventManager.setActiveInputListener(this)
     paused = false
   }
