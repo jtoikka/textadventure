@@ -1292,6 +1292,7 @@ object Factory {
     collisionComponent.collidesWith.clear()
     collisionComponent.collidesWith += CollisionComponent.DEFAULT
     collisionComponent.collidesWith += CollisionComponent.COFFEE
+    collisionComponent.collidesWith += CollisionComponent.PLAYER
     entity.addComponent(collisionComponent)
     entity
   }
