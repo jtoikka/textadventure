@@ -907,10 +907,11 @@ object Factory {
             if (healthComponent.invulnerabilityTimer <= 0) {
               healthComponent.hp -= 1
               EventManager.addEvent(new Event(Vector(), EventType.E_PLAYER_DAMAGE))
-              healthComponent.invulnerabilityTimer = 5.0f
               if (healthComponent.hp <= 0) {
                 healthComponent.hp = 0
                 EventManager.addEvent(new Event(Vector(), EventType.E_PLAYER_DEAD))
+              } else {
+                healthComponent.invulnerabilityTimer = 5.0f
               }
             }
           }
