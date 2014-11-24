@@ -133,6 +133,14 @@ class GameScreen(parent: Adventure, rend: Renderer)
             if (healthComponent.get.invulnerabilityTimer > 0.0) {
               healthComponent.get.invulnerabilityTimer -= delta
             }
+            if (healthComponent.get.hp <= 0) {
+              if (entity.getComponent(PlayerComponent.id).isDefined) {
+                entity.removeComponent(InputComponent.id)
+                if (spatial.get.position.y > 0.2) {
+                  spatial.get.position.y -= 0.05f * delta.toFloat
+                }
+              }
+            }
           }
           val animationComponent = entity.getComponent(AnimationComponent.id)
           if (animationComponent.isDefined) {
@@ -361,6 +369,7 @@ class GameScreen(parent: Adventure, rend: Renderer)
   init()
   def init(): Unit = {
     changeLevel("00_startlevel", "startSpawn")
+//    changeLevel("06_panic", "01_entrance")
   }
   
   def loadLevel(level: String): Scene = {
