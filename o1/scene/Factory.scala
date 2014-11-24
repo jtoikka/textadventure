@@ -37,40 +37,6 @@ object Factory {
     camera
   }
 
-  def createCoffee() = {
-    var cof = new Entity()
-    var spatialComp = new SpatialComponent()
-
-    cof.description = "Coffee"
-
-    cof.addComponent(spatialComp)
-
-    var renderComp = new RenderComponent("coffee")
-
-    var collisionComponent = new CollisionComponent(1.0f, CollisionComponent.CIRCLE)
-    collisionComponent.isActive = false
-    cof.addComponent(collisionComponent)
-
-    cof.eventHandlers = scala.collection.immutable.Map(
-      (EventType.E_COLLISION, (event, delta) => {
-        val entityA = event.args(0).asInstanceOf[Entity]
-        val entityB = event.args(1).asInstanceOf[Entity]
-        val entBinventory = entityB.getComponent(InventoryComponent.id)
-
-        if (entityA == cof && entBinventory.isDefined) {
-          println("page pickup")
-          entBinventory.get.inv.addItem(cof.getComponent(InventoryItemComponent.id).get.invItem)
-          cof.destroy = true
-        }
-      }))
-    val invComponent = new InventoryItemComponent(Coffee())
-
-    cof.addComponent(invComponent)
-
-    cof.addComponent(renderComp)
-    cof
-  }
-
   def createCoffeeBullet(position: Vec3, direction: Vec3) = {
     var cof = new Entity()
 
@@ -166,7 +132,7 @@ object Factory {
     }
     ent
   }
-  
+
   var firstCoffee = true
 
   def createCoffee(node: Node) = {
@@ -175,14 +141,17 @@ object Factory {
     val typeName = (node \ "@name").text
     val loc = Vec2((node \ "@x").text.toFloat, (node \ "@y").text.toFloat)
     val size = (node \ "@width").text.toFloat
-
+    val rotation = if (!(node \ "@rotation").text.isEmpty()) (node \ "@rotation").text.toInt else 0
+    val heightText = ((node \ "properties" \ "property").filter(a => (a \ "@name").text == "height") \ "@value").text
+    val height = if (!heightText.isEmpty()) heightText.toFloat else 0.5f
     val entity = new Entity()
 
     entity.description = "coffee"
 
     val spatialComp = new SpatialComponent()
-    spatialComp.position = Vec3((loc.x * 2) / 16, 0.5f, loc.y * 2 / 16)
+    spatialComp.position = Vec3((loc.x * 2) / 16, height, loc.y * 2 / 16)
     spatialComp.scale = Vec3(2.0f, 2.0f, 2.0f)
+    spatialComp.forward = (Utility.rotateY(((rotation / 360f) * 2 * Math.PI).toFloat) * Vec4(0, 0, 1, 0)).xyz
     entity.addComponent(spatialComp)
 
     entity.eventHandlers = scala.collection.immutable.Map(
@@ -199,8 +168,8 @@ object Factory {
             firstCoffee = false
             val d = Factory.createDialog(Vector(
               ("Ok!", new Event(Vector(), EventType.E_NONE))),
-              "Drink coffee (Press 'R') to replenish health, or get \n"+
-              "hot liquids all over by throwing it! (Press 'Space')\n", None, 60, 6)
+              "Drink coffee (Press 'R') to replenish health, or get \n" +
+                "hot liquids all over by throwing it! (Press 'Space')\n", None, 60, 6)
             EventManager.addEvent(new Event(Vector(d, entity.hashCode()), EventType.E_THROW_DIALOG))
           }
         }
@@ -226,7 +195,7 @@ object Factory {
     entity.addComponent(collisionComponent)
     entity
   }
-  
+
   def createCoffee(location: Vec3) = {
 
     val entity = new Entity()
@@ -252,8 +221,8 @@ object Factory {
             firstCoffee = false
             val d = Factory.createDialog(Vector(
               ("Ok!", new Event(Vector(), EventType.E_NONE))),
-              "Drink coffee (Press 'R') to replenish health, or get \n"+
-              "hot liquids all over by throwing it! (Press 'Space')\n", None, 60, 6)
+              "Drink coffee (Press 'R') to replenish health, or get \n" +
+                "hot liquids all over by throwing it! (Press 'Space')\n", None, 60, 6)
             EventManager.addEvent(new Event(Vector(d, entity.hashCode()), EventType.E_THROW_DIALOG))
           }
         }
@@ -279,7 +248,7 @@ object Factory {
     entity.addComponent(collisionComponent)
     entity
   }
-  
+
   def createCoffeeSpawn(node: Node) = {
     // TODO: Fix magic size and location conversion
     val name = (node \ "@name").text
@@ -294,13 +263,13 @@ object Factory {
     val spatialComp = new SpatialComponent()
     spatialComp.position = Vec3((loc.x * 2) / 16, 0.5f, loc.y * 2 / 16)
     entity.addComponent(spatialComp)
-    
+
     val spawnComponent = new SpawnComponent(Factory.createCoffee(spatialComp.position), 20.0)
     entity.addComponent(spawnComponent)
 
     entity
   }
-  
+
   def createKey(node: Node) = {
     // TODO: Fix magic size and location conversion
     val name = (node \ "@name").text
@@ -308,7 +277,7 @@ object Factory {
     val loc = Vec2((node \ "@x").text.toFloat, (node \ "@y").text.toFloat)
     val size = (node \ "@width").text.toFloat
     val heightText = ((node \ "properties" \ "property").filter(a => (a \ "@name").text == "height") \ "@value").text
-    val height = if(!heightText.isEmpty()) heightText.toFloat else 0.25f
+    val height = if (!heightText.isEmpty()) heightText.toFloat else 0.25f
     val entity = new Entity()
 
     entity.description = "key"
@@ -358,7 +327,7 @@ object Factory {
     val loc = Vec2((node \ "@x").text.toFloat, (node \ "@y").text.toFloat)
     val size = (node \ "@width").text.toFloat
     val heightText = ((node \ "properties" \ "property").filter(a => (a \ "@name").text == "height") \ "@value").text
-    val height = if(!heightText.isEmpty()) heightText.toFloat else 0.5f
+    val height = if (!heightText.isEmpty()) heightText.toFloat else 0.5f
     val entity = new Entity()
 
     entity.description = "page"
@@ -518,7 +487,7 @@ object Factory {
           val d = Factory.createDialog(Vector(
             ("Yes", new Event(Vector(player, entityB), EventType.E_OPEN_CHEST)),
             ("No", new Event(Vector(false, entity.hashCode()), EventType.E_NONE))),
-            "Do you want to open the chest with a key?", None, 40, 6)
+            "Do you want to open the chest with a key?", None, 45, 6)
           EventManager.addEvent(new Event(Vector(d, entity.hashCode()), EventType.E_THROW_DIALOG))
         }
       }), (EventType.E_OPEN_CHEST, (event, delta) => {
@@ -602,7 +571,7 @@ object Factory {
         val entityB = event.args(1).asInstanceOf[Entity]
 
         if (entityA == entity && entityB.getComponent(PlayerComponent.id).isDefined) {
-//          println("Collision with bossDorOpener trigger")
+          //          println("Collision with bossDorOpener trigger")
 
           if ((entityB.getComponent(InventoryComponent.id).get.inv.removeOfType(Page(), 5))) {
             println("BOSS DOOR OPENED")
@@ -823,7 +792,6 @@ object Factory {
     val typeName = (node \ "@name").text
     val loc = Vec2((node \ "@x").text.toFloat, (node \ "@y").text.toFloat)
     val rotation = if (!(node \ "@rotation").text.isEmpty()) (node \ "@rotation").text.toInt else 0
-    println("static rotation: " + rotation)
     val w = (node \ "@width").text.toFloat / 8 + 0.1f
     val h = (node \ "@height").text.toFloat / 8 + 0.1f
 
@@ -915,7 +883,7 @@ object Factory {
     val loc = Vec2((node \ "@x").text.toFloat, (node \ "@y").text.toFloat)
     val size = (node \ "@width").text.toFloat
     val heightText = ((node \ "properties" \ "property").filter(a => (a \ "@name").text == "height") \ "@value").text
-    val height = if(!heightText.isEmpty()) heightText.toFloat else 0.0f
+    val height = if (!heightText.isEmpty()) heightText.toFloat else 0.0f
     val entity = new Entity()
 
     entity.description = "rupee"
@@ -966,7 +934,7 @@ object Factory {
     val typeName = (node \ "@name").text
     val loc = Vec2((node \ "@x").text.toFloat, (node \ "@y").text.toFloat)
     val size = (node \ "@width").text.toFloat
-
+    val rotation = if (!(node \ "@rotation").text.isEmpty()) (node \ "@rotation").text.toInt else 0
     val player = new Entity()
 
     val healthComponent = new HealthComponent(1)
@@ -1000,6 +968,7 @@ object Factory {
     val spatialComp = new SpatialComponent()
     spatialComp.position =
       Vec3(loc.x * 2 / 16 + 0.0001f, 1.4f, loc.y * 2 / 16 + 0.0001f)
+    spatialComp.forward = (Utility.rotateY(((rotation / 360f) * 2 * Math.PI).toFloat) * Vec4(0, 0, 1, 0)).xyz
     player.addComponent(spatialComp)
 
     val inventoryComponent = new InventoryComponent()
@@ -1007,11 +976,11 @@ object Factory {
 
     val collisionComponent =
       new CollisionComponent(
-          0.3f, CollisionComponent.CIRCLE, 
-          collisionType = CollisionComponent.PLAYER)
-    
-//    collisionComponent.collidesWith.clear()
-//    collisionComponent.collidesWith += CollisionComponent.DEFAULT
+        0.3f, CollisionComponent.CIRCLE,
+        collisionType = CollisionComponent.PLAYER)
+
+    //    collisionComponent.collidesWith.clear()
+    //    collisionComponent.collidesWith += CollisionComponent.DEFAULT
     player.addComponent(collisionComponent)
 
     //    var renderComp = new RenderComponent("chest", Some("chest"))
@@ -1203,7 +1172,7 @@ object Factory {
 
     val AIComponent = new AIComponent("ghost")
     entity.addComponent(AIComponent)
-    
+
     var animationComp = new AnimationComponent(Vector("ghost", "ghost2"), 1.5)
     entity.addComponent(animationComp)
 
@@ -1213,10 +1182,10 @@ object Factory {
     val healthComp = new HealthComponent(1)
     entity.addComponent(healthComp)
 
-    var collisionComponent = 
+    var collisionComponent =
       new CollisionComponent(
-          size / 16, CollisionComponent.CIRCLE, 
-          collisionType = CollisionComponent.ENEMY)
+        size / 16, CollisionComponent.CIRCLE,
+        collisionType = CollisionComponent.ENEMY)
     collisionComponent.collidesWith.clear()
     collisionComponent.collidesWith += CollisionComponent.DEFAULT
     collisionComponent.collidesWith += CollisionComponent.COFFEE
