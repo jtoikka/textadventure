@@ -744,7 +744,7 @@
   <object type="coffee" x="112" y="96" width="16" height="16" rotation="1">
    <ellipse/>
   </object>
-  <object type="levelTrigger" x="160" y="16" width="16" height="16">
+  <object type="levelTrigger" x="172" y="16" width="4" height="16">
    <properties>
     <property name="level" value="01_superhub"/>
     <property name="spawn" value="03_entrance"/>
@@ -765,7 +765,7 @@
   <object type="openDoor" x="160" y="24" width="16" height="16"/>
  </objectgroup>
  <objectgroup name="player">
-  <object type="player" x="144" y="16" width="16" height="16">
+  <object type="player" x="148" y="16" width="16" height="16">
    <properties>
     <property name="name" value="01_entrance"/>
    </properties>

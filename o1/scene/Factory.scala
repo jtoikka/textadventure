@@ -511,7 +511,7 @@ object Factory {
         val entityB = event.args(1).asInstanceOf[Entity]
 
         if (entityA == entity && entityB.getComponent(PlayerComponent.id).isDefined) {
-          println("Collision with bossDorOpener trigger")
+//          println("Collision with bossDorOpener trigger")
 
           if ((entityB.getComponent(InventoryComponent.id).get.inv.removeOfType(Page(), 5))) {
             println("BOSS DOOR OPENED")
