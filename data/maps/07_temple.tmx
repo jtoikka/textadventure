@@ -941,6 +941,159 @@
   <object type="rupee" x="192" y="208" width="16" height="16" rotation="1">
    <ellipse/>
   </object>
+  <object type="static" x="120" y="224" width="16" height="16">
+   <properties>
+    <property name="collision" value="true"/>
+    <property name="height" value="0"/>
+    <property name="mesh" value="pilar"/>
+    <property name="texture" value="wall"/>
+   </properties>
+   <ellipse/>
+  </object>
+  <object type="static" x="168" y="224" width="16" height="16">
+   <properties>
+    <property name="collision" value="true"/>
+    <property name="height" value="0"/>
+    <property name="mesh" value="pilar"/>
+    <property name="texture" value="wall"/>
+   </properties>
+   <ellipse/>
+  </object>
+  <object type="static" x="120" y="192" width="16" height="16">
+   <properties>
+    <property name="collision" value="true"/>
+    <property name="height" value="0"/>
+    <property name="mesh" value="pilar"/>
+    <property name="texture" value="wall"/>
+   </properties>
+   <ellipse/>
+  </object>
+  <object type="static" x="168" y="192" width="16" height="16">
+   <properties>
+    <property name="collision" value="true"/>
+    <property name="height" value="0"/>
+    <property name="mesh" value="pilar"/>
+    <property name="texture" value="wall"/>
+   </properties>
+   <ellipse/>
+  </object>
+  <object type="static" x="120" y="160" width="16" height="16">
+   <properties>
+    <property name="collision" value="true"/>
+    <property name="height" value="0"/>
+    <property name="mesh" value="pilar"/>
+    <property name="texture" value="wall"/>
+   </properties>
+   <ellipse/>
+  </object>
+  <object type="static" x="168" y="160" width="16" height="16">
+   <properties>
+    <property name="collision" value="true"/>
+    <property name="height" value="0"/>
+    <property name="mesh" value="pilar"/>
+    <property name="texture" value="wall"/>
+   </properties>
+   <ellipse/>
+  </object>
+  <object type="static" x="120" y="128" width="16" height="16">
+   <properties>
+    <property name="collision" value="true"/>
+    <property name="height" value="0"/>
+    <property name="mesh" value="pilar"/>
+    <property name="texture" value="wall"/>
+   </properties>
+   <ellipse/>
+  </object>
+  <object type="static" x="168" y="128" width="16" height="16">
+   <properties>
+    <property name="collision" value="true"/>
+    <property name="height" value="0"/>
+    <property name="mesh" value="pilar"/>
+    <property name="texture" value="wall"/>
+   </properties>
+   <ellipse/>
+  </object>
+  <object type="static" x="120" y="96" width="16" height="16">
+   <properties>
+    <property name="collision" value="true"/>
+    <property name="height" value="0"/>
+    <property name="mesh" value="pilar"/>
+    <property name="texture" value="wall"/>
+   </properties>
+   <ellipse/>
+  </object>
+  <object type="static" x="168" y="96" width="16" height="16">
+   <properties>
+    <property name="collision" value="true"/>
+    <property name="height" value="0"/>
+    <property name="mesh" value="pilar"/>
+    <property name="texture" value="wall"/>
+   </properties>
+   <ellipse/>
+  </object>
+  <object type="static" x="120" y="64" width="16" height="16">
+   <properties>
+    <property name="collision" value="true"/>
+    <property name="height" value="0"/>
+    <property name="mesh" value="pilar"/>
+    <property name="texture" value="wall"/>
+   </properties>
+   <ellipse/>
+  </object>
+  <object type="static" x="168" y="64" width="16" height="16">
+   <properties>
+    <property name="collision" value="true"/>
+    <property name="height" value="0"/>
+    <property name="mesh" value="pilar"/>
+    <property name="texture" value="wall"/>
+   </properties>
+   <ellipse/>
+  </object>
+  <object type="static" x="112" y="40" width="16" height="16">
+   <properties>
+    <property name="collision" value="true"/>
+    <property name="height" value="0"/>
+    <property name="mesh" value="pilar"/>
+    <property name="texture" value="wall"/>
+   </properties>
+   <ellipse/>
+  </object>
+  <object type="static" x="176" y="40" width="16" height="16">
+   <properties>
+    <property name="collision" value="true"/>
+    <property name="height" value="0"/>
+    <property name="mesh" value="pilar"/>
+    <property name="texture" value="wall"/>
+   </properties>
+   <ellipse/>
+  </object>
+  <object type="static" x="120" y="256" width="16" height="16">
+   <properties>
+    <property name="collision" value="true"/>
+    <property name="height" value="0"/>
+    <property name="mesh" value="pilar"/>
+    <property name="texture" value="wall"/>
+   </properties>
+   <ellipse/>
+  </object>
+  <object type="static" x="168" y="256" width="16" height="16">
+   <properties>
+    <property name="collision" value="true"/>
+    <property name="height" value="0"/>
+    <property name="mesh" value="pilar"/>
+    <property name="texture" value="wall"/>
+   </properties>
+   <ellipse/>
+  </object>
+  <object type="static" x="144" y="256" width="16" height="16">
+   <properties>
+    <property name="collision" value="true"/>
+    <property name="height" value="0"/>
+    <property name="mesh" value="pilar"/>
+    <property name="texture" value="wall"/>
+   </properties>
+   <ellipse/>
+  </object>
  </objectgroup>
  <objectgroup name="player">
   <object type="player" x="144" y="240" width="16" height="16">
