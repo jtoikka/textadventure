@@ -991,7 +991,7 @@
   </object>
   <object type="chest" x="96" y="112" width="16" height="16">
    <properties>
-    <property name="keys" value="1"/>
+    <property name="keys" value="10"/>
     <property name="pages" value="5"/>
     <property name="rupees" value="10"/>
    </properties>
@@ -1104,31 +1104,31 @@
   <object type="coffee" x="288" y="144" width="16" height="16" rotation="1">
    <ellipse/>
   </object>
-  <object type="levelTrigger" x="256" y="48" width="16" height="16">
+  <object type="levelTrigger" x="264" y="48" width="4" height="16">
    <properties>
     <property name="level" value="05_scabin"/>
     <property name="spawn" value="01_entrance"/>
    </properties>
   </object>
-  <object type="levelTrigger" x="320" y="208" width="16" height="16">
+  <object type="levelTrigger" x="320" y="216" width="16" height="4">
    <properties>
     <property name="level" value="00_startlevel"/>
     <property name="spawn" value="01_entrance"/>
    </properties>
   </object>
-  <object type="levelTrigger" x="256" y="304" width="16" height="16">
+  <object type="levelTrigger" x="264" y="304" width="4" height="16">
    <properties>
     <property name="level" value="02_library"/>
     <property name="spawn" value="01_entrance"/>
    </properties>
   </object>
-  <object type="levelTrigger" x="112" y="304" width="16" height="16">
+  <object type="levelTrigger" x="116" y="304" width="4" height="16">
    <properties>
     <property name="level" value="03_tf"/>
     <property name="spawn" value="01_entrance"/>
    </properties>
   </object>
-  <object type="levelTrigger" x="112" y="48" width="16" height="16">
+  <object type="levelTrigger" x="116" y="48" width="4" height="16">
    <properties>
     <property name="level" value="04_lab"/>
     <property name="spawn" value="01_entrance"/>
@@ -1174,31 +1174,31 @@
   </object>
  </objectgroup>
  <objectgroup name="player">
-  <object type="player" x="233.333" y="304" width="16" height="16">
+  <object type="player" x="240" y="304" width="16" height="16">
    <properties>
     <property name="name" value="02_entrance"/>
    </properties>
    <ellipse/>
   </object>
-  <object type="player" x="319.5" y="190.667" width="16" height="16">
+  <object type="player" x="320" y="192" width="16" height="16">
    <properties>
     <property name="name" value="00_entrance"/>
    </properties>
    <ellipse/>
   </object>
-  <object type="player" x="138.333" y="48" width="16" height="16">
+  <object type="player" x="136" y="48" width="16" height="16">
    <properties>
     <property name="name" value="04_entrance"/>
    </properties>
    <ellipse/>
   </object>
-  <object type="player" x="231" y="48" width="16" height="16">
+  <object type="player" x="240" y="48" width="16" height="16">
    <properties>
     <property name="name" value="05_entrance"/>
    </properties>
    <ellipse/>
   </object>
-  <object type="player" x="134" y="304" width="16" height="16">
+  <object type="player" x="136" y="304" width="16" height="16">
    <properties>
     <property name="name" value="03_entrance"/>
    </properties>
