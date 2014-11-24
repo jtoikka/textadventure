@@ -30,6 +30,17 @@ class EmptyTile extends CollisionTile {
   }
 }
 
+class FakeSolidTile extends CollisionTile {
+  color = 0
+  id = 2
+  
+  val halfWidth = 1.0
+  
+  def checkIntersection(tilePosition: Vec2, pos: Vec2, radius: Float): Vec2 = {
+    Vec2(0.0f, 0.0f)
+  }
+}
+
 class SolidTile extends CollisionTile {
   color = 0
   id = 1
