@@ -19,6 +19,10 @@ class Scene {
   var camera: Option[Entity] = None
 
   var world: Option[World] = None
+  
+  def destroyEvents() {
+    entities.foreach(_.events.clear())
+  }
 
   def addEntity(entity: Entity) {
     entities += entity
