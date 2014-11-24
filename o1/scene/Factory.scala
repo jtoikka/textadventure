@@ -165,6 +165,8 @@ object Factory {
     }
     ent
   }
+  
+  var firstCoffee = true
 
   def createCoffee(node: Node) = {
     // TODO: Fix magic size and location conversion
@@ -189,9 +191,17 @@ object Factory {
         val entBinventory = entityB.getComponent(InventoryComponent.id)
 
         if (entityA == entity && entBinventory.isDefined) {
-          println("cofeee pickup")
+          println("coffee pickup")
           entBinventory.get.inv.addItem(entity.getComponent(InventoryItemComponent.id).get.invItem)
           entity.destroy = true
+          if (firstCoffee) {
+            firstCoffee = false
+            val d = Factory.createDialog(Vector(
+              ("Ok!", new Event(Vector(), EventType.E_NONE))),
+              "Drink coffee (Press 'R') to replenish health, or get \n"+
+              "hot liquids all over by throwing it! (Press 'Space')\n", None, 60, 6)
+            EventManager.addEvent(new Event(Vector(d, entity.hashCode()), EventType.E_THROW_DIALOG))
+          }
         }
       }), (EventType.E_INTERACTION, (event, delta) => {
         val entityA = event.args(0).asInstanceOf[Option[Entity]]
@@ -882,7 +892,7 @@ object Factory {
 
     val player = new Entity()
 
-    val healthComponent = new HealthComponent(3)
+    val healthComponent = new HealthComponent(1)
     player.addComponent(healthComponent)
 
     player.eventHandlers = scala.collection.immutable.Map(
@@ -897,9 +907,11 @@ object Factory {
             if (healthComponent.invulnerabilityTimer <= 0) {
               healthComponent.hp -= 1
               EventManager.addEvent(new Event(Vector(), EventType.E_PLAYER_DAMAGE))
-              healthComponent.invulnerabilityTimer = 5.0f
               if (healthComponent.hp <= 0) {
-                println("You're dead")
+                healthComponent.hp = 0
+                EventManager.addEvent(new Event(Vector(), EventType.E_PLAYER_DEAD))
+              } else {
+                healthComponent.invulnerabilityTimer = 5.0f
               }
             }
           }

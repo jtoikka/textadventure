@@ -43,7 +43,8 @@ object AdventureGUI extends SimpleSwingApplication with Listener {
     (Key.M, false), (Key.N, false),
     (Key.Enter, false), (Key.Escape, false),
     (Key.I, false), (Key.Q, false),
-    (Key.Space, false), (Key.L, false))
+    (Key.Space, false), (Key.L, false),
+    (Key.R, false))
   
   // Access to the internal logic of the application: 
   val game = new Adventure()
@@ -65,7 +66,8 @@ object AdventureGUI extends SimpleSwingApplication with Listener {
   }
   
   var damageTimer = 0
-
+  var playerDead = false;
+  
   def top = new MainFrame {
 
     // Components: 
@@ -153,6 +155,10 @@ object AdventureGUI extends SimpleSwingApplication with Listener {
         keyMap(Key.L) = true
       case KeyReleased(_, Key.L, _, _) =>
         keyMap(Key.L) = false
+      case KeyPressed(_, Key.R, _, _) =>
+        keyMap(Key.R) = true
+      case KeyReleased(_, Key.R, _, _) =>
+        keyMap(Key.R) = false
     }
     
     var time = System.currentTimeMillis()
@@ -172,9 +178,16 @@ object AdventureGUI extends SimpleSwingApplication with Listener {
         for (i <- 0 until numUpdates) {
           update(updatePeriod / 100.0f)
         }
-        if (damageTimer > 0) {
-          damageTimer -= delta.toInt
-          if (damageTimer < 0) damageTimer = 0
+        if (!playerDead) {
+          if (damageTimer > 0) {
+            damageTimer -= delta.toInt
+            if (damageTimer < 0) damageTimer = 0
+          }
+          
+        } else {
+          if (damageTimer < 189) {
+            damageTimer += (delta * 0.08).toInt
+          }
         }
         renderArea.background = new Color((Math.min(damageTimer, 255) * 0.8).toInt, 0, 0)
         renderArea.foreground = new Color(255, Math.max(255 - damageTimer, 255), Math.max(255 - damageTimer, 255))
@@ -223,6 +236,12 @@ object AdventureGUI extends SimpleSwingApplication with Listener {
     }),
     (E_PLAYER_DAMAGE, (event, delta) => {
       damageTimer += 400
+    }),
+    (E_PLAYER_DEAD, (event, delta) => {
+      println("player dead")
+      if (!playerDead)
+        damageTimer = 0
+      playerDead = true
     }))
 
   def dispose(): Unit = {
