@@ -1732,17 +1732,116 @@
   <object type="table" x="224" y="128" width="32" height="16"/>
   <object type="table" x="176" y="256" width="48" height="16"/>
   <object type="table" x="224" y="256" width="32" height="16"/>
-  <object type="levelTrigger" x="372" y="180" width="8" height="8">
+  <object type="levelTrigger" x="372" y="176" width="12" height="16">
    <properties>
     <property name="level" value="06_panic"/>
     <property name="spawn" value="loop"/>
    </properties>
   </object>
-  <object type="levelTrigger" x="52" y="180" width="8" height="8">
+  <object type="levelTrigger" x="52" y="176" width="12" height="16">
    <properties>
     <property name="level" value="06_panic"/>
     <property name="spawn" value="01_entrance"/>
    </properties>
+  </object>
+  <object name="Ghost" type="ghost" x="336" y="16" width="16" height="16">
+   <ellipse/>
+  </object>
+  <object name="Ghost" type="ghost" x="80" y="16" width="16" height="16">
+   <ellipse/>
+  </object>
+  <object name="Ghost" type="ghost" x="80" y="304" width="16" height="16">
+   <ellipse/>
+  </object>
+  <object name="Ghost" type="ghost" x="336" y="304" width="16" height="16">
+   <ellipse/>
+  </object>
+  <object name="Ghost" type="ghost" x="208" y="144" width="16" height="16">
+   <ellipse/>
+  </object>
+  <object name="Ghost" type="ghost" x="272" y="272" width="16" height="16">
+   <ellipse/>
+  </object>
+  <object type="coffee" x="336" y="288" width="16" height="16" rotation="1">
+   <ellipse/>
+  </object>
+  <object type="coffee" x="80" y="288" width="16" height="16" rotation="1">
+   <ellipse/>
+  </object>
+  <object type="coffee" x="80" y="80" width="16" height="16" rotation="1">
+   <ellipse/>
+  </object>
+  <object type="coffee" x="336" y="80" width="16" height="16" rotation="1">
+   <ellipse/>
+  </object>
+  <object name="Ghost" type="ghost" x="144" y="272" width="16" height="16">
+   <ellipse/>
+  </object>
+  <object name="Ghost" type="ghost" x="272" y="112" width="16" height="16">
+   <ellipse/>
+  </object>
+  <object name="Ghost" type="ghost" x="144" y="112" width="16" height="16">
+   <ellipse/>
+  </object>
+  <object type="rupee" x="160" y="208" width="16" height="16">
+   <ellipse/>
+  </object>
+  <object type="rupee" x="176" y="208" width="16" height="16">
+   <ellipse/>
+  </object>
+  <object type="rupee" x="192" y="208" width="16" height="16">
+   <ellipse/>
+  </object>
+  <object type="rupee" x="208" y="208" width="16" height="16">
+   <ellipse/>
+  </object>
+  <object type="rupee" x="224" y="208" width="16" height="16">
+   <ellipse/>
+  </object>
+  <object type="rupee" x="240" y="208" width="16" height="16">
+   <ellipse/>
+  </object>
+  <object type="rupee" x="160" y="144" width="16" height="16">
+   <ellipse/>
+  </object>
+  <object type="rupee" x="176" y="144" width="16" height="16">
+   <ellipse/>
+  </object>
+  <object type="rupee" x="192" y="144" width="16" height="16">
+   <ellipse/>
+  </object>
+  <object type="rupee" x="224" y="144" width="16" height="16">
+   <ellipse/>
+  </object>
+  <object type="rupee" x="240" y="144" width="16" height="16">
+   <ellipse/>
+  </object>
+  <object type="rupee" x="256" y="144" width="16" height="16">
+   <ellipse/>
+  </object>
+  <object type="rupee" x="208" y="144" width="16" height="16">
+   <ellipse/>
+  </object>
+  <object type="rupee" x="256" y="160" width="16" height="16">
+   <ellipse/>
+  </object>
+  <object type="rupee" x="256" y="176" width="16" height="16">
+   <ellipse/>
+  </object>
+  <object type="rupee" x="256" y="192" width="16" height="16">
+   <ellipse/>
+  </object>
+  <object type="rupee" x="256" y="208" width="16" height="16">
+   <ellipse/>
+  </object>
+  <object type="rupee" x="160" y="176" width="16" height="16">
+   <ellipse/>
+  </object>
+  <object type="rupee" x="160" y="160" width="16" height="16">
+   <ellipse/>
+  </object>
+  <object type="rupee" x="160" y="192" width="16" height="16">
+   <ellipse/>
   </object>
  </objectgroup>
  <objectgroup name="player">
