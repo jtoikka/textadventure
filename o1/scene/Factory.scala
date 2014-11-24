@@ -509,7 +509,7 @@ object Factory {
         val entityB = event.args(1).asInstanceOf[Entity]
 
         if (entityA == entity && entityB.getComponent(PlayerComponent.id).isDefined) {
-          println(entity.getComponent(SpatialComponent.id).get.position)
+          println("Collision with level trigger")
           EventManager.addEvent(new Event(Vector(level, spawn), EventType.E_LOAD_NEW_MAP))
         }
       }))
