@@ -34,7 +34,7 @@ class GameOverScreen(parent: Adventure, rend: Renderer)
       ((Key.Q, Input.KEYRELEASED), (delta) => {
       }),
       ((Key.Escape, Input.KEYRELEASED), (delta) => {
-        parent.changeToPreviousScreen()
+        EventManager.addEvent(new Event(Vector("menuScreen"), E_CHANGE_SCREEN))
       }),
       ((Key.I, Input.KEYRELEASED), (delta) => {
       }),
