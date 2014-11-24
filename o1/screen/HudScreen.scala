@@ -92,7 +92,7 @@ class HudScreen(parent: Adventure, rend: Renderer)
    */
   
   def gameTime(realTime: Double) = {
-    val gTime = (6 - exp(3/pow(realTime/60000 + 3, 0.46915))) * 1000
+    val gTime = (6 - exp(3/pow(realTime + 3, 0.46915))) * 72
     "%02d".format((gTime).toInt / 60) + ":" + "%02d".format((gTime).toInt % 60)
   }
   
@@ -101,7 +101,7 @@ class HudScreen(parent: Adventure, rend: Renderer)
   def update(delta: Double): Unit = {
     // update invetory icons
     if (!paused && player.isDefined) {
-      realTime += delta
+      realTime += delta / 1000.0
       EventManager.addEvent(new Event(Vector(69, 420,
         player.get.getComponent(SpatialComponent.id).get.position,
         player.get.getComponent(SpatialComponent.id).get.forward,
