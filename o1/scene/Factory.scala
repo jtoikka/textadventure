@@ -84,7 +84,7 @@ object Factory {
     spatialComp.position.y = 0.8f
 
     cof.addComponent(spatialComp)
-    
+
     cof.eventHandlers = scala.collection.immutable.Map(
       (EventType.E_COLLISION, (event, delta) => {
         val entityA = event.args(0).asInstanceOf[Entity]
@@ -94,7 +94,7 @@ object Factory {
           if (entityB.getComponent(DamageComponent.id).isDefined) {
             cof.destroy = true
             EventManager.addEvent(
-                new Event(Vector(spatialComp.position), 
+              new Event(Vector(spatialComp.position),
                 EventType.E_EXPLOSION))
           }
         }
@@ -147,7 +147,7 @@ object Factory {
       case "page" => Some(createPage(node))
       case "monkey" => Some(createMonkey(node))
       case "enemy" => Some(createTestEnemy(node))
-//      case "player" => Some(createPlayer(node))
+      case "static" => Some(createStatic(node))
       case "door" => Some(createDoor(node))
       case "openDoor" => Some(createOpenDoor(node))
       case "rupee" => Some(createRupee(node))
@@ -535,7 +535,7 @@ object Factory {
     val typeName = (node \ "@name").text
     val loc = Vec2((node \ "@x").text.toFloat, (node \ "@y").text.toFloat)
     val rotation = if (!(node \ "@rotation").text.isEmpty()) (node \ "@rotation").text.toInt else 0
-//    println("Door rotation: " + rotation)
+    //    println("Door rotation: " + rotation)
     val w = (node \ "@width").text.toFloat / 8 + 0.1f
     val h = (node \ "@height").text.toFloat / 8 + 0.1f
 
@@ -617,6 +617,42 @@ object Factory {
     var renderComp = new RenderComponent("doorTop", Some("testTex"))
     entity.addComponent(renderComp)
 
+    entity
+  }
+
+  def createStatic(node: Node) = {
+    // TODO: Fix magic size and location conversion
+    val name = (node \ "@name").text
+    val typeName = (node \ "@name").text
+    val loc = Vec2((node \ "@x").text.toFloat, (node \ "@y").text.toFloat)
+    val rotation = if (!(node \ "@rotation").text.isEmpty()) (node \ "@rotation").text.toInt else 0
+    println("static rotation: " + rotation)
+    val w = (node \ "@width").text.toFloat / 8 + 0.1f
+    val h = (node \ "@height").text.toFloat / 8 + 0.1f
+
+    val renderName = ((node \ "properties" \ "property").filter(a => (a \ "@name").text == "mesh") \ "@value").text
+    val textureName = ((node \ "properties" \ "property").filter(a => (a \ "@name").text == "texture") \ "@value").text
+    val height = ((node \ "properties" \ "property").filter(a => (a \ "@name").text == "height") \ "@value").text.toFloat
+    val collision = ((node \ "properties" \ "property").filter(a => (a \ "@name").text == "collision") \ "@value").text.toBoolean
+
+    val entity = new Entity()
+
+    entity.description = name
+
+    val spatialComp = new SpatialComponent()
+    spatialComp.position = Vec3(loc.x * 2 / 16, height, loc.y * 2 / 16)
+
+    spatialComp.forward = (Utility.rotateY(((rotation / 360f) * 2 * Math.PI).toFloat) * Vec4(0, 0, 1, 0)).xyz
+
+    entity.addComponent(spatialComp)
+
+    var renderComp = new RenderComponent(renderName, Some(textureName))
+    entity.addComponent(renderComp)
+
+    var collisionComponent = new CollisionComponent(
+      w / 16, CollisionComponent.CIRCLE)
+    collisionComponent.isActive = collision
+    entity.addComponent(collisionComponent)
     entity
   }
 
@@ -774,9 +810,9 @@ object Factory {
           collisionType = CollisionComponent.PLAYER)
     player.addComponent(collisionComponent)
     
-    var renderComp = new RenderComponent("chest", Some("chest"))
-    player.addComponent(renderComp)
-    
+//    var renderComp = new RenderComponent("chest", Some("chest"))
+//    player.addComponent(renderComp)
+
     val inputComponent = new InputComponent()
     player.addComponent(inputComponent)
 
@@ -787,18 +823,18 @@ object Factory {
 
     player
   }
-  
+
   def createBreakableWall(node: Node) = {
     // TODO: Fix magic size and location conversion
     val loc = Vec2((node \ "@x").text.toFloat, (node \ "@y").text.toFloat)
     val w = (node \ "@width").text.toFloat / 8
     val h = (node \ "@height").text.toFloat / 8
     val entity: Entity = new Entity()
-        
+
     val spatialComp = new SpatialComponent()
     spatialComp.position = Vec3(loc.x * 2 / 16, 0.0f, loc.y * 2 / 16)
     entity.addComponent(spatialComp)
-    
+
     entity.eventHandlers = scala.collection.immutable.Map(
       (EventType.E_COLLISION, (event, delta) => {
         val entityA = event.args(0).asInstanceOf[Entity]
@@ -810,8 +846,8 @@ object Factory {
             if (entityB.getComponent(BreakableComponent.id).isDefined) {
               entityB.destroy = true
             }
-            EventManager.addEvent(new Event(Vector(spatialComp.position), 
-                  EventType.E_EXPLOSION))
+            EventManager.addEvent(new Event(Vector(spatialComp.position),
+              EventType.E_EXPLOSION))
           }
         }
       }))
@@ -850,11 +886,11 @@ object Factory {
         h / 16, CollisionComponent.SQUARE,
         halfWidth = h / 2, halfHeight = w / 2)
     collisionComponent.isStatic = true
-    
+
     entity.addComponent(collisionComponent)
     entity
   }
-  
+
   def createExplosion(position: Vec3) = {
     var entity = new Entity()
 
@@ -865,7 +901,7 @@ object Factory {
     spatialComp.position.y += 1.0f
 
     entity.addComponent(spatialComp)
-    
+
     var faceCameraComp = new FaceCameraComponent()
     entity.addComponent(faceCameraComp)
 
@@ -874,10 +910,10 @@ object Factory {
 
     var animationComp = new AnimationComponent(Vector("exp1", "exp2", "exp3", "exp4", "exp5"), 0.8)
     entity.addComponent(animationComp)
-    
+
     var deathTimerComp = new DeathTimerComponent(0.8 * 5)
     entity.addComponent(deathTimerComp)
-    
+
     entity
   }
 
