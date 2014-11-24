@@ -339,7 +339,7 @@ class GameScreen(parent: Adventure, rend: Renderer)
   
   init()
   def init(): Unit = {
-    changeLevel("00_startlevel", "startSpawn")
+    changeLevel("06_panic", "01_entrance")
   }
   
   def loadLevel(level: String): Scene = {
