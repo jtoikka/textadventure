@@ -11,7 +11,7 @@ class Image2D(var img: BufferedImage, var defFill: Boolean, var fixWidth: Boolea
   else img.getWidth() * img.getHeight()
 
   var grayArray: Array[Int] = new Array[Int](arrLenght)
-  
+
   makeArray()
 
   def makeArray() = {
@@ -24,8 +24,13 @@ class Image2D(var img: BufferedImage, var defFill: Boolean, var fixWidth: Boolea
           var g = (rgb >> 8) & 0xFF;
           var b = (rgb & 0xFF);
           var gray = (r + g + b) / 3
+          var a = (rgb >> 25) & 0xFF;
+          if (a <= 0)
+            grayArray(calcImageArrayIndex(x, y)) = -1
+          else
+            grayArray(calcImageArrayIndex(x, y)) = gray
           //print(gray + ", ")
-          grayArray(calcImageArrayIndex(x, y)) = gray
+
         }
       }
     } else {
@@ -38,15 +43,23 @@ class Image2D(var img: BufferedImage, var defFill: Boolean, var fixWidth: Boolea
           var b = (rgb & 0xFF);
           var gray = (r + g + b) / 3
           //print(gray + ", ")
-          grayArray(calcImageArrayIndex(x * 2 + 1, y)) = gray
-          grayArray(calcImageArrayIndex(x * 2, y)) = gray
+          var a = (rgb >> 25) & 0xFF;
+          if (a <= 0) {
+            grayArray(calcImageArrayIndex(x * 2 + 1, y)) = -1
+            grayArray(calcImageArrayIndex(x * 2, y)) = -1
+          } else {
+            grayArray(calcImageArrayIndex(x * 2 + 1, y)) = gray
+            grayArray(calcImageArrayIndex(x * 2, y)) = gray
+          }
+          //          grayArray(calcImageArrayIndex(x * 2 + 1, y)) = gray
+          //          grayArray(calcImageArrayIndex(x * 2, y)) = gray
         }
       }
     }
   }
 
   def getWidth(): Int = if (fixWidth) img.getWidth() * 2 else img.getWidth()
-  
+
   def getHeight(): Int = img.getHeight()
 
   def getArray(img: BufferedImage): Array[Int] = grayArray
