@@ -753,7 +753,7 @@
     <property name="spawn" value="03_entrance"/>
    </properties>
   </object>
-  <object type="page" x="44" y="60" width="16" height="16">
+  <object type="page" x="104" y="176" width="16" height="16">
    <properties>
     <property name="height" value="1"/>
    </properties>
@@ -875,6 +875,13 @@
   <object type="table" x="84" y="128" width="12" height="32"/>
   <object type="table" x="84" y="176" width="12" height="32"/>
   <object type="table" x="116" y="128" width="12" height="32"/>
+  <object type="table" x="140" y="184" width="12" height="32" rotation="-270"/>
+  <object type="enemy" x="128" y="168" width="16" height="16">
+   <properties>
+    <property name="height" value="1"/>
+   </properties>
+   <ellipse/>
+  </object>
  </objectgroup>
  <objectgroup name="player">
   <object type="player" x="148" y="16" width="16" height="16">
