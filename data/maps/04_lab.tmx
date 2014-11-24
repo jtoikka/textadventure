@@ -800,12 +800,6 @@
    </properties>
    <ellipse/>
   </object>
-  <object type="coffee" x="264" y="156" width="16" height="16" rotation="1">
-   <properties>
-    <property name="heigth" value="1"/>
-   </properties>
-   <ellipse/>
-  </object>
   <object type="player" x="236" y="272" width="16" height="16" rotation="1">
    <properties>
     <property name="01_entrance" value=""/>
@@ -839,76 +833,61 @@
    </properties>
    <ellipse/>
   </object>
-  <object type="coffee" x="208" y="156" width="16" height="16" rotation="1">
-   <properties>
-    <property name="heigth" value="1"/>
-   </properties>
-   <ellipse/>
-  </object>
-  <object type="coffee" x="188" y="172" width="16" height="16" rotation="1">
-   <properties>
-    <property name="heigth" value="1"/>
-   </properties>
-   <ellipse/>
-  </object>
-  <object type="coffee" x="160" y="176" width="16" height="16" rotation="1">
-   <properties>
-    <property name="heigth" value="1"/>
-   </properties>
-   <ellipse/>
-  </object>
   <object type="coffee" x="160" y="124" width="16" height="16" rotation="1">
    <properties>
-    <property name="heigth" value="1"/>
+    <property name="height" value="1"/>
+   </properties>
+   <ellipse/>
+  </object>
+  <object type="coffee" x="188" y="156" width="16" height="16" rotation="1">
+   <properties>
+    <property name="height" value="1"/>
+   </properties>
+   <ellipse/>
+  </object>
+  <object type="coffee" x="216" y="156" width="16" height="16" rotation="1">
+   <properties>
+    <property name="height" value="1"/>
+   </properties>
+   <ellipse/>
+  </object>
+  <object type="coffee" x="264" y="156" width="16" height="16" rotation="1">
+   <properties>
+    <property name="height" value="1"/>
    </properties>
    <ellipse/>
   </object>
   <object type="coffee" x="272" y="176" width="16" height="16" rotation="1">
    <properties>
-    <property name="heigth" value="1"/>
+    <property name="height" value="1"/>
+   </properties>
+   <ellipse/>
+  </object>
+  <object type="coffee" x="124" y="176" width="16" height="16" rotation="1">
+   <properties>
+    <property name="height" value="1"/>
    </properties>
    <ellipse/>
   </object>
   <object type="coffee" x="24" y="156" width="16" height="16" rotation="1">
    <properties>
-    <property name="heigth" value="1"/>
+    <property name="height" value="1"/>
    </properties>
    <ellipse/>
   </object>
-  <object type="coffee" x="48" y="124" width="16" height="16" rotation="1">
+  <object type="coffee" x="52" y="124" width="16" height="16" rotation="1">
    <properties>
-    <property name="heigth" value="1"/>
+    <property name="height" value="1"/>
    </properties>
    <ellipse/>
   </object>
-  <object type="coffee" x="40" y="180" width="16" height="16" rotation="1">
+  <object type="coffee" x="128" y="48" width="16" height="16" rotation="1">
    <properties>
-    <property name="heigth" value="1"/>
+    <property name="height" value="1"/>
    </properties>
    <ellipse/>
   </object>
-  <object type="coffee" x="92" y="180" width="16" height="16" rotation="1">
-   <properties>
-    <property name="heigth" value="1"/>
-   </properties>
-   <ellipse/>
-  </object>
-  <object type="coffee" x="128" y="148" width="16" height="16" rotation="1">
-   <properties>
-    <property name="heigth" value="1"/>
-   </properties>
-   <ellipse/>
-  </object>
-  <object type="coffee" x="128" y="172" width="16" height="16" rotation="1">
-   <properties>
-    <property name="heigth" value="1"/>
-   </properties>
-   <ellipse/>
-  </object>
-  <object type="coffee" x="124" y="48" width="16" height="16" rotation="1">
-   <properties>
-    <property name="heigth" value="1"/>
-   </properties>
+  <object type="enemy" x="56" y="216" width="16" height="16">
    <ellipse/>
   </object>
  </objectgroup>

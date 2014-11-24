@@ -399,7 +399,7 @@ class GameScreen(parent: Adventure, rend: Renderer)
   
   init()
   def init(): Unit = {
-    changeLevel("01_superhub", "startSpawn")
+    changeLevel("00_startlevel", "startSpawn")
 //    changeLevel("06_panic", "01_entrance")
   }
   
