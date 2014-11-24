@@ -89,6 +89,12 @@ class World(val map: String) {
       if(g.text.toInt == 1){ // firstGid => Solid Tile
         tileMap.addCollisionTile(x, y, new SolidTile())
 
+      }else if(g.text.toInt == 2){ // firstGid => Solid Tile
+        tileMap.addCollisionTile(x, y, new FakeSolidTile())
+
+      }else if(g.text.toInt == 3){ // firstGid => Solid Tile
+        tileMap.addCollisionTile(x, y, new SolidTile(){color = 0xFFFFF0})
+
       }else{
       }
       
