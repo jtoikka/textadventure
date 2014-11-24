@@ -339,7 +339,7 @@ class GameScreen(parent: Adventure, rend: Renderer)
   
   init()
   def init(): Unit = {
-    changeLevel("06_panic", "01_entrance")
+    changeLevel("00_startlevel", "startSpawn")
   }
   
   def loadLevel(level: String): Scene = {
@@ -348,15 +348,6 @@ class GameScreen(parent: Adventure, rend: Renderer)
     newScene
   }
   
-//  def changeLevel(level: String, spawn: String) = {
-//    val player = scene.entities.find(_.getComponent(PlayerComponent.id).isDefined)
-//    val inventoryComponent = 
-//      if (player.isDefined) 
-//        player.get.getComponent(InventoryComponent.id) 
-//      else 
-//        None
-//    val forward = 
-//  }
   
   def changeLevel(level: String, spawn: String) = {
     val player = scene.entities.find(_.getComponent(PlayerComponent.id).isDefined)

@@ -1783,64 +1783,64 @@
   <object name="Ghost" type="ghost" x="144" y="112" width="16" height="16">
    <ellipse/>
   </object>
-  <object type="rupee" x="168" y="216" width="16" height="16">
+  <object type="rupee" x="160" y="208" width="16" height="16">
    <ellipse/>
   </object>
-  <object type="rupee" x="184" y="216" width="16" height="16">
+  <object type="rupee" x="176" y="208" width="16" height="16">
    <ellipse/>
   </object>
-  <object type="rupee" x="200" y="216" width="16" height="16">
+  <object type="rupee" x="192" y="208" width="16" height="16">
    <ellipse/>
   </object>
-  <object type="rupee" x="216" y="216" width="16" height="16">
+  <object type="rupee" x="208" y="208" width="16" height="16">
    <ellipse/>
   </object>
-  <object type="rupee" x="232" y="216" width="16" height="16">
+  <object type="rupee" x="224" y="208" width="16" height="16">
    <ellipse/>
   </object>
-  <object type="rupee" x="248" y="216" width="16" height="16">
+  <object type="rupee" x="240" y="208" width="16" height="16">
    <ellipse/>
   </object>
-  <object type="rupee" x="168" y="152" width="16" height="16">
+  <object type="rupee" x="160" y="144" width="16" height="16">
    <ellipse/>
   </object>
-  <object type="rupee" x="184" y="152" width="16" height="16">
+  <object type="rupee" x="176" y="144" width="16" height="16">
    <ellipse/>
   </object>
-  <object type="rupee" x="200" y="152" width="16" height="16">
+  <object type="rupee" x="192" y="144" width="16" height="16">
    <ellipse/>
   </object>
-  <object type="rupee" x="232" y="152" width="16" height="16">
+  <object type="rupee" x="224" y="144" width="16" height="16">
    <ellipse/>
   </object>
-  <object type="rupee" x="248" y="152" width="16" height="16">
+  <object type="rupee" x="240" y="144" width="16" height="16">
    <ellipse/>
   </object>
-  <object type="rupee" x="264" y="152" width="16" height="16">
+  <object type="rupee" x="256" y="144" width="16" height="16">
    <ellipse/>
   </object>
-  <object type="rupee" x="216" y="152" width="16" height="16">
+  <object type="rupee" x="208" y="144" width="16" height="16">
    <ellipse/>
   </object>
-  <object type="rupee" x="264" y="168" width="16" height="16">
+  <object type="rupee" x="256" y="160" width="16" height="16">
    <ellipse/>
   </object>
-  <object type="rupee" x="264" y="184" width="16" height="16">
+  <object type="rupee" x="256" y="176" width="16" height="16">
    <ellipse/>
   </object>
-  <object type="rupee" x="264" y="200" width="16" height="16">
+  <object type="rupee" x="256" y="192" width="16" height="16">
    <ellipse/>
   </object>
-  <object type="rupee" x="264" y="216" width="16" height="16">
+  <object type="rupee" x="256" y="208" width="16" height="16">
    <ellipse/>
   </object>
-  <object type="rupee" x="168" y="184" width="16" height="16">
+  <object type="rupee" x="160" y="176" width="16" height="16">
    <ellipse/>
   </object>
-  <object type="rupee" x="168" y="168" width="16" height="16">
+  <object type="rupee" x="160" y="160" width="16" height="16">
    <ellipse/>
   </object>
-  <object type="rupee" x="168" y="200" width="16" height="16">
+  <object type="rupee" x="160" y="192" width="16" height="16">
    <ellipse/>
   </object>
  </objectgroup>
