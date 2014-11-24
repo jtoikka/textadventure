@@ -58,6 +58,7 @@ class GameScreen(parent: Adventure, rend: Renderer)
     (E_LOAD_NEW_MAP, (event, delta) => {
       val newMapName = event.args(0).asInstanceOf[String]
       val newSpawnName = event.args(1).asInstanceOf[String]
+      println("Load " + newMapName  + " with spawn " + newSpawnName)
       changeLevel(newMapName, newSpawnName)
       
     }),
