@@ -207,3 +207,11 @@ object DeathTimerComponent {
 case class DeathTimerComponent(var timer: Double) extends Component {
   
 }
+
+object SpawnComponent {
+  val id = classOf[SpawnComponent]
+}
+
+case class SpawnComponent(var entity: Entity, val step: Double) extends Component {
+  var timer = 0.0
+}

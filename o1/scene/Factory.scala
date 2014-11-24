@@ -225,6 +225,78 @@ object Factory {
     entity.addComponent(collisionComponent)
     entity
   }
+  
+  def createCoffee(location: Vec3) = {
+
+    val entity = new Entity()
+
+    entity.description = "coffee"
+
+    val spatialComp = new SpatialComponent()
+    spatialComp.position = location
+    spatialComp.scale = Vec3(2.0f, 2.0f, 2.0f)
+    entity.addComponent(spatialComp)
+
+    entity.eventHandlers = scala.collection.immutable.Map(
+      (EventType.E_COLLISION, (event, delta) => {
+        val entityA = event.args(0).asInstanceOf[Entity]
+        val entityB = event.args(1).asInstanceOf[Entity]
+        val entBinventory = entityB.getComponent(InventoryComponent.id)
+
+        if (entityA == entity && entBinventory.isDefined) {
+          println("coffee pickup")
+          entBinventory.get.inv.addItem(entity.getComponent(InventoryItemComponent.id).get.invItem)
+          entity.destroy = true
+          if (firstCoffee) {
+            firstCoffee = false
+            val d = Factory.createDialog(Vector(
+              ("Ok!", new Event(Vector(), EventType.E_NONE))),
+              "Drink coffee (Press 'R') to replenish health, or get \n"+
+              "hot liquids all over by throwing it! (Press 'Space')\n", None, 60, 6)
+            EventManager.addEvent(new Event(Vector(d, entity.hashCode()), EventType.E_THROW_DIALOG))
+          }
+        }
+      }), (EventType.E_INTERACTION, (event, delta) => {
+        val entityA = event.args(0).asInstanceOf[Option[Entity]]
+        val entityB = event.args(1).asInstanceOf[Option[Entity]]
+
+        if (entityB.isDefined && entityB.get == entity) {
+          println("Coffee Interaction")
+        }
+      }))
+    val invComponent = new InventoryItemComponent(Coffee())
+    entity.addComponent(invComponent)
+
+    var renderComp = new RenderComponent("coffee")
+    entity.addComponent(renderComp)
+
+    val rotateComp = new RotateComponent(-0.2f)
+    entity.addComponent(rotateComp)
+
+    var collisionComponent = new CollisionComponent(0.5f, CollisionComponent.CIRCLE)
+    collisionComponent.isActive = false
+    entity.addComponent(collisionComponent)
+    entity
+  }
+  
+  def createCoffeeSpawn(node: Node) = {
+    // TODO: Fix magic size and location conversion
+    val name = (node \ "@name").text
+    val typeName = (node \ "@name").text
+    val loc = Vec2((node \ "@x").text.toFloat, (node \ "@y").text.toFloat)
+    val size = (node \ "@width").text.toFloat
+
+    val entity = new Entity()
+
+    entity.description = "coffee spawn"
+
+    val spatialComp = new SpatialComponent()
+    spatialComp.position = Vec3((loc.x * 2) / 16, 0.5f, loc.y * 2 / 16)
+    entity.addComponent(spatialComp)
+
+    entity
+  }
+  
   def createKey(node: Node) = {
     // TODO: Fix magic size and location conversion
     val name = (node \ "@name").text
