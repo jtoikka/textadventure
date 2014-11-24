@@ -809,6 +809,9 @@ object Factory {
       new CollisionComponent(
           0.3f, CollisionComponent.CIRCLE, 
           collisionType = CollisionComponent.PLAYER)
+    
+//    collisionComponent.collidesWith.clear()
+//    collisionComponent.collidesWith += CollisionComponent.DEFAULT
     player.addComponent(collisionComponent)
     
 //    var renderComp = new RenderComponent("chest", Some("chest"))
