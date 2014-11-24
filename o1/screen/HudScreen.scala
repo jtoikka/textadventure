@@ -92,7 +92,7 @@ class HudScreen(parent: Adventure, rend: Renderer)
    */
   
   def gameTime(realTime: Double) = {
-    val gTime = (6 - exp(10/pow(realTime/60000 + 10, 0.7468))) * 1000
+    val gTime = (6 - exp(3/pow(realTime/60000 + 3, 0.46915))) * 1000
     "%02d".format((gTime).toInt / 60) + ":" + "%02d".format((gTime).toInt % 60)
   }
   

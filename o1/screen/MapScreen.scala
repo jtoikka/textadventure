@@ -26,10 +26,12 @@ class MapScreen(parent: Adventure, rend: Renderer)
 
   val iconBoxSize = Vec2(19, 11)
   val scene = new Scene()
-  val paused = true
+  var paused = true
   var world: Option[World] = None
   var playerLoc: Option[Vec3] = None
   var playerHeading: Option[Vec3] = None
+  
+  var timer = 0.0
 
   val inputMap =
     Map[Tuple2[scala.swing.event.Key.Value, Int], (Float) => Unit](
@@ -69,11 +71,19 @@ class MapScreen(parent: Adventure, rend: Renderer)
   /**
    * Update method. Used to update game's state
    */
+  
 
   def update(delta: Double): Unit = {
     if (!paused) {
-
+      // Make the player mark flash!
+      timer += delta
+      if ((timer / 10).toInt % 2 == 1) {
+        playerMark.addComponent(playerRenderComp)
+      } else {
+        playerMark.removeComponent(RenderComponent2D.id)
+      }
     }
+    timer += delta
     handleEvents(delta.toFloat)
     scene.entities.foreach(_.handleEvents(delta.toFloat))
   }
@@ -96,11 +106,26 @@ class MapScreen(parent: Adventure, rend: Renderer)
   def resume(): Unit = {
     EventManager.setActiveInputListener(this)
     updateMap()
+    paused = false
   }
 
   def pause() {
-
+    paused = true
   }
+  
+  val playerMark = Factory2D.createTextRectangle(
+        new TextRect2D(
+          new Rectangle2D(0, 0, false, 0, 0), "@") {
+          this.offMinusX = 0
+          this.offMinusY = 0
+          this.offX = 0
+          this.offY = 0
+          this.centerText = false
+          this.textWrap = false
+          this.defFill = false
+        })
+        
+  val playerRenderComp = playerMark.getComponent(RenderComponent2D.id).get
 
   def updateMap() = {
     if (world.isDefined) {
@@ -116,19 +141,6 @@ class MapScreen(parent: Adventure, rend: Renderer)
       var mapImageSpat = mapEnt.getComponent(SpatialComponent.id)
       mapImageSpat.get.position = Vec3(rend.w / 2 - bImg.getWidth(), rend.h / 2 - bImg.getHeight() / 2, 0.0f)
       scene.addEntity(mapEnt)
-      
-      if(playerLoc.isDefined){
-      var playerMark = Factory2D.createTextRectangle(
-        new TextRect2D(
-          new Rectangle2D(0, 0, false, 0, 0), "@") {
-          this.offMinusX = 0
-          this.offMinusY = 0
-          this.offX = 0
-          this.offY = 0
-          this.centerText = false
-          this.textWrap = false
-          this.defFill = false
-        })
         
       var infoSpatial = playerMark.getComponent(SpatialComponent.id)
       infoSpatial.get.position = Vec3(
@@ -136,7 +148,6 @@ class MapScreen(parent: Adventure, rend: Renderer)
           (mapImageSpat.get.position.y).round + ((playerLoc.get.z+0.50f)*2).round/4,
           0.0f)
       scene.addEntity(playerMark)
-      }
     }
   }
 
