@@ -145,6 +145,7 @@ class GameScreen(parent: Adventure, rend: Renderer)
           if (healthComponent.isDefined) {
             if (healthComponent.get.invulnerabilityTimer > 0.0) {
               healthComponent.get.invulnerabilityTimer -= delta
+              println(healthComponent.get.invulnerabilityTimer)
             }
             if (healthComponent.get.hp <= 0) {
               if (entity.getComponent(PlayerComponent.id).isDefined) {
@@ -413,6 +414,9 @@ class GameScreen(parent: Adventure, rend: Renderer)
   
   def changeLevel(level: String, spawn: String) = {
     var player = scene.entities.find(_.getComponent(PlayerComponent.id).isDefined)
+    if (player.isDefined) {
+      scene.entities.remove(scene.entities.indexOf(player.get))
+    }
     var camera = scene.camera
     scene = levels(level)
     
