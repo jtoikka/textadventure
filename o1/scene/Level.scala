@@ -29,7 +29,6 @@ object Level {
     }
 
     // playerSpawn
-    
     val player = (objectGroups("player") \ "object")
 //    println(player)
     // ((node \ "properties" \ "property").filter(a => (a \ "@name").text == "spawn") \ "@value").text

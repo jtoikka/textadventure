@@ -771,5 +771,11 @@
    </properties>
    <ellipse/>
   </object>
+  <object type="player" x="164.75" y="138.25" width="16" height="16">
+   <properties>
+    <property name="name" value="nullSpawn"/>
+   </properties>
+   <ellipse/>
+  </object>
  </objectgroup>
 </map>
