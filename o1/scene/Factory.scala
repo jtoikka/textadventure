@@ -154,6 +154,7 @@ object Factory {
       case "chest" => Some(createChest(node))
       case "levelTrigger" => Some(createLevelTrigger(node))
       case "breakableWall" => Some(createBreakableWall(node))
+      case "unbreakableWall" => Some(createUnbreakableWall(node))
       case _ => None
     }
     ent
@@ -662,6 +663,10 @@ object Factory {
     val entity: Entity = new Entity()
 
     entity.description = "test enemy"
+    
+    val spatialComp = new SpatialComponent()
+    spatialComp.position = Vec3(loc.x * 2 / 16, 1.0f, loc.y * 2 / 16)
+    entity.addComponent(spatialComp)
 
     entity.eventHandlers = scala.collection.immutable.Map(
       (EventType.E_COLLISION, (event, delta) => {
@@ -674,6 +679,8 @@ object Factory {
             healthComp.hp -= 1
             if (healthComp.hp <= 0) {
               entity.destroy = true
+              EventManager.addEvent(new Event(Vector(spatialComp.position), 
+                  EventType.E_EXPLOSION))
             }
             if (entityB.getComponent(BreakableComponent.id).isDefined) {
               entityB.destroy = true
@@ -681,10 +688,6 @@ object Factory {
           }
         }
       }))
-
-    val spatialComp = new SpatialComponent()
-    spatialComp.position = Vec3(loc.x * 2 / 16, 1.0f, loc.y * 2 / 16)
-    entity.addComponent(spatialComp)
 
     val renderComp = new RenderComponent("test_enemy", Some("test_enemy_tex"))
     entity.addComponent(renderComp)
@@ -781,6 +784,9 @@ object Factory {
               healthComponent.hp -= 1
               EventManager.addEvent(new Event(Vector(), EventType.E_PLAYER_DAMAGE))
               healthComponent.invulnerabilityTimer = 5.0f
+              if (healthComponent.hp <= 0) {
+                println("You're dead")
+              }
             }
           }
         }
@@ -798,9 +804,9 @@ object Factory {
 
     val collisionComponent = new CollisionComponent(0.3f, CollisionComponent.CIRCLE)
     player.addComponent(collisionComponent)
-
-    var renderComp = new RenderComponent("chest", Some("chest"))
-    player.addComponent(renderComp)
+    
+//    var renderComp = new RenderComponent("chest", Some("chest"))
+//    player.addComponent(renderComp)
 
     val inputComponent = new InputComponent()
     player.addComponent(inputComponent)
@@ -816,6 +822,8 @@ object Factory {
   def createBreakableWall(node: Node) = {
     // TODO: Fix magic size and location conversion
     val loc = Vec2((node \ "@x").text.toFloat, (node \ "@y").text.toFloat)
+    val w = (node \ "@width").text.toFloat / 8
+    val h = (node \ "@height").text.toFloat / 8
     val entity: Entity = new Entity()
 
     val spatialComp = new SpatialComponent()
@@ -838,13 +846,40 @@ object Factory {
           }
         }
       }))
+      
+    spatialComp.scale = Vec3(w / 2, 1.0f, h / 2)
 
     val renderComp = new RenderComponent("uv_cube", Some("testTex"))
     entity.addComponent(renderComp)
 
     var collisionComponent = new CollisionComponent(
-      1.0f, CollisionComponent.SQUARE,
-      halfWidth = 1.0f, halfHeight = 1.0f)
+        h / 16, CollisionComponent.SQUARE,
+        halfWidth = h / 2, halfHeight = w / 2)
+    collisionComponent.isStatic = true
+    
+    entity.addComponent(collisionComponent)
+    entity
+  }
+  
+  def createUnbreakableWall(node: Node) = {
+    // TODO: Fix magic size and location conversion
+    val loc = Vec2((node \ "@x").text.toFloat, (node \ "@y").text.toFloat)
+    val w = (node \ "@width").text.toFloat / 8
+    val h = (node \ "@height").text.toFloat / 8
+    val entity: Entity = new Entity()
+        
+    val spatialComp = new SpatialComponent()
+    spatialComp.position = Vec3(loc.x * 2 / 16, 0.0f, loc.y * 2 / 16)
+    entity.addComponent(spatialComp)
+      
+    spatialComp.scale = Vec3(w / 2, 1.0f, h / 2)
+
+    val renderComp = new RenderComponent("uv_cube", Some("testTex"))
+    entity.addComponent(renderComp)
+
+    var collisionComponent = new CollisionComponent(
+        h / 16, CollisionComponent.SQUARE,
+        halfWidth = h / 2, halfHeight = w / 2)
     collisionComponent.isStatic = true
 
     entity.addComponent(collisionComponent)
