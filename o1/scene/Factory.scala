@@ -161,6 +161,7 @@ object Factory {
       case "unbreakableWall" => Some(createUnbreakableWall(node))
       case "table" => Some(createTable(node))
       case "ghost" => Some(createGhost(node))
+      case "coffeeSpawn" => Some(createCoffeeSpawn(node))
       case _ => None
     }
     ent
@@ -293,6 +294,9 @@ object Factory {
     val spatialComp = new SpatialComponent()
     spatialComp.position = Vec3((loc.x * 2) / 16, 0.5f, loc.y * 2 / 16)
     entity.addComponent(spatialComp)
+    
+    val spawnComponent = new SpawnComponent(Factory.createCoffee(spatialComp.position), 20.0)
+    entity.addComponent(spawnComponent)
 
     entity
   }

@@ -238,10 +238,10 @@ object AdventureGUI extends SimpleSwingApplication with Listener {
       damageTimer += 400
     }),
     (E_PLAYER_DEAD, (event, delta) => {
-      println("player dead")
-      if (!playerDead)
+      if (!playerDead) {
         damageTimer = 0
-      playerDead = true
+        playerDead = true
+      }
     }))
 
   def dispose(): Unit = {
