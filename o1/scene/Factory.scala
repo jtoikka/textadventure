@@ -966,6 +966,7 @@ object Factory {
     var collisionComponent = new CollisionComponent(
       h / 16, CollisionComponent.SQUARE,
       halfWidth = h / 2, halfHeight = w / 2)
+
     collisionComponent.isStatic = true
 
     entity.addComponent(collisionComponent)
@@ -989,8 +990,13 @@ object Factory {
     entity.addComponent(renderComp)
 
     var collisionComponent = new CollisionComponent(
+<<<<<<< HEAD
       h / 16, CollisionComponent.SQUARE,
       halfWidth = h / 2, halfHeight = w / 2)
+=======
+        h / 16, CollisionComponent.SQUARE,
+        halfWidth = w / 2, halfHeight = h / 2)
+>>>>>>> baedab237fbbd4b15bd0aadfc45b732e28a677f1
     collisionComponent.isStatic = true
 
     entity.addComponent(collisionComponent)
