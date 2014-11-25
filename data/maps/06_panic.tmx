@@ -1893,7 +1893,7 @@
    <ellipse/>
   </object>
   <object type="openDoor" x="208" y="192" width="16" height="16"/>
-  <object type="pelletSpawn" x="320" y="176" width="16" height="16" rotation="1">
+  <object type="pellet" x="320" y="176" width="16" height="16" rotation="1">
    <ellipse/>
   </object>
  </objectgroup>
