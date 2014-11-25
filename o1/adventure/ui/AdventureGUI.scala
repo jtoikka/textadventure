@@ -44,7 +44,7 @@ object AdventureGUI extends SimpleSwingApplication with Listener {
     (Key.Enter, false), (Key.Escape, false),
     (Key.I, false), (Key.Q, false),
     (Key.Space, false), (Key.L, false),
-    (Key.R, false))
+    (Key.R, false), (Key.K, false))
   
   // Access to the internal logic of the application: 
   val game = new Adventure()
@@ -159,6 +159,10 @@ object AdventureGUI extends SimpleSwingApplication with Listener {
         keyMap(Key.R) = true
       case KeyReleased(_, Key.R, _, _) =>
         keyMap(Key.R) = false
+      case KeyPressed(_, Key.K, _, _) =>
+        keyMap(Key.K) = true
+      case KeyReleased(_, Key.K, _, _) =>
+        keyMap(Key.K) = false
     }
     
     var time = System.currentTimeMillis()

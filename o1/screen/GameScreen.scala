@@ -22,6 +22,7 @@ import o1.inventory.Coffee
 import scala.collection.mutable.Buffer
 import scala.util.Random
 import o1.inventory.Pellet
+import o1.inventory.KillAll
 
 /**
  * GameScreen class.
@@ -45,6 +46,7 @@ class GameScreen(parent: Adventure, rend: Renderer)
   val ROTATEUP = 3
   val TOSSCOFFEE = 4
   val DRINKCOFFEE = 5
+  val KILLALL = 6
   // Grabs movement inputs
   val movementMap = Map[Int, Float]()
 
@@ -311,6 +313,28 @@ class GameScreen(parent: Adventure, rend: Renderer)
         }
       }
     }
+    if (movementMap.contains(KILLALL)) {
+      val inventory = entity.getComponent(InventoryComponent.id).get
+      if (inventory.inv.removeOneOfType(new KillAll("", ""))) {
+        var killedAGhost = false
+        scene.entities.foreach(e => {
+          val collisionComponent = e.getComponent(CollisionComponent.id)
+          if (collisionComponent.isDefined && collisionComponent.get.collisionType == CollisionComponent.GHOST) {
+            e.destroy = true
+            killedAGhost = true
+            EventManager.addEvent(new Event(Vector(),
+                EventType.E_GHOST_KILLED))
+          }
+        })
+        if (killedAGhost) {
+          EventManager.addEvent(new Event(Vector(), EventType.E_OPEN_LAST_DOOR))
+          val d = Factory.createDialog(Vector(
+            ("No :(", new Event(Vector(), EventType.E_NONE))),
+            "Killed all ghosts in the room.\nNot up for the challenge?", None, 40, 6)
+          EventManager.addEvent(new Event(Vector(d, entity.hashCode()), EventType.E_THROW_DIALOG))
+        }
+      }
+    }
   }
 
   private def updateCamera() = {
@@ -387,6 +411,9 @@ class GameScreen(parent: Adventure, rend: Renderer)
       }),
       ((Key.R, Input.KEYRELEASED), (delta) => {
         movementMap(DRINKCOFFEE) = 1
+      }),
+      ((Key.K, Input.KEYRELEASED), (delta) => {
+        movementMap(KILLALL) = 1
       }))
 
   /**
