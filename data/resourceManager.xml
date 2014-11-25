@@ -21,6 +21,7 @@
 		  	<luminosity>0.9</luminosity>
 		</item>
 		<item name="pilar" path="data/meshes/pilar.obj"></item>
+		<item name="full_cube" path="data/meshes/fullCube.obj"></item>
 		<item name="half_block" path="data/meshes/half_block.obj"></item>
 		<item name="slope_block" path="data/meshes/slope_block.obj"></item>
 		<item name="sign_scabin" path="data/meshes/sign_scabin.obj">

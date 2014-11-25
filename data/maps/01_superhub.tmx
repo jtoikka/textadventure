@@ -1228,6 +1228,22 @@
   <object type="rupee" x="64" y="128" width="16" height="16" rotation="1">
    <ellipse/>
   </object>
+  <object type="static" x="112" y="145" width="16" height="16">
+   <properties>
+    <property name="collision" value="true"/>
+    <property name="height" value="0.25"/>
+    <property name="mesh" value="full_cube"/>
+    <property name="texture" value="tile_decal"/>
+   </properties>
+  </object>
+  <object type="static" x="112" y="207" width="16" height="16">
+   <properties>
+    <property name="collision" value="true"/>
+    <property name="height" value="0.25"/>
+    <property name="mesh" value="full_cube"/>
+    <property name="texture" value="ornament_glass"/>
+   </properties>
+  </object>
  </objectgroup>
  <objectgroup name="player">
   <object type="player" x="240" y="304" width="16" height="16">
