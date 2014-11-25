@@ -757,18 +757,12 @@
    <ellipse/>
   </object>
   <object type="openDoor" x="128" y="48" width="16" height="16"/>
-  <object type="rupee" x="128" y="112" width="16" height="16" rotation="1">
-   <ellipse/>
-  </object>
   <object type="openDoor" x="128" y="32" width="16" height="16"/>
   <object type="openDoor" x="128" y="16" width="16" height="16"/>
   <object type="openDoor" x="112" y="16" width="16" height="16"/>
   <object type="openDoor" x="96" y="32" width="16" height="16"/>
   <object type="openDoor" x="80" y="16" width="16" height="16"/>
   <object type="openDoor" x="80" y="0" width="16" height="16"/>
-  <object type="rupee" x="128" y="208" width="16" height="16" rotation="1">
-   <ellipse/>
-  </object>
   <object type="rupee" x="128" y="192" width="16" height="16" rotation="1">
    <ellipse/>
   </object>
@@ -907,6 +901,30 @@
     <property name="keys" value="1"/>
     <property name="pages" value="0"/>
     <property name="rupees" value="5"/>
+   </properties>
+   <ellipse/>
+  </object>
+  <object type="rupeeSpawn" x="112" y="140" width="16" height="16" rotation="1">
+   <properties>
+    <property name="height" value="1"/>
+   </properties>
+   <ellipse/>
+  </object>
+  <object type="rupeeSpawn" x="128" y="112" width="16" height="16" rotation="1">
+   <properties>
+    <property name="height" value="1"/>
+   </properties>
+   <ellipse/>
+  </object>
+  <object type="rupeeSpawn" x="128" y="208" width="16" height="16" rotation="1">
+   <properties>
+    <property name="height" value="1"/>
+   </properties>
+   <ellipse/>
+  </object>
+  <object type="rupeeSpawn" x="160" y="24" width="16" height="16" rotation="1">
+   <properties>
+    <property name="height" value="1"/>
    </properties>
    <ellipse/>
   </object>
