@@ -394,13 +394,15 @@ object Factory {
     val typeName = (node \ "@name").text
     val loc = Vec2((node \ "@x").text.toFloat, (node \ "@y").text.toFloat)
     val size = (node \ "@width").text.toFloat
+    val heightText = ((node \ "properties" \ "property").filter(a => (a \ "@name").text == "height") \ "@value").text
+    val height = if (!heightText.isEmpty()) heightText.toFloat else 0.25f
 
     val entity = new Entity()
 
     entity.description = "rupee spawn"
 
     val spatialComp = new SpatialComponent()
-    spatialComp.position = Vec3((loc.x * 2) / 16, 1.0f, loc.y * 2 / 16)
+    spatialComp.position = Vec3((loc.x * 2) / 16, height, loc.y * 2 / 16)
     entity.addComponent(spatialComp)
 
     val spawnComponent = new SpawnComponent("rupee", 50.0)
@@ -1113,7 +1115,7 @@ object Factory {
 
     val spatialComp = new SpatialComponent()
 
-    spatialComp.position = Vec3(location.x * 2 / 16, 0.0f, location.z * 2 / 16)
+    spatialComp.position = location
     spatialComp.scale = Vec3(0.5f, 0.5f, 0.5f)
     entity.addComponent(spatialComp)
 
