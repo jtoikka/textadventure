@@ -75,7 +75,10 @@ class World(val map: String) {
   val tileMap = new TileMap(depth, width)
 
   val layers = Map[String, scala.xml.Node]()
-
+  
+  
+  val texture = ((xml \ "properties" \ "property").filter(a => (a \ "@name").text == "texture") \ "@value").text
+  
   for (layer <- xml \ "layer") {
     val name = layer \ "@name"
     layers(name.text) = layer

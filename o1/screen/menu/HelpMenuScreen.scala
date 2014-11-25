@@ -29,7 +29,7 @@ class HelpMenuScreen(parent: Adventure, rend: Renderer)
     bSpatial.get.position = Vec3(1f, 1f, 0f)
     scene.addEntity(border)
 
-    var helpTextRect = new TextRect2D(new Rectangle2D(30, 18, true), ResourceManager.strings("helpMenu")) {
+    var helpTextRect = new TextRect2D(new Rectangle2D(30, 23, true), ResourceManager.strings("helpMenu")) {
       offX = 3
       offY = 0
       offMinusX = 2
@@ -38,7 +38,7 @@ class HelpMenuScreen(parent: Adventure, rend: Renderer)
       centerText = false
     }
     
-    var objectiveTextRect = new TextRect2D(new Rectangle2D(60, 18, true), ResourceManager.strings("helpObjective")) {
+    var objectiveTextRect = new TextRect2D(new Rectangle2D(60, 23, true), ResourceManager.strings("helpObjective")) {
       offX = 3
       offY = 0
       offMinusX = 2
