@@ -1099,7 +1099,7 @@ object Factory {
         val entityB = event.args(1).asInstanceOf[Entity]
         val entBinventory = entityB.getComponent(InventoryComponent.id)
 
-        if (entityA == entity && entBinventory.isDefined) {
+        if (entityA == entity && entBinventory.isDefined && !entity.destroy) {
           println("Rupee pickup")
           entBinventory.get.inv.addItem(entity.getComponent(InventoryItemComponent.id).get.invItem)
           entity.destroy = true
