@@ -81,8 +81,8 @@
 		<item name="icon_pellet" path="data/icons/icon_pellet.png"></item>
 	</images>
 	<textures>
-		<item name="lab" path="data/textures/lab.png"></item>
 		<item name="metal_2" path="data/textures/metal_2.png"></item>
+		<item name="lab" path="data/textures/lab2.png"></item>
 		<item name="ornament_glass" path="data/textures/ornament_glass.png"></item>
 		<item name="metal" path="data/textures/metal.png"></item>
 		<item name="rock_decal" path="data/textures/rock_decal.png"></item>
