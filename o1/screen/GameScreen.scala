@@ -92,6 +92,9 @@ class GameScreen(parent: Adventure, rend: Renderer)
         })
       }
     }),
+    (E_VICTORY, (event, delta) => {
+      EventManager.addEvent(new Event(Vector("victoryScreen"), E_CHANGE_SCREEN))
+    }),
     (E_RESET_GAME, (event, delta) => {
       reset()
     }))

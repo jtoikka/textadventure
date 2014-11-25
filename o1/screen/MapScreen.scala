@@ -184,6 +184,7 @@ class MapScreen(parent: Adventure, rend: Renderer)
       }
     }),
     (E_CHANGE_MAP, (event, delta) => {
+      clearScene()
       world = event.args(0).asInstanceOf[Option[World]]
     }),
     (E_CHANGE_HUD_INFO, (event, delta) => {
