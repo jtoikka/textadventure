@@ -1,0 +1,42 @@
+- Turn 180 degrees
+- Walk into the next room, grab the rupee to your right
+- Go left, you should see a door ahead of you
+- Head down the corridor to your right. Visit the left room, and grab the key. Visit the room to the right, and grab the page on the table.
+- Return to the door, and open it (press ‘E’ to interact).
+- You’ll see a coffee to your left. Grab it.
+- Head into the next room, and keep going through it. Grab any items on the way.
+- You will find a corridor at the end of the room, go through it.
+
+- Note: You are now in the hub area.
+- Grab the key in front of you.
+- Drink 4 coffees to replenish your health
+- At the center of the hub, to the left, is a coffee machine. Purchase as much coffee as you can.
+- Behind the coffee machine, to the left, is a door to the library. Open it, and proceed through it.
+
+- Note: you are now in the library.
+- Turn left and take the first turn to your left. Grab the key.
+- Turn back, and walk straight across the corridor, and continue carefully, until you see an enemy ahead of you.
+- Throw 4 coffees at it to defeat it.
+- Grab the page behind it.
+- You should now have 2 pages. Check your inventory (press ‘I’). You can now return to the main hub.
+
+- Note: you should now be in the hub area.
+- As soon as you reach the hub, turn to your left, and head to the door labeled ‘TF’. If you are low on coffee, purchase some more before proceeding. If you are low on rupees, head back to the start area, where you will find more.
+- Open the door, and enter TF, the spaghetti place.
+- Kill the fast approaching enemy by tossing 4 coffees at it.
+- Go left behind the counter. Take the key and coffees.
+- Find the page in the table maze. Collect other resources as well.
+- Head back to the hub.
+
+- Purchase more coffee if needed. Go across the hub (from TF) to the Lab.
+- Be aware there is an enemy to your left. KILL IT.
+- At the top of the map, you will find a key in the doorway between the top two rooms, and a page in one of them.
+
+- Return to the hub, buy coffee as needed, then proceed to ‘Scabin’
+- Walk straight, until you see a page on the table in the corner. An enemy will approach from the left, defeat it.
+
+- Head back to the hub, and walk towards the two adjacent doors. They should open as you get closer. Before going through, use the rest of your rupees to buy coffee. You cannot return.
+-Proceed to the boss.
+- Grab the pellet in front of you. There are four other pellets around the map (that respawn after 5 seconds). Kill 5 ghosts with pellets (avoid taking damage from them). A door in the center of the room will open, walk through it. Go talk to the assistant at the end (dude in the cloak). Say okay, you beat the game!
+
+SECRET ENDING: Once you’ve respawned at the start, turn around and walk straight. There is a destructible wall to the left (throw a coffee at it). Behind it is two doors, and finally a chest with ‘KillAll’ in it. WIth the item, return to the assistant. Talk to him, this time reply ‘No’. He will attack you. Quickly use the KillAll by pressing ‘K’ to defeat the assistant, and win the game for real!
