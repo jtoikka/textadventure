@@ -309,6 +309,8 @@ object Factory {
     entity.addComponent(collisionComponent)
     entity
   }
+  
+  var firstPellet = true
 
   def createPellet(location: Vec3) = {
 
@@ -330,6 +332,16 @@ object Factory {
         if (entityA == entity && entBinventory.isDefined && !entity.destroy) {
           entBinventory.get.inv.addItem(entity.getComponent(InventoryItemComponent.id).get.invItem)
           entity.destroy = true
+        
+          if (firstPellet) {
+            val d = Factory.createDialog(Vector(
+              ("Sweet.", new Event(Vector(), EventType.E_NONE))),
+              "Picked up a pellet! Ghosts are immune to coffee,\n" +
+              "but are weak to pellets. Toss them with 'Space'.\n" +
+              "Kill 5 ghosts to win!", None, 60, 6)
+            EventManager.addEvent(new Event(Vector(d, entity.hashCode()), EventType.E_THROW_DIALOG))
+            firstPellet = false
+          }
         }
       }), (EventType.E_INTERACTION, (event, delta) => {
         val entityA = event.args(0).asInstanceOf[Option[Entity]]
@@ -1350,7 +1362,8 @@ object Factory {
           EventManager.addEvent(new Event(Vector("00_startlevel", "startSpawn"), EventType.E_LOAD_NEW_MAP))
            val d = Factory.createDialog(Vector(
             ("Ok!", new Event(Vector(), EventType.E_CRAZY_ASSARI))),
-            "Text"*10, None, 40, 10)
+            "Come back when you're ready! Maybe \n" + 
+            "you'll find some secrets on the way.", None, 40, 6)
           EventManager.addEvent(new Event(Vector(d, entity.hashCode()), EventType.E_THROW_DIALOG))
         }
       })
