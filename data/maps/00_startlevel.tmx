@@ -819,6 +819,46 @@
   <object type="openDoor" x="16" y="96" width="16" height="16"/>
   <object type="openDoor" x="0" y="96" width="16" height="16"/>
   <object type="breakableWall" x="144" y="44" width="16" height="16"/>
+  <object type="static" x="240" y="271" width="16" height="16">
+   <properties>
+    <property name="collision" value="true"/>
+    <property name="height" value="0.25"/>
+    <property name="mesh" value="full_cube"/>
+    <property name="texture" value="ornament_glass"/>
+   </properties>
+  </object>
+  <object type="static" x="271" y="144" width="16" height="16">
+   <properties>
+    <property name="collision" value="true"/>
+    <property name="height" value="0.25"/>
+    <property name="mesh" value="full_cube"/>
+    <property name="texture" value="ornament_glass"/>
+   </properties>
+  </object>
+  <object type="static" x="95" y="184" width="16" height="16">
+   <properties>
+    <property name="collision" value="true"/>
+    <property name="height" value="0.25"/>
+    <property name="mesh" value="full_cube"/>
+    <property name="texture" value="ornament_glass"/>
+   </properties>
+  </object>
+  <object type="static" x="255" y="80" width="16" height="16">
+   <properties>
+    <property name="collision" value="true"/>
+    <property name="height" value="0.25"/>
+    <property name="mesh" value="full_cube"/>
+    <property name="texture" value="ornament_glass"/>
+   </properties>
+  </object>
+  <object type="static" x="97" y="80" width="16" height="16">
+   <properties>
+    <property name="collision" value="true"/>
+    <property name="height" value="0.25"/>
+    <property name="mesh" value="full_cube"/>
+    <property name="texture" value="ornament_glass"/>
+   </properties>
+  </object>
  </objectgroup>
  <objectgroup name="player">
   <object type="player" x="240" y="240" width="16" height="16">
