@@ -34,7 +34,7 @@ class GameScreen(parent: Adventure, rend: Renderer)
     extends Screen(parent, rend) {
   def this(parent: Adventure, x: Int, y: Int) = this(parent, new Renderer3D(x, y))
 
-  val levels = ResourceManager.maps.map(x => (x._1, loadLevel(x._1))).toMap
+  var levels = ResourceManager.maps.map(x => (x._1, loadLevel(x._1))).toMap
   
   var scene = new Scene()
 
@@ -85,6 +85,9 @@ class GameScreen(parent: Adventure, rend: Renderer)
       }).isEmpty) {
         EventManager.addEvent(new Event(Vector(), EventType.E_OPEN_LAST_DOOR))
       }
+    }),
+    (E_RESET_GAME, (event, delta) => {
+      reset()
     }))
     
   def tossCoffee() = {
@@ -495,11 +498,22 @@ class GameScreen(parent: Adventure, rend: Renderer)
     }
   }
   
-  def pause() {
+  def pause() = {
     paused = true
   }
 
   def dispose() = {
 
+  }
+  
+  def reset() = {
+    for (scene <- levels.values) {
+      scene.clear()
+    }
+    levels = ResourceManager.maps.map(x => (x._1, loadLevel(x._1))).toMap
+    scene = new Scene()
+    player = None
+    prevFrontEntity = None
+    init()
   }
 }

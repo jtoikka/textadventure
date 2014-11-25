@@ -1,7 +1,6 @@
 package o1.screen
 
 import scala.swing.event.Key
-//import scala.collection.mutable.Map
 import o1.adventure._
 import o1.adventure.render.Renderer
 import o1.adventure.render.ResourceManager
@@ -14,12 +13,12 @@ import o1.event.Event
 import o1.event.EventType._
 import o1.event.EventManager
 import o1.event.Input
-//import scala.collection.mutable.Buffer
 import o1.inventory.Inventory
 import o1.inventory.Page
 import o1.inventory.Coffee
 import java.awt.image.BufferedImage
 import o1.event.EmptyTile
+import o1.event.EventType
 
 class GameOverScreen(parent: Adventure, rend: Renderer)
     extends Screen(parent, rend) {
@@ -131,6 +130,7 @@ class GameOverScreen(parent: Adventure, rend: Renderer)
         event.args(0).asInstanceOf[Tuple2[scala.swing.event.Key.Value, Int]]
       if (inputMap.contains(eventKey)) {
         inputMap(eventKey)(delta)
+        EventManager.addEvent(new Event(Vector(), EventType.E_RESET_GAME))
       }
     }),
     (E_CHANGE_MAP, (event, delta) => {
@@ -138,5 +138,9 @@ class GameOverScreen(parent: Adventure, rend: Renderer)
 
   def dispose() = {
 
+  }
+  
+  def reset() = {
+    
   }
 }

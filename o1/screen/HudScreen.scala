@@ -153,4 +153,8 @@ class HudScreen(parent: Adventure, rend: Renderer)
   def dispose() = {
 
   }
+  
+  def reset() = {
+    
+  }
 }
