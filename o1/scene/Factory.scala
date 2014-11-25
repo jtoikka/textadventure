@@ -1335,6 +1335,14 @@ object Factory {
       (EventType.E_CRAZY_ASSARI, (event, delta) => {
         val aiComponent = new AIComponent("psychobot")
         entity.addComponent(aiComponent)
+        
+        val damageComponent = new DamageComponent(2, DamageComponent.PLAYER)
+        entity.addComponent(damageComponent)
+        
+        val d = Factory.createDialog(Vector(
+          ("!!!", new Event(Vector(), EventType.E_NONE))),
+          "You shall not pass!", None, 40, 10)
+        EventManager.addEvent(new Event(Vector(d, entity.hashCode()), EventType.E_THROW_DIALOG))
       }))
 
     val renderComp = new RenderComponent("test_enemy", Some("assari1"))
