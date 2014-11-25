@@ -188,6 +188,7 @@ object Factory {
       case "table" => Some(createTable(node))
       case "ghost" => Some(createGhost(node))
       case "pelletSpawn" => Some(createPelletSpawn(node))
+      case "rupeeSpawn" => Some(createRupeeSpawn(node))
       case "assari" => Some(createAssari(node))
       case _ => None
     }
@@ -381,7 +382,28 @@ object Factory {
     spatialComp.position = Vec3((loc.x * 2) / 16, 1.0f, loc.y * 2 / 16)
     entity.addComponent(spatialComp)
 
-    val spawnComponent = new SpawnComponent(None, 50.0)
+    val spawnComponent = new SpawnComponent("pellet", 50.0)
+    entity.addComponent(spawnComponent)
+
+    entity
+  }
+  
+  def createRupeeSpawn(node: Node) = {
+    // TODO: Fix magic size and location conversion
+    val name = (node \ "@name").text
+    val typeName = (node \ "@name").text
+    val loc = Vec2((node \ "@x").text.toFloat, (node \ "@y").text.toFloat)
+    val size = (node \ "@width").text.toFloat
+
+    val entity = new Entity()
+
+    entity.description = "rupee spawn"
+
+    val spatialComp = new SpatialComponent()
+    spatialComp.position = Vec3((loc.x * 2) / 16, 1.0f, loc.y * 2 / 16)
+    entity.addComponent(spatialComp)
+
+    val spawnComponent = new SpawnComponent("rupee", 50.0)
     entity.addComponent(spawnComponent)
 
     entity
@@ -1058,6 +1080,53 @@ object Factory {
     entity.addComponent(rotateComp)
     // TODO: Fix magic size conversion
     var collisionComponent = new CollisionComponent(size / 16, CollisionComponent.CIRCLE)
+    collisionComponent.isActive = false
+    entity.addComponent(collisionComponent)
+    entity
+  }
+  
+  def createRupee(location: Vec3) = {
+    // TODO: Fix magic size and location conversion
+    val entity = new Entity()
+
+    entity.description = "rupee"
+
+    entity.eventHandlers = scala.collection.immutable.Map(
+      (EventType.E_COLLISION, (event, delta) => {
+        val entityA = event.args(0).asInstanceOf[Entity]
+        val entityB = event.args(1).asInstanceOf[Entity]
+        val entBinventory = entityB.getComponent(InventoryComponent.id)
+
+        if (entityA == entity && entBinventory.isDefined) {
+          println("Rupee pickup")
+          entBinventory.get.inv.addItem(entity.getComponent(InventoryItemComponent.id).get.invItem)
+          entity.destroy = true
+        }
+      }), (EventType.E_INTERACTION, (event, delta) => {
+        val entityA = event.args(0).asInstanceOf[Option[Entity]]
+        val entityB = event.args(1).asInstanceOf[Option[Entity]]
+
+        if (entityB.isDefined && entityB.get == entity) {
+          println("Rupee Interaction")
+        }
+      }))
+
+    val spatialComp = new SpatialComponent()
+
+    spatialComp.position = Vec3(location.x * 2 / 16, 0.0f, location.z * 2 / 16)
+    spatialComp.scale = Vec3(0.5f, 0.5f, 0.5f)
+    entity.addComponent(spatialComp)
+
+    val invComponent = new InventoryItemComponent(Rupee())
+    entity.addComponent(invComponent)
+
+    var renderComp = new RenderComponent("rupee")
+    entity.addComponent(renderComp)
+
+    val rotateComp = new RotateComponent(-0.2f)
+    entity.addComponent(rotateComp)
+    // TODO: Fix magic size conversion
+    var collisionComponent = new CollisionComponent(0.5f, CollisionComponent.CIRCLE)
     collisionComponent.isActive = false
     entity.addComponent(collisionComponent)
     entity
