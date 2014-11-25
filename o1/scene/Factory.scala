@@ -190,6 +190,7 @@ object Factory {
       case "pelletSpawn" => Some(createPelletSpawn(node))
       case "rupeeSpawn" => Some(createRupeeSpawn(node))
       case "assari" => Some(createAssari(node))
+      case "pellet" => Some(createPellet(node))
       case _ => None
     }
     ent
@@ -321,6 +322,67 @@ object Factory {
 
     val spatialComp = new SpatialComponent()
     spatialComp.position = location
+    spatialComp.scale = Vec3(0.4f, 0.4f, 0.4f)
+    entity.addComponent(spatialComp)
+
+    entity.eventHandlers = scala.collection.immutable.Map(
+      (EventType.E_COLLISION, (event, delta) => {
+        val entityA = event.args(0).asInstanceOf[Entity]
+        val entityB = event.args(1).asInstanceOf[Entity]
+        val entBinventory = entityB.getComponent(InventoryComponent.id)
+
+        if (entityA == entity && entBinventory.isDefined && !entity.destroy) {
+          entBinventory.get.inv.addItem(entity.getComponent(InventoryItemComponent.id).get.invItem)
+          entity.destroy = true
+        
+          if (firstPellet) {
+            val d = Factory.createDialog(Vector(
+              ("Sweet.", new Event(Vector(), EventType.E_NONE))),
+              "Picked up a pellet! Ghosts are immune to coffee,\n" +
+              "but are weak to pellets. Toss them with 'Space'.\n" +
+              "Kill 5 ghosts to win!", None, 60, 6)
+            EventManager.addEvent(new Event(Vector(d, entity.hashCode()), EventType.E_THROW_DIALOG))
+            firstPellet = false
+          }
+        }
+      }), (EventType.E_INTERACTION, (event, delta) => {
+        val entityA = event.args(0).asInstanceOf[Option[Entity]]
+        val entityB = event.args(1).asInstanceOf[Option[Entity]]
+
+        if (entityB.isDefined && entityB.get == entity) {
+          println("Pellet Interaction")
+        }
+      }))
+    val invComponent = new InventoryItemComponent(Pellet())
+    entity.addComponent(invComponent)
+
+    var renderComp = new RenderComponent("pellet")
+    entity.addComponent(renderComp)
+
+    val rotateComp = new RotateComponent(-0.2f)
+    entity.addComponent(rotateComp)
+
+    var collisionComponent = new CollisionComponent(0.5f, CollisionComponent.CIRCLE)
+    collisionComponent.isActive = false
+    entity.addComponent(collisionComponent)
+    entity
+  }
+  
+  def createPellet(node: Node) = {
+    
+    val name = (node \ "@name").text
+    val typeName = (node \ "@name").text
+    val loc = Vec2((node \ "@x").text.toFloat, (node \ "@y").text.toFloat)
+    val size = (node \ "@width").text.toFloat
+    val rotation = if (!(node \ "@rotation").text.isEmpty()) (node \ "@rotation").text.toInt else 0
+    val heightText = ((node \ "properties" \ "property").filter(a => (a \ "@name").text == "height") \ "@value").text
+    val height = if (!heightText.isEmpty()) heightText.toFloat else 0.5f
+    val entity = new Entity()
+
+    entity.description = "pellet"
+
+    val spatialComp = new SpatialComponent()
+    spatialComp.position = Vec3((loc.x * 2) / 16, height, loc.y * 2 / 16)
     spatialComp.scale = Vec3(0.4f, 0.4f, 0.4f)
     entity.addComponent(spatialComp)
 
@@ -1173,7 +1235,7 @@ object Factory {
     val spatialComp = new SpatialComponent()
     spatialComp.position =
       Vec3(loc.x * 2 / 16 + 0.0001f, 1.4f, loc.y * 2 / 16 + 0.0001f)
-    spatialComp.forward = (Utility.rotateY(((rotation / 360f) * 2 * Math.PI).toFloat) * Vec4(0, 0, 1, 0)).xyz
+    spatialComp.forward = (Utility.rotateY(((rotation / 360f) * 2 * Math.PI).toFloat) * Vec4(0, 0, -1, 0)).xyz
     player.addComponent(spatialComp)
 
     val inventoryComponent = new InventoryComponent()
