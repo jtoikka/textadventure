@@ -32,6 +32,7 @@ object EventType extends Enumeration {
       E_PLAYER_DEAD,
       E_RESET_GAME,
       E_CRAZY_ASSARI,
+      E_VICTORY,
       E_SYSTEM_EXIT = Value
 }
 
