@@ -1324,10 +1324,10 @@ object Factory {
 
         if (entityB.isDefined && entityB.get == entity) {
           println("Shop Interaction")
-          val event = new Event(Vector("00_startlevel", "startSpawn"), EventType.E_LOAD_NEW_MAP)
+//          val event = new Event(Vector("00_startlevel", "startSpawn"), EventType.E_LOAD_NEW_MAP)
           val d = Factory.createDialog(Vector(
-            ("Okay?", event),
-            ("Actually it's not okay!", new Event(Vector(), EventType.E_CRAZY_ASSARI))),
+            ("Okay?", new Event(Vector("startAgain", entity.hashCode()), EventType.E_ANSWER_DIALOG)),
+            ("Actually it's not okay!", new Event(Vector("Crazy", entity.hashCode()), EventType.E_ANSWER_DIALOG))),
             ResourceManager.strings("assariDialog"), None, 50, 10)
           EventManager.addEvent(new Event(Vector(d, entity.hashCode()), EventType.E_THROW_DIALOG))
         }
@@ -1338,12 +1338,23 @@ object Factory {
         
         val damageComponent = new DamageComponent(2, DamageComponent.PLAYER)
         entity.addComponent(damageComponent)
-        
-        val d = Factory.createDialog(Vector(
-          ("!!!", new Event(Vector(), EventType.E_NONE))),
-          "You shall not pass!", None, 40, 10)
-        EventManager.addEvent(new Event(Vector(d, entity.hashCode()), EventType.E_THROW_DIALOG))
-      }))
+      }),(EventType.E_ANSWER_DIALOG, (event, delta) => {      
+        if(event.args(0).asInstanceOf[String] == "Crazy" &&
+            event.args(1).asInstanceOf[Int] == entity.hashCode()){
+           val d = Factory.createDialog(Vector(
+            ("!!!", new Event(Vector(), EventType.E_CRAZY_ASSARI))),
+            "You shall not pass!", None, 40, 10)
+          EventManager.addEvent(new Event(Vector(d, entity.hashCode()), EventType.E_THROW_DIALOG))
+        }else if(event.args(0).asInstanceOf[String] == "startAgain" &&
+            event.args(1).asInstanceOf[Int] == entity.hashCode()){
+          EventManager.addEvent(new Event(Vector("00_startlevel", "startSpawn"), EventType.E_LOAD_NEW_MAP))
+           val d = Factory.createDialog(Vector(
+            ("Ok!", new Event(Vector(), EventType.E_CRAZY_ASSARI))),
+            "Text"*10, None, 40, 10)
+          EventManager.addEvent(new Event(Vector(d, entity.hashCode()), EventType.E_THROW_DIALOG))
+        }
+      })
+      )
 
     val renderComp = new RenderComponent("test_enemy", Some("assari1"))
     entity.addComponent(renderComp)
