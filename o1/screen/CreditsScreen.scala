@@ -159,4 +159,8 @@ class CreditsScreen(parent: Adventure, rend: Renderer)
   def dispose() = {
 
   }
+  
+  def reset() = {
+    
+  }
 }
