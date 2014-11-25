@@ -219,10 +219,15 @@ class GameScreen(parent: Adventure, rend: Renderer)
               spawnComponent.get.timer += delta
               if (spawnComponent.get.timer > spawnComponent.get.step) {
                 spawnComponent.get.timer = 0
-                val pelletSpawn = Factory.createPellet(spatial.get.position)
-                spawnComponent.get.entity = Some(pelletSpawn)
-                println("Spawned das coffee")
-                scene.addEntity(pelletSpawn)
+                if (spawnComponent.get.spawnType == "pellet") {
+                  val pelletSpawn = Factory.createPellet(spatial.get.position)
+                  spawnComponent.get.entity = Some(pelletSpawn)
+                  scene.addEntity(pelletSpawn)
+                } else {
+                  val rupeeSpawn = Factory.createRupee(spatial.get.position)
+                  spawnComponent.get.entity = Some(rupeeSpawn)
+                  scene.addEntity(rupeeSpawn)
+                }
               }
             }
           }
@@ -329,7 +334,7 @@ class GameScreen(parent: Adventure, rend: Renderer)
         val assari = scene.entities.find(_.description == "assari")
         if (assari.isDefined) {
           if (assari.get.getComponent(AIComponent.id).isDefined) {
-            
+            EventManager.addEvent(new Event(Vector(), E_VICTORY))
           }
         }
       }

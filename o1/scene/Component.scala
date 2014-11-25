@@ -214,6 +214,7 @@ object SpawnComponent {
   val id = classOf[SpawnComponent]
 }
 
-case class SpawnComponent(var entity: Option[Entity], val step: Double) extends Component {
+case class SpawnComponent(val spawnType: String, val step: Double) extends Component {
+  var entity: Option[Entity] = None
   var timer = step + 1
 }
