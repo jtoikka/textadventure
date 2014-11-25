@@ -64,7 +64,7 @@
 		<item name="logo_main" path="data/icons/adventure.png"></item>
 		<item name="logo_gameOver" path="data/icons/gameover.png"></item>
 		<item name="logo_credits" path="data/icons/credits.png"></item>
-		<item name="victory" path="data/icons/victory.png"></item>
+		<item name="logo_victory" path="data/icons/victory.png"></item>
 		<item name="icon_arrow_down" path="data/icons/icon_arrow_down.png"></item>
 		<item name="icon_arrow_left" path="data/icons/icon_arrow_left.png"></item>
 		<item name="icon_arrow_right" path="data/icons/icon_arrow_right.png"></item>

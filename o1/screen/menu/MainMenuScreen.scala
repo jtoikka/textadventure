@@ -26,7 +26,7 @@ class MainMenuScreen(parent: Adventure, rend: Renderer)
   var dialogOptions: Vector[Tuple2[String, Event]] = Vector[Tuple2[String, Event]](
     ("Play Game", new Event(Vector("gameScreen"), E_CHANGE_SCREEN)),
     ("Help", new Event(Vector("helpMenuScreen"), E_CHANGE_SCREEN)),
-    ("Options", new Event(Vector("gameOverScreen"), E_CHANGE_SCREEN)),
+    ("Victory", new Event(Vector("victoryScreen"), E_CHANGE_SCREEN)),
     ("Credits", new Event(Vector("creditsScreen", this), E_CHANGE_SCREEN)),
     ("Exit Game", new Event(null, E_SYSTEM_EXIT)))
 
