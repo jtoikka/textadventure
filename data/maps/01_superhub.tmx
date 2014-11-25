@@ -993,7 +993,7 @@
    <properties>
     <property name="keys" value="10"/>
     <property name="pages" value="5"/>
-    <property name="rupees" value="10"/>
+    <property name="rupees" value="50"/>
    </properties>
    <ellipse/>
   </object>

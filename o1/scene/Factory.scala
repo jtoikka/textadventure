@@ -19,6 +19,7 @@ import o1.math.Vec2
 import o1.math.Vec3
 import o1.math.Vec4
 import o1.adventure.render.ResourceManager
+import o1.inventory.KillAll
 
 /**
  * The Factory object is a collection of functions that can be used to create
@@ -523,6 +524,7 @@ object Factory {
           val d = Factory.createDialog(Vector(
             ("Coffee, 1 rupees", new Event(Vector(player, Coffee(), 1, 1), EventType.E_BUY)),
             ("Key, 5 rupees", new Event(Vector(player, Key(), 1, 5), EventType.E_BUY)),
+            ("Killall, 50 rupees", new Event(Vector(player, KillAll(), 1, 50), EventType.E_BUY)),
             ("Nothing, thanks!", new Event(Vector(), EventType.E_NONE))),
             "Do you want to buy something?", None, 40, 6)
           EventManager.addEvent(new Event(Vector(d, entity.hashCode()), EventType.E_THROW_DIALOG))
@@ -1388,7 +1390,6 @@ object Factory {
     spatialComp.forward = (Utility.rotateY(((rotation / 360f) * 2 * Math.PI).toFloat) * Vec4(0, 0, 1, 0)).xyz
 
     spatialComp.position = Vec3(loc.x * 2 / 16, 0.0f, loc.y * 2 / 16)
-    //    spatialComp.forward = Vec3(1.0f, 0, 0)
     entity.addComponent(spatialComp)
 
     var renderComp = new RenderComponent("door", Some("door_tex"))
