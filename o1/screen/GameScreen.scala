@@ -326,21 +326,11 @@ class GameScreen(parent: Adventure, rend: Renderer)
       val inventory = entity.getComponent(InventoryComponent.id).get
       if (inventory.inv.removeOneOfType(new KillAll("", ""))) {
         var killedAGhost = false
-        scene.entities.foreach(e => {
-          val collisionComponent = e.getComponent(CollisionComponent.id)
-          if (collisionComponent.isDefined && collisionComponent.get.collisionType == CollisionComponent.GHOST) {
-            e.destroy = true
-            killedAGhost = true
-            EventManager.addEvent(new Event(Vector(),
-                EventType.E_GHOST_KILLED))
+        val assari = scene.entities.find(_.description == "assari")
+        if (assari.isDefined) {
+          if (assari.get.getComponent(AIComponent.id).isDefined) {
+            
           }
-        })
-        if (killedAGhost) {
-          EventManager.addEvent(new Event(Vector(), EventType.E_OPEN_LAST_DOOR))
-          val d = Factory.createDialog(Vector(
-            ("No :(", new Event(Vector(), EventType.E_NONE))),
-            "Killed all ghosts in the room.\nNot up for the challenge?", None, 40, 6)
-          EventManager.addEvent(new Event(Vector(d, entity.hashCode()), EventType.E_THROW_DIALOG))
         }
       }
     }
