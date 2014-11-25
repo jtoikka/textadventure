@@ -117,4 +117,8 @@ class HelpMenuScreen(parent: Adventure, rend: Renderer)
   def dispose() = {
 
   }
+  
+  def reset() = {
+    
+  }
 }

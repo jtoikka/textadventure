@@ -82,8 +82,8 @@
 		<item name="icon_pellet" path="data/icons/icon_pellet.png"></item>
 	</images>
 	<textures>
-		<item name="lab" path="data/textures/lab.png"></item>
 		<item name="metal_2" path="data/textures/metal_2.png"></item>
+		<item name="lab" path="data/textures/lab2.png"></item>
 		<item name="ornament_glass" path="data/textures/ornament_glass.png"></item>
 		<item name="metal" path="data/textures/metal.png"></item>
 		<item name="rock_decal" path="data/textures/rock_decal.png"></item>
@@ -127,8 +127,7 @@
 			<string>The year is 20XX. A deadline is fast approaching, and it is your &#xA;task to hand in a document on time. But a series of alcoholic drinks &#xA;has caused the pages to scatter! Gather them all up, stay awake, &#xA;and hand in your work before 06:00 AM.&#xA;</string>
 		</item>
 		<item name="assariDialog">
-			<string>Welcome! I see you have come to turn&#xA;in your essay. Unfortunately the deadline for&#xA;this critical piece of work was yesterday. I&#xA;cannot give you a grade for it, but I could&#xA;let you write a new one. Why don't you come&#xA;hand it in tomorrow evening?
-			</string>
+			<string>Welcome! I see you have come to turn&#xA;in your essay. Unfortunately the deadline for&#xA;this critical piece of work was yesterday. I&#xA;cannot give you a grade for it, but I could&#xA;let you write a new one. Why don't you come&#xA;hand it in tomorrow evening?</string>
 		</item>
 		<item name="inventoryTitle"><string>Inventory</string></item>
 		<item name="mainMenuTitle"><string>Main Menu</string></item>
