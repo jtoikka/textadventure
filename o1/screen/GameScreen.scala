@@ -439,8 +439,8 @@ class GameScreen(parent: Adventure, rend: Renderer)
   
   init()
   def init(): Unit = {
-//    changeLevel("00_startlevel", "startSpawn")
-    changeLevel("07_temple", "templeSpawn")
+    changeLevel("00_startlevel", "startSpawn")
+//    changeLevel("07_temple", "templeSpawn")
 //    changeLevel("06_panic", "01_entrance")
   }
   

@@ -611,11 +611,15 @@ object Factory {
     val pagesString = ((node \ "properties" \ "property").filter(a => (a \ "@name").text == "pages") \ "@value").text
     val keysString = ((node \ "properties" \ "property").filter(a => (a \ "@name").text == "keys") \ "@value").text
     val rupeesString = ((node \ "properties" \ "property").filter(a => (a \ "@name").text == "rupees") \ "@value").text
+    val killallString = ((node \ "properties" \ "property").filter(a => (a \ "@name").text == "killall") \ "@value").text
+    val coffeeString = ((node \ "properties" \ "property").filter(a => (a \ "@name").text == "coffee") \ "@value").text
 
+    val coffee = if (!coffeeString.isEmpty()) coffeeString.toInt else 0
     val pages = if (!pagesString.isEmpty()) pagesString.toInt else 0
     val keys = if (!keysString.isEmpty()) keysString.toInt else 0
     val rupees = if (!rupeesString.isEmpty()) rupeesString.toInt else 0
-
+    val killall = if (!killallString.isEmpty()) killallString.toInt else 0
+    
     val entity = new Entity()
     entity.eventHandlers = scala.collection.immutable.Map(
       (EventType.E_INTERACTION, (event, delta) => {
@@ -639,9 +643,14 @@ object Factory {
           if (player.get.getComponent(InventoryComponent.id).get.inv.removeOneOfType(Key())) {
             entity.dispose()
             entity.destroy = true
+            
             val chestItems = entityB.get.getComponent(InventoryComponent.id).get.inv.getAllItems()
 
             var dialogString = "You got some new items!\n"
+            if (chestItems.count(i => i.isInstanceOf[Coffee]) > 0)
+              dialogString += "Coffee " + chestItems.count(i => i.isInstanceOf[Coffee]) + "\n"
+            if (chestItems.count(i => i.isInstanceOf[KillAll]) > 0)
+              dialogString += "KillAll " + chestItems.count(i => i.isInstanceOf[KillAll]) + "\n"
             if (chestItems.count(i => i.isInstanceOf[Page]) > 0)
               dialogString += "Pages " + chestItems.count(i => i.isInstanceOf[Page]) + "\n"
             if (chestItems.count(i => i.isInstanceOf[Rupee]) > 0)
@@ -651,7 +660,7 @@ object Factory {
 
             val d = Factory.createDialog(Vector(
               ("Ok", new Event(Vector(), EventType.E_NONE))),
-              dialogString, None, 40, 6)
+              dialogString, None, 40, 8)
             EventManager.addEvent(new Event(Vector(d, entity.hashCode()), EventType.E_THROW_DIALOG))
 
             chestItems.foreach(f => player.get.getComponent(InventoryComponent.id).get.inv.addItem(f))
@@ -672,7 +681,13 @@ object Factory {
 
     val inventoryComponent = new InventoryComponent()
     entity.addComponent(inventoryComponent)
-
+    
+    for (i <- 0 until coffee) {
+      inventoryComponent.inv.addItem(Coffee())
+    }
+    for (i <- 0 until killall) {
+      inventoryComponent.inv.addItem(KillAll())
+    }
     for (i <- 0 until pages) {
       inventoryComponent.inv.addItem(Page())
     }
