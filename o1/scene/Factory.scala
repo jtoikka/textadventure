@@ -1324,11 +1324,17 @@ object Factory {
 
         if (entityB.isDefined && entityB.get == entity) {
           println("Shop Interaction")
+          val event = new Event(Vector("00_startlevel", "startSpawn"), EventType.E_LOAD_NEW_MAP)
           val d = Factory.createDialog(Vector(
-            ("Okay?", new Event(Vector(), EventType.E_NONE))),
+            ("Okay?", event),
+            ("Actually it's not okay!", new Event(Vector(), EventType.E_CRAZY_ASSARI))),
             ResourceManager.strings("assariDialog"), None, 50, 10)
           EventManager.addEvent(new Event(Vector(d, entity.hashCode()), EventType.E_THROW_DIALOG))
         }
+      }),
+      (EventType.E_CRAZY_ASSARI, (event, delta) => {
+        val aiComponent = new AIComponent("psychobot")
+        entity.addComponent(aiComponent)
       }))
 
     val renderComp = new RenderComponent("test_enemy", Some("assari1"))

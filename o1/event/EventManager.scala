@@ -30,6 +30,8 @@ object EventType extends Enumeration {
       E_OPEN_BOSS_DOOR,
       E_OPEN_LAST_DOOR,
       E_PLAYER_DEAD,
+      E_RESET_GAME,
+      E_CRAZY_ASSARI,
       E_SYSTEM_EXIT = Value
 }
 

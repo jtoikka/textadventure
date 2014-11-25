@@ -246,6 +246,10 @@ object AdventureGUI extends SimpleSwingApplication with Listener {
         damageTimer = 0
         playerDead = true
       }
+    }),
+    (E_RESET_GAME, (event, delta) => {
+      playerDead = false
+      damageTimer = 0
     }))
 
   def dispose(): Unit = {

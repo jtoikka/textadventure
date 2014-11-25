@@ -209,4 +209,8 @@ class InventoryScreen(parent: Adventure, rend: Renderer)
   def dispose() = {
 
   }
+  
+  def reset() = {
+    
+  }
 }

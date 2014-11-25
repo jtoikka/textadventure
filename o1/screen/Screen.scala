@@ -36,4 +36,9 @@ abstract class Screen(private val parent: Adventure, val rend: Renderer) extends
 	 * Pause method. Called when screen is not longer active
 	 */
 	def pause()
+	
+	/**
+	 * Reinitialize screen
+	 */
+	def reset()
 }
