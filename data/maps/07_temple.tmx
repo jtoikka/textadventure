@@ -1097,6 +1097,19 @@
    </properties>
    <ellipse/>
   </object>
+  <object type="chest" x="136" y="192" width="16" height="16">
+   <properties>
+    <property name="coffee" value="5"/>
+    <property name="keys" value="5"/>
+    <property name="killall" value="1"/>
+    <property name="pages" value="5"/>
+    <property name="rupees" value="10"/>
+   </properties>
+   <ellipse/>
+  </object>
+  <object type="key" x="136" y="212" width="16" height="16">
+   <ellipse/>
+  </object>
  </objectgroup>
  <objectgroup name="player">
   <object type="player" x="144" y="240" width="16" height="16">
