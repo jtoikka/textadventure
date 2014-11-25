@@ -833,12 +833,6 @@
    </properties>
    <ellipse/>
   </object>
-  <object type="key" x="246.092" y="38.7974" width="16" height="16">
-   <ellipse/>
-  </object>
-  <object type="rupee" x="264.242" y="39.0911" width="16" height="16" rotation="1">
-   <ellipse/>
-  </object>
   <object type="key" x="22.7145" y="57.9663" width="16" height="16">
    <ellipse/>
   </object>
@@ -858,6 +852,37 @@
    <properties>
     <property name="height" value="1"/>
    </properties>
+   <ellipse/>
+  </object>
+  <object type="chest" x="272" y="32" width="16" height="16">
+   <properties>
+    <property name="keys" value="1"/>
+    <property name="pages" value="0"/>
+    <property name="rupees" value="2"/>
+   </properties>
+   <ellipse/>
+  </object>
+  <object type="coffee" x="172" y="220" width="16" height="16" rotation="1">
+   <properties>
+    <property name="height" value="1"/>
+   </properties>
+   <ellipse/>
+  </object>
+  <object type="coffee" x="207.129" y="95.7892" width="16" height="16" rotation="1">
+   <properties>
+    <property name="height" value="1"/>
+   </properties>
+   <ellipse/>
+  </object>
+  <object type="coffee" x="207.129" y="127.789" width="16" height="16" rotation="1">
+   <properties>
+    <property name="height" value="1"/>
+   </properties>
+   <ellipse/>
+  </object>
+  <object type="table" x="212" y="100" width="8" height="8"/>
+  <object type="table" x="212" y="132" width="8" height="8"/>
+  <object type="key" x="100" y="88" width="16" height="16">
    <ellipse/>
   </object>
  </objectgroup>
