@@ -785,7 +785,7 @@
   <object type="rupee" x="112" y="160" width="16" height="16" rotation="1">
    <ellipse/>
   </object>
-  <object type="levelTrigger" x="224" y="256" width="16" height="16">
+  <object type="levelTrigger" x="192" y="256" width="16" height="16">
    <properties>
     <property name="level" value="01_superhub"/>
     <property name="spawn" value="00_entrance"/>
