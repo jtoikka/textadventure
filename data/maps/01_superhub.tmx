@@ -1216,7 +1216,7 @@
    </properties>
    <ellipse/>
   </object>
-  <object type="pelletSpawn" x="192" y="188" width="16" height="16" rotation="1">
+  <object type="pelletSpawn" x="328" y="124" width="16" height="16" rotation="1">
    <ellipse/>
   </object>
   <object type="breakableWall" x="160" y="288" width="16" height="16"/>
