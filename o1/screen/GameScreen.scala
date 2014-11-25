@@ -51,6 +51,8 @@ class GameScreen(parent: Adventure, rend: Renderer)
   val movementMap = Map[Int, Float]()
 
   var player: Option[Entity] = None
+  
+  var ghostKillCount = 0
 
   eventHandlers = scala.collection.immutable.Map(
     (E_INPUT, (event, delta) => {
@@ -79,11 +81,15 @@ class GameScreen(parent: Adventure, rend: Renderer)
       scene.addEntity(explosion)
     }),
     (E_GHOST_KILLED, (event, delta) => {
-      if (scene.entities.filter(e => {
-        val collision = e.getComponent(CollisionComponent.id)
-        collision.isDefined && collision.get.collisionType == CollisionComponent.GHOST
-      }).isEmpty) {
+      ghostKillCount += 1
+      if (ghostKillCount == 5) {
         EventManager.addEvent(new Event(Vector(), EventType.E_OPEN_LAST_DOOR))
+        scene.entities.foreach(e => {
+          val collisionComponent = e.getComponent(CollisionComponent.id)
+          if (collisionComponent.isDefined && collisionComponent.get.collisionType == CollisionComponent.GHOST) {
+            e.destroy = true
+          }
+        })
       }
     }),
     (E_RESET_GAME, (event, delta) => {
@@ -438,8 +444,8 @@ class GameScreen(parent: Adventure, rend: Renderer)
   
   init()
   def init(): Unit = {
-    changeLevel("00_startlevel", "startSpawn")
-//    changeLevel("07_temple", "templeSpawn")
+//    changeLevel("00_startlevel", "startSpawn")
+    changeLevel("07_temple", "templeSpawn")
 //    changeLevel("06_panic", "01_entrance")
   }
   
