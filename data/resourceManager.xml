@@ -81,6 +81,15 @@
 		<item name="icon_pellet" path="data/icons/icon_pellet.png"></item>
 	</images>
 	<textures>
+		<item name="lab" path="data/textures/lab.png"></item>
+		<item name="metal_2" path="data/textures/metal_2.png"></item>
+		<item name="ornament_glass" path="data/textures/ornament_glass.png"></item>
+		<item name="metal" path="data/textures/metal.png"></item>
+		<item name="rock_decal" path="data/textures/rock_decal.png"></item>
+		<item name="wood" path="data/textures/wood.png"></item>
+		<item name="tile_decal" path="data/textures/tile_decal.png"></item>
+		<item name="tile" path="data/textures/tile.png"></item>
+		<item name="wood_decal" path="data/textures/wood_decal.png"></item>
 	    <item name="exp0" path="data/textures/exp0.png"></item>
 	    <item name="exp1" path="data/textures/exp1.png"></item>
         <item name="exp2" path="data/textures/exp2.png"></item>
