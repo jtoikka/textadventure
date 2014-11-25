@@ -190,7 +190,7 @@ class Renderer3D(w: Int, h: Int) extends Renderer(w,h) {
                     ResourceManager.meshes("uv_cube"), 
                     matrix, 
 //                    None)
-                    Some(ResourceManager.textures("wall")))
+                    Some(ResourceManager.textures(scene.world.get.texture)))
               }
             }
           }
