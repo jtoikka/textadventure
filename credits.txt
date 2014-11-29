@@ -1,0 +1,105 @@
+<string>------------- Awesome Adventure -------------
+---------------------------------------------
+
+
+--- Text Game by --- 
+
+Juuso Toikka
+
+--- And ---
+
+Toni Pesola
+
+
+--- Executive Producers ---
+---------------------------
+
+Toni Pesola
+
+--- And ---
+
+Juuso Toikka
+
+
+--- Lead Developers ---
+-----------------------
+
+Juuso Toikka
+
+--- And ---
+
+Toni Pesola
+
+
+--- Engine Developers ---
+-------------------------
+
+Toni Pesola
+
+--- And ---
+
+Juuso Toikka
+
+
+--- Creative Directors ---
+--------------------------
+
+Juuso Toikka
+
+--- And ---
+
+Toni Pesola
+
+
+--- 3D Asset Factory ---
+------------------------
+
+Toni Pesola
+
+
+--- Enter the Matrix (Maths) ---
+--------------------------------
+
+Juuso Toikka
+
+
+--- Composer ---
+----------------
+
+Antonio Pesolada
+
+
+--- Cameraman ---
+-----------------
+
+Player
+
+
+--- Quality Assurance ---
+--------------------
+
+Emma Ahonen
+Henri Thor-Touch
+Lauri Lahteenmaki
+
+
+--- That guy ---
+--------------------
+
+Lauri Lahteenmaki
+
+
+--- Special Thanks ---
+----------------------
+Id Software
+Namco
+
+
+
+Thanks for Playing!
+♪┏(・o･)┛♪┗ ( ･o･) ┓♪┏ ( ) ┛♪┗ (･o･ ) ┓♪┏(･o･)┛♪
+
+
+
+
+</string>
