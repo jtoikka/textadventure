@@ -621,8 +621,8 @@ object Factory {
           println("Shop Interaction")
           val d = Factory.createDialog(Vector(
             ("Coffee, 1 rupees", new Event(Vector(player, Coffee(), 1, 1), EventType.E_BUY)),
+            ("Rupee, 1 rupees", new Event(Vector(player, Rupee(), 1, 1), EventType.E_BUY)),
             ("Key, 5 rupees", new Event(Vector(player, Key(), 1, 5), EventType.E_BUY)),
-            ("Killall, 50 rupees", new Event(Vector(player, KillAll(), 1, 50), EventType.E_BUY)),
             ("Nothing, thanks!", new Event(Vector(), EventType.E_NONE))),
             "Do you want to buy something?", None, 40, 6)
           EventManager.addEvent(new Event(Vector(d, entity.hashCode()), EventType.E_THROW_DIALOG))

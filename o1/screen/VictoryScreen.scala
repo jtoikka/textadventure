@@ -130,6 +130,7 @@ class VictoryScreen(parent: Adventure, rend: Renderer)
         event.args(0).asInstanceOf[Tuple2[scala.swing.event.Key.Value, Int]]
       if (inputMap.contains(eventKey)) {
         inputMap(eventKey)(delta)
+        new Event(Vector("creditsScreen"), E_CHANGE_SCREEN)
       }
     }),
     (E_CHANGE_MAP, (event, delta) => {

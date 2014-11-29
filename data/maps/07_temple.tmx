@@ -273,10 +273,10 @@
    <tile gid="0"/>
    <tile gid="3"/>
    <tile gid="3"/>
-   <tile gid="3"/>
-   <tile gid="3"/>
-   <tile gid="3"/>
-   <tile gid="3"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
    <tile gid="3"/>
    <tile gid="3"/>
    <tile gid="3"/>
@@ -292,10 +292,10 @@
    <tile gid="0"/>
    <tile gid="3"/>
    <tile gid="3"/>
-   <tile gid="3"/>
-   <tile gid="3"/>
-   <tile gid="3"/>
-   <tile gid="3"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
    <tile gid="3"/>
    <tile gid="3"/>
    <tile gid="3"/>
@@ -311,10 +311,10 @@
    <tile gid="0"/>
    <tile gid="3"/>
    <tile gid="3"/>
-   <tile gid="3"/>
-   <tile gid="3"/>
-   <tile gid="3"/>
-   <tile gid="3"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
    <tile gid="3"/>
    <tile gid="3"/>
    <tile gid="3"/>
@@ -330,6 +330,10 @@
    <tile gid="0"/>
    <tile gid="3"/>
    <tile gid="3"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
    <tile gid="3"/>
    <tile gid="3"/>
    <tile gid="3"/>
@@ -345,6 +349,10 @@
    <tile gid="3"/>
    <tile gid="3"/>
    <tile gid="3"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
    <tile gid="3"/>
    <tile gid="3"/>
    <tile gid="3"/>
@@ -360,18 +368,10 @@
    <tile gid="3"/>
    <tile gid="3"/>
    <tile gid="3"/>
-   <tile gid="3"/>
-   <tile gid="3"/>
-   <tile gid="3"/>
-   <tile gid="3"/>
-   <tile gid="3"/>
-   <tile gid="3"/>
-   <tile gid="3"/>
-   <tile gid="3"/>
-   <tile gid="3"/>
-   <tile gid="3"/>
-   <tile gid="3"/>
-   <tile gid="3"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
   </data>
  </layer>
  <layer name="mesh" width="19" height="19" visible="0" opacity="0.75">
@@ -1097,7 +1097,7 @@
    </properties>
    <ellipse/>
   </object>
-  <object type="chest" x="136" y="192" width="16" height="16">
+  <object type="chest" x="144" y="192" width="16" height="16">
    <properties>
     <property name="coffee" value="5"/>
     <property name="keys" value="5"/>
@@ -1107,7 +1107,7 @@
    </properties>
    <ellipse/>
   </object>
-  <object type="key" x="136" y="212" width="16" height="16">
+  <object type="key" x="144" y="212" width="16" height="16">
    <ellipse/>
   </object>
  </objectgroup>
