@@ -739,7 +739,7 @@
    <tile gid="0"/>
   </data>
  </layer>
- <objectgroup color="#9ba1a4" name="objects" opacity="0.55">
+ <objectgroup color="#9ba1a4" name="objects" visible="0" opacity="0.55">
   <object type="key" x="128" y="80" width="16" height="16">
    <ellipse/>
   </object>
@@ -892,7 +892,7 @@
    <ellipse/>
   </object>
  </objectgroup>
- <objectgroup name="player">
+ <objectgroup name="player" visible="0">
   <object type="player" x="240" y="240" width="16" height="16">
    <properties>
     <property name="name" value="startSpawn"/>

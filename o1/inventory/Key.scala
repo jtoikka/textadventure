@@ -7,7 +7,7 @@ import javax.imageio.ImageIO
 
 object Key{
   val defaultName = "Key" // Should be in resourceManager
-  val defaultDesc = "Key Desc"
+  val defaultDesc = "Key"
   def apply(n: String,d:String ) = new Key(n,d)
   def apply() = new Key(defaultName,defaultDesc)
 }

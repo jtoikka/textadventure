@@ -190,7 +190,6 @@ class MapScreen(parent: Adventure, rend: Renderer)
     (E_CHANGE_HUD_INFO, (event, delta) => {
       playerLoc = Some(event.args(2).asInstanceOf[Vec3])
       playerHeading = Some(event.args(3).asInstanceOf[Vec3])
-
     }))
 
   def dispose() = {
