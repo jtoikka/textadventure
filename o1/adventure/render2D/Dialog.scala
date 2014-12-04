@@ -37,7 +37,7 @@ class Dialog(
       activeOption = newOption % options.length
     }
     updateText()
-    println(activeOption)
+    // println(activeOption)
   }
 
   // Changes current option
