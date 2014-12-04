@@ -129,7 +129,7 @@ object AI {
           aiComp.direction = opportunities(0)
           aiComp.distance = 1.0
         } else {
-          println("Hey, I'm totally in the wrong place! " + spatial.position)
+          // println("Hey, I'm totally in the wrong place! " + spatial.position)
         }
       }
     }

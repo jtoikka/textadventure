@@ -10,7 +10,7 @@ object Level {
    * @param map The resource name of a "Tiled" map (see ResourceManager).
    */
   def loadMap(scene: Scene, map: String): Unit = {
-    println("loadamap")
+    // println("loadamap")
     scene.world = Some(new World(map))
 
     // entities

@@ -36,26 +36,45 @@ class MainMenuScreen(parent: Adventure, rend: Renderer)
 
   def init(): Unit = {
     // MainMenu
-    var mainMenuScene = new SceneUI(null)
+    val mainMenuScene = new SceneUI(null)
     dialog.offX = 1
     dialog.offMinusX = 1
     dialog.offMinusY = 1
     dialog.textWrap = false
     dialog.centerText = true
 
-    var rectEnt = Factory2D.createTextRectangle(dialog)
-    var testRectSpatial = rectEnt.getComponent(SpatialComponent.id)
+    val rectEnt = Factory2D.createTextRectangle(dialog)
+    val testRectSpatial = rectEnt.getComponent(SpatialComponent.id)
     testRectSpatial.get.position = Vec3(rend.w / 2 - dialog.w / 2, 25, 0.0f)
     mainMenuScene.addEntity(rectEnt)
 
-    var border = Factory2D.createRectangle(rend.w - 3, rend.h - 3, false)
-    var bSpatial = border.getComponent(SpatialComponent.id)
+    val textR =  new TextRect2D(
+      new Rectangle2D(23, 3, false), ResourceManager.version){
+      offX = 1
+      offY = 1
+      color1 = Renderer.empty
+      color2 = Renderer.empty
+      offMinusX = 2
+      offMinusY = 2
+      textWrap = true
+      centerText = true
+    }
+    textR.color1 = Renderer.empty
+    textR.color2 = Renderer.empty
+    val versionRect = Factory2D.createTextRectangle(textR)
+
+    val versionRectSpat = versionRect.getComponent(SpatialComponent.id)
+    versionRectSpat.get.position = Vec3(110f, 35f, 0f)
+    mainMenuScene.addEntity(versionRect)
+
+    val border = Factory2D.createRectangle(rend.w - 3, rend.h - 3, false)
+    val bSpatial = border.getComponent(SpatialComponent.id)
     bSpatial.get.position = Vec3(1f, 1f, 0f)
     mainMenuScene.addEntity(border)
 
-    var name = "logo_main"
-    var img = Factory2D.createImage(ResourceManager.images(name))
-    var spat = img.getComponent(SpatialComponent.id)
+    val name = "logo_main"
+    val img = Factory2D.createImage(ResourceManager.images(name))
+    val spat = img.getComponent(SpatialComponent.id)
 
     val imgName = img.getComponent(RenderComponent2D.id).get.shape
     val width = ResourceManager.shapes(imgName).getWidth
@@ -79,12 +98,12 @@ class MainMenuScreen(parent: Adventure, rend: Renderer)
           EventManager.addEvent(new Event(Vector("mainMenu"), E_CHANGE_SCENE))
         }))
 
-    var helpMenuScene = new SceneUI(helpInputMap)
+    val helpMenuScene = new SceneUI(helpInputMap)
 
     helpMenuScene.addEntity(border)
     helpMenuScene.addEntity(img)
 
-    var helpTextRect = new TextRect2D(new Rectangle2D(50, 10, true), ResourceManager.strings("helpMenu"))
+    val helpTextRect = new TextRect2D(new Rectangle2D(50, 10, true), ResourceManager.strings("helpMenu"))
     helpTextRect.offX = 3
     helpTextRect.offY = 2
     helpTextRect.offMinusX = 2
@@ -93,7 +112,7 @@ class MainMenuScreen(parent: Adventure, rend: Renderer)
     helpTextRect.centerText = true
     val helpEnt = Factory2D.createTextRectangle(helpTextRect)
 
-    var helpSpatial = helpEnt.getComponent(SpatialComponent.id)
+    val helpSpatial = helpEnt.getComponent(SpatialComponent.id)
     helpSpatial.get.position = Vec3(rend.w / 2 - helpTextRect.w / 2, 25, 0.0f)
     helpMenuScene.addEntity(helpEnt)
 

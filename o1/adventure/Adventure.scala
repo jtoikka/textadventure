@@ -22,7 +22,7 @@ import o1.screen.menu._
  */
 class Adventure() extends Listener {
   /** The title of the adventure game. */
-  var title = "A Forest Adventure"
+  var title = "An Awesome Adventure"
 
   val screenWidth = 140
   val screenHeight = 40
@@ -76,7 +76,7 @@ class Adventure() extends Listener {
     //    display = currentScreen.get.draw
 
     if (display.isEmpty())
-      println("WTF!")
+      // println("WTF!")
       
     EventManager.delegateEvents()
 

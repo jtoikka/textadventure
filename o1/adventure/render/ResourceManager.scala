@@ -25,6 +25,7 @@ object ResourceManager {
 //  val database = Map[Class[_], Map[String,_]]()
   
   val xml = loadFile("data/resourceManager.xml")
+  val version: String = ((xml \ "version").\@("value"))
   val XMLmeshes = xml \ "meshes" \ "item"
   val XMLimages = xml \ "images" \ "item"
   val XMLtextures = xml \ "textures" \ "item"
@@ -50,7 +51,7 @@ object ResourceManager {
   for (m <- XMLimages) {
     val name = (m \ "@name")
     val path = (m \ "@path")
-    println("Loaded image: " + name + ", " + path)
+    // println("Loaded image: " + name + ", " + path)
     images(name.text) = new Image2D(ImageIO.read(new File(path.text)),true)
   }
   
@@ -58,7 +59,7 @@ object ResourceManager {
   for (m <- XMLtextures) {
     val name = (m \ "@name")
     val path = (m \ "@path")
-    println("Loaded texture: " + name + ", " + path)
+    // println("Loaded texture: " + name + ", " + path)
     textures(name.text) = new Texture(path.text)
   }
   
@@ -66,14 +67,14 @@ object ResourceManager {
   for (m <- XMLstrings) {
     val name = (m \ "@name")
     val str = (m \ "string")
-    println("Loaded string: " + name)
+    // println("Loaded string: " + name)
     strings(name.text) = str.text
   }
     // Load maps
   for (m <- XMLmaps) {
     val name = (m \ "@name")
     val path = (m \ "@path")
-    println("Loaded map: " + name)
+    // println("Loaded map: " + name)
     maps(name.text) = loadFile(path.text)
   }
 }
