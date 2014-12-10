@@ -224,7 +224,7 @@ object Factory {
         val entBinventory = entityB.getComponent(InventoryComponent.id)
 
         if (entityA == entity && entBinventory.isDefined) {
-          println("coffee pickup")
+          // println("coffee pickup")
           entBinventory.get.inv.addItem(entity.getComponent(InventoryItemComponent.id).get.invItem)
           entity.destroy = true
           if (firstCoffee) {
@@ -241,7 +241,7 @@ object Factory {
         val entityB = event.args(1).asInstanceOf[Option[Entity]]
 
         if (entityB.isDefined && entityB.get == entity) {
-          println("Coffee Interaction")
+       // printlntln("Coffee Interaction")
         }
       }))
     val invComponent = new InventoryItemComponent(Coffee())
@@ -277,7 +277,7 @@ object Factory {
         val entBinventory = entityB.getComponent(InventoryComponent.id)
 
         if (entityA == entity && entBinventory.isDefined) {
-          println("coffee pickup")
+    // println("coffee pickup")
           entBinventory.get.inv.addItem(entity.getComponent(InventoryItemComponent.id).get.invItem)
           entity.destroy = true
           if (firstCoffee) {
@@ -294,7 +294,7 @@ object Factory {
         val entityB = event.args(1).asInstanceOf[Option[Entity]]
 
         if (entityB.isDefined && entityB.get == entity) {
-          println("Coffee Interaction")
+//          println("Coffee Interaction")
         }
       }))
     val invComponent = new InventoryItemComponent(Coffee())
@@ -350,7 +350,7 @@ object Factory {
         val entityB = event.args(1).asInstanceOf[Option[Entity]]
 
         if (entityB.isDefined && entityB.get == entity) {
-          println("Pellet Interaction")
+//          println("Pellet Interaction")
         }
       }))
     val invComponent = new InventoryItemComponent(Pellet())
@@ -411,7 +411,7 @@ object Factory {
         val entityB = event.args(1).asInstanceOf[Option[Entity]]
 
         if (entityB.isDefined && entityB.get == entity) {
-          println("Pellet Interaction")
+//          println("Pellet Interaction")
         }
       }))
     val invComponent = new InventoryItemComponent(Pellet())
@@ -497,7 +497,7 @@ object Factory {
         val entBinventory = entityB.getComponent(InventoryComponent.id)
 
         if (entityA == entity && entBinventory.isDefined) {
-          println("key pickup")
+//          println("key pickup")
           entBinventory.get.inv.addItem(entity.getComponent(InventoryItemComponent.id).get.invItem)
           entity.destroy = true
         }
@@ -506,7 +506,7 @@ object Factory {
         val entityB = event.args(1).asInstanceOf[Option[Entity]]
 
         if (entityB.isDefined && entityB.get == entity) {
-          println("key Interaction")
+//          println("key Interaction")
         }
       }))
     val invComponent = new InventoryItemComponent(Key())
@@ -542,7 +542,7 @@ object Factory {
         val entBinventory = entityB.getComponent(InventoryComponent.id)
 
         if (entityA == entity && entBinventory.isDefined) {
-          println("page pickup")
+//          println("page pickup")
           entBinventory.get.inv.addItem(entity.getComponent(InventoryItemComponent.id).get.invItem)
           entity.destroy = true
         }
@@ -551,7 +551,7 @@ object Factory {
         val entityB = event.args(1).asInstanceOf[Option[Entity]]
 
         if (entityB.isDefined && entityB.get == entity) {
-          println("page Interaction")
+//          println("page Interaction")
         }
       }))
 
@@ -618,7 +618,7 @@ object Factory {
         val entityB = event.args(1).asInstanceOf[Option[Entity]]
 
         if (entityB.isDefined && entityB.get == entity) {
-          println("Shop Interaction")
+//          println("Shop Interaction")
           val d = Factory.createDialog(Vector(
             ("Coffee, 1 rupees", new Event(Vector(player, Coffee(), 1, 1), EventType.E_BUY)),
             ("Rupee, 1 rupees", new Event(Vector(player, Rupee(), 1, 1), EventType.E_BUY)),
@@ -691,7 +691,7 @@ object Factory {
         val entityB = event.args(1).asInstanceOf[Option[Entity]]
 
         if (entityB.isDefined && entityB.get == entity) {
-          println("Door Interaction")
+//          println("Door Interaction")
           val d = Factory.createDialog(Vector(
             ("Yes", new Event(Vector(player, entityB), EventType.E_OPEN_CHEST)),
             ("No", new Event(Vector(false, entity.hashCode()), EventType.E_NONE))),
@@ -793,7 +793,7 @@ object Factory {
           //          println("Collision with bossDorOpener trigger")
 
           if ((entityB.getComponent(InventoryComponent.id).get.inv.removeOfType(Page(), 5))) {
-            println("BOSS DOOR OPENED")
+//            println("BOSS DOOR OPENED")
             val d = Factory.createDialog(Vector(
               ("Ok", new Event(Vector(false, entity.hashCode()), EventType.E_NONE))),
               "Boss door is now open!", None, 40, 6)
@@ -839,7 +839,7 @@ object Factory {
         val entityB = event.args(1).asInstanceOf[Entity]
 
         if (entityA == entity && entityB.getComponent(PlayerComponent.id).isDefined) {
-          println("Collision with level trigger")
+//          println("Collision with level trigger")
 
           EventManager.addEvent(new Event(Vector(level, spawn), EventType.E_LOAD_NEW_MAP))
         }
@@ -878,7 +878,7 @@ object Factory {
         val entityB = event.args(1).asInstanceOf[Option[Entity]]
 
         if (entityB.isDefined && entityB.get == entity) {
-          println("Door Interaction")
+//          println("Door Interaction")
           val d = Factory.createDialog(Vector(
             ("Yes", new Event(Vector(player, entityB), EventType.E_OPEN_DOOR)),
             ("No", new Event(Vector(false, entity.hashCode()), EventType.E_NONE))),
@@ -1115,7 +1115,7 @@ object Factory {
         val entBinventory = entityB.getComponent(InventoryComponent.id)
 
         if (entityA == entity && entBinventory.isDefined) {
-          println("Rupee pickup")
+//          println("Rupee pickup")
           entBinventory.get.inv.addItem(entity.getComponent(InventoryItemComponent.id).get.invItem)
           entity.destroy = true
         }
@@ -1124,7 +1124,7 @@ object Factory {
         val entityB = event.args(1).asInstanceOf[Option[Entity]]
 
         if (entityB.isDefined && entityB.get == entity) {
-          println("Rupee Interaction")
+//          println("Rupee Interaction")
         }
       }))
 
@@ -1162,7 +1162,7 @@ object Factory {
         val entBinventory = entityB.getComponent(InventoryComponent.id)
 
         if (entityA == entity && entBinventory.isDefined && !entity.destroy) {
-          println("Rupee pickup")
+//          println("Rupee pickup")
           entBinventory.get.inv.addItem(entity.getComponent(InventoryItemComponent.id).get.invItem)
           entity.destroy = true
         }
@@ -1171,7 +1171,7 @@ object Factory {
         val entityB = event.args(1).asInstanceOf[Option[Entity]]
 
         if (entityB.isDefined && entityB.get == entity) {
-          println("Rupee Interaction")
+//          println("Rupee Interaction")
         }
       }))
 
@@ -1483,7 +1483,7 @@ object Factory {
         val entityB = event.args(1).asInstanceOf[Option[Entity]]
 
         if (entityB.isDefined && entityB.get == entity) {
-          println("Shop Interaction")
+//          println("Shop Interaction")
 //          val event = new Event(Vector("00_startlevel", "startSpawn"), EventType.E_LOAD_NEW_MAP)
           val d = Factory.createDialog(Vector(
             ("Okay?", new Event(Vector("startAgain", entity.hashCode()), EventType.E_ANSWER_DIALOG)),

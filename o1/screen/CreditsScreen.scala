@@ -27,7 +27,7 @@ class CreditsScreen(parent: Adventure, rend: Renderer)
   val scene = new Scene()
   var paused = true
   
-  var textRect = new TextRect2D(new Rectangle2D(55, 100, false), ResourceManager.strings("credits")*100)
+  var textRect = new TextRect2D(new Rectangle2D(55, 160, false), ResourceManager.strings("credits"))
   val helpEnt = Factory2D.createTextRectangle(textRect)
   
   var timer = 0.0
@@ -104,7 +104,7 @@ class CreditsScreen(parent: Adventure, rend: Renderer)
     if (!paused) {
       var textSpatial = helpEnt.getComponent(SpatialComponent.id)
       if(timer > 2.5 && textSpatial.get.position.y > -textRect.getHeight){
-        println("move textbox")
+        // println("move textbox")
         timer = timer - 2.5
         textSpatial.get.position.y = textSpatial.get.position.y - 1
       }else if(!(textSpatial.get.position.y > -textRect.getHeight) && timer > 10){

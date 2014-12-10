@@ -1,7 +1,9 @@
 *.class
 
 # Directories #
+out/
 bin/
+.idea
 .metadata
 .gradle
 local.properties

@@ -53,12 +53,10 @@ object AdventureGUI extends SimpleSwingApplication with Listener {
     editable = false
     wordWrap = false
     lineWrap = false
-
     background = Color.BLACK
     foreground = Color.WHITE
-
     font = Font.createFont(Font.TRUETYPE_FONT, new File("data/font/unifont-7.0.06.ttf"))
-    font = font.deriveFont(12f)
+    font = font.deriveFont(13f)
 
     //      font = new Font(Font.MONOSPACED, 0, 12)
 
