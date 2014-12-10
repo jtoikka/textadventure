@@ -218,3 +218,11 @@ case class SpawnComponent(val spawnType: String, val step: Double) extends Compo
   var entity: Option[Entity] = None
   var timer = step + 1
 }
+
+object BugFixComponent {
+  val id = classOf[BugFixComponent]
+}
+
+case class BugFixComponent(val delay: Double) extends Component {
+  var timer = 0.0
+}

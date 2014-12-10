@@ -142,6 +142,14 @@ class GameScreen(parent: Adventure, rend: Renderer)
       val destroyedEntities = Buffer[Entity]()
 
       for (entity <- scene.entities) {
+        val bugFixComponent = entity.getComponent(BugFixComponent.id)
+        if (bugFixComponent.isDefined) {
+          if (bugFixComponent.get.timer > 0) {
+            bugFixComponent.get.timer -= delta
+          } else {
+            bugFixComponent.get.timer = 0
+          }
+        }
         val spatial = entity.getComponent(SpatialComponent.id)
         if (spatial.isDefined) {
           if (entity.getComponent(InputComponent.id).isDefined) {

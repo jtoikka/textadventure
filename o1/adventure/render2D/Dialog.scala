@@ -67,6 +67,7 @@ class Dialog(
   
   eventHandlers = scala.collection.immutable.Map(
     (E_INPUT, (event, delta) => {
+      println("Dialog input")
       val eventKey = event.args(0).asInstanceOf[Tuple2[scala.swing.event.Key.Value, Int]]
       if (inputMap.contains(eventKey)) {
         inputMap(eventKey)(delta)

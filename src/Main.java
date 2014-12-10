@@ -1,7 +1,5 @@
 package src;
 
-import o1.adventure.ui.AdventureGUI;
-
 /**
  * Created by Toni on 4.12.2014.
  */

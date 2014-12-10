@@ -98,15 +98,22 @@ object EventManager {
   }
 
   def setActiveInputListener(listener: Listener) {
-    //    println("changeInputListener")
+        println("Change input listener. New: " + listener + "Old: " + activeInputListener)
     if(activeInputListener.isDefined && 
         activeInputListener.get.isInstanceOf[Screen])
       lastActiveInputListener = activeInputListener
-      
+//    if (lastActiveInputListener.isDefined) {
+//      lastActiveInputListener.get.events.clear()
+//    }
+    println("		New old: " + lastActiveInputListener)
     activeInputListener = Some(listener)
   }
 
   def returnToLastInputListener() {
+    println("Returnin' from last input listener: " + lastActiveInputListener)
+//    if (activeInputListener.isDefined) {
+//      activeInputListener.get.events.clear()
+//    }
     activeInputListener = lastActiveInputListener
   }
 
