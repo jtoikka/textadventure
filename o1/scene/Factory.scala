@@ -612,20 +612,26 @@ object Factory {
     val h = (node \ "@height").text.toFloat / 8
 
     val entity = new Entity()
+    
+    val bugFixComponent = new BugFixComponent(5.0)
+    entity.addComponent(bugFixComponent)
+    
     entity.eventHandlers = scala.collection.immutable.Map(
       (EventType.E_INTERACTION, (event, delta) => {
         val player = event.args(0).asInstanceOf[Option[Entity]]
         val entityB = event.args(1).asInstanceOf[Option[Entity]]
-
-        if (entityB.isDefined && entityB.get == entity) {
-//          println("Shop Interaction")
-          val d = Factory.createDialog(Vector(
-            ("Coffee, 1 rupees", new Event(Vector(player, Coffee(), 1, 1), EventType.E_BUY)),
-            ("Rupee, 1 rupees", new Event(Vector(player, Rupee(), 1, 1), EventType.E_BUY)),
-            ("Key, 5 rupees", new Event(Vector(player, Key(), 1, 5), EventType.E_BUY)),
-            ("Nothing, thanks!", new Event(Vector(), EventType.E_NONE))),
-            "Do you want to buy something?", None, 40, 6)
-          EventManager.addEvent(new Event(Vector(d, entity.hashCode()), EventType.E_THROW_DIALOG))
+        if (bugFixComponent.timer == 0) {
+          if (entityB.isDefined && entityB.get == entity) {
+    //          println("Shop Interaction")
+            bugFixComponent.timer = bugFixComponent.delay
+            val d = Factory.createDialog(Vector(
+              ("Coffee, 1 rupees", new Event(Vector(player, Coffee(), 1, 1), EventType.E_BUY)),
+              ("Rupee, 1 rupees", new Event(Vector(player, Rupee(), 1, 1), EventType.E_BUY)),
+              ("Key, 5 rupees", new Event(Vector(player, Key(), 1, 5), EventType.E_BUY)),
+              ("Nothing, thanks!", new Event(Vector(), EventType.E_NONE))),
+              "Do you want to buy something?", None, 40, 6)
+            EventManager.addEvent(new Event(Vector(d, entity.hashCode()), EventType.E_THROW_DIALOG))
+          }
         }
       }), (EventType.E_BUY, (event, delta) => {
         val player = event.args(0).asInstanceOf[Some[Entity]]

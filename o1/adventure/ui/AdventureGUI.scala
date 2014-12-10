@@ -177,6 +177,7 @@ object AdventureGUI extends SimpleSwingApplication with Listener {
         var numUpdates = (delta / updatePeriod).toInt
         timeExtra = delta - numUpdates * updatePeriod
         time = newTime
+        if (numUpdates > 3) numUpdates = 3
         for (i <- 0 until numUpdates) {
           update(updatePeriod / 100.0f)
         }
