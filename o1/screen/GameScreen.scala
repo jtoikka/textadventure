@@ -65,7 +65,7 @@ class GameScreen(parent: Adventure, rend: Renderer)
     (E_LOAD_NEW_MAP, (event, delta) => {
       val newMapName = event.args(0).asInstanceOf[String]
       val newSpawnName = event.args(1).asInstanceOf[String]
-      println("Load " + newMapName  + " with spawn " + newSpawnName)
+      // println("Load " + newMapName  + " with spawn " + newSpawnName)
       changeLevel(newMapName, newSpawnName)
       
     }),
@@ -73,7 +73,7 @@ class GameScreen(parent: Adventure, rend: Renderer)
       player = Some(event.args(0).asInstanceOf[Entity])
     }),
     (E_PLAYER_DAMAGE, (event, delta) => {
-      println("Damage")
+   // printlntln("Damage")
     }),
     (E_EXPLOSION, (event, delta) => {
       val position = event.args(0).asInstanceOf[Vec3]
@@ -167,7 +167,7 @@ class GameScreen(parent: Adventure, rend: Renderer)
           if (healthComponent.isDefined) {
             if (healthComponent.get.invulnerabilityTimer > 0.0) {
               healthComponent.get.invulnerabilityTimer -= delta
-              println(healthComponent.get.invulnerabilityTimer)
+        // printlnrintln(healthComponent.get.invulnerabilityTimer)
             }
             if (healthComponent.get.hp <= 0) {
               if (entity.getComponent(PlayerComponent.id).isDefined) {

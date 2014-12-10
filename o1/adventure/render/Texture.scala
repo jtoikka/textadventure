@@ -7,7 +7,7 @@ import java.io.File
 class Texture(filePath: String) {
   val image = ImageIO.read(new File(filePath))
   
-  println(filePath)
+  // println(filePath)
   private val _width = image.getWidth()
   private val _height = image.getHeight()
   
