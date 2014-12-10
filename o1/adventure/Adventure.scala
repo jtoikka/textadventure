@@ -24,8 +24,8 @@ class Adventure() extends Listener {
   /** The title of the adventure game. */
   var title = "An Awesome Adventure"
 
-  val screenWidth = 140 * 2
-  val screenHeight = 40 * 2
+  val screenWidth = 140
+  val screenHeight = 40
 
   private val renderer = new Renderer3D(screenWidth, screenHeight) // We draw the world here!
   var display = renderer.display // A String displaying the world
